@@ -219,6 +219,7 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 | `src/core.js` | canvas, palette, timing and motion helpers, `paint()`, camera, full-frame effects, `glow()`, lettering, paper, render hooks |
 | `src/clawd.js` | Clawd: views, emotions, eyes, mouths, hats, emotes, moves |
 | `src/bappa.js` | Bappa (chibi Ganesha) and Mooshak (his mouse), plus `modak()`; faces reuse Clawd's `EMO`, so `feel()` / `emotions()` drive Bappa too |
+| `src/bal_bappa.js` | Bal Bappa: a baby Ganesha in a blue turban and shawl (`balBappa()`), sitting cross-legged or standing in shorts (`stand: 1`, `walk: phase`); same options and emotions as `bappa()`, model sheets at `?loop=balbappa` and `?loop=balstand` |
 | `src/timeline.js` | `shots()`, `LOOPS`, `brushWipe()` |
 | `src/sheets.js` | the model sheets as loops (`?loop=emotions`, `?loop=views`) |
 | `src/scenes/demo.js` | an 11-second example. **Don't copy it** (see the end of this guide) |
