@@ -241,7 +241,7 @@ function mooshak(x, y, u, o = {}) {
     mooshak(460, my, 22, { eyes: 'angry', cross: 1, emote: 'anger' });
     mooshak(720, my, 22, { eyes: 'squeeze', nose: 1, emote: 'sweat' });
     mooshak(960, my, 22, { eyes: 'x', flat: 1 });
-    caption('Bappa ki 3 complaints 😤', 1500, t % 2.4, { life: 2.4 });
+    caption('Sample caption', 1500, t % 2.4, { life: 2.4 });   // shows caption() over the characters
   };
   LOOPS.bappa.len = 4;
 })();
