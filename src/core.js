@@ -1,6 +1,6 @@
 // core.js: constants, helpers, paper, paint wrapper, compositing and render hooks.
 // Length and rhythm come from PROJECT in config.js.
-const W = 1920, H = 1080;
+const W = PROJECT.w || 1920, H = PROJECT.h || 1080;   // canvas size: set w, h in config.js (1080×1920 for a vertical reel)
 const BPM = PROJECT.bpm, BEAT = 60 / BPM, OFF = PROJECT.offset || 0, BOIL = 12, DUR = PROJECT.duration;
 const TAU = Math.PI * 2;
 const PAL = {
@@ -213,13 +213,23 @@ function sfx(txt, x, y, size, color, age, o = {}) {
   const life = o.life ?? 1.2; if (age < 0 || age > life) return;
   letter(txt, x, y, size, color, { pop: age * 5, rot: (o.rot ?? -.08) + Math.sin(age * 20) * .03 * (1 - age / life), alpha: 1 - seg(age, life - .25, life), ...o });
 }
+// Reel caption, for videos whose brief asks for on-screen text: screen space, pops in line by line, holds, fades out.
+// Cream on a thick ink stroke, so it reads over anything. age = seconds since it appeared; lines split on '\n'.
+// Defaults keep it inside Instagram's 9:16 safe zone (centred slightly left of the like/share column, 800px wide max).
+function caption(txt, y, age, o = {}) {
+  const life = o.life ?? 2, size = o.size ?? 66; if (age < 0 || age > life) return;
+  const lines = txt.split('\n'), lh = size * 1.18, y0 = y - (lines.length - 1) * lh / 2, fade = seg(age, life - .18, life);
+  lines.forEach((l, i) => letter(l, o.x ?? W * .47, y0 + i * lh, size, o.color || PAL.cream,
+    { screen: true, pop: Math.max(0, age - i * .1) * 5, rot: o.rot ?? -.025, alpha: 1 - fade, stroke: o.stroke || PAL.ink, sw: .22, ink: false, maxW: o.maxW ?? 800 }));
+}
 function drawLetters(c) {
   for (const L of LETTERS) {
     const k = L.pop != null ? backOut(L.pop) : 1; if (k <= .01) continue;
     c.save(); c.translate(L.x, L.y); c.rotate(L.rot || 0); c.scale(k, k); c.globalAlpha = L.alpha ?? 1;
     c.font = L.font || `${L.size}px "Permanent Marker", "Comic Sans MS", cursive`;
     c.textAlign = L.align || 'center'; c.textBaseline = 'middle';
-    if (L.stroke) { c.lineJoin = 'round'; c.lineWidth = L.size * .12; c.strokeStyle = L.stroke; c.strokeText(L.txt, 0, 0); }
+    if (L.maxW) { const w = c.measureText(L.txt).width; if (w > L.maxW) c.scale(L.maxW / w, L.maxW / w); }
+    if (L.stroke) { c.lineJoin = 'round'; c.lineWidth = L.size * (L.sw ?? .12); c.strokeStyle = L.stroke; c.strokeText(L.txt, 0, 0); }
     if (L.ink !== false) { c.fillStyle = PAL.ink; c.fillText(L.txt, L.size * .045, L.size * .055); }
     c.fillStyle = L.color; c.fillText(L.txt, 0, 0);
     c.restore();
@@ -276,7 +286,7 @@ async function setup() {
   createCanvas(W, H, WEBGL); pixelDensity(1); noLoop();
   brush.scaleBrushes(5); defineBrushes();
   paperG = makePaper(); grainC = makeGrain(); glowTex = makeGlowTex(); letG = createGraphics(W, H); letG.pixelDensity(1);
-  outC = document.getElementById('out'); outX = outC.getContext('2d');
+  outC = document.getElementById('out'); outC.width = W; outC.height = H; outC.style.aspectRatio = W + ' / ' + H; outX = outC.getContext('2d');
   await document.fonts.load('100px "Permanent Marker"');
   window.ready = true;
   if (!location.search.includes('render')) devUI();
