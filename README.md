@@ -35,6 +35,8 @@ On Linux, `render.mjs` starts Chrome with `--no-sandbox` (Ubuntu 23.10+ blocks C
 | [src/clawd.js](src/clawd.js) | Clawd: views, emotions, eyes, mouths, hats, emotes, dances |
 | [src/bappa.js](src/bappa.js) | Bappa (chibi Ganesha) and Mooshak, painted with Clawd's tools |
 | [src/bal_bappa.js](src/bal_bappa.js) | Bal Bappa: baby Ganesha in a blue turban and shawl, sitting or standing |
+| [src/vayu.js](src/vayu.js) | Vayu, the wind god as a Swarga-Mart courier: cloud tail, cap, shades, delivery pack |
+| [tools/sfx.mjs](tools/sfx.mjs) | Synthesized sound effects for the "2 AM Modak Run" reel ([STORYBOARD.md](STORYBOARD.md)) |
 | [src/core.js](src/core.js) | Painting, timing, motion helpers, camera, light, paper |
 | [src/timeline.js](src/timeline.js) | Shots, loops and the brush-wipe transition |
 | [src/config.js](src/config.js) | Length and tempo |
