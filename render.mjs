@@ -13,11 +13,12 @@
 //     node render.mjs --encode --out=out/video.mp4                                           out/frames → MP4
 //   Standalone loops (LOOPS in the page): add --loop=<name> to any of the above (times are then loop times), or
 //     node render.mjs --loop=emotions --png --out=out/loop_emotions                          one cycle as PNGs (for GIFs)
-//   Music: --audio=assets/song.mp3 (or PROJECT.audio) is muxed into --clip and --encode. Other flags: --fps=24,
-//   --chrome=<path to Chrome/Chromium>.
+//   Music: --audio=assets/song.mp3 (or PROJECT.audio) is muxed into --clip and --encode; --audio=none leaves it out.
+//   Other flags: --fps=24, --chrome=<path to Chrome/Chromium>.
 import puppeteer from 'puppeteer-core';
 import { spawn } from 'node:child_process';
-import { mkdirSync, writeFileSync, existsSync, statSync, renameSync, readdirSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync, statSync, renameSync, readdirSync, readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
 import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { homedir } from 'node:os';
@@ -41,9 +42,12 @@ const times = s => String(s).split(',').map(Number);
 const span = s => String(s).split(':').map(Number);
 // comma-separated fields, keeping commas inside parentheses ('PLK.MX(1.38),PLK.WL,500,300'); numbers stay numbers
 const fields = s => { const out = []; let d = 0, cur = ''; for (const ch of String(s)) { if (ch === ',' && !d) { out.push(cur); cur = ''; continue; } d += ch === '(' ? 1 : ch === ')' ? -1 : 0; cur += ch; } out.push(cur); return out.map(v => isNaN(+v) ? v : +v); };
+// the soundtrack: --audio=<file>, else PROJECT.audio; --audio=none for a silent video
+const soundtrack = projectAudio => args.audio === 'none' ? '' : args.audio || projectAudio || '';
 
 if (args.encode) {
-  const out = args.out || 'out/video.mp4', n = readdirSync(FRAMES_DIR).filter(f => f.endsWith('.jpg')).length, audio = args.audio;
+  const out = args.out || 'out/video.mp4', n = readdirSync(FRAMES_DIR).filter(f => f.endsWith('.jpg')).length;
+  const audio = soundtrack(runInNewContext(readFileSync('src/config.js', 'utf8') + '\n;PROJECT').audio);
   console.log(`encoding ${n} frames → ${out}${audio ? ' with ' + audio : ''}`);
   await run('ffmpeg', ['-y', '-loglevel', 'error', '-stats', '-framerate', String(fps), '-i', `${FRAMES_DIR}/f%05d.jpg`,
     ...(audio ? ['-i', audio, '-map', '0:v', '-map', '1:a', '-c:a', 'aac', '-b:a', '192k', '-shortest'] : []),
@@ -137,7 +141,7 @@ if (args.sheet || args.strip) {
 } else if (args.clip) {
   const page = await openPage(), len = await lengthOf(page);
   const [a, b] = args.range ? span(args.range) : typeof args.clip === 'string' ? span(args.clip) : [0, len];
-  const audio = args.audio || await page.evaluate(() => PROJECT.audio || '');
+  const audio = soundtrack(await page.evaluate(() => PROJECT.audio));
   const out = args.out || 'out/clip.mp4'; mkdirSync(dirname(out), { recursive: true });
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
     ...(audio ? ['-ss', String(a), '-t', String(b - a), '-i', audio, '-map', '0:v', '-map', '1:a', '-c:a', 'aac', '-b:a', '192k', '-shortest'] : []),

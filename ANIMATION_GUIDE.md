@@ -420,7 +420,7 @@ clawd(x, y, 24, { ...feel('proud', t), aR: 1.2, armR: (u, sw) => paint(starPts(u
 The kit doesn't need music, but it's built for it:
 
 1. Set `bpm` to the song's tempo in [src/config.js](src/config.js), and set `offset` to the time of its first downbeat in seconds. Every idle, dance and `pulse()` then locks to the song.
-2. Put the audio in `assets/` and set `PROJECT.audio` (or pass `--audio=`). `--clip` and `--encode` mux it in.
+2. Put the audio in `assets/` and set `PROJECT.audio` (or pass `--audio=`). `--clip` and `--encode` mux it in; `--audio=none` renders a silent copy (e.g. to add the music later on Instagram).
 3. Land hits, cuts and takes on beats (`beatN`, `pulse`). Cut on bar lines for big changes, and give each musical phrase its own visual.
 4. **Lyrics are not text.** Don't put words on screen. Act the meaning of a line instead.
 
@@ -438,7 +438,7 @@ The kit doesn't need music, but it's built for it:
    T.write('assets/my_sfx.wav');
    ```
    Take the times from your scene's constants (the frame of a landing, a cut, a tap), so picture and sound stay in sync.
-3. Encode with it: `node render.mjs --encode --audio=assets/my_sfx.wav --out=out/video.mp4`.
+3. Set `audio: 'assets/my_sfx.wav'` in [src/config.js](src/config.js), or pass `--audio=assets/my_sfx.wav` to `--encode` / `--clip`.
 4. Mix it to sit under music. The WAV peaks at -6 dBFS, and most cues sit at gain .2–.6. Heavy sounds (rumble, thud, big whooshes) bury small ones (steps, taps), so keep them short and lower than feels right. Pan sounds by where they are on screen.
 
 ## Common failures
