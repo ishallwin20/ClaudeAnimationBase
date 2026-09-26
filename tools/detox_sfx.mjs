@@ -5,7 +5,7 @@
 import { track, rnd, env, tone, noise, bell, mixb, note, whoosh, rumble, plink, squeak, click, thud, crunch, shimmer, wah, drone, slide } from './sfx.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const { at, write } = track(31.5);
+const { at, write } = track(33.9);
 
 // the scale's beep: a short square-wave blip, like a kitchen scale that has seen too much
 const beep = (f = 1760, dur = .1) => tone(dur, f, { type: 'square', e: env.swell(.004, .02), amp: .35 });
@@ -88,11 +88,12 @@ at(28.3, crunch(1), .6, 0); at(28.7, crunch(.8), .5, 0);                     // 
 for (let i = 0; i < 3; i++) at(28.45 + i * .2, tone(.08, 180 + rnd() * 40, { e: env.pluck(30), amp: .5 }), .2, 0);   // chewing
 at(28.8, shimmer(.8, [79, 83, 86].map(note), .4, .1), .2, 0);                // bliss
 // the last beep, the freeze, the loop
-for (const b of [29.25, 29.85, 30.45, 31.05]) at(b, beep(), .5, -.6);   // on the opening's beat: the loop's next beep is at .15
+for (const b of [29.25, 29.85, 30.45, 32.85, 33.45]) at(b, beep(), .5, -.6);   // on the opening's beat (quiet under the sting): the loop's next beep is at .15
 at(29.27, scratch(), .45, 0);                                                // freeze
 at(29.25, slide(.22, 500, 1400, .5), .18, -.6);                              // the needle snaps back to the top
 at(29.55, click(.5), .2, -.3);                                                // eyes slide
 at(30.1, squeak(900, 1300, .12, .6), .25, 0); at(30.25, squeak(1000, 1400, .1, .5), .2, 0);   // an innocent giggle
-at(30.5, whoosh(.55, 600, 4200), .6, -.5);                                   // whip back to the scale
+for (let i = 0; i < 6; i++) at(30.7 + i * .38, tone(.08, 170 + rnd() * 40, { e: env.pluck(30), amp: .5 }), .12, 0);   // innocent little chews
+at(32.9, whoosh(.55, 600, 4200), .6, -.5);                                   // whip back to the scale
 
 write(args.out || 'assets/detox_sfx.wav');

@@ -1,7 +1,7 @@
 // "Bappa's Post-Visarjan Detox": the festival is over and the modaks have caught up. The heavenly scale shows only a
 // flashing modak; Bappa ties on a sweatband and can't budge the divine dumbbell; Shiva floats past, still meditating,
 // and taps it with his Trishul; Bappa lifts it with his pinky, flexes for the mirror and eats the laddoo hidden in
-// his crown... and the scale beeps again. 31.5 s, 1080×1920 (a vertical reel). The last frame loops into the first.
+// his crown... and the scale beeps again. 33.9 s, 1080×1920 (a vertical reel). The last frame loops into the first.
 // Storyboard: STORYBOARD.md. Set and props: detox_props.js. Sound: tools/detox_sfx.mjs.
 //
 // Every character's pose is a pure function of film time (bappaO, shivaO, mooshakO, dumbbellAt), and stage(t) draws
@@ -16,11 +16,12 @@
     SH_IN = [16.2, 17.4], PEEK = 17.5, SMIRK = 18.0, TAP = 18.4, MOO_GASP = 18.8, SHH = [19.3, 20.1], S_WINK = 19.75, SH_OUT = [20.1, 21.1],
     WAKE = [21.0, 21.6], GRIP2 = 21.7, HEAVE = 22.1, TOP = 22.45, CATCH = 23.2, PROUD = 23.6, TO_MIR = [24.1, 24.6], FLEX = 24.7,
     R_WINK = 25.25, DTAKE = 25.45, TOSS = 25.9, LOOK_L = 26.35, LOOK_R = 26.75, LID = [27.2, 27.45], GRAB = 27.8, SHUT = 27.95,
-    CHOMP = 28.3, GULP2 = 28.7, BEEP_END = 29.25, SLIDE = 29.55, STING = 29.75, INNOCENT = 30.1, PUSH = [30.5, 31.1], IRIS = [31.0, 31.45], END = 31.5;
+    CHOMP = 28.3, GULP2 = 28.7, BEEP_END = 29.25, SLIDE = 29.55, STING = 29.75, INNOCENT = 30.1, PUSH = [32.9, 33.5], IRIS = [33.4, 33.85], END = 33.9;
   const LIE_X = G.dbX - 120, MIR_X = G.mrX - 420, MOO = [610, G.FY + 90], MOO_FAN = [650, G.FY + 90], MU = 15;
   // Shiva's float path: the Trishul's butt reaches the bar at TAP
   // the last beeps keep the opening's beat, so the loop doesn't stutter (the next one lands on BEEPS[0])
-  const END_BEEPS = [0, .6, 1.2, 1.8].map(k => BEEP_END + k);
+  // (quiet while the sting caption holds, 31.05–32.25, then two more as the camera whips back to the scale)
+  const END_BEEPS = [0, .6, 1.2, 3.6, 4.2].map(k => BEEP_END + k);
   const IRIS_H = 820;   // the modak window's height on the first and last frames
   const OPEN_Z = 2.4, OPEN_CY = G.dY - 190 / OPEN_Z;   // the first and last frames: the dial, big, low in the frame under the hook
   const SH_U = 15, SH_Y = 1120, SH_HOVER = G.dbX - 87, TRI = 420;
@@ -354,14 +355,14 @@
     whipSmear(easeIn(seg(t, CUT - .22, CUT)), 1);
   }
 
-  // ======================= C–G · 7.4–31.5 · the gym =======================
+  // ======================= C–G · 7.4–33.9 · the gym =======================
   function workout(t, lt) {
     const imp = 10 * bump(t, KNOT, .02, .2) + 8 * bump(t, LAND, .02, .25) + 6 * bump(t, HEAVE, .02, .2) + 5 * bump(t, TAP, .02, .15) + 5 * bump(t, BEEP_END, .02, .15);
     const sh = shakeXY(t, imp);
     const shF = [G.dbX - 87, SH_Y - 13 * SH_U];   // Shiva's face while he hovers
-    const cx = kf(t, [[CUT, G.bandX + 10], [PULL_C[0], G.bandX + 10], [PULL_C[1], 930], [NOD, 930], [STEP[1], G.dbX], [SLIP, G.dbX], [LAND + .3, 925], [SH_IN[0], 925], [SH_IN[1], 950], [SHH[0] - .3, 965], [SHH[0], shF[0]], [SH_OUT[0], shF[0]], [SH_OUT[0] + .45, 990], [WAKE[1], G.dbX], [HEAVE, G.dbX], [TOP, G.dbX + 10], [CATCH, G.dbX + 20], [TO_MIR[0], G.dbX + 30], [TO_MIR[1] + .1, MIR_X + 225], [TOSS, MIR_X + 235], [TOSS + .9, MIR_X + 20], [BEEP_END, MIR_X + 15], [PUSH[0], MIR_X - 10], [PUSH[1], G.dX]]);
-    const cy = kf(t, [[CUT, 1125], [PULL_C[0], 1135], [PULL_C[1], 1180], [NOD, 1180], [STEP[1], 1190], [SLIP, 1190], [LAND + .3, 1110], [SH_IN[0], 1110], [SHH[0] - .3, 1110], [SHH[0], shF[1] + 40], [SH_OUT[0], shF[1] + 40], [SH_OUT[0] + .45, 1110], [WAKE[1], 1180], [HEAVE, 1180], [TOP, 980], [CATCH, 1030], [TO_MIR[0], 1040], [TO_MIR[1] + .1, 1100], [TOSS, 1100], [TOSS + .9, 1090], [BEEP_END, 1085], [PUSH[0], 1080], [PUSH[1], OPEN_CY]]);
-    const z = kf(t, [[CUT, 3.3], [PULL_C[0], 3.1], [PULL_C[1], 1.05], [NOD, 1.07], [STEP[1], 1.45], [SLIP, 1.48], [LAND + .3, 1.28], [SH_IN[0], 1.28], [SH_IN[1], 1.3], [SHH[0] - .3, 1.32], [SHH[0], 2.6], [SH_OUT[0], 2.7], [SH_OUT[0] + .45, 1.3], [WAKE[1], 1.45], [HEAVE, 1.45], [TOP, 1.1], [CATCH, 1.2], [TO_MIR[0], 1.2], [TO_MIR[1] + .1, 1.3], [TOSS, 1.32], [TOSS + .9, 2.0], [BEEP_END, 2.08], [PUSH[0], 2.1], [PUSH[1], OPEN_Z]], ease);
+    const cx = kf(t, [[CUT, G.bandX + 10], [PULL_C[0], G.bandX + 10], [PULL_C[1], 930], [NOD, 930], [STEP[1], G.dbX], [SLIP, G.dbX], [LAND + .3, 925], [SH_IN[0], 925], [SH_IN[1], 950], [SHH[0] - .3, 965], [SHH[0], shF[0]], [SH_OUT[0], shF[0]], [SH_OUT[0] + .45, 990], [WAKE[1], G.dbX], [HEAVE, G.dbX], [TOP, G.dbX + 10], [CATCH, G.dbX + 20], [TO_MIR[0], G.dbX + 30], [TO_MIR[1] + .1, MIR_X + 225], [TOSS, MIR_X + 235], [TOSS + .9, MIR_X + 20], [BEEP_END, MIR_X + 15], [INNOCENT, MIR_X + 5], [PUSH[0] - .1, MIR_X], [PUSH[0], MIR_X - 10], [PUSH[1], G.dX]]);
+    const cy = kf(t, [[CUT, 1125], [PULL_C[0], 1135], [PULL_C[1], 1180], [NOD, 1180], [STEP[1], 1190], [SLIP, 1190], [LAND + .3, 1110], [SH_IN[0], 1110], [SHH[0] - .3, 1110], [SHH[0], shF[1] + 40], [SH_OUT[0], shF[1] + 40], [SH_OUT[0] + .45, 1110], [WAKE[1], 1180], [HEAVE, 1180], [TOP, 980], [CATCH, 1030], [TO_MIR[0], 1040], [TO_MIR[1] + .1, 1100], [TOSS, 1100], [TOSS + .9, 1090], [BEEP_END, 1085], [INNOCENT, 1082], [PUSH[0] - .1, 1072], [PUSH[0], 1072], [PUSH[1], OPEN_CY]]);
+    const z = kf(t, [[CUT, 3.3], [PULL_C[0], 3.1], [PULL_C[1], 1.05], [NOD, 1.07], [STEP[1], 1.45], [SLIP, 1.48], [LAND + .3, 1.28], [SH_IN[0], 1.28], [SH_IN[1], 1.3], [SHH[0] - .3, 1.32], [SHH[0], 2.6], [SH_OUT[0], 2.7], [SH_OUT[0] + .45, 1.3], [WAKE[1], 1.45], [HEAVE, 1.45], [TOP, 1.1], [CATCH, 1.2], [TO_MIR[0], 1.2], [TO_MIR[1] + .1, 1.3], [TOSS, 1.32], [TOSS + .9, 2.0], [BEEP_END, 2.08], [INNOCENT, 2.1], [PUSH[0] - .1, 2.28], [PUSH[0], 2.28], [PUSH[1], OPEN_Z]], ease);
     const pan = seg(t, PUSH[0], PUSH[1]);
     camBegin(cx + sh[0], cy + sh[1], z + .006 * Math.sin(t * .7));
     stage(t);

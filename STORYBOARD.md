@@ -1,6 +1,6 @@
 # Bappa's Post-Visarjan Detox
 
-A 31.5-second vertical reel (1080×1920, 24 fps, bpm 100) starring Bappa, Mooshak and Shiva.
+A 33.9-second vertical reel (1080×1920, 24 fps, bpm 100) starring Bappa, Mooshak and Shiva.
 Scene: [src/scenes/detox.js](src/scenes/detox.js), set and props: [src/scenes/detox_props.js](src/scenes/detox_props.js),
 characters: [src/bappa.js](src/bappa.js), [src/shiva.js](src/shiva.js),
 sound effects: [tools/detox_sfx.mjs](tools/detox_sfx.mjs) → `assets/detox_sfx.wav`.
@@ -12,7 +12,7 @@ Logline: The festival is over and the modaks have caught up with Bappa: the weig
          meditating, and taps it with his Trishul, and it goes lighter than air. Bappa lifts it with his pinky, flexes
          for the mirror and rewards himself with a laddoo hidden in his crown... and the scale beeps again.
 Hook:    "When the festival ends / and the modaks catch up" (caption, 0.3–3.7)
-Sting:   "Day 1 of detox. / Also the last." (caption, 29.6–30.9)
+Sting:   "Day 1 of detox. / Also the last." (caption, 29.75–33.5: held ~3.7 s)
 Safe:    Captions and every read that carries the story sit in Instagram's safe band (screen y 420–1500, clear of the
          right-hand button column): SAFE in core.js, which caption() clamps to.
 World:   Swarga Gym, on the clouds above Kailash: a marble floor, cream-and-gold pillars, a sagging marigold toran left
@@ -54,11 +54,12 @@ Shots:
             he tumbles back · 22.45–23.2 it drifts down, wobbling, onto one raised pinky · 23.2–24.0 surprise → proud,
             he bobs it like a feather · 24.1–24.6 hop to the mirror · 24.7 FLEX (pinky up, bicep bump), sparkle ding;
             the reflection flexes back · 25.25 the reflection winks on its own · 25.45 double take
-  G  25.9–31.5 [camera drifts to a close two-shot]  the reward
+  G  25.9–33.9 [camera drifts to a close two-shot]  the reward
      reads: 25.9 he flicks the dumbbell away; it floats off like a balloon · 26.3–27.1 shifty: looks left, looks
             right · 27.2 his trunk flips his crown open like a lid: a laddoo stashed on his head, glint · 27.8 the
             trunk takes it, the crown snaps shut · 28.3 CHOMP: bliss, blush, crumbs · 29.25 BEEP from the scale (nobody's
-            on it, and the needle snaps to the top); he freezes mid-chew · 29.4 eyes slide to it · 29.6–30.9 sting caption; 30.0 innocent smile · 30.6–31.4
-            push into the flashing modak · 31.0–31.45 modak-shaped iris shuts on it
+            on it, and the needle snaps to the top); he freezes mid-chew · 29.4 eyes slide to it · 29.75–33.5 sting caption; 30.1 innocent smile, then a held beat: he chews on
+            innocently as the camera eases in, the scale quiet · 32.85 / 33.45 beeps resume · 32.9–33.5 push into the
+            flashing modak · 33.4–33.85 modak-shaped iris shuts on it
   [out: modak iris to ink: the loop point]
 ```
