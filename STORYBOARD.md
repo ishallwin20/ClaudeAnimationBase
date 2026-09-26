@@ -1,6 +1,6 @@
 # 2 AM Modak Run
 
-A 35-second vertical reel (1080×1920, 24 fps, bpm 100) starring Bal Bappa. Scene: [src/scenes/modak_2am.js](src/scenes/modak_2am.js), sets and props: [src/scenes/modak_props.js](src/scenes/modak_props.js), Vayu: [src/vayu.js](src/vayu.js), sound effects: [tools/sfx.mjs](tools/sfx.mjs) → `assets/modak_sfx.wav`.
+A 35-second vertical reel (1080×1920, 24 fps, bpm 100) starring Bal Bappa. Scene: [src/scenes/modak_2am.js](src/scenes/modak_2am.js), sets and props: [src/scenes/modak_props.js](src/scenes/modak_props.js), Vayu: [src/vayu.js](src/vayu.js), sound effects: [tools/modak_sfx.mjs](tools/modak_sfx.mjs) (built with [tools/sfx.mjs](tools/sfx.mjs)) → `assets/modak_sfx.wav`.
 
 ```
 Logline: Bal Bappa wants modaks at 2 AM, but Parvati's padlock (with a watchful third eye) zaps him, so he orders
@@ -45,5 +45,5 @@ Shots:
   [out: eye iris to ink]
 ```
 
-Render: `node tools/sfx.mjs`, `node render.mjs --frames --workers=4`, then
+Render: `node tools/modak_sfx.mjs`, `node render.mjs --frames --workers=4`, then
 `node render.mjs --encode --audio=assets/modak_sfx.wav --out=out/modak_2am.mp4`.
