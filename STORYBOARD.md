@@ -46,4 +46,5 @@ Shots:
 ```
 
 Render: `node tools/modak_sfx.mjs`, `node render.mjs --frames --workers=4`, then
-`node render.mjs --encode --audio=assets/modak_sfx.wav --out=out/modak_2am.mp4`.
+`node render.mjs --encode --out=out/modak_2am.mp4` (the SFX come from `PROJECT.audio`). Silent copy for
+Instagram music: `node render.mjs --encode --audio=none --out=out/modak_2am_silent.mp4`.
