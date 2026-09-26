@@ -213,12 +213,19 @@ function sfx(txt, x, y, size, color, age, o = {}) {
   const life = o.life ?? 1.2; if (age < 0 || age > life) return;
   letter(txt, x, y, size, color, { pop: age * 5, rot: (o.rot ?? -.08) + Math.sin(age * 20) * .03 * (1 - age / life), alpha: 1 - seg(age, life - .25, life), ...o });
 }
+// Instagram's 9:16 safe zone, in screen pixels: the top (status bar, the "Reels" header, the camera icon) and the bottom
+// (username, caption, audio) are covered by the app, and the like/comment/share column covers the right edge from about
+// y 1000 to 1750. Keep captions and every read that carries the story inside top..bottom and left of right.
+const SAFE = { top: 420 * H / 1920, bottom: 1500 * H / 1920, right: 930 * W / 1080 };
 // Reel caption, for videos whose brief asks for on-screen text: screen space, pops in line by line, holds, fades out.
 // Cream on a thick ink stroke, so it reads over anything. age = seconds since it appeared; lines split on '\n'.
-// Defaults keep it inside Instagram's 9:16 safe zone (centred slightly left of the like/share column, 800px wide max).
+// y is the centre of the block; it's clamped so the whole block (stroke included) stays between SAFE.top and
+// SAFE.bottom. x is centred slightly left of the like/share column, 800px wide max.
 function caption(txt, y, age, o = {}) {
   const life = o.life ?? 2, size = o.size ?? 66; if (age < 0 || age > life) return;
-  const lines = txt.split('\n'), lh = size * 1.18, y0 = y - (lines.length - 1) * lh / 2, fade = seg(age, life - .18, life);
+  const lines = txt.split('\n'), lh = size * 1.18, half = (lines.length - 1) * lh / 2 + size * .62;
+  y = clamp(y, SAFE.top + half, Math.max(SAFE.top + half, SAFE.bottom - half));
+  const y0 = y - (lines.length - 1) * lh / 2, fade = seg(age, life - .18, life);
   lines.forEach((l, i) => letter(l, o.x ?? W * .47, y0 + i * lh, size, o.color || PAL.cream,
     { screen: true, pop: Math.max(0, age - i * .1) * 5, rot: o.rot ?? -.025, alpha: 1 - fade, stroke: o.stroke || PAL.ink, sw: .22, ink: false, maxW: o.maxW ?? 800 }));
 }
