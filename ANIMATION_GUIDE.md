@@ -1,4 +1,3 @@
-| `src/vayu.js` | Vayu, the wind god as a courier (`vayu()`): (x, y) is his waist, a cloud tail instead of legs; `speed`, `shades`, `pack`, arm hooks; faces take `feel()` / `emotions()`; model sheet at `?loop=vayu` |
 # Animating Clawd
 
 Read this whole file before you draw anything. It covers how to make a short, hand-painted cartoon, starring Clawd or any character you design: the rules and animation principles that make it look good, the workflow that catches mistakes, and the full reference for the character and the engine.
