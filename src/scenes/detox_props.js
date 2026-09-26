@@ -4,9 +4,9 @@
 //   GYM                                where things are, in world pixels
 //   gym(S)                             Swarga Gym: sky, clouds, Kailash, pillars, the marigold toran, the marble floor.
 //                                      S = { red, blue, gold } 0..1: the strain, Shiva's pass, the pride
-//   weighScale(x, y, o)                the heavenly scale: a lotus platform and a round display on a gold column.
-//                                      o.press (the platform sinks), o.flash 0..1 (a beep), o.big (the modak swells), o.alarm
-//   scaleDisplay(x, y, r, o)           just the display (its centre), for the close-ups and the iris
+//   weighScale(x, y, o)                the weighing machine: a platform with a rubber mat, a column, a round dial.
+//                                      o.press (the platform sinks), o.needle, o.flash 0..1 (a beep), o.big (the modak swells), o.alarm
+//   scaleDisplay(x, y, r, o)           just the dial (its centre): graduations, needle, and a modak in the readout window
 //   dumbbell(x, y, o)                  the divine dumbbell, (x, y) = the middle of the bar (it's 680 s long). o.light 0..1 (lighter than
 //                                      air: pale gold and glowing), o.s (scale), o.rot, o.key
 //   mirror(x, y, inside)               the gold-framed mirror, (x, y) = its feet; inside() draws the reflection
@@ -26,6 +26,7 @@ const DX = {
   marigold: '#F59A23', marigoldDk: '#D0661A', leaf: '#5E9E5A',
   stone: '#5E5877', stoneDk: '#3F3A56', stoneLt: '#8C85A8', steel: '#D7DCE6', steelDk: '#8E97AC',
   screen: '#FFF3DA', alarm: '#F5A6A0', lamp: '#E2453A', wing: '#FFFFFF',
+  scale: '#3AA79E', scaleDk: '#23706A', scaleLt: '#8FD6CC', mat: '#4A4560', matLt: '#7A7394',
   glass: '#DCE4F4', glassDk: '#B9C6E2',
   band: '#D8343A', bandDk: '#9E2228', bandLt: '#FFE9E2',
   laddoo: '#F4A53A', laddooDk: '#C9741C', laddooLt: '#FFD27A',
@@ -34,9 +35,9 @@ const DX = {
 };
 const GYM = {
   FY: 1450,                                 // the floor line (feet)
-  scX: 300, scY: 1450, dX: 505, dY: 905, dR: 86,   // the scale: platform centre and the display's centre and radius
+  scX: 250, scY: 1450, dX: 510, dY: 935, dR: 100,  // the scale: where he stands on the platform, and the dial's centre and radius
   plY: 1392,                                // the platform's top (where Bappa stands on it)
-  bandX: 700,                               // where he ties the sweatband
+  bandX: 760,                               // where he ties the sweatband
   dbX: 1150, dbY: 1352, dbS: .8,            // the middle of the dumbbell's bar at rest, and its scale
   mrX: 1710, mrY: 1446,                     // the mirror's feet
   pillars: [-40, 900, 1470, 2200],
@@ -118,42 +119,58 @@ function gym(S) {
 }
 
 // ---------- the scale ----------
+// A clinic weighing machine, heavenly edition: a flat platform with a ribbed rubber mat, an upright enamel column at its
+// right end, and a big round dial on top with graduations, a red danger zone and a needle. Where the number would be, a
+// readout window under the needle shows a modak.
 function weighScale(x, y, o = {}) {
-  const press = o.press || 0, top = y - 58 + 12 * press;
+  const press = o.press || 0, top = y - 58 + 12 * press, dx = GYM.dX, dy = GYM.dY, r = GYM.dR;
+  const x0 = x - 150, x1 = dx + 55;
   boilSeed('scale column');
-  const dx = GYM.dX, dy = GYM.dY;
-  paint(ribbon([[x + 145, top + 8], [dx, dy + GYM.dR + 10]], 18, 14), { wash: DX.gold, fill: DX.goldDk, fillOp: 70, tex: .5, ink: DX.ink, sw: 1 });
-  paint(ellPts(lerp(x + 145, dx, .5), lerp(top, dy + GYM.dR, .5), 16, 22, 12), { wash: DX.goldLt, ink: DX.ink, sw: .8 });
+  const cb = top - 10, ct = dy + r * .8;   // the column, from behind the mat up into the dial
+  paint([[dx - 34, cb], [dx - 21, ct], [dx + 21, ct], [dx + 34, cb]], { wash: DX.scale, fill: DX.scaleDk, fillOp: 90, tex: .6, border: .5, ink: DX.ink, sw: 1.1 });
+  inkLine([[dx - 12, cb - 8], [dx - 7, ct + 12]], 2.2, DX.scaleLt, 'inkfine', 0);   // enamel shine
+  for (const k of [.3, .62]) paint(rrPts(dx - lerp(32, 22, k) - 2, lerp(cb, ct, k) - 5, 2 * lerp(32, 22, k) + 4, 10, 4), { wash: DX.gold, fill: DX.goldDk, fillOp: 60, tex: .4, ink: DX.ink, sw: .8 });   // gold bands
   boilSeed('scale platform');
-  paint(ellPts(x, y + 4, 175, 22, 20), { fill: PAL.ink, fillOp: 70, bleed: .25, tex: .3, ink: null });   // its shadow
-  paint(rrPts(x - 150, top, 300, y - top - 6, 16, 2), { wash: DX.gold, fill: DX.goldDk, fillOp: 70, tex: .6, border: .5, ink: DX.ink, sw: 1.2 });
-  paint(ellPts(x, top, 150, 22, 24, 2), { wash: DX.cream, fill: DX.marbleDk, fillOp: 50, tex: .4, ink: DX.ink, sw: 1.1 });
-  for (let i = 0; i < 9; i++) {   // lotus petals round the base
-    const px = x + (i - 4) * 34, ph = 30 - 3 * Math.abs(i - 4);
-    paint([[px - 20, y + 2], [px - 14, y - ph * .6], [px, y - ph], [px + 14, y - ph * .6], [px + 20, y + 2]], { wash: i % 2 ? '#F4B9C8' : '#FBD9E1', fill: '#E08AA0', fillOp: 60, tex: .4, ink: DX.ink, sw: .8, curv: .5 });
-  }
-  scaleDisplay(dx, dy, GYM.dR, o);
+  paint(ellPts(lerp(x0, x1, .5), y + 4, (x1 - x0) / 2 + 30, 20, 20), { fill: PAL.ink, fillOp: 70, bleed: .25, tex: .3, ink: null });   // its shadow
+  for (const fx of [x0 + 26, x1 - 26]) paint(rrPts(fx - 16, y - 12, 32, 14, 5), { wash: DX.goldDk, ink: DX.ink, sw: .8 });   // feet
+  paint(rrPts(x0, top, x1 - x0, y - top - 8, 12, 2), { wash: DX.scale, fill: DX.scaleDk, fillOp: 90, tex: .6, border: .5, ink: DX.ink, sw: 1.2 });   // the body
+  inkLine([[x0 + 14, top + 22], [x1 - 14, top + 22]], 3, DX.gold, 'ink', 0);   // gold trim
+  paint(rrPts(x0 - 4, top - 18, x1 - x0 + 8, 34, 14, 1), { wash: DX.scaleLt, fill: DX.scale, fillOp: 60, tex: .4, ink: DX.ink, sw: 1.1 });   // the top plate
+  paint(rrPts(x0 + 14, top - 13, x1 - x0 - 28, 24, 9), { wash: DX.mat, fill: DX.stoneDk, fillOp: 60, tex: .5, ink: DX.ink, sw: .8 });   // the rubber mat
+  for (let i = 1; i < 14; i++) { const gx = lerp(x0 + 22, x1 - 22, i / 14); inkLine([[gx, top - 9], [gx, top + 7]], 1.6, DX.matLt, 'inkfine', 0); }   // its ribs
+  scaleDisplay(dx, dy, r, o);
 }
+// The dial, (x, y) = its centre. o.needle: 0 = empty, 1 = the top of the scale (it can go past; +1.5 is a full turn),
+// o.flash 0..1 (a beep), o.alarm (the face flushes red), o.big (the modak swells out of its window), o.idle (dimmed).
 function scaleDisplay(x, y, r, o = {}) {
   const fl = clamp(o.flash || 0), al = clamp(o.alarm || 0), big = o.big ?? 1, sw = clamp(r / 60, .6, 2);
-  boilSeed('scale wings');
-  for (const s of [-1, 1]) {   // little wings: it's a heavenly scale
-    const wf = .08 * Math.sin(T * 5 + s);
-    push(); translate(x + s * r * .9, y - r * .1); rotate(s * (.25 + wf));
-    for (const k of [0, 1, 2]) paint(ellPts(s * r * (.35 + .28 * k), -r * (.1 + .12 * k), r * .42, r * .16, 12, 0, s * -.5), { wash: DX.wing, fill: DX.glass, fillOp: 60, tex: .3, ink: DX.ink, sw: sw * .6 });
-    pop();
-  }
+  const ang = v => (150 + 240 * v) * Math.PI / 180, at = (v, q) => [x + Math.cos(ang(v)) * q * r, y + Math.sin(ang(v)) * q * r];
   boilSeed('scale dial');
   if (fl > .02) glow(x, y, r * (1.6 + .8 * fl), '#FF9A7A', .55 * fl);
-  paint(ellPts(x, y, r, r, 30, 1), { wash: DX.gold, fill: DX.goldDk, fillOp: 70, tex: .6, border: .5, ink: DX.ink, sw });
-  paint(ellPts(x, y, r * .8, r * .8, 28), { wash: mixCol(DX.screen, DX.alarm, clamp(al * .5 + fl * .7)), ink: DX.ink, sw: sw * .8 });
-  for (let i = 0; i < 12; i++) { const a = i / 12 * TAU; inkLine([[x + Math.cos(a) * r * .86, y + Math.sin(a) * r * .86], [x + Math.cos(a) * r * .95, y + Math.sin(a) * r * .95]], sw * .7, DX.goldDk, 'inkfine', 0); }
-  paint(ellPts(x, y - r * 1.02, r * .13, r * .13, 10), { wash: fl > .3 ? DX.lamp : '#9E5A58', ink: DX.ink, sw: sw * .6 });   // the lamp on top
-  if (fl > .3) glow(x, y - r * 1.02, r * .5, DX.lamp, fl);
+  paint(ellPts(x, y, r * 1.06, r * 1.06, 32, 1), { wash: DX.scale, fill: DX.scaleDk, fillOp: 90, tex: .6, border: .5, ink: DX.ink, sw });   // the housing
+  paint(ellPts(x, y, r * .95, r * .95, 30), { wash: DX.gold, fill: DX.goldDk, fillOp: 60, tex: .5, ink: DX.ink, sw: sw * .8 });   // the bezel
+  paint(ellPts(x, y, r * .84, r * .84, 30), { wash: mixCol(DX.white, DX.alarm, clamp(al * .45 + fl * .7)), ink: DX.ink, sw: sw * .8 });   // the face
+  // the danger zone
+  const band = []; for (let i = 0; i <= 10; i++) band.push(at(lerp(.76, 1, i / 10), .8)); for (let i = 10; i >= 0; i--) band.push(at(lerp(.76, 1, i / 10), .66));
+  paint(band, { wash: DX.lamp, fill: '#B8302A', fillOp: 60, tex: .3, ink: null });
+  // graduations
+  for (let i = 0; i <= 20; i++) { const v = i / 20, long = i % 5 === 0; inkLine([at(v, long ? .64 : .71), at(v, .8)], sw * (long ? 1.1 : .6), DX.ink, 'inkfine', 0); }
+  // the readout window, with the modak where the number should be
+  const wy = y + r * .18, wh = r * .5, ww = r * .9;
+  paint(rrPts(x - ww / 2, wy, ww, wh, r * .1), { wash: mixCol(DX.screen, DX.alarm, clamp(al * .5 + fl * .7)), fill: '#E8C9A0', fillOp: o.idle ? 90 : 30, tex: .4, ink: DX.ink, sw: sw * .7 });
   boilSeed('scale modak');
-  const ms = r * .8 * big * (1 + .12 * fl) * (o.idle ? .9 : 1);
-  bigModak(x, y + ms * .6, ms, { key: 'display', col: fl > .3 ? '#FFFBF2' : '#FFF3DC' });
-  paint([[x - r * .55, y - r * .35], [x - r * .3, y - r * .62], [x - r * .2, y - r * .55], [x - r * .45, y - r * .28]], { wash: DX.white, washOp: 170, ink: null });   // glass shine
+  const ms = r * .36 * big * (1 + .14 * fl) * (o.idle ? .9 : 1);
+  bigModak(x, wy + wh - r * .06, ms, { key: 'display', col: o.idle ? '#EFE2CC' : fl > .3 ? '#FFFBF2' : '#FFF3DC', sw: sw * .8 });
+  // the needle
+  boilSeed('scale needle');
+  const v = o.needle || 0, tip = at(v, .8), tail = at(v, -.2), a = ang(v), n = [-Math.sin(a), Math.cos(a)], nw = r * .075;
+  paint([tail, [x + n[0] * nw, y + n[1] * nw], tip, [x - n[0] * nw, y - n[1] * nw]], { wash: DX.lamp, fill: '#B8302A', fillOp: 70, ink: DX.ink, sw: sw * .8, curv: .1 });
+  paint(ellPts(x, y, r * .11, r * .11, 12), { wash: DX.gold, fill: DX.goldDk, fillOp: 60, ink: DX.ink, sw: sw * .6 });   // the hub
+  paint([[x - r * .6, y - r * .3], [x - r * .38, y - r * .6], [x - r * .28, y - r * .54], [x - r * .5, y - r * .24]], { wash: DX.white, washOp: 150, ink: null });   // glass shine
+  // the beacon on top
+  paint(rrPts(x - r * .12, y - r * 1.16, r * .24, r * .14, r * .04), { wash: DX.gold, ink: DX.ink, sw: sw * .6 });
+  paint(ellPts(x, y - r * 1.2, r * .13, r * .13, 12), { wash: fl > .3 ? DX.lamp : '#9E5A58', ink: DX.ink, sw: sw * .6 });
+  if (fl > .3) glow(x, y - r * 1.2, r * .5, DX.lamp, fl);
 }
 // Beep marks: arcs springing off the display on each beep. age since the beep.
 function beepMarks(x, y, r, age, key) {
@@ -373,7 +390,7 @@ function whipSmear(k, dir = 1, cols = ['#A99BD6', '#FFF1E2', '#E6BFD8']) {
     const S = { red: 0, blue: 0, gold: clamp(Math.sin(t * .8) * .5 + .5) };
     camBegin(760, 1000, .75);
     gym(S);
-    weighScale(GYM.scX, GYM.scY, { flash: pulse(t, 5), press: .3 });
+    weighScale(GYM.scX, GYM.scY, { flash: pulse(t, 5), press: .3, needle: (t * .4) % 1.2 });
     dumbbell(GYM.dbX, GYM.dbY, { light: t % 4 > 2 ? 1 : 0 });
     mirror(GYM.mrX, GYM.mrY);
     trishul(1300, 1300, 380, { rot: .2 });

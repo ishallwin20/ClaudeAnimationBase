@@ -31,6 +31,7 @@ at(5.7, noise(.3, { lp: t => 5000 - 12000 * t, hp: 200, e: env.hann(), amp: 1 })
 at(5.72, slide(.35, 180, 90, 1), .5, -.1);                                  // BOING: the belly
 at(5.74, wah(110, .4, .8), .35, -.1);
 for (const b of [5.8, 5.95, 6.1]) at(b, beep(2090, .09), .55, .25);        // the triple beep
+for (let i = 0; i < 9; i++) at(5.72 + i * .05, click(.35 + .05 * (i % 2)), .14, .25);   // the needle ratchets a full turn round the dial
 at(6.25, slide(.8, 520, 300, .4), .2, -.1);                                  // sad trombone-ish sigh
 at(6.9, click(.8), .3, -.1);                                                 // determination
 at(7.05, slide(.35, 300, 800, .5), .3, 0);                                   // hop off
@@ -89,6 +90,7 @@ at(28.8, shimmer(.8, [79, 83, 86].map(note), .4, .1), .2, 0);                // 
 // the last beep, the freeze, the loop
 for (const b of [29.25, 29.85, 30.45, 31.05]) at(b, beep(), .5, -.6);   // on the opening's beat: the loop's next beep is at .15
 at(29.27, scratch(), .45, 0);                                                // freeze
+at(29.25, slide(.22, 500, 1400, .5), .18, -.6);                              // the needle snaps back to the top
 at(29.55, click(.5), .2, -.3);                                                // eyes slide
 at(30.1, squeak(900, 1300, .12, .6), .25, 0); at(30.25, squeak(1000, 1400, .1, .5), .2, 0);   // an innocent giggle
 at(30.5, whoosh(.55, 600, 4200), .6, -.5);                                   // whip back to the scale

@@ -6,7 +6,8 @@ characters: [src/bappa.js](src/bappa.js), [src/shiva.js](src/shiva.js),
 sound effects: [tools/detox_sfx.mjs](tools/detox_sfx.mjs) → `assets/detox_sfx.wav`.
 
 ```
-Logline: The festival is over and the modaks have caught up with Bappa: the heavenly scale shows only a flashing modak.
+Logline: The festival is over and the modaks have caught up with Bappa: the weighing machine's needle is jammed in the red
+         and its readout shows only a flashing modak.
          He straps on a sweatband to lift the divine dumbbell, but it won't budge. Shiva floats past, still
          meditating, and taps it with his Trishul, and it goes lighter than air. Bappa lifts it with his pinky, flexes
          for the mirror and rewards himself with a laddoo hidden in his crown... and the scale beeps again.
@@ -18,7 +19,8 @@ World:   Swarga Gym, on the clouds above Kailash: a marble floor, cream-and-gold
          over from the festival, a lilac-to-peach morning sky. The strain warms the sky red; Shiva's pass cools it blue
          and gold; the pride and the laddoo turn it gold; the last beep drops it back to lilac. Palette: DX in
          detox_props.js.
-Motif:   the scale's display: a flashing modak. It opens the film (the iris opens out of it), beeps at every beat he
+Motif:   the scale's dial: a needle jammed past the red zone, and a flashing modak in the readout where the number
+         should be. It opens the film (the iris opens out of it), beeps at every beat he
          stands on it, beeps once more at the end, and the film closes by pushing into it and irising down onto the
          modak shape, so the last frame loops into the first.
 Arcs:    Bappa:   nervous → surprised → holding breath (flush) → sad → determined → strain (flush) → KO → determined →
@@ -28,10 +30,11 @@ Arcs:    Bappa:   nervous → surprised → holding breath (flush) → sad → d
 Shots:
   A  0–4.0     [in: modak-shaped iris opens out of the display]  the weigh-in
      reads: 0–0.6 iris opens on the flashing modak, BEEP · 0.3–3.7 hook caption · 0.9–2.3 pull back: round Bappa on
-            the scale, platform squashed, peering up at the display · 2.4 "!?" take · 2.9–4.0 sweat, nervous
+            the weighing machine's mat, platform squashed, peering up at the dial · 2.4 "!?" take · 2.9–4.0 sweat, nervous
   B  4.0–7.4   [continuous]  the suck-in
      reads: 4.0–4.8 deep inhale: belly shrinks, face reddens, stretch up · 4.8–5.6 held breath; one eye peeks: still
-            BEEP · 5.7 gasp: the belly BOINGs out bigger, triple beep, the modak swells, platform sinks · 6.25–6.9
+            BEEP (the needle only eases back a hair) · 5.7 gasp: the belly BOINGs out bigger, the needle spins a full turn,
+            triple beep, the modak swells, platform sinks · 6.25–6.9
             sad (trunk and ears droop) · 6.9 determined · 7.05 hop off to the right, whip pan
   C  7.4–10.8  [whip smear]  gear up
      reads: 7.4–8.35 close-up: he ties a red sweatband, tails held in his fists · 8.4 KNOT yank (drum), tails fly ·
@@ -54,8 +57,8 @@ Shots:
   G  25.9–31.5 [camera drifts to a close two-shot]  the reward
      reads: 25.9 he flicks the dumbbell away; it floats off like a balloon · 26.3–27.1 shifty: looks left, looks
             right · 27.2 his trunk flips his crown open like a lid: a laddoo stashed on his head, glint · 27.8 the
-            trunk takes it, the crown snaps shut · 28.3 CHOMP: bliss, blush, crumbs · 29.1 BEEP from the scale; he
-            freezes mid-chew · 29.4 eyes slide to it · 29.6–30.9 sting caption; 30.0 innocent smile · 30.6–31.4
+            trunk takes it, the crown snaps shut · 28.3 CHOMP: bliss, blush, crumbs · 29.25 BEEP from the scale (nobody's
+            on it, and the needle snaps to the top); he freezes mid-chew · 29.4 eyes slide to it · 29.6–30.9 sting caption; 30.0 innocent smile · 30.6–31.4
             push into the flashing modak · 31.0–31.45 modak-shaped iris shuts on it
   [out: modak iris to ink: the loop point]
 ```

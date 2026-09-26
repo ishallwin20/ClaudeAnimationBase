@@ -21,7 +21,8 @@
   // Shiva's float path: the Trishul's butt reaches the bar at TAP
   // the last beeps keep the opening's beat, so the loop doesn't stutter (the next one lands on BEEPS[0])
   const END_BEEPS = [0, .6, 1.2, 1.8].map(k => BEEP_END + k);
-  const IRIS_H = 620;   // the modak window's height on the first and last frames
+  const IRIS_H = 820;   // the modak window's height on the first and last frames
+  const OPEN_Z = 2.4, OPEN_CY = G.dY - 190 / OPEN_Z;   // the first and last frames: the dial, big, low in the frame under the hook
   const SH_U = 15, SH_Y = 1120, SH_HOVER = G.dbX - 87, TRI = 420;
 
   // emotions() cross-fades body colours from feel(), which default to Clawd's clay: give every key the character's own
@@ -41,13 +42,20 @@
 
   // ---------------- the scale's display ----------------
   function displayS(t) {
+    const shake = .015 * Math.sin(t * 43) + .01 * Math.sin(t * 71);   // jammed past the top, trembling
     if (t < HOP_OFF[0] + .1) {
       const gasp = t > GASP ? backOut(seg(t, GASP, GASP + .2)) : 0;
-      return { flash: Math.max(decay(t, BEEPS, 7), decay(t, BEEP_X, 9), t > BEEP_X[2] ? .35 + .35 * Math.sin(t * 22) : 0), alarm: .45 + .55 * gasp, big: 1.12 + .3 * gasp, press: pressAt(t) };
+      // the suck-in eases it back a hair (still in the red); the gasp spins it a full turn round the dial
+      const needle = 1.05 + shake - .07 * ease(seg(t, INHALE[0], INHALE[1])) * (1 - seg(t, GASP, GASP + .1)) + 1.5 * easeOut(seg(t, GASP, GASP + .45));
+      return { needle, flash: Math.max(decay(t, BEEPS, 7), decay(t, BEEP_X, 9), t > BEEP_X[2] ? .35 + .35 * Math.sin(t * 22) : 0), alarm: .45 + .55 * gasp, big: 1.12 + .3 * gasp, press: pressAt(t) };
     }
-    if (t < BEEP_END) return { idle: true, flash: 0, alarm: 0, big: 1, press: pressAt(t) };
+    if (t < BEEP_END) {
+      const k = seg(t, HOP_OFF[0] + .1, HOP_OFF[0] + .4);   // he hops off: it drops back to empty with a wobble
+      return { idle: true, needle: 1.05 * (1 - easeIn(k)) - .06 * spring(t, HOP_OFF[0] + .4, 5, 26), flash: 0, alarm: 0, big: 1, press: pressAt(t) };
+    }
+    // the last beep: nobody's even on it, and it jumps back to the top
     const pop = backOut(seg(t, BEEP_END, BEEP_END + .2));
-    return { flash: decay(t, END_BEEPS, 7), alarm: .45 + .55 * pop, big: 1.12 + .3 * pop, press: 0 };
+    return { needle: 1.05 * backOut(seg(t, BEEP_END, BEEP_END + .3)) + shake, flash: decay(t, END_BEEPS, 7), alarm: .45 + .55 * pop, big: 1.12 + .3 * pop, press: 0 };
   }
   function pressAt(t) {
     if (t < HOP_OFF[0] + .05) return .55 + .15 * seg(t, INHALE[0], INHALE[1]) * -1 + .5 * Math.abs(spring(t, GASP, 5, 20)) + .2 * seg(t, GASP, GASP + .1);
@@ -332,9 +340,9 @@
   // ======================= A–B · 0–7.4 · the weigh-in, the suck-in, the hop off =======================
   function weighIn(t, lt) {
     const sh = shakeXY(t, 12 * bump(t, GASP + .05, .02, .3));
-    const cx = kf(t, [[0, G.dX], [.9, G.dX], [2.3, 410], [INHALE[0], 405], [INHALE[1], 380], [GASP, 380], [DET_B, 400], [HOP_OFF[0], 420], [CUT, 560]]);
-    const cy = kf(t, [[0, 800], [.9, 800], [2.3, 1067], [INHALE[0], 1072], [INHALE[1], 1095], [GASP, 1095], [DET_B, 1085], [CUT, 1120]]);
-    const z = kf(t, [[0, 2.3], [.9, 2.3], [2.3, 1.45], [INHALE[0], 1.5], [INHALE[1], 1.8], [GASP, 1.8], [GASP + .3, 1.6], [DET_B, 1.6], [CUT, 1.5]]);
+    const cx = kf(t, [[0, G.dX], [.9, G.dX], [2.3, 360], [INHALE[0], 355], [INHALE[1], 350], [GASP, 350], [DET_B, 355], [HOP_OFF[0], 370], [CUT, 510]]);
+    const cy = kf(t, [[0, OPEN_CY], [.9, OPEN_CY], [2.3, 1047], [INHALE[0], 1055], [INHALE[1], 1095], [GASP, 1095], [DET_B, 1085], [CUT, 1120]]);
+    const z = kf(t, [[0, OPEN_Z], [.9, OPEN_Z], [2.3, 1.45], [INHALE[0], 1.5], [INHALE[1], 1.8], [GASP, 1.8], [GASP + .3, 1.6], [DET_B, 1.6], [CUT, 1.5]]);
     camBegin(cx + sh[0], cy + sh[1], z);
     stage(t);
     const ds = toScreen(G.dX, G.dY);
@@ -352,8 +360,8 @@
     const sh = shakeXY(t, imp);
     const shF = [G.dbX - 87, SH_Y - 13 * SH_U];   // Shiva's face while he hovers
     const cx = kf(t, [[CUT, G.bandX + 10], [PULL_C[0], G.bandX + 10], [PULL_C[1], 930], [NOD, 930], [STEP[1], G.dbX], [SLIP, G.dbX], [LAND + .3, 925], [SH_IN[0], 925], [SH_IN[1], 950], [SHH[0] - .3, 965], [SHH[0], shF[0]], [SH_OUT[0], shF[0]], [SH_OUT[0] + .45, 990], [WAKE[1], G.dbX], [HEAVE, G.dbX], [TOP, G.dbX + 10], [CATCH, G.dbX + 20], [TO_MIR[0], G.dbX + 30], [TO_MIR[1] + .1, MIR_X + 225], [TOSS, MIR_X + 235], [TOSS + .9, MIR_X + 20], [BEEP_END, MIR_X + 15], [PUSH[0], MIR_X - 10], [PUSH[1], G.dX]]);
-    const cy = kf(t, [[CUT, 1125], [PULL_C[0], 1135], [PULL_C[1], 1180], [NOD, 1180], [STEP[1], 1190], [SLIP, 1190], [LAND + .3, 1110], [SH_IN[0], 1110], [SHH[0] - .3, 1110], [SHH[0], shF[1] + 40], [SH_OUT[0], shF[1] + 40], [SH_OUT[0] + .45, 1110], [WAKE[1], 1180], [HEAVE, 1180], [TOP, 980], [CATCH, 1030], [TO_MIR[0], 1040], [TO_MIR[1] + .1, 1100], [TOSS, 1100], [TOSS + .9, 1090], [BEEP_END, 1085], [PUSH[0], 1080], [PUSH[1], 800]]);
-    const z = kf(t, [[CUT, 3.3], [PULL_C[0], 3.1], [PULL_C[1], 1.05], [NOD, 1.07], [STEP[1], 1.45], [SLIP, 1.48], [LAND + .3, 1.28], [SH_IN[0], 1.28], [SH_IN[1], 1.3], [SHH[0] - .3, 1.32], [SHH[0], 2.6], [SH_OUT[0], 2.7], [SH_OUT[0] + .45, 1.3], [WAKE[1], 1.45], [HEAVE, 1.45], [TOP, 1.1], [CATCH, 1.2], [TO_MIR[0], 1.2], [TO_MIR[1] + .1, 1.3], [TOSS, 1.32], [TOSS + .9, 2.0], [BEEP_END, 2.08], [PUSH[0], 2.1], [PUSH[1], 2.3]], ease);
+    const cy = kf(t, [[CUT, 1125], [PULL_C[0], 1135], [PULL_C[1], 1180], [NOD, 1180], [STEP[1], 1190], [SLIP, 1190], [LAND + .3, 1110], [SH_IN[0], 1110], [SHH[0] - .3, 1110], [SHH[0], shF[1] + 40], [SH_OUT[0], shF[1] + 40], [SH_OUT[0] + .45, 1110], [WAKE[1], 1180], [HEAVE, 1180], [TOP, 980], [CATCH, 1030], [TO_MIR[0], 1040], [TO_MIR[1] + .1, 1100], [TOSS, 1100], [TOSS + .9, 1090], [BEEP_END, 1085], [PUSH[0], 1080], [PUSH[1], OPEN_CY]]);
+    const z = kf(t, [[CUT, 3.3], [PULL_C[0], 3.1], [PULL_C[1], 1.05], [NOD, 1.07], [STEP[1], 1.45], [SLIP, 1.48], [LAND + .3, 1.28], [SH_IN[0], 1.28], [SH_IN[1], 1.3], [SHH[0] - .3, 1.32], [SHH[0], 2.6], [SH_OUT[0], 2.7], [SH_OUT[0] + .45, 1.3], [WAKE[1], 1.45], [HEAVE, 1.45], [TOP, 1.1], [CATCH, 1.2], [TO_MIR[0], 1.2], [TO_MIR[1] + .1, 1.3], [TOSS, 1.32], [TOSS + .9, 2.0], [BEEP_END, 2.08], [PUSH[0], 2.1], [PUSH[1], OPEN_Z]], ease);
     const pan = seg(t, PUSH[0], PUSH[1]);
     camBegin(cx + sh[0], cy + sh[1], z + .006 * Math.sin(t * .7));
     stage(t);
