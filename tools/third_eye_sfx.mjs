@@ -5,7 +5,7 @@
 import { track, rnd, env, tone, noise, bell, mixb, note, whoosh, rumble, plink, clang, squeak, click, thud, crackle, shimmer, wah, drone, slide } from './sfx.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const { at, write } = track(30);
+const { at, write } = track(32.5);
 
 // a hiss: bright noise, swelling and fading
 const hiss = (dur, amp = 1) => noise(dur, { hp: 3500, lp: 11000, e: env.swell(.05, .25), amp });
@@ -85,7 +85,7 @@ at(26.2, shimmer(2, [72, 76, 79, 84, 88].map(note), .6, .15), .3, 0);       // t
 for (const s of [26.5, 26.9, 27.3]) at(s, squeak(1100 + rnd() * 400, 1600 + rnd() * 400, .1, .5), .18, rnd() - .5);   // giggles
 at(27.7, noise(.6, { lp: 2000, hp: 400, e: env.swell(.05, .3), amp: .5 }), .3, .5);   // Maa's sip
 at(28.35, bell(note(96), .6, { k: 5 }), .3, .5);                             // her wink
-at(28.2, drone(1.8, 65, .6), .2, 0);
-at(29.3, slide(.6, 800, 200, .5), .2, 0);   // the eye shuts
+at(28.2, drone(4.2, 65, .6), .2, 0);
+at(31.8, slide(.6, 800, 200, .5), .2, 0);   // the eye shuts
 
 write(args.out || 'assets/third_eye_sfx.wav');

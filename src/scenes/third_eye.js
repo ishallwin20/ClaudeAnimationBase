@@ -10,7 +10,7 @@
   const HOP_K = [4.25, 4.75], CL1 = [5.25, 5.55, 5.85], SNAKE = 6.6, HOP_G = [8.1, 8.6], GRAB = [8.85, 9.3], RATTLE = [9.6, 11.2],
     PLOP = 12.45, UP_G = 13.3, CL3 = [13.65, 13.8, 13.95, 14.1, 14.25], SCARE = 14.45, CALM = 16.0, WALK = [17.4, 18.35],
     WINK = 18.45, OFFER = [18.9, 19.6], SNIFF = [19.95, 20.3, 20.65], POP = 21.6, TAKE = [22.3, 22.55], SIP = 22.9,
-    SEE = 24.4, GIVE = 24.9, WIDE = 25.2, SCOOP = [25.7, 26.15], MAA_SIP = 27.7, END = 30;
+    SEE = 24.4, GIVE = 24.9, WIDE = 25.2, SCOOP = [25.7, 26.15], MAA_SIP = 27.7, END = 32.5;
 
   // emotions() cross-fades body colours from feel(), which default to Clawd's clay: give every key the character's own
   const skinKeys = (keys, c) => keys.map(([k, n, o]) => [k, n, { ...c, ...(o || {}) }]);
@@ -300,17 +300,17 @@
   // ======================= C · 21.6–30 · POP, the sip, the hug, the sting =======================
   function finale(t, lt) {
     const sh = shakeXY(t, 14 * (1 - seg(t, POP, POP + .35)));
-    const cx = kf(t, [[POP, 670], [SEE, 680], [SEE + 1, 668], [28.2, 668], [29.4, 475]]);
-    const cy = kf(t, [[POP, 985], [SEE, 975], [SEE + 1, 1140], [28.2, 1140], [29.4, 1180]]);
-    const z = kf(t, [[POP, 1.95], [SEE, 2.08], [SEE + 1, 1.68], [28.2, 1.74], [29.4, 1.17]]);
+    const cx = kf(t, [[POP, 670], [SEE, 680], [SEE + 1, 668], [28.2, 668], [29.4, 475], [END - .7, 490]]);
+    const cy = kf(t, [[POP, 985], [SEE, 975], [SEE + 1, 1140], [28.2, 1140], [29.4, 1180], [END - .7, 1165]]);
+    const z = kf(t, [[POP, 1.95], [SEE, 2.08], [SEE + 1, 1.68], [28.2, 1.74], [29.4, 1.17], [END - .7, 1.25]]);   // the last wide holds on the sting, drifting in
     camBegin(cx + sh[0], cy + sh[1], z);
     const r = stage(t);
     const ts = toScreen(...r.third);
     camEnd();
     flash(1 - seg(t, POP, POP + .25), '#FFF3D6');
-    caption('Maa always knows\nthe cheat code.', 260, t - 28.25, { life: 1.9, size: 76 });
+    caption('Maa always knows\nthe cheat code.', 260, t - 28.25, { life: END - .65 - 28.25, size: 76 });
     flushLetters();
-    if (t > 29.3) eyeIris(ts[0], ts[1], 3800, 1 - easeIn(seg(t, 29.3, 29.95)));
+    if (t > END - .7) eyeIris(ts[0], ts[1], 3800, 1 - easeIn(seg(t, END - .7, END - .05)));
   }
 
   shots([[0, opening], [4.2, tries], [POP, finale]]);

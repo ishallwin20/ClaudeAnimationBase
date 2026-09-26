@@ -1,6 +1,6 @@
 # The Third Eye Alarm Clock
 
-A 30-second vertical reel (1080×1920, 24 fps, bpm 100) starring Shiva, Parvati Maa, Bal Bappa and Kartikeya.
+A 32.5-second vertical reel (1080×1920, 24 fps, bpm 100) starring Shiva, Parvati Maa, Bal Bappa and Kartikeya.
 Scene: [src/scenes/third_eye.js](src/scenes/third_eye.js), sets and props: [src/scenes/third_eye_props.js](src/scenes/third_eye_props.js),
 characters: [src/shiva.js](src/shiva.js), [src/kartikeya.js](src/kartikeya.js), [src/parvati.js](src/parvati.js), [src/bal_bappa.js](src/bal_bappa.js),
 sound effects: [tools/third_eye_sfx.mjs](tools/third_eye_sfx.mjs) → `assets/third_eye_sfx.wav`.
@@ -44,9 +44,9 @@ Shots:
   F  21.6–24.4 [smash push to a close-up]  POP
      reads: 21.6–22.3 the third eye POPS open (and both eyes), the sun bursts up behind the peak, gold · 22.3–22.8
             he takes the cup · 22.8–24.4 slow sip: bliss, blush, hearts in the steam
-  G  24.4–30.0 [pull back]  the hug
+  G  24.4–32.5 [pull back]  the hug
      reads: 24.4–25.2 he sees the kids, smiles, hands the cup back · 25.2–25.7 arms wide · 25.7–26.2 SCOOP · 26.2–27.6
             a massive squeeze, hearts, Vasuki joins · 27.6–28.4 Maa sips the chai herself, smug · 28.2–29.4 pull back
-            wide (rhymes with A, now gold); sting caption · 29.4–30.0 eye-shaped iris shuts
+            wide (rhymes with A, now gold); sting caption, held to 31.85 · 31.8–32.45 eye-shaped iris shuts
   [out: eye iris to ink]
 ```

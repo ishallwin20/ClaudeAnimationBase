@@ -4,4 +4,4 @@
 //             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
 //   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
 //   audio:    muxed into --clip and --encode (here: the reel's sound effects, made by tools/third_eye_sfx.mjs).
-const PROJECT = { duration: 30, bpm: 100, offset: 0, w: 1080, h: 1920, audio: 'assets/third_eye_sfx.wav' };
+const PROJECT = { duration: 32.5, bpm: 100, offset: 0, w: 1080, h: 1920, audio: 'assets/third_eye_sfx.wav' };
