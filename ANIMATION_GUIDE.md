@@ -309,7 +309,8 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 - **Lettering** (only if you must, see "No text"):
   - `letter(txt, x, y, size, colour, {pop, rot, alpha, screen})`
   - `sfx(txt, x, y, size, colour, age)`
-  - Both are composited at `flushLetters()`, after the shot. If a wipe or iris must cover them, call it yourself first.
+  - `caption(txt, y, age, {life, size})`: a reel caption in screen space, for briefs that ask for on-screen text. On a 9:16 reel Instagram's own UI covers the top ~420 px, the bottom ~420 px and the button column on the right, so `caption()` clamps into `SAFE` (core.js). Keep every read that carries the story in that band too.
+  - All three are composited at `flushLetters()`, after the shot. If a wipe or iris must cover them, call it yourself first.
 
 ---
 

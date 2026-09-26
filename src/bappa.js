@@ -13,6 +13,11 @@
 //   ears:   ear (0..1 flared out), earL / earR (per ear, added)
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK (from feel / emotions)
 //   extras: emote + emoteK + emoteAge, armL(u, sw) / armR(u, sw) (hooks at the hand, like Clawd), crownTilt
+//   body:   belly (scale of the belly: .8 sucked in, 1.2 stuffed; the shoulders follow it)
+//   arms:   flexL / flexR 0..1 (the forearm bends up with a bicep bump), pinkyL / pinkyR 0..1 (a raised little finger)
+//   head:   head(u, sw) (a hook in head space, drawn over the face and under the crown: headbands, a stash),
+//           crownOpen 0..1 (the crown flips open like a lid, hinged at its left edge)
+//   helpers: bappaHand(x, y, u, o, s, ext) and bappaTrunkTip(x, y, u, o) give world points to attach things to
 //   boil:   boilKey
 const BAP = {
   skin: '#F2A68C', skinDk: '#CF7760', skinLt: '#FFD6C2', earIn: '#E9868A',
@@ -76,6 +81,8 @@ function bappa(x, y, u, o = {}) {
   inkLine(P([[-.3, -2.4], [-.9, -3.6], [-1.2, -4.3]]), sw * .5, BAP.dhotiDk, 'inkfine', .5);   // a fold
   inkLine(P([[.4, -2.4], [1.1, -3.4]]), sw * .5, BAP.dhotiDk, 'inkfine', .5);
   rs('belly');
+  const [bx, by] = bellyScale(o);
+  push(); translate(0, -5.9 * u); scale(bx, by); translate(0, 5.9 * u);
   const belly = ellPts(0, -5.9 * u, 3.55 * u, 3.1 * u, 30, J);
   paint(belly, { wash: col, ink: null });
   paint(ellPts(-1 * u, -6.9 * u, 1.9 * u, 1.3 * u, 16, J * 2, -.3), { fill: lt, fillOp: 130, bleed: .2, tex: .8, border: .8, ink: null });
@@ -85,19 +92,25 @@ function bappa(x, y, u, o = {}) {
   inkLine(P([[-3.3, -3.3], [-1.5, -2.85], [0, -2.75], [1.5, -2.85], [3.3, -3.3]]), sw * 1.6, BAP.gold, 'ink', .5);   // waist cord
   rs('sash');
   paint(ribbon(P([[-2.9, -8.4], [-1.2, -7], [.6, -5.2], [2.2, -3.8], [3.2, -3.1]]), 1.1 * u, .8 * u), { wash: BAP.sash, fill: BAP.sashDk, fillOp: 60, tex: .5, ink: PAL.ink, sw: sw * .7 });
+  pop();
   inkLine(P([[-2.2, -8.35], [0, -7.55], [2.2, -8.35]]), sw * 1.8, BAP.gold, 'ink', .6);   // necklace
   paint(ellPts(0, -7.35 * u, .38 * u, .38 * u, 10), { wash: BAP.gem, ink: PAL.ink, sw: sw * .5 });
 
   // ---- arms: behind-the-head order doesn't matter; they're drawn after the head so held things sit in front
   const drawArm = s => {
     rs('arm' + s);
-    const a = s < 0 ? (o.aL ?? -.6) : (o.aR ?? -.6), hook = s < 0 ? o.armL : o.armR, L = 3.5 * u;
-    push(); translate(s * 3.1 * u, -7.6 * u); rotate(s < 0 ? a : -a);
-    // a slight elbow bend, so the arm never reads as a stick
-    const arm = ribbon([[0, 0], [s * L * .5, -.12 * u], [s * L, 0]], 1.35 * u, 1 * u);
+    const a = s < 0 ? (o.aL ?? -.6) : (o.aR ?? -.6), hook = s < 0 ? o.armL : o.armR;
+    const fx = clamp(s < 0 ? o.flexL || 0 : o.flexR || 0), pk = clamp(s < 0 ? o.pinkyL || 0 : o.pinkyR || 0);
+    const { sh, mid, end, th } = bappaArm(o, s);
+    push(); translate(sh[0] * u, sh[1] * u); rotate(s < 0 ? a : -a);
+    // a slight elbow bend, so the arm never reads as a stick; flexed, the forearm folds up over a bicep bump
+    if (fx > .02) paint(ellPts(s * 1.15 * u, -.45 * u, .95 * u, .75 * u * fx + .2 * u, 14, J), { wash: col, fill: dk, fillOp: 40, tex: .5, ink: PAL.ink, sw: sw * .85 });
+    const arm = ribbon(P([[0, 0], mid, end]), 1.35 * u, 1 * u);
     paint(arm, { wash: col, fill: dk, fillOp: 40, tex: .5, ink: PAL.ink, sw: sw * .85 });
-    inkLine([[s * L * .78, -.5 * u], [s * L * .8, .5 * u]], sw * 1.5, BAP.gold, 'ink', 0);   // bangle
-    push(); translate(s * L, 0);
+    const bg = [lerp(mid[0], end[0], .6), lerp(mid[1], end[1], .6)], dd = Math.hypot(end[0] - mid[0], end[1] - mid[1]) || 1, bn = [-(end[1] - mid[1]) / dd * .5, (end[0] - mid[0]) / dd * .5];
+    inkLine(P([[bg[0] - bn[0], bg[1] - bn[1]], [bg[0] + bn[0], bg[1] + bn[1]]]), sw * 1.5, BAP.gold, 'ink', 0);   // bangle
+    push(); translate(end[0] * u, end[1] * u); rotate(s * th);
+    if (pk > .02) paint(ribbon(P([[s * .7, -.2], [s * (.95 + .45 * pk), -.35 - .1 * pk], [s * (1.15 + .8 * pk), -.3 - .05 * pk]]), .46 * u, .34 * u), { wash: col, ink: PAL.ink, sw: sw * .7 });
     paint(ellPts(s * .35 * u, 0, .8 * u, .75 * u, 14, J), { wash: col, ink: PAL.ink, sw: sw * .8 });
     if (hook) { if (s < 0) scale(-1, 1); hook(u, sw); }
     pop(); pop();
@@ -144,8 +157,11 @@ function bappa(x, y, u, o = {}) {
     inkLine([[cx - nx * w, cy - ny * w], [cx + nx * w, cy + ny * w]], sw * .45, PAL.ink, 'inkfine', 0);
   }
   pop();
+  if (o.head) { rs('headhook'); o.head(u, sw); }
   rs('crown');
   push(); translate(0, -14.7 * u); rotate(o.crownTilt || 0); translate(0, 14.7 * u);
+  const co = clamp(o.crownOpen || 0);
+  if (co > 0) { translate(-3.2 * u, -14.9 * u); rotate(-1.25 * co); translate(3.2 * u, 14.9 * u); }
   paint(P([[-3, -14.9], [3, -14.9], [2.5, -16.4], [1.4, -17.6], [0, -18.9], [-1.4, -17.6], [-2.5, -16.4]]), { wash: BAP.gold, fill: BAP.goldDk, fillOp: 70, bleed: .05, tex: .7, border: .5, ink: PAL.ink, sw: sw * .9, curv: .2 });
   paint(rrPts(-3.5 * u, -15.4 * u, 7 * u, 1.1 * u, .4 * u, J), { wash: BAP.goldDk, fill: BAP.gold, fillOp: 60, tex: .6, ink: PAL.ink, sw: sw * .8 });
   paint(ellPts(0, -16.4 * u, .55 * u, .7 * u, 12), { wash: BAP.sash, ink: PAL.ink, sw: sw * .6 });
@@ -163,6 +179,37 @@ function bappa(x, y, u, o = {}) {
     emote(o.emote, top ? x : x + dir * 5.6 * u, y + dy + (top ? -21 : -15.5) * u * (1 - sq), u * 1.1, o.emoteK ?? 1, o.emoteAge ?? T);
   }
   rs('after');
+}
+
+// The belly's scale (x, y) and where the shoulders sit, for bappa() and the helpers below.
+function bellyScale(o) { const b = o.belly ?? 1; return [b, lerp(1, b, .6)]; }
+// One arm in shoulder space (u): the shoulder, the elbow (mid), the wrist (end) and the forearm's angle th. flex folds
+// the forearm up, keeping the upper arm where the plain arm was.
+function bappaArm(o, s) {
+  const L = 3.5, fx = clamp(s < 0 ? o.flexL || 0 : o.flexR || 0), [bx] = bellyScale(o);
+  const sh = [s * 3.1 * lerp(1, bx, .8), -7.6];
+  const mid = [s * L * lerp(.5, .62, fx), lerp(-.12, .1, fx)], end = [s * L * lerp(1, .74, fx), lerp(0, -2.3, fx)];
+  const th = Math.atan2(end[1] - mid[1], s * (end[0] - mid[0])) * fx;
+  return { sh, mid, end, th };
+}
+// Body-local (u) → world, through bappa()'s own transform (dx/dy, rot, squash, flip).
+function bappaWorld(x, y, u, o, lx, ly) {
+  const sq = (o.sq || 0) + (o.take || 0), px = (o.flip ? -1 : 1) * (1 + sq * .6) * lx * u, py = (1 - sq) * ly * u, r = o.rot || 0;
+  return [x + (o.dx || 0) * u + px * Math.cos(r) - py * Math.sin(r), y + (o.dy || 0) * u + px * Math.sin(r) + py * Math.cos(r)];
+}
+// Where a hand is in the world (s = -1 his left, on screen left; 1 his right). ext (u) slides the point out along the
+// forearm past the wrist: .35 is the middle of the fist, 1.9 the tip of a raised pinky.
+function bappaHand(x, y, u, o, s, ext = .35) {
+  const a = s < 0 ? (o.aL ?? -.6) : (o.aR ?? -.6), ra = s < 0 ? a : -a, { sh, end, th } = bappaArm(o, s);
+  const q = s * th, hx = end[0] + s * ext * Math.cos(q), hy = end[1] + s * ext * Math.sin(q);
+  return bappaWorld(x, y, u, o, sh[0] + hx * Math.cos(ra) - hy * Math.sin(ra), sh[1] + hx * Math.sin(ra) + hy * Math.cos(ra));
+}
+// Where the tip of the trunk is in the world (mirrors bappa()'s trunk: pose, blend, sway, tap, head turn; not htilt).
+function bappaTrunkTip(x, y, u, o) {
+  let tp = Array.isArray(o.trunk) ? o.trunk : TRUNKS[o.trunk || 'curl'] || TRUNKS.curl;
+  if (o.trunk2 && o.trunkK > 0) { const a = resample(tp, 9), b = resample(o.trunk2, 9); tp = a.map((p, i) => [lerp(p[0], b[i][0], o.trunkK), lerp(p[1], b[i][1], o.trunkK)]); }
+  const [lx, ly] = tp[tp.length - 1], hx = clamp(o.hx || 0, -1, 1);
+  return bappaWorld(x, y, u, o, lx + (o.trunkSway || 0) + hx * 1.4, ly - (o.trunkTap || 0) * .7);
 }
 
 // A modak: the sweet dumpling Bappa loves. (x, y) = its base; s = size (its height is about 1.3 s).

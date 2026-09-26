@@ -18,6 +18,7 @@
 //           armL(u, sw) / armR(u, sw) (hooks at the hand, drawn upright), mudra (default true: the resting hands)
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK (from feel / emotions). 'closed' is his own
 //           serene meditating eyes; 'normal' / 'look' / 'wide' are his own almond eyes; every other kind is Clawd's.
+//           A pair like ['closed', 'normal'] opens one eye (a peek or a wink).
 //           sniff 0..1 (the nose lifts and flares), brow (-1..1: + raises)
 //   third:  third 0..1 (the third eye opens), thirdGlow 0..1 (a red ember leaks from it), thirdShake (u of tremble)
 //   hair:   moonWob (radians), ganga 0..2 (the fountain; 1 = its idle trickle, 2 = a spurt)
@@ -269,6 +270,11 @@ function shivaFace3(u, o, sw, rs, INK) {
   } else if (ownEyes) {
     const wide = kinds[0] === 'wide', blink = !wide && ((T * .9 + (o.seed || 0) * 1.7) % 3.3) < .12;
     for (const s of [-1, 1]) {
+      if (kinds[s < 0 ? 0 : 1] === 'closed') {   // one eye still shut: a peek, or a wink
+        inkLine(P([[s * .75, -12.55], [s * 1.45, -12.2], [s * 2.15, -12.5]]), sw * 1.2, INK, 'ink', .5);
+        for (const k of [.2, .5, .8]) { const ex = s * lerp(.8, 2.1, k); inkLine(P([[ex, -12.3], [ex + s * .12, -12.0]]), sw * .45, INK, 'inkfine', 0); }
+        continue;
+      }
       const ex = s * 1.45 * u, ey = -12.4 * u, rx = (wide ? .78 : .66) * u, ry = (wide ? .78 : .52) * u;
       if (blink) { inkLine([[ex - rx, ey], [ex, ey + .15 * u], [ex + rx, ey]], sw * 1.1, INK, 'ink', .5); continue; }
       paint(ellPts(ex, ey, rx, ry, 18), { wash: SHV.white, ink: INK, sw: sw * .6 });
