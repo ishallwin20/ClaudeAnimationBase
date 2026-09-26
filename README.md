@@ -36,6 +36,9 @@ On Linux, `render.mjs` starts Chrome with `--no-sandbox` (Ubuntu 23.10+ blocks C
 | [src/bappa.js](src/bappa.js) | Bappa (chibi Ganesha) and Mooshak, painted with Clawd's tools |
 | [src/bal_bappa.js](src/bal_bappa.js) | Bal Bappa: baby Ganesha in a blue turban and shawl, sitting or standing |
 | [src/vayu.js](src/vayu.js) | Vayu, the wind god as a Swarga-Mart courier: cloud tail, cap, shades, delivery pack |
+| [src/shiva.js](src/shiva.js) | Shiva in lotus pose: jata bun with the moon and Ganga, the third eye (opens, glows), Vasuki round his neck, hand-target arms for props and hugs |
+| [src/kartikeya.js](src/kartikeya.js) | Kartikeya as a boy: peacock-feather topknot, vel and shield, standing or walking |
+| [src/parvati.js](src/parvati.js) | Parvati Maa: red saree, pallu, braid, mukut and jhumkas, walking, hand-target arms |
 | [src/core.js](src/core.js) | Painting, timing, motion helpers, camera, light, paper |
 | [src/timeline.js](src/timeline.js) | Shots, loops and the brush-wipe transition |
 | [src/config.js](src/config.js) | Length and tempo |
