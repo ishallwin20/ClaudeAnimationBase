@@ -29,10 +29,14 @@
 <script src="src/bappa.js"></script>   <!-- after timeline.js: it registers ?loop=bappa -->
 <script src="src/bal_bappa.js"></script>   <!-- after bappa.js: it reuses its trunk poses -->
 <script src="src/vayu.js"></script>   <!-- after bappa.js: it reuses U() -->
+<script src="src/shiva.js"></script>   <!-- after bappa.js: it reuses U() -->
+<script src="src/kartikeya.js"></script>   <!-- after bappa.js: it reuses U() -->
+<script src="src/parvati.js"></script>   <!-- after bappa.js: it reuses U() -->
 <!-- reference sheets (standalone loops) -->
 <script src="src/sheets.js"></script>
 <!-- your video: add a script per scene file, in order -->
-<script src="src/scenes/demo.js"></script>
+<script src="src/scenes/third_eye_props.js"></script>
+<script src="src/scenes/third_eye.js"></script>
 <script>
   // Open studio.html?loop=emotions (or views) to scrub a standalone loop instead of the video.
   const q = new URLSearchParams(location.search).get('loop'); if (q && LOOPS[q]) window.LOOP = LOOPS[q];
