@@ -226,6 +226,7 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 | `src/scenes/demo.js` | an 11-second example. **Don't copy it** (see the end of this guide) |
 | `studio.html` | open it in Chrome to scrub the video (`?t=2.5` jumps to a time, `?loop=emotions` shows a loop) |
 | `render.mjs` | headless renderer: sheets, strips, crops, stills, PNG loops, MP4 |
+| `tools/sfx.mjs` | sound effects synthesized in Node: a timeline (`track()`), named cartoon sounds and `writeWav()`; `node tools/sfx.mjs` writes a sampler of them all. See "Sound effects" below |
 
 ### Frames are pure functions of time
 
@@ -422,6 +423,23 @@ The kit doesn't need music, but it's built for it:
 2. Put the audio in `assets/` and set `PROJECT.audio` (or pass `--audio=`). `--clip` and `--encode` mux it in.
 3. Land hits, cuts and takes on beats (`beatN`, `pulse`). Cut on bar lines for big changes, and give each musical phrase its own visual.
 4. **Lyrics are not text.** Don't put words on screen. Act the meaning of a line instead.
+
+## Sound effects (optional)
+
+[tools/sfx.mjs](tools/sfx.mjs) synthesizes cartoon sound effects in Node (no samples, no dependencies) and places them on a timeline. It has whoosh, gurgle, rumble, plink, clang, squeak, click, thud, crackle, crunch, crinkle, shimmer, wah, burp, drone and slide, plus the raw `tone()`, `noise()` and `bell()` they are built from. The top of the file has the API, and each sound has a comment on what it's good for.
+
+1. Run `node tools/sfx.mjs` and listen to `out/sfx_sampler.wav`. It plays every sound once and prints when each one starts.
+2. Write a cue list for your video in its own file, e.g. `tools/my_sfx.mjs`:
+   ```js
+   import { track, whoosh, thud, bell, note } from './sfx.mjs';
+   const T = track(12);                        // the video's length in seconds
+   T.at(1.50, whoosh(.4, 600, 3500), .6, .3);  // at(time, sound, gain, pan -1 … 1)
+   T.at(2.10, thud(), .7);                     // on the frame of the landing
+   T.write('assets/my_sfx.wav');
+   ```
+   Take the times from your scene's constants (the frame of a landing, a cut, a tap), so picture and sound stay in sync.
+3. Encode with it: `node render.mjs --encode --audio=assets/my_sfx.wav --out=out/video.mp4`.
+4. Mix it to sit under music. The WAV peaks at -6 dBFS, and most cues sit at gain .2–.6. Heavy sounds (rumble, thud, big whooshes) bury small ones (steps, taps), so keep them short and lower than feels right. Pan sounds by where they are on screen.
 
 ## Common failures
 

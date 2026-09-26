@@ -41,4 +41,5 @@ On Linux, `render.mjs` starts Chrome with `--no-sandbox` (Ubuntu 23.10+ blocks C
 | [src/config.js](src/config.js) | Length and tempo |
 | [src/scenes/](src/scenes/) | Your video goes here (the demo is an example) |
 | [render.mjs](render.mjs) | Headless renderer: contact sheets, frame strips, crops, stills, MP4 |
+| [tools/sfx.mjs](tools/sfx.mjs) | Cartoon sound effects synthesized in Node (whoosh, thud, zap, bite, burp, sparkle …) and placed on a timeline, written as a WAV to mux into the video |
 | [docs/](docs/) | Model sheets: [emotions](docs/emotions.jpg) (also [animated](docs/emotions.webp)) and [views, motion and hats](docs/views.jpg) |
