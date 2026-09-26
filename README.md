@@ -1,4 +1,3 @@
-| [src/vayu.js](src/vayu.js) | Vayu, the wind god as a Swarga-Mart courier: cloud tail, cap, shades, delivery pack |
 # Claude Animation Base
 
 This is a small starter kit with code, instructions and assets for animating a character in [p5.js](https://p5js.org) and [p5.brush](https://github.com/acamposuribe/p5.brush) with Claude Opus 5.5. It's based on the code from the music video [I'm Upping My P(doom)](https://github.com/JohnHeibel/PDoomVideo) and an analysis of what the model did and didn't do well. I highly recommend playing around with your prompting: make it give you the storyboard before coding, give it very broad instructions, try being very specific, ask for subagents, and try a bunch of other fun ways of testing the model's capabilities. In my testing, it can do a lot with very little, but it's also quite accurate when you give it more requirements. Also try asking the model to swap out the character or make new emotions or costumes, give it your own reference images, and try many other fun things like that. I've found that the reasoning level corresponds to how "extravagant" and detail-oriented the model makes the scene. All test videos were generated with Opus 5.5 on xhigh reasoning in Claude Code.
@@ -36,6 +35,7 @@ On Linux, `render.mjs` starts Chrome with `--no-sandbox` (Ubuntu 23.10+ blocks C
 | [src/clawd.js](src/clawd.js) | Clawd: views, emotions, eyes, mouths, hats, emotes, dances |
 | [src/bappa.js](src/bappa.js) | Bappa (chibi Ganesha) and Mooshak, painted with Clawd's tools |
 | [src/bal_bappa.js](src/bal_bappa.js) | Bal Bappa: baby Ganesha in a blue turban and shawl, sitting or standing |
+| [src/vayu.js](src/vayu.js) | Vayu, the wind god as a Swarga-Mart courier: cloud tail, cap, shades, delivery pack |
 | [src/core.js](src/core.js) | Painting, timing, motion helpers, camera, light, paper |
 | [src/timeline.js](src/timeline.js) | Shots, loops and the brush-wipe transition |
 | [src/config.js](src/config.js) | Length and tempo |

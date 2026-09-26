@@ -1,4 +1,3 @@
-| `src/vayu.js` | Vayu, the wind god as a courier (`vayu()`): (x, y) is his waist, a cloud tail instead of legs; `speed`, `shades`, `pack`, arm hooks; faces take `feel()` / `emotions()`; model sheet at `?loop=vayu` |
 # Animating Clawd
 
 Read this whole file before you draw anything. It covers how to make a short, hand-painted cartoon, starring Clawd or any character you design: the rules and animation principles that make it look good, the workflow that catches mistakes, and the full reference for the character and the engine.
@@ -221,6 +220,7 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 | `src/clawd.js` | Clawd: views, emotions, eyes, mouths, hats, emotes, moves |
 | `src/bappa.js` | Bappa (chibi Ganesha) and Mooshak (his mouse), plus `modak()`; faces reuse Clawd's `EMO`, so `feel()` / `emotions()` drive Bappa too |
 | `src/bal_bappa.js` | Bal Bappa: a baby Ganesha in a blue turban and shawl (`balBappa()`), sitting cross-legged or standing in shorts (`stand: 1`, `walk: phase`); same options and emotions as `bappa()`, model sheets at `?loop=balbappa` and `?loop=balstand` |
+| `src/vayu.js` | Vayu, the wind god as a courier (`vayu()`): (x, y) is his waist, a cloud tail instead of legs; `speed`, `shades`, `pack`, arm hooks; faces take `feel()` / `emotions()`; model sheet at `?loop=vayu` |
 | `src/timeline.js` | `shots()`, `LOOPS`, `brushWipe()` |
 | `src/sheets.js` | the model sheets as loops (`?loop=emotions`, `?loop=views`) |
 | `src/scenes/demo.js` | an 11-second example. **Don't copy it** (see the end of this guide) |
