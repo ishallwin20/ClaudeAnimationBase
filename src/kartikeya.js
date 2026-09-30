@@ -15,6 +15,7 @@
 //           right), shield (default true, on his left arm), armL(u, sw) / armR(u, sw) (hooks at the hand, upright)
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK. 'normal' / 'look' / 'wide' are his own glossy
 //           eyes with brows; every other kind is Clawd's.
+//   head:   head(u, sw) (a hook in head space, drawn over the face: goggles, a headset, a bandage)
 //   extras: emote + emoteK + emoteAge, featherWob, boilKey, noShadow
 const KAR = {
   skin: '#EDB48A', skinDk: '#CC8A5F', skinLt: '#FFD9B8', ink: '#4A2B1C',
@@ -175,6 +176,7 @@ function kartikeya(x, y, u, o = {}) {
   inkLine(P([[-.05, -11.55], [.12, -11.3], [-.05, -11.2]]), sw * .5, KAR.skinDk, 'inkfine', .5);
   rs('mouth');
   push(); translate(0, -10.75 * u); scale(.42); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .42 * .8); pop();
+  if (o.head) { rs('headhook'); o.head(u, sw); }
   pop();
   pop();
 

@@ -222,7 +222,7 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 | `src/bal_bappa.js` | Bal Bappa: a baby Ganesha in a blue turban and shawl (`balBappa()`), sitting cross-legged or standing in shorts (`stand: 1`, `walk: phase`); same options and emotions as `bappa()`, model sheets at `?loop=balbappa` and `?loop=balstand` |
 | `src/vayu.js` | Vayu, the wind god as a courier (`vayu()`): (x, y) is his waist, a cloud tail instead of legs; `speed`, `shades`, `pack`, arm hooks; faces take `feel()` / `emotions()`; model sheet at `?loop=vayu` |
 | `src/shiva.js` | Shiva sitting in lotus pose (`shiva()`): hand targets (`handL/handR`), `third` / `thirdGlow` (the third eye), `sniff`, `ganga`, Vasuki (`snakeUp`, `snakeEyes`), `only: 'body' / 'arms'` to draw a hug; emotions `serene` and `bliss`; `?loop=shiva` |
-| `src/kartikeya.js` | Kartikeya as a boy (`kartikeya()`): vel (`spearA`) and shield, `cover` (hands over ears), `walk`; `?loop=kartikeya` |
+| `src/kartikeya.js` | Kartikeya as a boy (`kartikeya()`): vel (`spearA`) and shield, `cover` (hands over ears), `walk`, a `head(u, sw)` hook over the face; `?loop=kartikeya` |
 | `src/parvati.js` | Parvati standing (`parvati()`): hand targets, `lean`, `walk`, her own wink; `?loop=parvati` |
 | `src/timeline.js` | `shots()`, `LOOPS`, `brushWipe()` |
 | `src/sheets.js` | the model sheets as loops (`?loop=emotions`, `?loop=views`) |
