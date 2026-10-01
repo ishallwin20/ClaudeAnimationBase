@@ -224,6 +224,8 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 | `src/shiva.js` | Shiva sitting in lotus pose (`shiva()`): hand targets (`handL/handR`), `third` / `thirdGlow` (the third eye), `sniff`, `ganga`, Vasuki (`snakeUp`, `snakeEyes`), `only: 'body' / 'arms'` to draw a hug; emotions `serene` and `bliss`; `?loop=shiva` |
 | `src/kartikeya.js` | Kartikeya as a boy (`kartikeya()`): vel (`spearA`) and shield, `cover` (hands over ears), `walk`, a `head(u, sw)` hook over the face; `?loop=kartikeya` |
 | `src/parvati.js` | Parvati standing (`parvati()`): hand targets, `lean`, `walk`, her own wink; `?loop=parvati` |
+| `src/nandi.js` | Nandi the bull in side view (`nandi()`): (x, y) is the ground under him; `walk`, `nod`, `kneel`, `lift`, `wind`, `snow`, `snort`, his own `eyes`; `nandiSeat / nandiHead / nandiMuzzle / nandiHornTip / nandiHoof` give world points; `?loop=nandi` |
+| `src/shailputri.js` | Maa Shailputri (`shailputri()`), built on Parvati: hand targets, `hair`, `trishul()` and `lotus()` props, `sit: 1` to ride side-saddle ((x, y) is then her seat: pass `nandiSeat(...)`); moods `gentle` and `delight`; `?loop=shailputri`, `?loop=pair` |
 | `src/timeline.js` | `shots()`, `LOOPS`, `brushWipe()` |
 | `src/sheets.js` | the model sheets as loops (`?loop=emotions`, `?loop=views`) |
 | `src/scenes/demo.js` | an 11-second example. **Don't copy it** (see the end of this guide) |
@@ -310,7 +312,8 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
   - `letter(txt, x, y, size, colour, {pop, rot, alpha, screen})`
   - `sfx(txt, x, y, size, colour, age)`
   - `caption(txt, y, age, {life, size})`: a reel caption in screen space, for briefs that ask for on-screen text. On a 9:16 reel Instagram's own UI covers the top ~420 px, the bottom ~420 px and the button column on the right, so `caption()` clamps into `SAFE` (core.js). Keep every read that carries the story in that band too.
-  - All three are composited at `flushLetters()`, after the shot. If a wipe or iris must cover them, call it yourself first.
+  - `picture(img, x, y, w, h, {rot, pop, alpha, r, shadow})`: a real image (a logo, a book cover) in screen space, on the lettering layer. Images live in `PICS`, loaded from data URIs (see `tools/rk_images.mjs`); extra fonts for `letter()`'s `font` option go in `PROJECT.fonts`.
+  - All of these are composited at `flushLetters()`, after the shot. If a wipe or iris must cover them, call it yourself first.
 
 ---
 

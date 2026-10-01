@@ -39,6 +39,8 @@ On Linux, `render.mjs` starts Chrome with `--no-sandbox` (Ubuntu 23.10+ blocks C
 | [src/shiva.js](src/shiva.js) | Shiva in lotus pose: jata bun with the moon and Ganga, the third eye (opens, glows), Vasuki round his neck, hand-target arms for props and hugs |
 | [src/kartikeya.js](src/kartikeya.js) | Kartikeya as a boy: peacock-feather topknot, vel and shield, standing or walking |
 | [src/parvati.js](src/parvati.js) | Parvati Maa: red saree, pallu, braid, mukut and jhumkas, walking, hand-target arms |
+| [src/nandi.js](src/nandi.js) | Nandi, a white zebu bull in side view: walks, nods, kneels, rears, braces in wind and snow; helper points so a rider or a hand can touch him |
+| [src/shailputri.js](src/shailputri.js) | Maa Shailputri: coral saree, open hair, mukut with a crescent, trishul and lotus; standing, or side-saddle on Nandi (`sit: 1`) |
 | [src/core.js](src/core.js) | Painting, timing, motion helpers, camera, light, paper |
 | [src/timeline.js](src/timeline.js) | Shots, loops and the brush-wipe transition |
 | [src/config.js](src/config.js) | Length and tempo |

@@ -1,3 +1,5 @@
 node_modules
 out/
 .DS_Store
+assets/[0-9]-*/
+assets/last_slide_sample.png

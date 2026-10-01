@@ -128,6 +128,9 @@ function iris(cx, cy, r, col = PAL.ink) { if (r < 4) paint(rectPts(-60, -60, W +
 
 let T = 0, paperG = null, grainC = null, letG = null, glowTex = null, outC = null, outX = null;
 let LETTERS = [];
+// Pictures (photos, logos, book covers): PICS.name = an HTMLImageElement, loaded from a data URI so the canvas stays
+// untainted (see tools/rk_images.mjs). setup() waits for them to decode.
+const PICS = {};
 
 // ---------- geometry ----------
 function rectPts(x, y, w, h, j = 0) {
@@ -229,8 +232,18 @@ function caption(txt, y, age, o = {}) {
   lines.forEach((l, i) => letter(l, o.x ?? W * .47, y0 + i * lh, size, o.color || PAL.cream,
     { screen: true, pop: Math.max(0, age - i * .1) * 5, rot: o.rot ?? -.025, alpha: 1 - fade, stroke: o.stroke || PAL.ink, sw: .22, ink: false, maxW: o.maxW ?? 800 }));
 }
+// A picture in screen space, centred on (x, y), w × h. It rides the lettering layer: above all paint, ordered with the
+// text by call order. o: rot, pop (like letter()), alpha, r (corner radius), shadow (blur px of a soft drop shadow).
+function picture(img, x, y, w, h, o = {}) { LETTERS.push({ img, x, y, w, h, ...o }); }
 function drawLetters(c) {
   for (const L of LETTERS) {
+    if (L.img) {
+      const k = L.pop != null ? backOut(L.pop) : 1; if (k <= .01 || !L.img.complete || !L.img.naturalWidth) continue;
+      c.save(); c.translate(L.x, L.y); c.rotate(L.rot || 0); c.scale(k, k); c.globalAlpha = L.alpha ?? 1;
+      if (L.shadow) { c.save(); c.shadowColor = 'rgba(60,35,25,.35)'; c.shadowBlur = L.shadow; c.shadowOffsetY = L.shadow * .4; c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-L.w / 2, -L.h / 2, L.w, L.h, L.r || 0); c.fill(); c.restore(); }
+      if (L.r) { c.beginPath(); c.roundRect(-L.w / 2, -L.h / 2, L.w, L.h, L.r); c.clip(); }
+      c.drawImage(L.img, -L.w / 2, -L.h / 2, L.w, L.h); c.restore(); continue;
+    }
     const k = L.pop != null ? backOut(L.pop) : 1; if (k <= .01) continue;
     c.save(); c.translate(L.x, L.y); c.rotate(L.rot || 0); c.scale(k, k); c.globalAlpha = L.alpha ?? 1;
     c.font = L.font || `${L.size}px "Permanent Marker", "Comic Sans MS", cursive`;
@@ -295,6 +308,8 @@ async function setup() {
   paperG = makePaper(); grainC = makeGrain(); glowTex = makeGlowTex(); letG = createGraphics(W, H); letG.pixelDensity(1);
   outC = document.getElementById('out'); outC.width = W; outC.height = H; outC.style.aspectRatio = W + ' / ' + H; outX = outC.getContext('2d');
   await document.fonts.load('100px "Permanent Marker"');
+  await Promise.all((PROJECT.fonts || []).map(f => document.fonts.load(f)));
+  await Promise.all(Object.values(PICS).map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));   // not decode(): it stalls in a background tab
   window.ready = true;
   if (!location.search.includes('render')) devUI();
 }
