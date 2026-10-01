@@ -1,5 +1,5 @@
-// rk_images.mjs: the Rishi Katha brand images for the end card, as data URIs in src/scenes/rk_images.js (PICS.book1,
-// PICS.book2, PICS.book3, PICS.logo). Data URIs keep the canvas untainted, so picture() works in studio.html opened
+// rk_images.mjs: the Rishi Katha brand images for end cards, as data URIs in src/scenes/rk_images.js (PICS.book1 …
+// PICS.book9 in Navadurga order, and PICS.logo). Data URIs keep the canvas untainted, so picture() works in studio.html opened
 // from disk as well as in render.mjs.
 //   node tools/rk_images.mjs
 // Sources: the print wraps in assets/<n>-<slug>/Book<n>-Coverpage.png (5100×2550: back cover | front cover; the front
@@ -8,8 +8,10 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 
 const SITE = '../rishikatha/public/images';
-const BOOKS = [['book1', 'assets/1-shailputri/Book1-Coverpage.png', 'shailputri'], ['book2', 'assets/2-brahmacharini/Book2-Coverpage.png', 'brahmacharini'],
-  ['book3', 'assets/3-chandraghanta/Book3-Coverpage.png', 'chandraghanta']];
+const SLUGS = ['shailputri', 'brahmacharini', 'chandraghanta', 'kushmanda', 'skandamata', 'katyayani', 'kalaratri', 'mahagauri', 'siddhidatri'];
+// [PICS name, print wrap (if it's on this machine), slug]; each cover falls back to the website's square cover, then to
+// the copy already committed in assets/rk/, so a fresh clone can rebuild the file with neither source present.
+const BOOKS = SLUGS.map((slug, i) => [`book${i + 1}`, `assets/${i + 1}-${slug}/Book${i + 1}-Coverpage.png`, slug]);
 mkdirSync('assets/rk', { recursive: true });
 const ff = a => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...a]);
 for (const [name, wrap, slug] of BOOKS) {
