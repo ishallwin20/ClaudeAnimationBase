@@ -226,6 +226,7 @@ node render.mjs --encode --out=out/video.mp4                    # … then encod
 | `src/parvati.js` | Parvati standing (`parvati()`): hand targets, `lean`, `walk`, her own wink; `?loop=parvati` |
 | `src/nandi.js` | Nandi the bull in side view (`nandi()`): (x, y) is the ground under him; `walk`, `nod`, `kneel`, `lift`, `wind`, `snow`, `snort`, his own `eyes`; `nandiSeat / nandiHead / nandiMuzzle / nandiHornTip / nandiHoof` give world points; `?loop=nandi` |
 | `src/shailputri.js` | Maa Shailputri (`shailputri()`), built on Parvati: hand targets, `hair`, `trishul()` and `lotus()` props, `sit: 1` to ride side-saddle ((x, y) is then her seat: pass `nandiSeat(...)`); moods `gentle` and `delight`; `?loop=shailputri`, `?loop=pair` |
+| `src/kamadeva.js` | Kamadeva, the god of love, as a young archer (`kamadeva()`): a sugarcane bow strung with bees (`aim`, `draw`, `twang`), flower arrows (`kamaFlowerArrow()`, `kamaArrowTip()`), `sit: 1` to ride, `burn` 0..1 chars him; his mount `kamaParrot()` (`flap`, `squawk`, `fly`, `only: 'body' / 'wing'` to seat a rider, `parrotSeat()`); `?loop=kamadeva` |
 | `src/timeline.js` | `shots()`, `LOOPS`, `brushWipe()` |
 | `src/sheets.js` | the model sheets as loops (`?loop=emotions`, `?loop=views`) |
 | `src/scenes/demo.js` | an 11-second example. **Don't copy it** (see the end of this guide) |
