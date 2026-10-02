@@ -20,7 +20,8 @@
 //           serene meditating eyes; 'normal' / 'look' / 'wide' are his own almond eyes; every other kind is Clawd's.
 //           A pair like ['closed', 'normal'] opens one eye (a peek or a wink).
 //           sniff 0..1 (the nose lifts and flares), brow (-1..1: + raises)
-//   third:  third 0..1 (the third eye opens), thirdGlow 0..1 (a red ember leaks from it), thirdShake (u of tremble)
+//   third:  third 0..1 (the third eye opens), thirdGlow 0..1 (a red ember leaks from it), thirdShake (u of tremble),
+//           thirdCol (hex: the iris, the ember and the glow in another colour, e.g. gold for a blessing)
 //   hair:   moonWob (radians), ganga 0..2 (the fountain; 1 = its idle trickle, 2 = a spurt)
 //   Vasuki: snakeUp 0..1 (rises off the shoulder), snakeEyes 'closed' | 'open' | 'angry' | 'happy', snakeTongue 0..1,
 //           snakeLook -1..1 (+ = toward screen right)
@@ -232,12 +233,13 @@ function shivaFace3(u, o, sw, rs, INK) {
   // third eye: a vertical almond on the middle line; closed it's a seam with lashes
   rs('third');
   const k3 = clamp(o.third || 0), g = clamp(o.thirdGlow || 0), shk = (o.thirdShake || 0) * Math.sin(T * 90) * u;
+  const ember = o.thirdCol || SHV.ember, eye3 = o.thirdCol || SHV.eye3, eye3Dk = o.thirdCol ? mixCol(o.thirdCol, SHV.eye3Dk, .45) : SHV.eye3Dk;
   push(); translate(shk, -14.45 * u);
-  if (g > .01) glow(0, 0, u * (2.2 + 3 * g + 2 * k3), SHV.ember, g);
+  if (g > .01) glow(0, 0, u * (2.2 + 3 * g + 2 * k3), ember, g);
   const lens = (w, h) => { const p = []; for (let i = 0; i <= 12; i++) { const a = i / 12; p.push([Math.sin(Math.PI * a) * w, -h / 2 + h * a]); } for (let i = 11; i > 0; i--) { const a = i / 12; p.push([-Math.sin(Math.PI * a) * w, -h / 2 + h * a]); } return p; };
   const h3 = 1.55 * u * (1 + .15 * k3);
   if (k3 < .04) {
-    if (g > .02) paint(lens(.14 * u * (1 + g), h3 * .9), { wash: SHV.ember, washOp: 255, ink: null });   // the red crack
+    if (g > .02) paint(lens(.14 * u * (1 + g), h3 * .9), { wash: ember, washOp: 255, ink: null });   // the red crack
     paint(lens(.2 * u, h3), { wash: mixCol(SHV.skin, SHV.skinDk, .4), washOp: 120, ink: INK, sw: sw * .7 });
     inkLine([[0, -h3 / 2], [0, h3 / 2]], sw * .9, INK, 'ink', 0);
     for (const s of [-1, 1]) for (const k of [-.25, .05, .35]) inkLine([[s * .08 * u, k * h3], [s * .38 * u, k * h3 + .12 * u]], sw * .45, INK, 'inkfine', 0);
@@ -245,7 +247,7 @@ function shivaFace3(u, o, sw, rs, INK) {
     const w = .62 * u * k3;
     paint(lens(w, h3), { wash: SHV.white, ink: INK, sw: sw * .8 });
     const ir = Math.min(w * .85, .45 * u);
-    paint(ellPts(0, 0, ir, ir * 1.1, 14), { wash: SHV.eye3, fill: SHV.eye3Dk, fillOp: 70, tex: .4, ink: null });
+    paint(ellPts(0, 0, ir, ir * 1.1, 14), { wash: eye3, fill: eye3Dk, fillOp: 70, tex: .4, ink: null });
     paint(ellPts(0, 0, ir * .3, ir * .75, 10), { wash: SHV.iris, ink: null });
     paint(ellPts(-ir * .35, -ir * .45, ir * .22, ir * .25, 8), { wash: SHV.white, ink: null });
     inkLine(lens(w, h3).slice(0, 13), sw * 1.2, INK, 'ink', .4);   // a heavier lid line on one side
