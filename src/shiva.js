@@ -25,6 +25,8 @@
 //   hair:   moonWob (radians), ganga 0..2 (the fountain; 1 = its idle trickle, 2 = a spurt)
 //   Vasuki: snakeUp 0..1 (rises off the shoulder), snakeEyes 'closed' | 'open' | 'angry' | 'happy', snakeTongue 0..1,
 //           snakeLook -1..1 (+ = toward screen right)
+//   dress:  ash 0..1 (pale ash smeared on his chest, arms and jata), groom 0..1 (from .5: the jewelled groom, Chandrashekhara:
+//           a gold crown round the bun, a jewelled collar, a marigold-and-rose garland, gold armlets, a yellow silk shawl)
 //   draw:   only = 'body' (everything but the arms) | 'arms' (just the arms): draw something between his body and his
 //           arms (a hug) by calling him twice with the same boilKey. emote + emoteK + emoteAge, boilKey, noShadow
 const SHV = {
@@ -34,6 +36,7 @@ const SHV = {
   moon: '#FFF0C0', moonDk: '#E6C874', ganga: '#A6DBF5', gangaDk: '#5FA6D6',
   gold: '#EDB43C', goldDk: '#B67D1C', bead: '#8A4E2E', beadDk: '#5E3220',
   eye3: '#E2453A', eye3Dk: '#9E2320', ember: '#FF6A3D', white: '#FFF8EC', iris: '#2A2340',
+  silk: '#F4C430', silkDk: '#D49A1A', rose: '#E8576E', marigold: '#F39A2B', gem: '#C8324A', gem2: '#3E9E5A',
   snake: '#6DB08F', snakeDk: '#437E66', snakeLt: '#C3E6CA', tongue: '#D2452F', sole: '#EB9CAB',
 };
 const SHV_SKIN = { col: SHV.skin, dk: SHV.skinDk, lt: SHV.skinLt };
@@ -69,8 +72,10 @@ function shiva(x, y, u, o = {}) {
   const id = o.boilKey ?? 'sh' + (++CLAWD_N), rs = p => boilSeed(`shiva ${id} ${p}`);
   x += (o.dx || 0) * u;
   const fl = o.float || 0, dy = ((o.dy || 0) - fl) * u, sq = o.sq || 0, sw = clamp(u / 20, .4, 2.2) * (o.swMul || 1), J = u * .04;
-  const { col, dk, lt } = tintCols({ ...o, col: o.col || SHV.skin, dk: o.dk || SHV.skinDk, lt: o.lt || SHV.skinLt });
+  const { col: col0, dk, lt } = tintCols({ ...o, col: o.col || SHV.skin, dk: o.dk || SHV.skinDk, lt: o.lt || SHV.skinLt });
   const P = pts => U(pts, u), INK = SHV.ink, only = o.only, hx = clamp(o.hx || 0, -1, 1), lean = o.lean || 0;
+  const ash = clamp(o.ash || 0), groom = (o.groom || 0) > .5;
+  const col = mixCol(col0, '#C3CCD8', .4 * ash);   // ash greys his blue
 
   if (!o.noShadow && only !== 'arms') {
     rs('shadow');
@@ -94,6 +99,14 @@ function shiva(x, y, u, o = {}) {
     }
     pop();
 
+    if (groom) {   // the yellow silk shawl, over both shoulders and down behind the arms
+      rs('shawl');
+      for (const s of [-1, 1]) {
+        const sway = Math.sin(T * 1.4 + s) * .1;
+        paint(ribbon(P([[s * 2.6, -9.9], [s * 4.3, -9.1], [s * 5.3 + sway, -6.8], [s * 5.8 + sway, -3.6]]), 1.9 * u, 1.5 * u), { wash: SHV.silk, fill: SHV.silkDk, fillOp: 80, tex: .5, ink: INK, sw: sw * .8 });
+        inkLine(P([[s * 3.4, -9.9], [s * 5, -8.9], [s * 6, -6.7], [s * 6.5 + sway, -3.7]]), sw * 1.3, SHV.gem, 'ink', .5);
+      }
+    }
     // ---- torso
     rs('torso');
     push(); translate(lean * .5 * u, 0); rotate(lean * .03);
@@ -104,6 +117,12 @@ function shiva(x, y, u, o = {}) {
     paint(torso, { ink: INK, sw, curv: .4 });
     for (const s of [-1, 1]) inkLine(P([[s * .4, -7.2], [s * 1.6, -6.7], [s * 2.7, -7.1]]), sw * .45, SHV.skinDk, 'inkfine', .5);   // chest
     inkLine(P([[-.22, -4.6], [0, -4.35], [.22, -4.6]]), sw * .55, INK, 'inkfine', .6);   // navel
+    if (ash > .02) {   // smeared ash: broad pale strokes and a dusting
+      rs('ash');
+      for (const [a, b, w] of [[[-3.4, -8.2], [-1, -8.9], 1.3], [[.4, -6.3], [3.1, -7.2], 1.2], [[-2.9, -5.7], [-.6, -5.1], 1.1], [[1, -4.7], [3, -4.2], 1]])
+        paint(ribbon(P([a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2 - .2], b]), .55 * u * w, .25 * u * w), { wash: SHV.ash, washOp: 235 * ash, ink: null });
+      for (let k = 0; k < 10; k++) paint(ellPts(lerp(-3.2, 3.2, hash(k + 5)) * u, lerp(-9, -3.6, hash(k + 17)) * u, .14 * u, .12 * u, 6), { wash: SHV.ash, washOp: 200 * ash, ink: null });
+    }
 
     // ---- rudraksha mala: a U of beads, then Vasuki over the collarbones
     rs('mala');
@@ -134,6 +153,17 @@ function shiva(x, y, u, o = {}) {
   if (only !== 'arms') {
     push(); translate(lean * u, 0);
     snakeBody(u, o, sw, rs, INK);
+    if (groom) {
+      rs('collar');   // a jewelled gold collar over Vasuki
+      inkLine(P([[-2.9, -9.7], [-1.6, -8.5], [0, -8.15], [1.6, -8.5], [2.9, -9.7]]), sw * 2.6, SHV.gold, 'ink', .6);
+      for (const k of [-2, -1, 0, 1, 2]) { const bx = k * .95; paint(ellPts(bx * u, (-8.2 - .12 * k * k) * u, .26 * u, .3 * u, 8), { wash: k % 2 ? SHV.gem2 : SHV.gem, ink: INK, sw: sw * .35 }); }
+      paint(P([[0, -7.85], [.55, -7.2], [0, -6.4], [-.55, -7.2]]), { wash: SHV.gold, ink: INK, sw: sw * .45 });
+      paint(ellPts(0, -7.15 * u, .22 * u, .26 * u, 8), { wash: SHV.gem, ink: null });
+      rs('garland');   // marigolds and roses in a long U down to his lap
+      const g = through(P([[-3.3, -9.6], [-3.6, -7.2], [-2.6, -4.9], [0, -4.2], [2.6, -4.9], [3.6, -7.2], [3.3, -9.6]]));
+      for (let i = 0, n = 0; i < g.length; i += Math.max(1, Math.floor(g.length / 24)), n++)
+        paint(ellPts(g[i][0], g[i][1], .42 * u, .36 * u, 10, u * .04), { wash: n % 4 === 2 ? SHV.rose : n % 2 ? SHV.marigold : '#E07A1F', ink: INK, sw: sw * .3 });
+    }
     push(); translate(hx * .5 * u, 0);
     if (o.htilt) { translate(0, -10 * u); rotate(o.htilt); translate(0, 10 * u); }
     rs('ears');
@@ -171,6 +201,14 @@ function shiva(x, y, u, o = {}) {
       const bx = lerp(-2.1, 2.1, k / 6);
       paint(ellPts(bx * u, (-16.85 - .25 * (1 - (bx / 2.1) ** 2)) * u, .27 * u, .27 * u, 8), { wash: SHV.bead, ink: INK, sw: sw * .35 });
     }
+    if (ash > .02) { rs('jataash'); for (let k = 0; k < 8; k++) paint(ellPts(lerp(-2, 2, hash(k + 31)) * u, lerp(-21.2, -17.4, hash(k + 41)) * u, .13 * u, .11 * u, 6), { wash: SHV.ash, washOp: 210 * ash, ink: null }); }
+    if (groom) {   // a gold crown round the base of the bun
+      rs('crown');
+      paint(P([[-2.5, -16.7], [2.5, -16.7], [2.4, -18.3], [1.9, -18], [1.6, -19.9], [.8, -19], [0, -21.4], [-.8, -19], [-1.6, -19.9], [-1.9, -18], [-2.4, -18]]), { wash: SHV.gold, fill: SHV.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7, curv: .12 });
+      inkLine(P([[-2.4, -17.15], [2.4, -17.15]]), sw * .9, SHV.goldDk, 'inkfine', 0);
+      paint(ellPts(0, -18.75 * u, .38 * u, .46 * u, 8), { wash: SHV.gem, ink: INK, sw: sw * .35 });
+      for (const s of [-1, 1]) paint(ellPts(s * 1.45 * u, -17.85 * u, .2 * u, .22 * u, 6), { wash: SHV.gem2, ink: null });
+    }
     rs('moon');
     push(); translate(-2.35 * u, -18.5 * u); rotate(-.5 + (o.moonWob || 0)); scale(1.3);
     const moonP = []; for (let k = 0; k <= 12; k++) { const a = -1.3 + k / 12 * 2.6; moonP.push([Math.cos(a + Math.PI) * 1.25 * u, Math.sin(a + Math.PI) * 1.25 * u]); }
@@ -204,6 +242,8 @@ function shiva(x, y, u, o = {}) {
       const band = (a, b, k, w, c, t) => { const p = at(a, b, k), n = perp(a, b, w); inkLine(P([[p[0] - n[0], p[1] - n[1]], [p[0] + n[0], p[1] + n[1]]]), sw * t, c, 'ink', 0); };
       for (const k of [.3, .42, .54]) { const p = at(sh, el, k), n = perp(sh, el, .38); inkLine(P([[p[0] - n[0], p[1] - n[1]], [p[0] + n[0], p[1] + n[1]]]), sw * .9, SHV.ash, 'inkfine', 0); }   // ash stripes
       band(sh, el, .72, .72, SHV.gold, 1.5);   // armlet
+      if (groom) { band(sh, el, .82, .72, SHV.gold, 1.5); const p = at(sh, el, .77); paint(ellPts(p[0] * u, p[1] * u, .25 * u, .25 * u, 8), { wash: SHV.gem, ink: INK, sw: sw * .35 }); }
+      if (ash > .02) { const a = at(el, ha, .2), b = at(el, ha, .55); paint(ribbon(P([a, b]), .55 * u, .3 * u), { wash: SHV.ash, washOp: 160 * ash, ink: null }); }
       band(el, ha, .78, .6, SHV.gold, 1.3);    // bangle
       push(); translate(ha[0] * u, ha[1] * u);
       const rest = !(s < 0 ? o.handL : o.handR) && o.mudra !== false;
@@ -356,4 +396,16 @@ function snakeHead(u, o, sw, rs, INK) {
     shiva(540, 1880, 16, { ...feel('love', t), ...S, handL: [-1.4, -5.4], handR: [1.4, -5.4], bendL: 2.6, bendR: 2.6, snakeUp: .6, snakeEyes: 'happy' });
   };
   LOOPS.shiva.len = 4;
+  // the baraat dress: ash (left) and the groom (right), riding Nandi; studio.html?loop=shivagroom
+  LOOPS.shivagroom = t => {
+    paint(rectPts(-40, -40, W + 80, H + 80), { wash: '#4A3F78', ink: null });
+    [[0, 540, { ash: 1, eyes: 'closed', mouth: 'smile' }], [1, 1300, { groom: 1, eyes: 'closed', mouth: 'smile', snakeUp: .3 }]].forEach(([i, gy, over]) => {
+      const nx = 520, nu = 26, no = { walk: i ? undefined : t * .8, seed: i };
+      if (typeof nandi !== 'function') return;
+      nandi(nx, gy + 500, nu, no);
+      const [sx, sy] = nandiSeat(nx, gy + 500, nu, no);
+      shiva(sx, sy + 10, 15, { ...SHV_SKIN, ...over });
+    });
+  };
+  LOOPS.shivagroom.len = 4;
 })();
