@@ -1,6 +1,6 @@
 # The SCARIEST baraat in history
 
-A ~45.6-second vertical reel (1080×1920, 24 fps, bpm 100) for Rishi Katha's Navadurga picture books: Shiva's baraat
+A 51.2-second vertical reel (1080×1920, 24 fps, bpm 100) for Rishi Katha's Navadurga picture books: Shiva's baraat
 scares the bride's mother into a faint, and the bride becomes Maa Chandraghanta (Navratri Day 3, Tue Oct 13 2026,
 Book 3). Starring a dhol-wala ghost, Queen Menavati, Shiva on Nandi, four ganas, Parvati and Chandraghanta.
 Scene: `src/scenes/baraat.js`, sets and props: `src/scenes/baraat_props.js`. Characters: `src/shiva.js`, `src/nandi.js`,
@@ -241,3 +241,11 @@ our Navadurga picture-book series for ages 4–8. Get the set of 3 for ₹600 at
 
 Pinned comment (from @therishikatha, right after posting): "I'm #3, the food one 😅 which baraati are you?"
 Reply to every comment in the first hour, with a question back where you can.
+
+## Revision 1 (owner's notes)
+Four reads felt fast, so the scene now runs on its own clock with holds (`WARPS` in baraat.js, mirrored in
+baraat_sfx.mjs): scene 2.85–3.25 plays over +1.8 s ("Her mother FAINTED. / It was SHIVA'S baraat."), 3.6–4.0 over
++1.0 s ("Wait till you see what the BRIDE did…"), 6.4–6.7 over +1.3 s ("and GHOSTS for guests."), 38.5–39.3 over +1.5 s
+("Which baraati are YOU?"). The film is now 51.2 s; the time constants above are scene time. Shiva's name has its own
+big gold line in the hook ("SHIVA'S") and in the roll call ("SHIVA / came in ASH,"), and he and Nandi ride bigger and
+closer in B (Nandi u 36, Shiva u 22).

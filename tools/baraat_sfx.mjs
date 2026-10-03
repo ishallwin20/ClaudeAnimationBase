@@ -11,7 +11,10 @@ const MOON0 = 21.3, BURST = 22.0, REVEAL = 22.35, ARMS = [22.45, 22.65, 22.85, 2
 const BROW = 30.5, SHIVA_Q = 30.95, GULP_S = 31.3, POOF = 31.6, GROOM = 32.1, NOD = 32.8, WHIP_E = 33.5, MENA_HEART = 33.8, FAINT2 = 34.25, E_OUT = 35.3;
 const GARLAND = 35.9, LINEUP = 37.7, WAVES = [38.0, 38.15, 38.3, 38.45], BELL_IRIS = 39.3, CARD = 39.8, COVER = 40.1, LOGO = 41.1, PILL = 42.2;
 
-const T = track(45.6);
+// the scene's holds (src/scenes/baraat.js WARPS): cue times are scene times, placed through the same warp
+const WARPS = [[2.85, 3.25, 1.8], [3.6, 4.0, 1.0], [6.4, 6.7, 1.3], [38.5, 39.3, 1.5]];
+const V = s => { let acc = 0; for (const [a, b, e] of WARPS) { if (s <= a) break; if (s < b) return s + acc + (s - a) / (b - a) * e; acc += e; } return s + acc; };
+const T0 = track(V(45.6)), T = { at: (s, snd, g, p) => T0.at(V(s), snd, g, p), write: f => T0.write(f) };
 seed(7);
 // a dhol hit: a deep boom and a skin slap
 const dham = (amp = 1) => mixb(tone(.5, t => 95 * Math.exp(-t * 5) + 52, { e: env.pluck(7), amp }), noise(.08, { hp: 600, lp: 3500, e: env.pluck(45), amp: amp * .45 }), tone(.25, 180, { type: 'tri', e: env.pluck(18), amp: amp * .25 }));

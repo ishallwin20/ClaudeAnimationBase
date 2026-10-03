@@ -20,6 +20,12 @@
     BELL_IRIS = 39.3, CARD = 39.8;
   const CARD_CAP = 40.0, COVER = 40.1, FAN = 40.5, LOGO = 41.1, SERIES = 41.4, PRICE = 41.8, PILL = 42.2, FOLLOW = 42.8;
 
+  // ---- holds: the scene runs on its own clock (the constants above); at each [a, b, extra] the stretch a..b of scene
+  // time plays over (b - a) + extra seconds of video, so the captions there stay up longer (the boil and the idles
+  // run on T and keep moving). tools/baraat_sfx.mjs warps its cues with the same list.
+  const WARPS = [[2.85, 3.25, 1.8], [3.6, 4.0, 1.0], [6.4, 6.7, 1.3], [38.5, 39.3, 1.5]];
+  const V = s => { let acc = 0; for (const [a, b, e] of WARPS) { if (s <= a) break; if (s < b) return s + acc + (s - a) / (b - a) * e; acc += e; } return s + acc; };
+  const S = t => { let acc = 0; for (const [a, b, e] of WARPS) { if (t < a + acc) return t - acc; if (t < b + acc + e) return a + (t - a - acc) / (b - a + e) * (b - a); acc += e; } return t - acc; };
   const GOLDC = '#F5C542', REDC = '#FF8A70';
   const bump = (t, t0, a = .1, b = .25) => seg(t, t0 - a, t0) * (1 - seg(t, t0, t0 + b));
   const skinKeys = (keys, c) => keys.map(([k, n, o]) => [k, n, { ...c, ...(o || {}) }]);
@@ -32,9 +38,9 @@
   // ---- every caption in the film, in one list (they can run across a cut): [text, y, t0, life, size, colour]
   const CAPS = [
     ['The SCARIEST', 470, -1, WHIP_A + 1.08, 78], ['BARAAT', 590, -1, WHIP_A + 1.08, 150, GOLDC], ['in history', 708, -1, WHIP_A + 1.08, 64],
-    ['Her mother FAINTED.', 480, CAP_A2, 3.2 - CAP_A2, 76], ["It was SHIVA'S baraat.", 575, 2.35, 3.2 - 2.35, 64, GOLDC],
+    ['Her mother FAINTED.', 470, CAP_A2, 3.2 - CAP_A2, 72], ['It was', 548, 2.35, 3.2 - 2.35, 56], ["SHIVA'S", 640, 2.45, 3.2 - 2.45, 130, GOLDC], ['baraat.', 738, 2.55, 3.2 - 2.55, 64],
     ['Wait till you see what', 480, CAP_A3, 4.9 - CAP_A3, 56], ['the BRIDE did…', 565, CAP_A3 + .15, 4.9 - CAP_A3 - .15, 84, GOLDC],
-    ['The groom came in ASH,', 480, SHIVA_CAP + .4, 6.9 - SHIVA_CAP - .4, 60], ['with SNAKES for garlands', 560, 5.6, 6.9 - 5.6, 60], ['and GHOSTS for guests.', 645, 6.2, 6.9 - 6.2, 66, GOLDC],
+    ['SHIVA', 480, SHIVA_CAP + .2, 6.9 - SHIVA_CAP - .2, 120, GOLDC], ['came in ASH,', 575, SHIVA_CAP + .5, 6.9 - SHIVA_CAP - .5, 64], ['with SNAKES for garlands', 652, 5.6, 6.9 - 5.6, 60], ['and GHOSTS for guests.', 730, 6.2, 6.9 - 6.2, 66, GOLDC],
     ['the NAGIN DANCER', 520, BADGE1, 9.0 - BADGE1, 72],
     ['the DHOL-WALA', 520, BADGE2, 11.2 - BADGE2, 72],
     ['came only for', 480, BADGE3, 13.4 - BADGE3, 60], ['the FOOD', 565, BADGE3 + .1, 13.4 - BADGE3 - .1, 84],
@@ -123,7 +129,7 @@
     const k0 = keys.findIndex(([a]) => a > t);
     return kf(t, keys, ease) + (k0 > 2 ? -60 * spring(t, keys[k0 - 1][0], 7, 16) * (t > keys[k0 - 1][0] ? 1 : 0) : 0);
   }
-  const NV = { u: 30 };
+  const NV = { u: 36, y: 1680 };
   function shivaRide(nx, ny, nu, no, so, su, key) {
     nandi(nx, ny, nu, { ...no, boilKey: key + 'n' });
     const [sx, sy] = nandiSeat(nx, ny, nu, no);
@@ -135,10 +141,10 @@
     camBegin(cx, 960, 1);
     roadSet(cx, t, RD - 40);
     // the groom: Nandi walks in from the right with Shiva on his back, ash puffing off at every step
-    const wk = seg(t, B0, 6.4), nx = lerp(1180, 560, easeOut(wk)), walking = t < 6.4;
+    const wk = seg(t, B0, 6.4), nx = lerp(1300, 600, easeOut(wk)), walking = t < 6.4;
     const no = { flip: true, walk: walking ? t * 1.25 : undefined, nod: walking ? .05 * Math.sin(t * 7.8) : .03 * Math.sin(t * 2), seed: 2 };
-    shivaRide(nx, RD, NV.u, no, { ash: 1, eyes: 'closed', mouth: 'smile', snakeUp: .4 + .3 * Math.sin(t * 2.2), snakeEyes: 'happy', snakeLook: -.5 }, 18, 'bshiva');
-    HOOF.forEach((h, i) => { const hp = nandiHoof(nx, RD, NV.u, no, i % 2); vanishPuff(hp[0], hp[1] - 10, 60, t - h, 'hoof' + i, ['#E9E2E6', '#BDB7BE']); });
+    shivaRide(nx, NV.y, NV.u, no, { ash: 1, eyes: 'closed', mouth: 'smile', snakeUp: .4 + .3 * Math.sin(t * 2.2), snakeEyes: 'happy', snakeLook: -.5 }, 22, 'bshiva');
+    HOOF.forEach((h, i) => { const hp = nandiHoof(nx, NV.y, NV.u, no, i % 2); vanishPuff(hp[0], hp[1] - 10, 60, t - h, 'hoof' + i, ['#E9E2E6', '#BDB7BE']); });
     // #1 the nagin dancer and his cobra
     const ph = bpOf(t) / 2, glance = bump(t, 8.3, .2, .6);
     naginImp(-580, RD, 30, { ...gEmo(t, [[0, 'happy', { eyes: 'happy', mouth: 'grin' }], [8.2, 'playful', { eyes: 'normal', lookX: .9, mouth: 'grin' }]], { take: .4 }), ph, blush: .5, key: 'imp1' });
@@ -350,5 +356,6 @@
     if (t > FOLLOW) { flushLetters(); boilSeed('sparkle'); paint(starPts(lerp(300, 720, k), lerp(1040, 660, k), 34 * Math.sin(k * Math.PI), .3, 4), { wash: '#FFFDF6', ink: null }); }
   }
 
-  shots([[0, shotA1], [WHIP_A, shotA2], [B0, shotB], [C0, shotC], [D0, shotD1], [D2, shotD2], [D3, shotD3], [E0, shotE1], [WHIP_E, shotE2], [F0, shotF], [CARD, shotCard]]);
+  shots([[0, shotA1], [WHIP_A, shotA2], [B0, shotB], [C0, shotC], [D0, shotD1], [D2, shotD2], [D3, shotD3], [E0, shotE1], [WHIP_E, shotE2], [F0, shotF], [CARD, shotCard]]
+    .map(([s0, fn]) => [V(s0), t => fn(S(t))]));
 })();
