@@ -1,23 +1,23 @@
-// boy.js: a modern Indian boy of about six, in a mustard tee and grey shorts, drawn for scenes where we see him from
-// behind (reading, watching, sulking). Two drawn views; neither shows the full face:
-//   boy(x, y, u, o)     from behind, sitting cross-legged. (x, y) is the ground under his seat; about 16u tall, 13u wide
-//                       across the knees.
-//   boyOTS(x, y, u, o)  over his right shoulder from above, looking down into his lap: the back of his head in lost
-//                       profile (ear, cheek and lashes), shoulders, both arms, crossed shins, and whatever he holds.
-//                       (x, y) is the centre of his lap. o.held(u, sw) draws the held thing in lap space (between the
-//                       legs and the hands); o.handL / o.handR are the hand points in lap space, in u.
+// boy.js: a modern Indian boy of about six, in a mustard tee and grey shorts, sitting cross-legged. Two drawn views:
+//   boy(x, y, u, o)       from behind. (x, y) is the ground under his seat; about 16u tall, 13u wide across the knees.
+//   boyFront(x, y, u, o)  from the front, holding something up in both hands (a book, a card, a plate): o.held(u, sw)
+//                         draws it in body space, over his torso and lower face and under his hands.
 //
-// boy() body-local coordinates in u (y up is negative):
-//   seat -3.4..0 · knees (±5.4, -.9) · hem -2.8 · shoulders (±3.3, -8.2) · elbows (±4.7, -5.4)
-//   head centre (0, -12.3), 3.8 × 3.55 · ears (±3.75, -11.8)
-// Options:
+// Body-local coordinates in u (y up is negative), both views:
+//   seat -3.4..0 · knees (±5.4, -.9) · hem -2.8 · shoulders (±3.3, -8.2) · elbows (±4.7, -5.4) (front: ±5.8, -5.4)
+//   head centre (0, -12.3), 3.8 × 3.55 · ears (±3.75, -11.8) · front: eyes (±1.45, -12.25) · nose (0, -11.3) · mouth (0, -10.4)
+// boy() options:
 //   pose:  bow 0..1 (head dips forward and down), hunch 0..1 (rounded shoulders, head sinks), breath -1..1 (chest rise),
 //          swipe 0..1 (his right elbow kicks out, as when turning a page or swiping), hx -1..1 (head turn), dx, dy (u),
 //          flip
-//   light: rim 0..1 (a warm lamp rim on his left side), rimCol
+//   light: rim 0..1 (a warm lamp rim on his left side)
 //   boil:  boilKey, noShadow
-// boyOTS() options: bow, smile 0..1 (the cheek lifts), blink 0..1, lean 0..1 (head comes closer to the lap),
-//   handL, handR ([x, y] in u), held(u, sw), rim, boilKey
+// boyFront() options:
+//   face:  eyes 'open' | 'read' (lids lowered, looking down) | 'happy' (closed arcs), lookX / lookY -1..1, blink 0..1,
+//          brow 0..1 (raised), mouth null | 'smile' | 'grin' | 'O', blush 0..1, tilt (radians, the head only)
+//   pose:  breath -1..1, handL / handR ([x, y] in u, body space), handRL / handRR (hand angles, radians), held(u, sw)
+//   light: rim 0..1 (warm lamp rim on his right side), glow 0..1 (warm light on his face from what he holds)
+//   boil:  boilKey, noShadow
 const BOY = {
   skin: '#B97A55', skinDk: '#94593A', skinLt: '#D69B72', hair: '#2E2420', hairLt: '#55402F', hairRim: '#7A5A3E',
   tee: '#C8952E', teeDk: '#A07322', teeLt: '#E2B656', shorts: '#5E6E7C', shortsDk: '#4A5866', stripe: '#8A9AA6',
@@ -96,93 +96,123 @@ function boy(x, y, u, o = {}) {
   pop();
 }
 
-// Over the shoulder, from above: the lap at (x, y). Head in lost profile at the upper left, facing down-right at the lap.
-function boyOTS(x, y, u, o = {}) {
-  const id = o.boilKey ?? 'boyots' + (++CLAWD_N), rs = p => boilSeed(`boyots ${id} ${p}`);
+function boyFront(x, y, u, o = {}) {
+  const id = o.boilKey ?? 'boyf' + (++CLAWD_N), rs = p => boilSeed(`boyf ${id} ${p}`);
   const sw = clamp(u / 22, .4, 2), P = pts => pts.map(([a, b]) => [a * u, b * u]), INK = BOY.ink;
-  const bow = o.bow || 0, smile = o.smile || 0, lean = o.lean || 0, rim = o.rim || 0;
-  const hL = o.handL || [-9.6, .3], hR = o.handR || [9.4, 4.0];
+  const br = o.breath || 0, rim = o.rim || 0, hL = o.handL || [-7.8, -7], hR = o.handR || [7.8, -7];
+  rs('shadow');
+  if (!o.noShadow) paint(ellPts(x, y + u * .2, u * 7.6, u * 1.5, 28), { fill: '#3A2618', fillOp: 90, bleed: .25, tex: .3, border: .1, ink: null });
   push(); translate(x, y);
 
-  // ---- crossed shins and knees, under the lap
+  // ---- legs: knees out to the sides, the shins crossed in front, soles turned up
   rs('legs');
   for (const s of [-1, 1]) {
-    paint(P([[s * 1.2, 3.2], [s * 6.0, 4.0], [s * 10.6, 5.8], [s * 11.4, 8.4], [s * 9.6, 9.6], [s * 4.8, 8.2], [s * .4, 7.0]]), { wash: s < 0 ? BOY.skinLt : BOY.skin, ink: INK, sw, curv: .45 });
-    paint(P([[s * 7.8, 3.6], [s * 11.6, 3.9], [s * 12.6, 6.6], [s * 11.2, 8.4], [s * 9.2, 6.4]]), { wash: BOY.shorts, ink: INK, sw, curv: .45 });
-    inkLine(P([[s * 10.6, 4.2], [s * 11.9, 6.1]]), sw * .6, BOY.stripe, 'inkfine');
+    paint(P([[s * 2.0, -3.2], [s * 4.2, -3.0], [s * 5.3, -2.2], [s * 5.4, -1.0], [s * 3.6, -.6], [s * 2.0, -1.2]]), { wash: BOY.shorts, ink: INK, sw, curv: .4 });
+    paint(P(ellPts(s * 5.5, -1.05, 1.35, 1.1, 16, .03)), { wash: s > 0 ? BOY.skinLt : BOY.skin, ink: INK, sw });
   }
-  paint(P(ellPts(-.6, 8.5, 1.5, .85, 14, .02, -.2)), { wash: BOY.skinLt, ink: INK, sw: sw * .8 });   // a sole between the shins
-  paint(P(ellPts(1.6, 8.9, 1.4, .8, 14, .02, .25)), { wash: BOY.skin, ink: INK, sw: sw * .8 });
+  // each shin runs from its knee down across the middle to a foot tucked under the other knee, sole turned up
+  paint(P(ellPts(3.4, -.15, 1.05, .62, 12, .02, -.35)), { wash: BOY.skinLt, ink: INK, sw: sw * .8 });
+  paint(P(ribbon([[5.2, -1.45], [2.4, -.75], [-.6, -.2], [-2.9, -.05]], 1.55, 1.15)), { wash: BOY.skin, ink: INK, sw, curv: .3 });
+  paint(P(ellPts(-3.4, -.05, 1.05, .62, 12, .02, .35)), { wash: BOY.skin, ink: INK, sw: sw * .8 });
+  paint(P(ribbon([[-5.2, -1.45], [-2.4, -.85], [.6, -.35], [2.9, -.2]], 1.55, 1.15)), { wash: BOY.skinLt, ink: INK, sw, curv: .3 });
+  for (const s of [-1, 1]) inkLine(P([[s * 3.0 - .3, -.25], [s * 3.0 + .3, -.15]]), sw * .5, BOY.skinDk, 'inkfine');
 
-  // ---- shoulders and upper arms, seen from above, then the held thing in his lap
-  rs('tee');
-  const back = [[-14.4, -1.0], [-14.6, -4.6], [-13.4, -8.6], [-9.8, -11.6], [-4.0, -13.0], [4.0, -12.8], [9.8, -11.2], [13.4, -8.2], [14.6, -4.4], [14.4, -1.0]];
-  paint(P(back), { wash: BOY.tee, ink: INK, sw, curv: .55 });
-  paint(P([[3.5, -12.4], [9.8, -10.8], [13.2, -7.8], [14.2, -4.2], [10.6, -2.0], [4.0, -6.0]]), { fill: BOY.teeDk, fillOp: 110, bleed: .12, tex: .5, border: .3, ink: null });
-  if (rim > 0) paint(P([[-14.2, -4.6], [-13.0, -8.6], [-9.6, -11.4], [-11.4, -8.4], [-12.8, -4.4]]), { wash: BOY.teeLt, washOp: 190 * rim, ink: null, curv: .5 });
-  inkLine(P([[-6.5, -6.4], [-3.5, -5.6], [-.5, -6.0]]), sw * .55, BOY.teeDk, 'inkfine');
-  for (const s of [-1, 1]) inkLine(P([[s * 10.6, -9.6], [s * 11.6, -8.0], [s * 12.0, -6.4]]), sw * .6, BOY.teeDk, 'inkfine');   // sleeve seams
-  if (o.held) { rs('held'); o.held(u, sw); }
-
-  // ---- arms: from the sleeves down to the hands at the book's edges; the hand (thumb on the page) is drawn last
+  // ---- torso and arms: the elbows out, forearms up to the hands
   rs('arms');
-  const arm = (s, h) => {
-    const sh = [s * 12.6, -3.2], el = [s * 13.4, 1.0];
-    paint(P(ribbon([sh, el, [lerp(el[0], h[0], .5) + s * .2, lerp(el[1], h[1], .5)], h], 2.7, 2.1)), { wash: s < 0 ? BOY.skinLt : BOY.skin, ink: INK, sw, curv: .3 });
-    paint(P([[s * 10.9, -3.6], [s * 14.5, -4.6], [s * 14.8, -1.6], [s * 11.6, -.6]]), { wash: BOY.tee, ink: INK, sw, curv: .5 });   // the sleeve hem
-    const a = Math.atan2(h[1] - el[1], h[0] - el[0]);
-    push(); translate(h[0] * u, h[1] * u); rotate(a);
-    const sk = s < 0 ? BOY.skinLt : BOY.skin;
-    paint(P([[-1.0, -1.15], [.9, -1.3], [1.7, -.6], [1.75, .55], [.9, 1.25], [-1.0, 1.15]]), { wash: sk, ink: INK, sw, curv: .55 });   // the hand
-    for (const f of [-.55, .05, .6]) inkLine(P([[1.1, f], [1.65, f + .05]]), sw * .5, BOY.skinDk, 'inkfine');                          // knuckles
-    paint(P(ribbon([[.3, -s * .85], [1.3, -s * 1.25], [2.25, -s * 1.15]], .8, .6)), { wash: sk, ink: INK, sw: sw * .8 });               // the thumb on the page
-    pop();
-  };
-  arm(-1, hL); arm(1, hR);
-
-  // ---- head: lost profile, turned down-right toward the lap; leaning brings it lower and closer
-  const cx = -4.6 + lean * .8, cy = -16.4 + bow * .8 + lean * 1.2, rx = 7.4, ry = 7.1;
-  rs('nape');
-  paint(P([[cx - 2.6, cy + 5.4], [cx + 1.8, cy + 5.0], [cx + 2.2, cy + 8.6], [cx - 2.2, cy + 8.8]]), { wash: BOY.skinDk, ink: INK, sw, curv: .4 });
-  rs('face');
-  // the cheek and jaw on the far side of the head, catching the light from the page
-  const ch = smile * .55;
-  paint(P([[cx + 3.4, cy + .8], [cx + 6.6, cy + 1.6 - ch * .5], [cx + 7.7, cy + 3.4 - ch], [cx + 7.1, cy + 5.6 - ch * .6], [cx + 5.4, cy + 6.9], [cx + 3.0, cy + 6.0]]), { wash: BOY.skinLt, ink: INK, sw, curv: .55 });
-  paint(P(ellPts(cx + 6.4, cy + 4.0 - ch, .9, .55, 12)), { wash: BOY.cheek, washOp: 90 + 110 * smile, ink: null });
-  const blink = o.blink || 0, lx = cx + 7.0, ly = cy + 2.5 - ch * .9;
-  inkLine(P([[lx - .5, ly - .2], [lx + .2, ly + .1 + blink * .25], [lx + .7, ly - .1]]), sw * .9, BOY.lash, 'ink');   // lashes past the cheek
-  inkLine(P([[lx + .15, ly + .05], [lx + .55, ly + .45]]), sw * .6, BOY.lash, 'inkfine');
-  rs('ohair');
-  const hair = [];
-  for (let i = 0; i < 40; i++) {
-    const a = i / 40 * TAU, sx = Math.cos(a), sy = Math.sin(a);
-    let px = cx + sx * rx, py = cy + sy * ry;
-    if (sx > .35 && sy > -.2) { px = cx + sx * rx * .82; py = cy + sy * ry * .9; }   // the hairline steps back over the face
-    if (sy > .6) py = cy + ry * .6 + (i % 2 ? .45 : 0) + (1 - Math.abs(sx)) * .9;      // tufts at the nape
-    hair.push([px, py]);
+  const elbow = s => [s * 5.8, -5.4];
+  for (const s of [-1, 1]) {
+    const h = s < 0 ? hL : hR, e = elbow(s);
+    paint(P(ribbon([[s * 3.2, -7.9], e, [lerp(e[0], h[0], .5), lerp(e[1], h[1], .5) + .2], h], 1.9, 1.5)), { wash: s > 0 ? BOY.skinLt : BOY.skin, ink: INK, sw, curv: .3 });
   }
-  paint(P(hair), { wash: BOY.hair, ink: INK, sw, curv: .35 });
-  paint(P([[cx - rx * .98, cy + .5], [cx - rx * .86, cy - 3.6], [cx - rx * .45, cy - 6.3], [cx - rx * .72, cy - 3.0], [cx - rx * .84, cy + 2.6]]), { wash: rim > 0 ? mixCol(BOY.hairLt, BOY.hairRim, rim) : BOY.hairLt, washOp: 200, ink: null, curv: .6 });
-  inkLine(P([[cx - .6, cy - 2.2], [cx - 1.3, cy - 1.4], [cx - 2.0, cy - 2.4], [cx - 1.2, cy - 3.4], [cx - .1, cy - 3.0], [cx + .2, cy - 1.6]]), sw * .9, BOY.hairLt, 'inkfine');   // crown whorl
-  for (const [a, b] of [[[-2.8, -.6], [-5.6, 2.6]], [[-.6, -.2], [.4, 4.4]], [[1.2, -2.4], [4.6, .4]], [[-2.6, -4.4], [-5.4, -3.4]], [[.6, -4.4], [3.0, -5.6]]])
-    inkLine(P([[cx + a[0], cy + a[1]], [cx + (a[0] + b[0]) / 2 + .4, cy + (a[1] + b[1]) / 2], [cx + b[0], cy + b[1]]]), sw * .7, BOY.hairLt, 'inkfine');
-  rs('oear');
-  const ex = cx + rx * .8, ey = cy + .3;
-  paint(P(ellPts(ex, ey, 1.25, 1.85, 16, .02, .25)), { wash: BOY.skin, ink: INK, sw });
-  inkLine(P([[ex - .1, ey - 1.0], [ex + .5, ey - .1], [ex + .1, ey + .9]]), sw * .6, BOY.skinDk, 'inkfine');
+  rs('tee');
+  const sh = -8.3 - br * .14;
+  paint(P([[-3.95, -2.75], [-4.05, -4.6], [-3.85, -6.5], [-3.5, sh + .3], [-2.7, sh - .55], [-1.2, sh - .75], [1.2, sh - .75], [2.7, sh - .55], [3.5, sh + .3], [3.85, -6.5], [4.05, -4.6], [3.95, -2.75], [0, -2.6]]), { wash: BOY.tee, ink: INK, sw, curv: .5 });
+  paint(P([[-3.9, -2.9], [-4.0, -5.5], [-3.4, sh + .2], [-2.2, sh - .3], [-2.6, -5.0], [-2.0, -2.8]]), { fill: BOY.teeDk, fillOp: 110, bleed: .12, tex: .5, border: .3, ink: null });
+  if (rim > 0) paint(P([[3.5, sh + .5], [2.6, sh - .4], [2.9, -6.5], [3.5, -4.0], [3.8, -4.4], [3.9, -6.6]]), { wash: BOY.teeLt, washOp: 200 * rim, ink: null, curv: .5 });
+  paint(P([[-1.3, sh - .7], [0, sh + .15], [1.3, sh - .7], [1.0, sh - .2], [0, sh + .55], [-1.0, sh - .2]]), { wash: BOY.teeDk, ink: INK, sw: sw * .7, curv: .5 });   // the collar
+  for (const s of [-1, 1]) {
+    const e = elbow(s);
+    paint(P([[s * 2.9, sh - .3], [s * 3.75, sh + .1], [lerp(s * 3.6, e[0], .5) + s * .4, lerp(sh, e[1], .5) + .1], [lerp(s * 3.3, e[0], .5) - s * .5, lerp(sh, e[1], .5) + .8], [s * 3.05, sh + 1.6]]),
+      { wash: BOY.tee, ink: INK, sw, curv: .45 });
+  }
+
+  // ---- head
+  const hy = -12.3 - br * .12;
+  push(); translate(0, (hy + 2.2) * u); rotate(o.tilt || 0); translate(0, -(hy + 2.2) * u);
+  rs('neck');
+  paint(P([[-1.0, hy + 2.6], [1.0, hy + 2.6], [1.15, sh - .5], [-1.15, sh - .5]]), { wash: BOY.skinDk, ink: INK, sw: sw * .8 });
+  rs('ears');
+  for (const s of [-1, 1]) {
+    const ex = s * 3.72, ey = hy + .45;
+    paint(P(ellPts(ex, ey, .72, 1.05, 14, .02)), { wash: s > 0 && rim > 0 ? mixCol(BOY.skin, BOY.skinLt, rim) : BOY.skin, ink: INK, sw: sw * .85 });
+    inkLine(P([[ex - s * .1, ey - .5], [ex + s * .2, ey], [ex - s * .05, ey + .45]]), sw * .5, BOY.skinDk, 'inkfine');
+  }
+  rs('face');
+  const face = P(ellPts(0, hy + .2, 3.6, 3.4, 32, .02));
+  paint(face, { wash: BOY.skin, ink: null });
+  paint(P(ellPts(.9, hy - .6, 2.2, 1.6, 16)), { fill: BOY.skinLt, fillOp: 90 + 80 * (o.glow || 0), bleed: .2, tex: .6, border: .6, ink: null });
+  paint(P(ellPts(0, hy + 2.8, 2.6, .9, 16)), { fill: BOY.skinDk, fillOp: 70, bleed: .1, tex: .6, border: .5, ink: null });
+  paint(face, { ink: INK, sw });
+  rs('hair');
+  paint(P([[-3.75, hy + .4], [-3.85, hy - 1.6], [-3.2, hy - 3.1], [-1.6, hy - 3.9], [.2, hy - 4.0], [2.0, hy - 3.7], [3.3, hy - 2.9], [3.85, hy - 1.5], [3.75, hy + .4],
+    [3.35, hy - .9], [2.7, hy - 1.75], [2.2, hy - 1.15], [1.45, hy - 1.95], [.6, hy - 1.3], [-.2, hy - 2.0], [-1.0, hy - 1.35], [-1.9, hy - 2.0], [-2.6, hy - 1.3], [-3.3, hy - 1.0]]),
+    { wash: BOY.hair, ink: INK, sw, curv: .35 });
+  paint(P([[1.2, hy - 3.6], [2.8, hy - 3.1], [3.5, hy - 1.8], [2.6, hy - 2.6]]), { wash: rim > 0 ? mixCol(BOY.hairLt, BOY.hairRim, rim) : BOY.hairLt, washOp: 200, ink: null, curv: .6 });
+  for (const [a, b] of [[[-2.4, -3.1], [-1.2, -1.9]], [[.1, -3.5], [.4, -1.8]], [[2.0, -3.2], [1.6, -2.1]]])
+    inkLine(P([[a[0], hy + a[1]], [(a[0] + b[0]) / 2 + .15, hy + (a[1] + b[1]) / 2], [b[0], hy + b[1]]]), sw * .55, BOY.hairLt, 'inkfine');
+  paint(P(ribbon([[.2, hy - 3.85], [.55, hy - 4.65], [1.2, hy - 4.85], [1.45, hy - 4.5]], .55, .12)), { wash: BOY.hair, ink: INK, sw: sw * .7 });   // the cowlick
+  rs('brows');
+  const bu = (o.brow || 0) * .35;
+  for (const s of [-1, 1]) inkLine(P([[s * .9, hy - .95 - bu], [s * 1.45, hy - 1.15 - bu], [s * 2.0, hy - 1.0 - bu]]), sw * .9, BOY.hair, 'ink', .5);
+  rs('eyes');
+  const kind = o.eyes || 'open', blink = clamp(o.blink || 0), lx = (o.lookX || 0) * .22, ly = (o.lookY || 0) * .2;
+  for (const s of [-1, 1]) {
+    const ex = s * 1.45, ey = hy + .05;
+    if (kind === 'happy') { inkLine(P([[ex - .5, ey + .15], [ex, ey - .35], [ex + .5, ey + .15]]), sw * 1.2, BOY.lash, 'ink', .6); continue; }
+    if (blink > .5) { inkLine(P([[ex - .45, ey + .15], [ex, ey + .3], [ex + .45, ey + .15]]), sw * 1.1, BOY.lash, 'ink', .5); continue; }
+    paint(P(ellPts(ex + lx, ey + ly, .42, .55, 16)), { wash: BOY.lash, ink: null });
+    paint(P(ellPts(ex + lx - .13, ey + ly - .2, .15, .17, 10)), { wash: PAL.cream, washOp: 240, ink: null });
+    paint(P(ellPts(ex + lx + .13, ey + ly + .2, .06, .06, 8)), { wash: PAL.cream, washOp: 200, ink: null });
+    if (kind === 'read') {   // lowered lids
+      paint(P([[ex - .62, ey - .7], [ex + .62, ey - .7], [ex + .6, ey + .12], [ex, ey - .1], [ex - .6, ey + .12]]), { wash: BOY.skin, ink: null, curv: .4 });
+      inkLine(P([[ex - .58, ey + .14], [ex, ey - .08], [ex + .58, ey + .14]]), sw * 1.1, BOY.lash, 'ink', .5);
+    }
+  }
+  rs('cheeks');
+  if (o.blush) for (const s of [-1, 1]) paint(P(ellPts(s * 2.25, hy + 1.15, .75, .4, 14)), { fill: '#E07A6A', fillOp: 160 * clamp(o.blush), bleed: .2, tex: .4, ink: null });
+  inkLine(P([[-.08, hy + .85], [.14, hy + 1.1], [-.06, hy + 1.2]]), sw * .6, BOY.skinDk, 'inkfine', .5);   // nose
+  rs('mouth');
+  const m = o.mouth, my = hy + 1.95;
+  if (m === 'smile') inkLine(P([[-.85, my - .1], [0, my + .35], [.85, my - .1]]), sw * .9, INK, 'ink', .6);
+  else if (m === 'grin') {
+    paint(P([[-1.15, my - .25], [1.15, my - .25], [.85, my + .5], [0, my + .85], [-.85, my + .5]]), { wash: '#5A2420', ink: INK, sw: sw * .8, curv: .45 });
+    paint(P([[-.55, my + .45], [.55, my + .45], [0, my + .78]]), { wash: '#D9706A', ink: null, curv: .5 });
+    paint(P([[-1.0, my - .22], [1.0, my - .22], [.8, my + .05], [-.8, my + .05]]), { wash: '#FFF5E2', ink: null, curv: .3 });
+  } else if (m === 'O') paint(P(ellPts(0, my + .2, .45, .55, 12)), { wash: '#5A2420', ink: INK, sw: sw * .7 });
+  pop();
+
+  // ---- what he holds, then his hands over its edges
+  if (o.held) { rs('held'); o.held(u, sw); }
+  rs('hands');
+  for (const s of [-1, 1]) {
+    const h = s < 0 ? hL : hR, a = (s < 0 ? o.handRL : o.handRR) || 0, sk = s > 0 ? BOY.skinLt : BOY.skin;
+    push(); translate(h[0] * u, h[1] * u); rotate(a); scale(s, 1);
+    paint(P([[.55, -1.05], [-.55, -1.1], [-.95, -.4], [-.95, .55], [-.5, 1.1], [.6, 1.05], [.85, .3], [.85, -.5]]), { wash: sk, ink: INK, sw, curv: .55 });
+    for (const f of [-.45, .15, .7]) inkLine(P([[-.95, f], [-.35, f + .05]]), sw * .55, BOY.skinDk, 'inkfine');   // fingers over the edge
+    pop();
+  }
   pop();
 }
 
 {
-  // model sheet: the back view breathing, swiping and bowing; the over-the-shoulder view smiling over a plain book
+  // model sheet: the back view breathing, swiping and bowing; the front view reading, then grinning, then looking up
   LOOPS.boy = t => {
     paint(rectPts(-40, -40, W + 80, H + 80), { wash: '#8C6A52', ink: null });
     const b = Math.sin(t * TAU / 2.4);
     boy(W * .5, H * .36, 30, { breath: b, hunch: .6, bow: .5 + .5 * Math.sin(t * TAU / 4), swipe: seg(t, 1, 1.2) * (1 - seg(t, 1.25, 1.6)), rim: .8 });
-    boyOTS(W * .5, H * .8, 22, { smile: seg(t, 2, 2.4), lean: seg(t, 2.2, 2.8), rim: .8, held: (u, sw) => {
-      paint(rectPts(-9.5 * u, -4.8 * u, 19 * u, 9.6 * u), { wash: '#F3E4C4', ink: BOY.ink, sw });
-      inkLine([[0, -4.8 * u], [0, 4.8 * u]], sw, BOY.ink);
-    } });
+    boyFront(W * .5, H * .86, 26, { breath: b, eyes: t < 1.3 ? 'read' : t < 2.6 ? 'happy' : 'open', lookX: Math.sin(t * 5), lookY: t < 1.3 ? .7 : 0,
+      mouth: t < 1.3 ? null : 'grin', blush: seg(t, 1.3, 1.6), brow: seg(t, 2.6, 2.8), rim: .8, handL: [-7.8, -7], handR: [7.8, -7],
+      held: (u, sw) => { paint(rectPts(-7.5 * u, -10.9 * u + (t > 1.3 ? 2.6 * u : 0), 15 * u, 7.5 * u), { wash: '#F3E4C4', ink: BOY.ink, sw }); } });
   };
   LOOPS.boy.len = 4;
 }
