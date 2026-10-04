@@ -38,10 +38,13 @@
 <script src="src/brahmacharini.js"></script>   <!-- after parvati.js and shailputri.js: built on them -->
 <script src="src/menavati.js"></script>   <!-- after parvati.js and shailputri.js: built on them -->
 <script src="src/chandraghanta.js"></script>   <!-- after shailputri.js and brahmacharini.js: built on them -->
+<script src="src/boy.js"></script>   <!-- after timeline.js: it registers ?loop=boy -->
 <!-- reference sheets (standalone loops) -->
 <script src="src/sheets.js"></script>
 <!-- your video: add a script per scene file, in order -->
-<script src="src/scenes/demo.js"></script>
+<script src="src/scenes/addicted_art.js"></script>   <!-- made by tools/addicted_art.mjs -->
+<script src="src/scenes/addicted_props.js"></script>
+<script src="src/scenes/addicted.js"></script>
 <script>
   // Open studio.html?loop=emotions (or views) to scrub a standalone loop instead of the video.
   const q = new URLSearchParams(location.search).get('loop'); if (q && LOOPS[q]) window.LOOP = LOOPS[q];
