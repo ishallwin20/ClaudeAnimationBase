@@ -176,3 +176,61 @@ function motes(t, n = 9) {
     glow(x, y, 9 + 6 * hash(i + 5), '#FFE2B0', .55 + .3 * Math.sin(t * 1.3 + i));
   }
 }
+
+// ---- the reverse angle: the wall behind him, a shelf of books, the sofa; the lamp is off screen to the right
+function roomFront(t) {
+  boilSeed('fwall');
+  paint(rectPts(-300, -300, W + 600, 1500), { wash: RM.wall, ink: null });
+  paint(ellPts(1060, 560, 620, 760, 30, 20), { fill: RM.wallLit, fillOp: 150, bleed: .25, tex: .4, border: .2, ink: null });
+  paint(ellPts(0, 800, 380, 800, 24, 20), { fill: RM.wallDk, fillOp: 130, bleed: .25, tex: .4, border: .2, ink: null });
+  glow(1080, 560, 520 * (1 + .025 * Math.sin(t * 13.1) * Math.sin(t * 4.3)), RM.lamp, .4);
+  // a shelf of picture books, left
+  boilSeed('shelf');
+  paint(rectPts(30, 760, 270, 18, 1), { wash: RM.woodLt, ink: RM.ink, sw: 1 });
+  const spines = [['#C0543A', 120], ['#2E5F5A', 140], ['#E0A23C', 110], ['#7B5CA8', 130], ['#3A9C98', 118], ['#D97757', 136]];
+  let bx = 44; for (const [c, h] of spines) { const w = 30; paint(rectPts(bx, 760 - h, w, h, 1), { wash: c, ink: RM.ink, sw: .8 }); inkLine([[bx + 6, 760 - h + 16], [bx + w - 6, 760 - h + 16]], .7, '#F3E4C4', 'inkfine', 0); bx += w + 4; }
+  push(); translate(262, 742); rotate(-.32); paint(rectPts(-15, -60, 30, 120, 1), { wash: '#F15A24', ink: RM.ink, sw: .8 }); pop();
+  // the sofa behind him
+  boilSeed('fsofa');
+  paint([[-60, 1010], [300, 960], [780, 960], [1140, 1010], [1140, 1330], [-60, 1330]], { wash: RM.sofa, ink: RM.ink, sw: 1.2, curv: .3 });
+  paint(rrPts(60, 1000, 440, 230, 60), { wash: RM.sofaLt, ink: RM.ink, sw: 1 });
+  paint(rrPts(580, 1000, 440, 230, 60), { wash: RM.sofaLt, ink: RM.ink, sw: 1 });
+  paint(rectPts(-60, 1220, 1200, 110), { wash: RM.sofaDk, ink: RM.ink, sw: 1 });
+  paint(ellPts(900, 1080, 260, 160, 20), { fill: '#8A9A92', fillOp: 70, bleed: .2, tex: .4, ink: null });
+  boilSeed('ffloor');
+  paint(rectPts(-300, 1330, W + 600, 900), { wash: RM.floor, ink: null });
+  inkLine([[-50, 1332], [W + 50, 1332]], 1.4, RM.woodDk, 'ink', 0);
+  rug(540, 1720, 660, 250);
+}
+
+// The open book as its reader holds it up, in its own space (origin = the middle, pages pw square). turn 0 shows the
+// outside (the cover wrap: back cover on the viewer's left, front cover on the right); turn 1 shows the inside, open on
+// `inside`. In between it spins on its vertical axis like a flipped card.
+function heldBook(pw, o = {}) {
+  const k = clamp(o.turn ?? 0), sx = Math.cos(Math.PI * k), ax = Math.max(.02, Math.abs(sx)), ph = pw;
+  push(); scale(ax, 1);
+  if (sx > 0) {
+    boilSeed('heldpages');
+    paint(rectPts(-pw + 14, -ph / 2 - 16, pw * 2 - 28, 24), { wash: RM.pages, ink: RM.ink, sw: .9 });          // page edges above the covers
+    for (let i = 1; i <= 3; i++) inkLine([[-pw + 20, -ph / 2 - 16 + i * 5], [pw - 20, -ph / 2 - 16 + i * 5]], .35, '#CDBB98', 'inkfine', 0);
+    boilSeed('heldcover');
+    paint(rrPts(-pw - 6, -ph / 2 - 6, pw * 2 + 12, ph + 12, 8), { wash: RM.book, ink: RM.ink, sw: 1.1 });
+    art('wrap1', 0, -pw, -ph / 2, pw * 2, ph, 0, 0, 5100, 2550);
+    boilSeed('heldspine');
+    paint(rectPts(-8, -ph / 2, 16, ph), { fill: '#1F4541', fillOp: 60, bleed: .2, tex: .2, ink: null });
+    paint(rectPts(-pw, -ph / 2, pw * 2, ph), { ink: RM.ink, sw: 1 });
+  } else book(pw, { before: o.inside || 'spread1', after: o.inside || 'spread1', flip: 1, zoom: (o.zoom || 1) * ax });
+  pop();
+}
+
+// Story light: motes and a few petals rising off the top of the open book (x0..x1 at y), pure functions of t.
+function bookMagic(t, x0, x1, y, a = 1) {
+  if (a <= 0) return;
+  boilSeed('magic');
+  for (let i = 0; i < 10; i++) {
+    const life = 1.6 + hash(i + 2) * .8, ph = frac(t / life + hash(i + 11)), x = lerp(x0, x1, hash(i + 4)) + 30 * Math.sin(t * 2 + i), yy = y - ph * 340;
+    const f = Math.sin(Math.PI * ph) * a;
+    if (i % 3) glow(x, yy, 14 + 10 * hash(i), '#FFE2A8', f);
+    else { push(); translate(x, yy); rotate(t * 2 + i); paint(ellPts(0, 0, 15, 8, 10), { wash: i % 2 ? '#F2A283' : '#F7C6C0', washOp: 255 * f, ink: null }); pop(); }
+  }
+}

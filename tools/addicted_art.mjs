@@ -1,14 +1,15 @@
 // addicted_art.mjs: the two Book 1 spreads the boy reads in ad 7, as data URIs in src/scenes/addicted_art.js
-// (PICS.spread1: Menavati praying by the Ganga, the page ad-maker's shot 4 opens on; PICS.spread2: Narada's visit).
+// (PICS.spread1: Menavati praying by the Ganga, the page ad-maker's shot 4 opens on; PICS.spread2: Narada's visit;
+// PICS.wrap1: the cover wrap, back | front, as the viewer sees an open book held up by its reader).
 //   node tools/addicted_art.mjs
-// Source: assets/1-shailputri/sample_spread_<n>.png (5100×2550, git-ignored); the working copies land in assets/rk/.
+// Source: assets/1-shailputri/sample_spread_<n>.png and Book1-Coverpage.png (5100×2550, git-ignored); the working copies land in assets/rk/.
 // spread1 is kept large (4400 px) because the camera dives into its right page until it fills the frame.
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
-const SPREADS = [['spread1', 4400, 3], ['spread2', 1800, 4]];
+const SPREADS = [['spread1', 4400, 3], ['spread2', 1800, 4], ['wrap1', 2000, 3]];
 for (const [name, w, q] of SPREADS) {
-  const src = `assets/1-shailputri/sample_${name.replace('spread', 'spread_')}.png`, out = `assets/rk/${name}.jpg`;
+  const src = name === 'wrap1' ? 'assets/1-shailputri/Book1-Coverpage.png' : `assets/1-shailputri/sample_${name.replace('spread', 'spread_')}.png`, out = `assets/rk/${name}.jpg`;
   if (existsSync(src)) execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-vf', `scale=${w}:${w / 2}:flags=lanczos`, '-q:v', String(q), out]);
   else if (!existsSync(out)) throw new Error('no source for ' + name);
 }

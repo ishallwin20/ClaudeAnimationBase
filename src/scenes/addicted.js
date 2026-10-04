@@ -4,7 +4,7 @@
 (() => {
   // ---- time constants (video time; the captions they play under are ad-maker's: 0.4–2.4, 2.7–5.3, 6.45–8.4)
   const SWIPE = 1.55, PUSH0 = 2.5, GLINT0 = 2.8, GLINT1 = 3.7, BUZZ0 = 4.15, BUZZ1 = 4.9, PUSH1 = 5.45, CUT = 5.95;
-  const CLEAR = 6.4, LIFT = 6.75, FLIP0 = 6.95, FLIP1 = 7.45, SMILE = 7.55, LEAN0 = 7.6, LEAN1 = 8.1, DIVE0 = 8.0, DIVE1 = 9.0;
+  const CLEAR = 6.35, BLINK = 6.85, LOWER0 = 7.05, LOWER1 = 7.35, JOY = 7.2, TURN0 = 7.45, TURN1 = 7.8, LOOK = 7.55, HOP = 7.8, DIVE0 = 8.05, DIVE1 = 9.0;
 
   // ---- a camera that moves world point T from where cam0 shows it to the centre of the screen while the zoom goes
   // z0 → z1 (log scale) and the rotation r0 → r1: no drift, whatever the zoom
@@ -37,45 +37,52 @@
     camEnd();
   }
 
-  // ---- shot B: over his shoulder, looking down into the lap; the camera dives into the right page at the end
-  const LAP = [540, 1250], OU = 48, PW = 9.5 * 48, BOOK_ROT = -.06;
+  // ---- shot B: the camera has come round to his face. He reads with the book held up (we see its real cover), lowers
+  // it grinning, spins it round to show us the page, and the camera dives into it.
+  const FX = 540, FY = 1660, FU = 60, PU = 6.2, PW = PU * FU, BOOK_ROT = -.03;   // PU: page width in u
+  const bookY = t => kf(t, [[LOWER0, -8.3], [LOWER1, -5.6], [TURN0, -5.6], [TURN1, -6.0]]);   // the book's centre, body space (u)
   // ad-maker's first art frame (drawCover of the right page, fx .745, fy .46, zoom 1.18 into 1080×1920) shows native
   // spread pixel N0 at the screen's top-left corner, at S_F screen px per native px. The dive ends exactly there.
   const S_F = Math.max(1080 / 2550, 1920 / 2550) * 1.18, N0 = [2550 + clamp(.745 * 2550 - 1080 / S_F / 2, 0, 2550 - 1080 / S_F), clamp(.46 * 2550 - 1920 / S_F / 2, 0, 2550 - 1920 / S_F)];
-  const BS = PW / 2550;   // lap px per native px
-  const nativeToWorld = ([nx, ny]) => { const x = (nx - 2550) * BS, y = (ny - 1275) * BS, c = Math.cos(BOOK_ROT), s = Math.sin(BOOK_ROT); return [LAP[0] + x * c - y * s, LAP[1] + x * s + y * c]; };
+  const BS = PW / 2550, BOOK_C = [FX, FY + bookY(DIVE0) * FU];   // lap px per native px; the book's centre once it's shown
+  const nativeToWorld = ([nx, ny]) => { const x = (nx - 2550) * BS, y = (ny - 1275) * BS, c = Math.cos(BOOK_ROT), s = Math.sin(BOOK_ROT); return [BOOK_C[0] + x * c - y * s, BOOK_C[1] + x * s + y * c]; };
   const DIVE_T = nativeToWorld([N0[0] + W / 2 / S_F, N0[1] + H / 2 / S_F]), DIVE_Z = S_F / BS;
-  function overShoulder(t, lt, dur) {
+  function front(t, lt, dur) {
     const tt = onTwos(t);
-    const settle = 1 + .06 * (1 - easeOut(seg(t, CUT, CLEAR + .3))) + .025 * seg(t, CLEAR, DIVE0);
+    const z0 = 1.1 + .05 * (1 - easeOut(seg(t, CUT, CLEAR + .35))) + .03 * seg(t, CLEAR, DIVE0), c0 = [540 + 70 * (1 - easeOut(seg(t, CUT, CLEAR + .45))), 1050];
     const dk = ease(seg(t, DIVE0, DIVE1));
-    const cam = dk > 0 ? camToward(DIVE_T, [540, 960], settle, DIVE_Z, -BOOK_ROT, dk) : [540, 960, settle, 0];
+    const cam = dk > 0 ? camToward(DIVE_T, c0, z0, DIVE_Z, -BOOK_ROT, dk) : [c0[0], c0[1], z0, 0];
     camBegin(...cam);
-    boilSeed('otsfloor');
-    paint(rectPts(-200, -200, W + 400, H + 400), { wash: RM.jute, ink: null });
-    for (let i = 0; i < 9; i++) inkLine(ellPts(540, 1260, 300 + i * 120, 170 + i * 70, 40, 0).concat([[840 + i * 120, 1260]]), .8, RM.juteDk, 'inkfine', .5);
-    paint(ellPts(80, 500, 700, 900, 30, 10), { fill: RM.juteLt, fillOp: 80, bleed: .3, tex: .5, ink: null });
-    paint(ellPts(540, 1300, 700, 380, 30), { fill: '#3A2618', fillOp: 70, bleed: .3, tex: .3, ink: null });
-    const flip = ease(seg(tt, FLIP0, FLIP1));
-    const lift = ease(seg(tt, LIFT, FLIP0)) * (1 - ease(seg(tt, FLIP0 + .1, FLIP0 + .45)));
-    const hR = [lerp(10.2, 9.0, lift), lerp(5.0, 2.6, lift)];
-    const br = Math.sin(tt * TAU / 2.6);
-    boyOTS(LAP[0], LAP[1], OU, {
-      boilKey: 'boyB', rim: .8, bow: .3 + .05 * br, smile: ease(seg(t, SMILE, SMILE + .3)), lean: ease(seg(t, LEAN0, LEAN1)),
-      blink: seg(tt, 6.55, 6.62) * (1 - seg(tt, 6.66, 6.75)), handL: [-10.1, .6], handR: hR,
-      held: () => { push(); rotate(BOOK_ROT); book(PW, { flip, zoom: cam[2] }); pop(); },
+    roomFront(tt);
+    const by = bookY(t), turn = ease(seg(t, TURN0, TURN1)), ax = Math.abs(Math.cos(Math.PI * turn));
+    const presented = ease(seg(t, TURN1 - .1, TURN1 + .1)), joy = t >= JOY, look = t >= LOOK;
+    const hop = -.3 * Math.sin(Math.PI * seg(t, HOP, HOP + .22));
+    // hands: on the side edges while reading and turning (they follow the edges in as it spins), then under the bottom corners
+    const side = Math.max(1.1, PU * ax + .35), hx = lerp(side, PU + .55, presented), hy = lerp(by + .2, by + PU / 2 + .75, presented);
+    const kick = joy ? spring(t, JOY, 7, 22) * .06 : 0;
+    boyFront(FX, FY + hop * FU, FU, {
+      boilKey: 'boyF', breath: Math.sin(tt * TAU / 2.6), rim: .8, glow: joy ? 0 : 1,
+      eyes: look ? 'open' : joy ? 'happy' : 'read', lookX: look ? 0 : .75 * Math.sin((tt - 6) * TAU * .8), lookY: look ? .1 : .8,
+      blink: seg(tt, BLINK, BLINK + .04) * (1 - seg(tt, BLINK + .08, BLINK + .12)), brow: look ? 1 : joy ? .6 : .45,
+      mouth: joy ? 'grin' : null, blush: ease(seg(t, JOY, JOY + .25)), tilt: kick + (look ? -.05 * ease(seg(t, LOOK, LOOK + .2)) : 0),
+      handL: [-hx, hy], handR: [hx, hy],
+      held: (u, sw) => {
+        if (!joy) glow(0, (by - PU / 2 - .3) * u, 3.6 * u, '#FFD9A0', .32);   // the page lights his face
+        push(); translate(0, by * u); rotate(BOOK_ROT * presented); heldBook(PW, { turn, zoom: cam[2] }); pop();
+      },
     });
+    bookMagic(t, FX - 260, FX + 260, FY + (bookY(t) - PU / 2 - .3) * FU + hop * FU, (1 - seg(t, JOY - .1, JOY + .2)) * seg(t, CUT, CLEAR + .2));
     camEnd();
-    // the near shoulder we pushed into slides away (screen space)
+    // the near shoulder we pushed into slides away to the left as the camera comes round (screen space)
     const cl = easeOut(seg(t, CUT, CLEAR));
     if (cl < 1) {
       boilSeed('nearshoulder');
-      const ox = lerp(540, -760, cl), oy = lerp(960, 2700, cl);
-      paint(ellPts(ox, oy, 1350, 1750, 36, 0, -.5), { wash: BOY.tee, ink: BOY.ink, sw: 3 });
-      paint(ellPts(ox + 420, oy - 300, 900, 1300, 30, 0, -.5), { fill: BOY.teeDk, fillOp: 110, bleed: .2, tex: .5, ink: null });
+      const ox = lerp(540, -1500, cl), oy = 960;
+      paint(ellPts(ox, oy, 1350, 1750, 36, 0, -.3), { wash: BOY.tee, ink: BOY.ink, sw: 3 });
+      paint(ellPts(ox + 420, oy - 300, 900, 1300, 30, 0, -.3), { fill: BOY.teeDk, fillOp: 110, bleed: .2, tex: .5, ink: null });
       for (let i = 0; i < 2; i++) inkLine([[ox - 520 + i * 260, oy - 880 + i * 260], [ox - 120 + i * 260, oy - 760 + i * 260], [ox + 260 + i * 260, oy - 840 + i * 260]], 2.2, BOY.teeDk, 'inkfine', .8);
     }
   }
 
-  shots([[0, behind], [CUT, overShoulder]]);
+  shots([[0, behind], [CUT, front]]);
 })();
