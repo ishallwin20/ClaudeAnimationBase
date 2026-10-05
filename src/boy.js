@@ -13,8 +13,10 @@
 //   light: rim 0..1 (a warm lamp rim on his left side)
 //   boil:  boilKey, noShadow
 // boyFront() options:
-//   face:  eyes 'open' | 'read' (lids lowered, looking down) | 'happy' (closed arcs), lookX / lookY -1..1, blink 0..1,
-//          brow 0..1 (raised), mouth null | 'smile' | 'grin' | 'O', blush 0..1, tilt (radians, the head only)
+//   face:  eyes 'open' | 'read' (lids lowered, looking down) | 'happy' (closed arcs) | 'wide' (scared: whites round small
+//          pupils), lookX / lookY -1..1, blink 0..1, brow 0..1 (raised), worry 0..1 (brows tilt up in the middle),
+//          mouth null | 'smile' | 'grin' | 'O' | 'wobble' (a scared wavy line), blush 0..1, tilt (radians, the head only)
+//   fear:  tremble 0..1 (a fast shiver)
 //   pose:  breath -1..1, handL / handR ([x, y] in u, body space), handRL / handRR (hand angles, radians), held(u, sw)
 //   light: rim 0..1 (warm lamp rim on his right side), glow 0..1 (warm light on his face from what he holds)
 //   boil:  boilKey, noShadow
@@ -102,7 +104,7 @@ function boyFront(x, y, u, o = {}) {
   const br = o.breath || 0, rim = o.rim || 0, hL = o.handL || [-7.8, -7], hR = o.handR || [7.8, -7];
   rs('shadow');
   if (!o.noShadow) paint(ellPts(x, y + u * .2, u * 7.6, u * 1.5, 28), { fill: '#3A2618', fillOp: 90, bleed: .25, tex: .3, border: .1, ink: null });
-  push(); translate(x, y);
+  push(); translate(x + (o.tremble ? Math.sin(T * 70) * .12 * u * o.tremble : 0), y);
 
   // ---- legs: knees out to the sides, the shins crossed in front, soles turned up
   rs('legs');
@@ -162,14 +164,20 @@ function boyFront(x, y, u, o = {}) {
     inkLine(P([[a[0], hy + a[1]], [(a[0] + b[0]) / 2 + .15, hy + (a[1] + b[1]) / 2], [b[0], hy + b[1]]]), sw * .55, BOY.hairLt, 'inkfine');
   paint(P(ribbon([[.2, hy - 3.85], [.55, hy - 4.65], [1.2, hy - 4.85], [1.45, hy - 4.5]], .55, .12)), { wash: BOY.hair, ink: INK, sw: sw * .7 });   // the cowlick
   rs('brows');
-  const bu = (o.brow || 0) * .35;
-  for (const s of [-1, 1]) inkLine(P([[s * .9, hy - .95 - bu], [s * 1.45, hy - 1.15 - bu], [s * 2.0, hy - 1.0 - bu]]), sw * .9, BOY.hair, 'ink', .5);
+  const bu = (o.brow || 0) * .35, wy = clamp(o.worry || 0) * .45;
+  for (const s of [-1, 1]) inkLine(P([[s * .9, hy - .95 - bu - wy], [s * 1.45, hy - 1.15 - bu - wy * .5], [s * 2.0, hy - 1.0 - bu + wy * .2]]), sw * .9, BOY.hair, 'ink', .5);
   rs('eyes');
   const kind = o.eyes || 'open', blink = clamp(o.blink || 0), lx = (o.lookX || 0) * .22, ly = (o.lookY || 0) * .2;
   for (const s of [-1, 1]) {
     const ex = s * 1.45, ey = hy + .05;
     if (kind === 'happy') { inkLine(P([[ex - .5, ey + .15], [ex, ey - .35], [ex + .5, ey + .15]]), sw * 1.2, BOY.lash, 'ink', .6); continue; }
     if (blink > .5) { inkLine(P([[ex - .45, ey + .15], [ex, ey + .3], [ex + .45, ey + .15]]), sw * 1.1, BOY.lash, 'ink', .5); continue; }
+    if (kind === 'wide') {   // scared: big whites round small pupils
+      paint(P(ellPts(ex, ey, .62, .74, 16)), { wash: PAL.cream, ink: BOY.lash, sw: sw * .8 });
+      paint(P(ellPts(ex + lx * 1.3, ey + ly * 1.3, .24, .3, 12)), { wash: BOY.lash, ink: null });
+      paint(P(ellPts(ex + lx * 1.3 - .07, ey + ly * 1.3 - .1, .07, .08, 8)), { wash: PAL.cream, ink: null });
+      continue;
+    }
     paint(P(ellPts(ex + lx, ey + ly, .42, .55, 16)), { wash: BOY.lash, ink: null });
     paint(P(ellPts(ex + lx - .13, ey + ly - .2, .15, .17, 10)), { wash: PAL.cream, washOp: 240, ink: null });
     paint(P(ellPts(ex + lx + .13, ey + ly + .2, .06, .06, 8)), { wash: PAL.cream, washOp: 200, ink: null });
@@ -189,6 +197,7 @@ function boyFront(x, y, u, o = {}) {
     paint(P([[-.55, my + .45], [.55, my + .45], [0, my + .78]]), { wash: '#D9706A', ink: null, curv: .5 });
     paint(P([[-1.0, my - .22], [1.0, my - .22], [.8, my + .05], [-.8, my + .05]]), { wash: '#FFF5E2', ink: null, curv: .3 });
   } else if (m === 'O') paint(P(ellPts(0, my + .2, .45, .55, 12)), { wash: '#5A2420', ink: INK, sw: sw * .7 });
+  else if (m === 'wobble') inkLine(P([[-.8, my + .15], [-.4, my - .05], [0, my + .15], [.4, my - .05], [.8, my + .15]]), sw * .85, INK, 'ink', .5);
   pop();
 
   // ---- what he holds, then his hands over its edges

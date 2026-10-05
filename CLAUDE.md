@@ -5,7 +5,7 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
 
 ## Branches
 - `main` holds the engine and the shared characters (Clawd, Bappa, Bal Bappa, Mooshak, Vayu, Shiva, Kartikeya, Parvati,
-  Nandi, Shailputri, Brahmacharini, Chandraghanta, Menavati, Kamadeva and his parrot, and a modern boy in a mustard tee) and opens the demo. Shared characters and engine changes are committed to `main`.
+  Nandi, Shailputri, Brahmacharini, Chandraghanta, Menavati, Kalaratri and her donkey, Kamadeva and his parrot, and a modern boy in a mustard tee) and opens the demo. Shared characters and engine changes are committed to `main`.
 - Each video gets its own branch off `main`: `reel/<idea>` for comedy reels, `ad/<n>-<book>-<idea>` for Rishi Katha
   book ads (e.g. `ad/1-book1-bull`). The branch holds `STORYBOARD.md`, `src/scenes/<name>.js` (+ `_props.js`),
   `tools/<name>_sfx.mjs` and its WAV in `assets/`, and the reel's `src/config.js` and `studio.html`. Merge `main` into it
@@ -20,7 +20,7 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   one simple subject on a plain background, no fade or iris in. Check it with `node render.mjs --stills=0`.
 - **Ads end on the full call-to-action card** (no fade out): real covers via `picture()`, the RK logo, the price line,
   the `rishikatha.com` pill, "Follow @therishikatha". Model it on `assets/last_slide_sample.png`, but use the current
-  offer: **Set of 3 for ₹600**.
+  offer: **Books 1–3, set of 3 for ₹500** (as of Oct 2026; Book 7 is "coming soon").
 - No voiceover by default: captions carry the explanation, a synthesized SFX track sits under it (`tools/sfx.mjs`), and
   music is added on Instagram, so always render a `--audio=none` copy too.
 - With a finished reel, also write the Instagram caption: the keyword question in the first ~125 characters, the
