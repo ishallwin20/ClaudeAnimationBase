@@ -18,6 +18,8 @@
 // Options (all optional):
 //   pose:   walk (phase), dx, dy (in u), sq, rot, flip, hx (-1..1 head turn), htilt, lean (u), hair (-1..1 streams it)
 //   arms:   arms 0..1 (default 1): the four back pairs fan out, one pair after another, each on an overshoot.
+//           backAt(k, s) → [x, y] in u (or null) moves back hand k (0 = top pair .. 3) on side s (-1 screen-left) off
+//           the fan, to coach, point or clap; backOpen 0..1, or (k, s) → 0..1, swaps that hand's weapon for an open palm.
 //           handL / handR = [x, y] in u (the front pair), bendL / bendR, armL(u, sw) / armR(u, sw) (hooks at the hands)
 //   props:  bell (default true: the ghanta in handL) + ring (-1..1: its swing), abhaya (default true: handR's open palm)
 //   bell:   moonBell 0..1 (default 1: the moon-bell draws in, a pop), moonGlow 0..1 (its light)
@@ -96,6 +98,13 @@ const CGH_BACK = [   // the back pairs: hand targets for the screen-left side (m
   { at: [-7.9, -14.1], b: 1.1, L: (u, sw) => khadga(u * .82, sw, -.55), R: (u, sw) => baan(u * .82, sw, .55) },
   { at: [-6.9, -10.2], b: 1.1, L: (u, sw) => kamandalu(u * .7, sw, .1), R: (u, sw) => japaMala(u * .8, sw, -.1) },
 ];
+// an open palm at the wrist, fingers along angle a (the forearm's direction), the thumb on the inside; k 0..1 grows it
+function cghPalm(u, sw, a, s, col, dk, INK, k = 1) {
+  push(); rotate(a); scale(k, k * -s);
+  paint(U([[-.2, -.5], [.4, -.6], [1.1, -.52], [1.4, -.2], [1.42, .12], [1.22, .38], [.85, .42], [.95, .7], [.8, .95], [.5, .9], [.25, .55], [-.2, .5]], u), { wash: col, ink: INK, sw: sw * .6, curv: .45 });
+  for (const f of [-.22, .07]) inkLine(U([[.95, f], [1.38, f - .01]], u), sw * .4, dk, 'inkfine', 0);
+  pop();
+}
 function chandraghantaArm(o, s) {
   const sh = [s * 2.6, -16.2];
   const ha = (s < 0 ? o.handL : o.handR) || (s < 0 ? [-4.5, -14.4] : [4.2, -18.2]);
@@ -163,8 +172,10 @@ function chandraghanta(x, y, u, o = {}) {
       for (const s of [-1, 1]) {
         rs(`back${k}${s}`);
         const sh = [s * 2.2, -16], tuck = [s * 2.4, -14.6];
-        const tx = s < 0 ? A.at[0] : -A.at[0], ty = A.at[1] + Math.sin(T * 1.7 + k * 1.3 + s) * .12;
+        const ov = o.backAt && o.backAt(k, s);   // a pose for this hand overrides the fan
+        const tx = ov ? ov[0] : s < 0 ? A.at[0] : -A.at[0], ty = ov ? ov[1] : A.at[1] + Math.sin(T * 1.7 + k * 1.3 + s) * .12;
         const ha = [lerp(tuck[0], tx, e), lerp(tuck[1], ty, e)];
+        const open = clamp(typeof o.backOpen === 'function' ? o.backOpen(k, s) : o.backOpen || 0);
         const ddx = ha[0] - sh[0], ddy = ha[1] - sh[1], d = Math.hypot(ddx, ddy) || 1;
         let nx = -ddy / d, ny = ddx / d; if (ny > 0) { nx = -nx; ny = -ny; }   // the elbow bends up and out
         const el = [(sh[0] + ha[0]) / 2 + nx * A.b * e, (sh[1] + ha[1]) / 2 + ny * A.b * e];
@@ -172,9 +183,10 @@ function chandraghanta(x, y, u, o = {}) {
         const dd = Math.hypot(ha[0] - el[0], ha[1] - el[1]) || 1, bnx = -(ha[1] - el[1]) / dd * .38, bny = (ha[0] - el[0]) / dd * .38;
         for (const kk of [.6, .72, .84]) { const bx = lerp(el[0], ha[0], kk), by = lerp(el[1], ha[1], kk); inkLine(P([[bx - bnx, by - bny], [bx + bnx, by + bny]]), sw * 1, SHL.gold, 'ink', 0); }
         push(); translate(ha[0] * u, ha[1] * u);
-        const ps = clamp(pk * 1.6);
+        const ps = clamp(pk * 1.6) * (1 - open);
         if (ps > .02) { scale(ps); (s < 0 ? A.L : A.R)(u, sw / Math.max(ps, .3)); scale(1 / ps); }
-        paint(ellPts(0, 0, .55 * u, .5 * u, 12, J), { wash: bcol, ink: INK, sw: sw * .6 });
+        if (open > .02) cghPalm(u, sw, Math.atan2(ha[1] - el[1], ha[0] - el[0]), s, bcol, dk, INK, open);
+        else paint(ellPts(0, 0, .55 * u, .5 * u, 12, J), { wash: bcol, ink: INK, sw: sw * .6 });
         pop();
       }
     }
