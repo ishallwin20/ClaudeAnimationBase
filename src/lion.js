@@ -207,7 +207,7 @@ function lion(x, y, u, o = {}) {
       paint(ellPts(cx * u, cy * u, ir * .52 * u, ir * .62 * u, 10), { wash: C.eye, ink: null });
       paint(ellPts((cx - .15) * u, (cy - .2) * u, .13 * u, .15 * u, 8), { wash: C.white, ink: null });
       if (k === 'tired' || k === 'side' || k === 'angry') {   // a heavy lid over the top: flat, or slanting in for angry
-        const ang = k === 'angry' ? s * -.38 : 0, top = ey - ry - .1, mid = ey - (k === 'side' ? .12 : .02);
+        const ang = k === 'angry' ? s * .62 : 0, top = ey - ry - .2, mid = ey - (k === 'side' ? .12 : k === 'angry' ? .12 : .02);
         paint(U([[ex - rx - .12, top], [ex + rx + .12, top], [ex + rx + .12, mid - ang * rx], [ex - rx - .12, mid + ang * rx]], u), { wash: col, ink: null });
         inkLine(U([[ex - rx - .1, mid + ang * rx], [ex + rx + .1, mid - ang * rx]], u), sw * 1.25, INK, 'ink', 0);
         if (k === 'tired') inkLine(U([[ex - .45, ey + ry + .12], [ex, ey + ry + .26], [ex + .45, ey + ry + .12]], u), sw * .5, dk, 'inkfine', .5);   // bags
