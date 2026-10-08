@@ -329,7 +329,7 @@ function lion(x, y, u, o = {}) {
 //           pounce), land 0..1 (a squash on the landing), pitch (radians, + noses up), dx, dy (u), sq, rot, flip
 //   head:   nod (radians: + dips the head), hx (-1..1: turns the face toward us), wind (-1..1: the mane streams back;
 //           default from run)
-//   paws:   reach 0..1 (the near foreleg swipes forward and up: the paw SLAP)
+//   paws:   raise 0..1 (the near forepaw comes up by his cheek: a wind-up), reach 0..1 (it swipes forward: the paw SLAP)
 //   face:   eyes ('normal' | 'wide' | 'angry' | 'happy' | 'closed' | 'squeeze' | 'side'), mouth ('smile' | 'grin' |
 //           'talk' | 'open' | 'roar' | 'flat' | 'frown' | 'O' | 'smirk') + mouthK, lookX / lookY, blush, seed, brows
 //   look:   pal (overrides the colours), tail (-1..1)
@@ -372,9 +372,10 @@ function lionRunLeg(o, i) {
   // crouch: feet tuck under; leap: forelegs reach, hind legs kick back; reach (near fore only): the slap
   fx = lerp(fx, root0[0] + (hind ? .9 : -.6), cr * .6);
   fx = lerp(fx, hind ? root0[0] - 4.6 : root0[0] + 4.6, lp); fy = lerp(fy, hind ? -3.6 : -4.6, lp);
-  if (i === 2 && o.reach) { const rk = clamp(o.reach); fx = lerp(fx, root0[0] + 5.3, rk); fy = lerp(fy, -8.2, rk); }
+  if (i === 2 && o.raise) { const rk = clamp(o.raise); fx = lerp(fx, root0[0] + .6, rk); fy = lerp(fy, -11.4, rk); }   // the wind-up: paw up by his cheek
+  if (i === 2 && o.reach) { const rk = clamp(o.reach); fx = lerp(fx, root0[0] + 6.5, rk); fy = lerp(fy, -9.6, rk); }
   // feet on the ground stay on the ground through the bob (the body comes down, the knees bend)
-  const [gx, gy] = lionRunLocal(o, fx, fy), foot = [fx, lp > .5 || (i === 2 && (o.reach || 0) > .3) ? gy : Math.min(gy, fy + ld * .0)];
+  const [gx, gy] = lionRunLocal(o, fx, fy), foot = [fx, lp > .5 || (i === 2 && ((o.reach || 0) > .3 || (o.raise || 0) > .3)) ? gy : Math.min(gy, fy + ld * .0)];
   foot[0] = gx;
   let dx = foot[0] - root[0], dy = foot[1] - root[1], d = Math.hypot(dx, dy) || 1e-3;
   const reachMax = L1 + L2 - .05;
@@ -407,7 +408,7 @@ function lionRun(x, y, u, o = {}) {
     const [r, j, f] = lionRunLeg(o, i), hind = i < 2;
     paint(U(ribbon([r, j, f], hind ? 2.5 : 2.0, 1.35), u), { wash: c, fill: dk, fillOp: i % 2 ? 50 : 25, tex: .4, ink: INK, sw: sw * .8, curv: .35 });
     const a = Math.atan2(f[1] - j[1], f[0] - j[0]), lifted = f[1] < -.5;
-    push(); translate(f[0] * u, f[1] * u); rotate(lifted ? a - Math.PI / 2 : 0); scale(i === 2 && o.reach ? 1.25 + .35 * clamp(o.reach) : 1.25);
+    push(); translate(f[0] * u, f[1] * u); rotate(lifted ? a - Math.PI / 2 : 0); scale(i === 2 && (o.reach || o.raise) ? 1.25 + .35 * clamp(Math.max(o.reach || 0, o.raise || 0)) : 1.25);
     paint(U([[-.75, -.35], [.2, -.55], [1.05, -.35], [1.25, .05], [1.0, .32], [-.7, .32], [-.95, 0]], u), { wash: c, ink: INK, sw: sw * .75, curv: .5 });
     for (const k of [.35, .7]) inkLine(U([[k, .3], [k - .05, .02]], u), sw * .45, dk, 'inkfine', 0);
     pop();
@@ -426,7 +427,8 @@ function lionRun(x, y, u, o = {}) {
   paint(LP([[-3.4, -4.1], [0, -3.9], [2.6, -4.2], [1.8, -4.7], [-1.4, -4.6]]), { wash: C.cream, ink: null, curv: .5 });   // the pale belly
   paint(U(ellPts(...L(-3.6, -6.0), 2.1, 2.0, 18), 1).map(([a, b]) => [a * u, b * u]), { wash: lt, fill: dk, fillOp: 20, tex: .4, ink: INK, sw: sw * .7 });   // the haunch
   // ---- near legs
-  rs('near'); leg(0, col); leg(2, lt);
+  const slapping = (o.reach || 0) > .05 || (o.raise || 0) > .05;   // a raised paw is drawn over his mane
+  rs('near'); leg(0, col); if (!slapping) leg(2, lt);
 
   // ---- the mane and the 3/4 head, about the neck (nods)
   const [hcx, hcy] = L(...LRN_HEAD), a = -(pose.pitch) * .5 + (o.nod || 0);
@@ -496,6 +498,7 @@ function lionRun(x, y, u, o = {}) {
   paint(U([[2.75, -.15], [3.55, -.2], [3.45, .25], [3.15, .5], [2.85, .3]], u), { wash: C.nose, ink: INK, sw: sw * .55, curv: .45 });
   if (o.hat) { rs('hat'); o.hat(u, sw); }
   pop();
+  if (slapping) { rs('slap'); leg(2, lt); }
   pop();
   if (o.rider) { rs('rider'); o.rider(u, sw); }   // last, in world space: she sits in front of the back of his mane
 
