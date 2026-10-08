@@ -467,10 +467,12 @@ function lionRun(x, y, u, o = {}) {
     paint(ellPts((ex + lx) * u, (ey + ly) * u, ir * u, ir * 1.12 * u, 12), { wash: C.iris, ink: null });
     paint(ellPts((ex + lx) * u, (ey + ly) * u, ir * .52 * u, ir * .62 * u, 10), { wash: C.eye, ink: null });
     paint(ellPts((ex + lx - .12) * u, (ey + ly - .16) * u, .11 * u, .13 * u, 8), { wash: C.white, ink: null });
-    if (ek === 'angry' || ek === 'side') {
-      const sl = ek === 'angry' ? .45 : 0, top = ey - ry - .25, mid = ey - .1;
-      paint(U([[ex - rx - .1, top], [ex + rx + .1, top], [ex + rx + .1, mid + sl * rx], [ex - rx - .1, mid - sl * rx]], u), { wash: col, ink: null });
-      inkLine(U([[ex - rx - .1, mid - sl * rx], [ex + rx + .1, mid + sl * rx]], u), sw * 1.2, INK, 'ink', 0);
+    if (ek === 'angry' || ek === 'side') {   // a lid over the top of the eye only (it follows the eye's outline, no box)
+      const sl = ek === 'angry' ? .45 : 0, mid = ey - .1, L0 = [ex - rx - .06, mid - sl * rx], R0 = [ex + rx + .06, mid + sl * rx], lid = [L0];
+      for (let k = 1; k < 10; k++) { const a = Math.PI + k / 10 * Math.PI; lid.push([ex + Math.cos(a) * (rx + .08), ey + Math.sin(a) * (ry + .08)]); }
+      lid.push(R0);
+      paint(U(lid, u), { wash: col, ink: null });
+      inkLine(U([L0, R0], u), sw * 1.2, INK, 'ink', 0);
     } else inkLine(U([[ex - rx * 1.05, ey + .05], [ex - rx * .5, ey - ry * .97], [ex + rx * .5, ey - ry * .97], [ex + rx * 1.05, ey + .05]], u), sw * 1.15, INK, 'ink', .5);
   }
   rs('muzzle');
