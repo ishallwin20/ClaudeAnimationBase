@@ -27,6 +27,7 @@
 //           snakeLook -1..1 (+ = toward screen right)
 //   dress:  ash 0..1 (pale ash smeared on his chest, arms and jata), groom 0..1 (from .5: the jewelled groom, Chandrashekhara:
 //           a gold crown round the bun, a jewelled collar, a marigold-and-rose garland, gold armlets, a yellow silk shawl)
+//   lap:    noLap (no crossed legs and tiger-skin lap: shivaLie() draws its own legs)
 //   draw:   only = 'body' (everything but the arms) | 'arms' (just the arms): draw something between his body and his
 //           arms (a hug) by calling him twice with the same boilKey. emote + emoteK + emoteAge, boilKey, noShadow
 const SHV = {
@@ -133,7 +134,8 @@ function shiva(x, y, u, o = {}) {
     paint(ellPts(0, -5.7 * u, .45 * u, .5 * u, 10), { wash: SHV.gold, ink: INK, sw: sw * .45 });
     pop();
 
-    // ---- lotus lap: the tiger-skin wrap, with the feet up on the thighs
+    // ---- lotus lap: the tiger-skin wrap, with the feet up on the thighs (noLap: none, for shivaLie())
+    if (!o.noLap) {
     rs('lap');
     const lap = P([[-7, -1.3], [-6.7, -2.7], [-5.6, -3.8], [-3.4, -4.2], [0, -3.6], [3.4, -4.2], [5.6, -3.8], [6.7, -2.7], [7, -1.3], [6.2, -.3], [3.8, .05], [0, .1], [-3.8, .05], [-6.2, -.3]]);
     paint(lap, { wash: SHV.tiger, fill: SHV.tigerDk, fillOp: 90, bleed: .06, tex: .7, border: .5, ink: INK, sw: sw * .9, curv: .5 });
@@ -146,6 +148,7 @@ function shiva(x, y, u, o = {}) {
       paint(ellPts(s * 2.5 * u, -3.05 * u, 1.55 * u, .66 * u, 16, J, s * -.2), { wash: col, fill: dk, fillOp: 50, tex: .5, ink: INK, sw: sw * .8 });
       paint(ellPts(s * 2.35 * u, -3.02 * u, 1 * u, .36 * u, 12, 0, s * -.2), { wash: mixCol(SHV.sole, col, .25), ink: null });
       for (const k of [0, 1, 2]) inkLine(P([[s * (3.55 + k * .02), -3.35 + k * .3], [s * (3.95 + k * .02), -3.4 + k * .3]]), sw * .4, INK, 'inkfine', 0);   // toes
+    }
     }
   }
 
@@ -384,6 +387,37 @@ function snakeHead(u, o, sw, rs, INK) {
   pop();
 }
 
+// Shiva lying on his back (the way he lay in Kali's path): his head to screen-left, his face to us, hands behind his head,
+// legs out to the right in the tiger skin. (x, y) is the ground under his waist; u as shiva(). His chest (where her
+// foot lands) is shivaLieChest(x, y, u). o: every shiva() face / snake / ash option, plus thumb 0..1 (his upper hand comes
+// out from behind his head with a thumbs-up), peek (one eye opens), breathe (u), noShadow, boilKey.
+function shivaLieChest(x, y, u) { return [x - 4.2 * u, y - 7.6 * u]; }
+function shivaLie(x, y, u, o = {}) {
+  const id = o.boilKey ?? 'shl' + (++CLAWD_N), rs = p => boilSeed(`shivalie ${id} ${p}`), INK = SHV.ink, sw = clamp(u / 20, .4, 2.2) * (o.swMul || 1);
+  const Px = x + 3 * u, Py = y - 4.1 * u + (o.breathe || 0) * u, th = clamp(o.thumb || 0);
+  if (!o.noShadow) { rs('shadow'); paint(ellPts(x - 2 * u, y + .1 * u, u * 13, u * 1.1, 26), { fill: PAL.ink, fillOp: 80, bleed: .25, tex: .3, border: .1, ink: null }); }
+  // ---- the legs, out to the right: shins and soles, then the tiger-skin wrap over the thighs
+  rs('legs');
+  for (const [ly, k] of [[-1.55, 1], [1.55, -1]]) {
+    paint(ribbon([[x + 3.8 * u, Py + ly * u], [x + 7 * u, Py + (ly + k * .1) * u], [x + 9.2 * u, Py + (ly + k * .2) * u]], 1.75 * u, 1.35 * u), { wash: k > 0 ? SHV.skin : SHV.skinDk, ink: INK, sw: sw * .8 });
+    inkLine([[x + 8.4 * u, Py + (ly - .62) * u], [x + 8.4 * u, Py + (ly + .62) * u]], sw * 1.4, SHV.gold, 'ink', 0);   // anklet
+    paint(ellPts(x + 9.75 * u, Py + (ly + k * .2) * u, .62 * u, .95 * u, 14), { wash: mixCol(SHV.sole, SHV.skin, .25), ink: INK, sw: sw * .7 });
+    for (const t of [-.5, -.15, .2, .5]) paint(ellPts(x + 10.35 * u, Py + (ly + k * .2 + t * 1.15) * u, .2 * u, .17 * u, 6), { wash: SHV.skin, ink: INK, sw: sw * .35 });
+  }
+  rs('wrap');
+  const wrap = [[-.6, -3.6], [2.4, -3.75], [4.6, -3.1], [5.2, -1.6], [5.1, 1.5], [4.6, 3.1], [2.4, 3.75], [-.6, 3.6]].map(([a, b]) => [x + a * u, Py + b * u]);
+  paint(wrap, { wash: SHV.tiger, fill: SHV.tigerDk, fillOp: 90, bleed: .06, tex: .7, border: .5, ink: INK, sw: sw * .9, curv: .4 });
+  for (const [a, b, c] of [[.8, -3, -2], [2.2, -1.2, -.2], [3.6, -3.1, -2], [1.2, .8, 1.9], [3.0, 1.6, 2.9], [4.3, -.6, .5]]) paint(ribbon([[x + a * u, Py + b * u], [x + (a + .3) * u, Py + c * u]], .42 * u, .06 * u), { wash: SHV.stripe, washOp: 230, ink: null });
+  inkLine([[x - .3 * u, Py - 3.4 * u], [x - .1 * u, Py], [x - .3 * u, Py + 3.4 * u]], sw * 1.4, SHV.gold, 'ink', .5);   // waist cord
+  // ---- the rest of him, rotated to lie down: the arms first, so his head is over his hands
+  const hand = (s, k) => s < 0 ? [-3.1, -15.7] : [lerp(3.1, 7.8, k), lerp(-15.7, -16.4, k)];
+  const so = { ...SHV_SKIN, eyes: o.peek ? ['closed', 'normal'] : 'closed', mouth: 'smile', ganga: 0, ...o, rot: -Math.PI / 2, noLap: true, noShadow: true, mudra: false, boilKey: id,
+    handL: hand(-1, 0), handR: hand(1, th), bendL: 1.6, bendR: lerp(1.6, -.6, th),
+    armR: th > .3 ? (uu, sww) => { push(); rotate(Math.PI / 2); paint(ribbon(U([[0, -.2], [0, -1.3], [.08, -1.8]], uu), .55 * uu, .42 * uu), { wash: SHV.skin, ink: INK, sw: sww * .6 }); paint(ellPts(0, 0, .85 * uu, .72 * uu, 14), { wash: SHV.skin, ink: INK, sw: sww * .8 }); for (const k of [-.3, .1, .45]) inkLine(U([[-.5, k], [.1, k + .05]], uu), sww * .45, INK, 'inkfine', 0); pop(); } : undefined };
+  shiva(Px, Py, u, { ...so, only: 'arms' });
+  shiva(Px, Py, u, { ...so, only: 'body' });
+}
+
 // Model sheet: studio.html?loop=shiva, or node render.mjs --loop=shiva --sheet=0.5 --cols=1 --w=1080
 (() => {
   LOOPS.shiva = t => {
@@ -396,6 +430,13 @@ function snakeHead(u, o, sw, rs, INK) {
     shiva(540, 1880, 16, { ...feel('love', t), ...S, handL: [-1.4, -5.4], handR: [1.4, -5.4], bendL: 2.6, bendR: 2.6, snakeUp: .6, snakeEyes: 'happy' });
   };
   LOOPS.shiva.len = 4;
+  // lying down (shivaLie): studio.html?loop=shivalie
+  LOOPS.shivalie = t => {
+    paint(rectPts(-40, -40, W + 80, H + 80), { wash: PAL.paper, ink: null });
+    shivaLie(560, 700, 30, {});
+    shivaLie(560, 1500, 30, { thumb: clamp(Math.sin(t * 1.6) * 1.5 + .5), peek: t % 2 > 1 });
+  };
+  LOOPS.shivalie.len = 4;
   // the baraat dress: ash (left) and the groom (right), riding Nandi; studio.html?loop=shivagroom
   LOOPS.shivagroom = t => {
     paint(rectPts(-40, -40, W + 80, H + 80), { wash: '#4A3F78', ink: null });
