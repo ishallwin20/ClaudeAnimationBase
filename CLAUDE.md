@@ -6,7 +6,7 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
 ## Branches
 - `main` holds the engine and the shared characters (Clawd, Bappa, Bal Bappa, Mooshak, Vayu, Shiva, Kartikeya, Parvati,
   Nandi, Shailputri, Brahmacharini, Chandraghanta, Menavati, Kalaratri and her donkey, Kamadeva and his parrot, a modern boy in a mustard tee, Aarav, the turquoise-tee kid of the book-doorway reels, Sher, Durga's lion, who also draws Chandraghanta's tigress and runs and leaps in side view, Maa Durga with her ten
-  arms and the gods' gifts, Mahishasura, the buffalo demon, with his buffalo form, Raktabija, the blood-seed demon whose clones sprout from the ground, Maa Kali with her tongue out, Shiva lying down, and Ravana with his ten heads (each a personality) and twenty arms) and opens the demo. Shared characters and engine changes are committed to `main`.
+  arms and the gods' gifts, Mahishasura, the buffalo demon, with his buffalo form, Raktabija, the blood-seed demon whose clones sprout from the ground, Maa Kali with her tongue out, Shiva lying down, Ravana with his ten heads (each a personality) and twenty arms, Bal Hanuman, baby Hanuman with golden fur, a curly tuft and a long tail, who sits, stands and flies, and Indra on Airavata, his four-tusked white elephant, with the vajra) and opens the demo. Shared characters and engine changes are committed to `main`.
 - Each video gets its own branch off `main`: `reel/<idea>` for comedy reels, `ad/<n>-<book>-<idea>` for Rishi Katha
   book ads (e.g. `ad/1-book1-bull`). The branch holds `STORYBOARD.md`, `src/scenes/<name>.js` (+ `_props.js`),
   `tools/<name>_sfx.mjs` and its WAV in `assets/`, and the reel's `src/config.js` and `studio.html`. Merge `main` into it
