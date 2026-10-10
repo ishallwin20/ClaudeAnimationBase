@@ -19,6 +19,9 @@
 //   face:   eyes ('normal' | 'angry' | 'wide' | 'happy' (laughing shut) | 'closed' | 'scared' | 'swirl' (dizzy)),
 //           mouth ('smirk' | 'laugh' | 'roar' | 'frown' | 'O' | 'grin' | 'flat' | 'wobble') + mouthK, lookX / lookY,
 //           brows (-1 angry .. +1 raised), sweat 0..1, blush, seed; other kinds are Clawd's
+//   look:   the other asuras (asuras.js) reuse this rig: horns ('buffalo' (default) | 'short' | 'one' | 'none'), hair
+//           ('mane' (default) | 'bald' | 'topknot'), stache ('curl' (default) | 'thin' | 'none'), ring (default true:
+//           the gold nose ring), tusks (default true), hat(u, sw) (head space, drawn over the hair and under the face)
 //   extras: emote + emoteK + emoteAge, boilKey, noShadow, swMul, pal
 // Helpers: mahishHand(x, y, u, o, s), mahishHead(x, y, u, o), mahishMouth(x, y, u, o), mahishChest(x, y, u, o) → world
 //          [x, y]; dhal(u, sw) draws the shield.
@@ -119,13 +122,18 @@ function mahishasura(x, y, u, o = {}) {
   push(); translate(hox * u, hoy * u); translate(0, MHS_NECK * u); scale(MHS_HS); translate(0, -MHS_NECK * u);
   if (o.htilt) { translate(0, -16 * u); rotate(o.htilt); translate(0, 16 * u); }
   rs('horns');
-  for (const s of [-1, 1]) {
+  const hornK = o.horns || 'buffalo', hairK = o.hair || 'mane';
+  if (hornK === 'short' || hornK === 'one') for (const s of hornK === 'one' ? [1] : [-1, 1]) {
+    const hp = hornK === 'one' ? [[-.2, -20.6], [.3, -23.4], [1.4, -25.2]] : [[s * 1.7, -20.6], [s * 2.5, -22.0], [s * 3.4, -22.6]];
+    paint(U(ribbon(hp, hornK === 'one' ? 1.5 : .95, .1), u), { wash: C.horn, fill: C.hornDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .7, curv: .5 });
+  }
+  if (hornK === 'buffalo') for (const s of [-1, 1]) {
     const hp = [[s * 2.3, -20.0], [s * 4.0, -20.6], [s * 5.4, -21.2], [s * 6.0, -22.4], [s * 5.5, -23.6]];
     paint(U(ribbon(hp, 1.35, .12), u), { wash: C.horn, fill: C.hornDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .8, curv: .5 });
     for (const k of [.3, .5]) { const i = Math.floor(k * 4), f = k * 4 - i; inkLine(U([[lerp(hp[i][0], hp[i + 1][0], f) - s * .05, lerp(hp[i][1], hp[i + 1][1], f) - .45], [lerp(hp[i][0], hp[i + 1][0], f) + s * .1, lerp(hp[i][1], hp[i + 1][1], f) + .4]], u), sw * .55, C.hornDk, 'inkfine', 0); }
   }
   rs('hairback');
-  { const P2 = []; for (let i = 0; i <= 16; i++) { const a = Math.PI + i / 16 * Math.PI, r = i % 2 ? 3.9 : 3.2; P2.push([Math.cos(a) * r * 1.05 * u, (-19.0 + Math.sin(a) * r * .95) * u]); } P2.push([3.0 * u, -17.2 * u], [-3.0 * u, -17.2 * u]); paint(P2, { wash: C.hair, ink: INK, sw: sw * .8, curv: .25 }); }
+  if (hairK === 'mane') { const P2 = []; for (let i = 0; i <= 16; i++) { const a = Math.PI + i / 16 * Math.PI, r = i % 2 ? 3.9 : 3.2; P2.push([Math.cos(a) * r * 1.05 * u, (-19.0 + Math.sin(a) * r * .95) * u]); } P2.push([3.0 * u, -17.2 * u], [-3.0 * u, -17.2 * u]); paint(P2, { wash: C.hair, ink: INK, sw: sw * .8, curv: .25 }); }
   rs('ears');
   for (const s of [-1, 1]) paint(U([[s * 2.6, -19.4], [s * 4.0, -19.9], [s * 3.4, -18.3], [s * 2.7, -17.9]], u), { wash: col, ink: INK, sw: sw * .7, curv: .3 });
   rs('head');
@@ -134,7 +142,14 @@ function mahishasura(x, y, u, o = {}) {
   paint(ellPts(-1.0 * u, -19.6 * u, 1.5 * u, .8 * u, 14, J * 2, -.2), { fill: lt, fillOp: 110, bleed: .2, tex: .8, border: .8, ink: null });
   paint(head, { ink: INK, sw });
   rs('fringe');
-  paint(U([[-2.9, -19.3], [-2.6, -20.6], [-1.9, -20.2], [-1.4, -21.3], [-.6, -20.5], [0, -21.6], [.6, -20.5], [1.4, -21.3], [1.9, -20.2], [2.6, -20.6], [2.9, -19.3], [2.0, -20.0], [0, -20.3], [-2.0, -20.0]], u), { wash: C.hair, ink: INK, sw: sw * .7, curv: .15 });
+  if (hairK === 'topknot') {
+    paint(ellPts(0, -22.0 * u, .95 * u, .8 * u, 14, J), { wash: C.hair, ink: INK, sw: sw * .7 });
+    paint(U([[-.5, -21.3], [.5, -21.3], [.35, -20.9], [-.35, -20.9]], u), { wash: C.gold, ink: INK, sw: sw * .5 });
+    inkLine(U([[-1.6, -20.3], [-.6, -20.9], [.6, -20.9], [1.6, -20.3]], u), sw * .5, dk, 'inkfine', .5);
+  }
+  if (hairK === 'mane') paint(U([[-2.9, -19.3], [-2.6, -20.6], [-1.9, -20.2], [-1.4, -21.3], [-.6, -20.5], [0, -21.6], [.6, -20.5], [1.4, -21.3], [1.9, -20.2], [2.6, -20.6], [2.9, -19.3], [2.0, -20.0], [0, -20.3], [-2.0, -20.0]], u), { wash: C.hair, ink: INK, sw: sw * .7, curv: .15 });
+
+  if (o.hat) { rs('hat'); o.hat(u, sw); }
 
   push(); translate(hx * .5 * u, 0);
   rs('brows');
@@ -175,20 +190,21 @@ function mahishasura(x, y, u, o = {}) {
   else if (m === 'wobble') inkLine(U([[-.85, my + .1], [-.42, my - .08], [0, my + .1], [.42, my - .08], [.85, my + .1]], u), sw * .85, INK, 'ink', .5);
   else if (m === 'smirk') inkLine(U([[-.9, my + .05], [.2, my + .15], [1.0, my - .35]], u), sw * .9, INK, 'ink', .6);
   else { push(); translate(0, my * u); scale(.45); translate(0, 4.3 * u); mouth(u, m, sw / .45 * .8); pop(); }
-  for (const s of [-1, 1]) {   // the tusks, up from the lower lip
+  if (o.tusks !== false) for (const s of [-1, 1]) {   // the tusks, up from the lower lip
     const tb = m === 'laugh' || m === 'roar' ? my - .2 + (.6 + .9 * mk) * .75 : my + .25;
     paint(U([[s * .62, tb], [s * .98, tb], [s * .85, tb - .75]], u), { wash: C.tusk, ink: INK, sw: sw * .45 });
   }
   rs('moustache');
-  const mw = m === 'laugh' || m === 'roar' ? .25 : 0;
-  for (const s of [-1, 1]) {
+  const mw = m === 'laugh' || m === 'roar' ? .25 : 0, stK = o.stache || 'curl';
+  if (stK === 'thin') for (const s of [-1, 1]) paint(U(ribbon([[s * .15, -17.25 - mw], [s * 1.2, -17.1 - mw], [s * 2.2, -16.6 - mw], [s * 2.6, -15.7 - mw]], .5, .08), u), { wash: C.hair, ink: INK, sw: sw * .45, curv: .5 });
+  if (stK === 'curl') for (const s of [-1, 1]) {
     paint(U(ribbon([[s * .15, -17.25 - mw], [s * 1.1, -17.0 - mw], [s * 2.1, -17.05 - mw], [s * 2.85, -17.5 - mw], [s * 3.05, -18.15 - mw], [s * 2.6, -18.45 - mw]], .95, .14), u), { wash: C.hair, ink: INK, sw: sw * .55, curv: .5 });
     inkLine(U([[s * .6, -17.15 - mw], [s * 1.6, -17.0 - mw], [s * 2.4, -17.2 - mw]], u), sw * .5, C.hairLt, 'inkfine', .5);
   }
   rs('nose');
   paint(U([[-.75, -17.9], [-.5, -18.4], [.5, -18.4], [.75, -17.9], [.45, -17.45], [-.45, -17.45]], u), { wash: dk, ink: INK, sw: sw * .6, curv: .45 });
   for (const s of [-1, 1]) paint(ellPts(s * .32 * u, -17.75 * u, .14 * u, .1 * u, 6), { wash: INK, ink: null });
-  const ring = ellPts(0, -17.2 * u, .48 * u, .42 * u, 16); inkLine([...ring, ring[0], ring[1]], sw * 1.6, C.gold, 'ink', .5);
+  if (o.ring !== false) { const ring = ellPts(0, -17.2 * u, .48 * u, .42 * u, 16); inkLine([...ring, ring[0], ring[1]], sw * 1.6, C.gold, 'ink', .5); }
   pop();
   pop();   // head
 
