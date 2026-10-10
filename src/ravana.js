@@ -23,7 +23,7 @@
 //           'pout' | 'open' | 'O' | 'teeth' | 'chew' | 'wobble' | 'yawn' | 'sick'; others are Clawd's) + mouthK,
 //           hat ('crown' | 'mukut' | 'cap' | 'none'), dx / dy (u), tilt (radians), s (scale), sq, tint / tintK,
 //           blush, sweat, puff 0..1 (cheeks), bubble 0..1 (a snore bubble), drool, crumbs, sparkle, curl, goldTooth,
-//           chinUp, hide (don't draw it: the scene draws it elsewhere with ravanaLoneHead()), emote + emoteK + emoteAge
+//           chinUp, z (draw order: higher on top), hide (don't draw it: the scene draws it elsewhere with ravanaLoneHead()), emote + emoteK + emoteAge
 //   arms:   arms 0..19 (0..9 screen-left, 10..19 screen-right; k = a % 10, k = 9 is the front arm at his side, 0..8
 //           fan from up-and-out to down). handL / handR = [x, y] in u (the front arms). arm(a, s, k, def) → an object
 //           over the default {hand: [x, y] (u), shape ('open' | 'fist' | 'point' | 'hold'), front (draw over the
@@ -31,7 +31,8 @@
 //   look:   effigy (the Dussehra effigy: bright paper colours, no blink, painted seams), young (the young ascetic: a
 //           saffron dhoti and shawl, a sacred thread, no vest, no crowns), pal, tint / tintK (the body), noShadow,
 //           swMul, boilKey
-//   hooks:  held(u, sw) (body space, over the vest, under the front arms)
+//   hooks:  held(u, sw) (body space, over the vest, under the front arms), between() (world space, after the heads and
+//           before the front arms: a quilt or a table the front arms reach over)
 // Helpers: rvHeadPos(o, i) → [x, y, r] in u; ravanaHead(x, y, u, o, i) / ravanaMouth(x, y, u, o, i) / ravanaHand(x, y, u,
 // o, a) / ravanaChest(x, y, u, o) → world [x, y]; ravanaLoneHead(x, y, R, i, h) draws one head anywhere (R = its radius
 // in px), rvHat(kind, R, sw) draws a hat at the head centre (for a flying crown).
@@ -318,12 +319,14 @@ function ravana(x, y, u, o = {}) {
 
   // ---- the mantle every head sits on: plum (young: a saffron shawl), gold trim, a gold drop under each chin
   const HP = []; for (let i = 0; i < RV_N; i++) HP.push(rvHeadPos(o, i));
-  const byX = HP.map((p, i) => [...p, i]).sort((a, b) => a[0] - b[0]);
+  const HO = [...Array(RV_N).keys()].map(i => rvHeadOpts(o, i));
+  const byX = HP.map((p, i) => [...p, i]).filter(p => !HO[p[3]].hide).sort((a, b) => a[0] - b[0]);
   rs('mantle');
-  {
+  if (byX.length) {
     const top = byX.map(([hx, hy, r]) => [hx, hy + r * .55]);
     const L0 = byX[0], R0 = byX[byX.length - 1];
     const bot = byX.slice().reverse().map(([hx, hy, r]) => [hx, Math.abs(hx) < 4.2 ? -15.0 : hy + r * .55 + 1.7]);
+    if (byX.length === 1) { const [hx, hy, r] = byX[0]; bot.splice(0, 1, [hx + 3.4, -15.0], [hx - 3.4, -15.0]); }
     const M = [[L0[0] - L0[2] * .7, L0[1] + L0[2] * .9], ...top, [R0[0] + R0[2] * .7, R0[1] + R0[2] * .9], ...bot];
     paint(U(M, u), { wash: C.vest, fill: C.vestDk, fillOp: 55, tex: .5, ink: INK, sw: sw * .8, curv: .45 });
     inkLine(U(bot.slice().reverse().map(([a, b]) => [a, b - .2]), u), sw * 1.8, C.gold, 'ink', .5);
@@ -331,16 +334,17 @@ function ravana(x, y, u, o = {}) {
   }
 
   // ---- the heads: the outside ones first, the boss last (on top)
-  const order = [...Array(RV_N).keys()].sort((a, b) => Math.abs(b - RV_BOSS) - Math.abs(a - RV_BOSS) || b - a);
+  const order = [...Array(RV_N).keys()].sort((a, b) => (HO[a].z || 0) - (HO[b].z || 0) || Math.abs(b - RV_BOSS) - Math.abs(a - RV_BOSS) || b - a);
   for (const i of order) {
-    const h = rvHeadOpts(o, i);
+    const h = HO[i];
     if (h.hide) continue;
     const [hx, hy, r] = HP[i];
     if (o.young && h.hat !== 'cap') h.hat = 'none';
     rvHeadAt(hx * u, hy * u, r * u, h, C, id + ' ' + i, i, !!o.effigy);
   }
 
-  // ---- the front arms (and any arm brought in front)
+  // ---- the front arms (and any arm brought in front); between() draws world things under them (a quilt, a table)
+  if (o.between) { pop(); rs('between'); o.between(); push(); translate(x + (o.dx || 0) * u + sk * u, y + (o.dy || 0) * u); if (o.rot) rotate(o.rot); scale((o.flip ? -1 : 1) * (1 + sq * .6), 1 - sq); }
   for (const A of arms) if (A.front) rvDrawArm(A, u, sw, C, col, dk, INK, rs);
   pop();
 
