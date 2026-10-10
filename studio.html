@@ -48,10 +48,14 @@
 <script src="src/raktabija.js"></script>   <!-- after bappa.js (U()) and clawd.js: it registers ?loop=raktabija -->
 <script src="src/kali.js"></script>   <!-- after kalaratri.js: built on it -->
 <script src="src/ravana.js"></script>   <!-- after bappa.js (U()) and clawd.js: it registers ?loop=ravana -->
+<script src="src/bal_hanuman.js"></script>   <!-- after bappa.js (U()), clawd.js and aarav.js (his hands) -->
+<script src="src/indra.js"></script>   <!-- after bappa.js (U()) and clawd.js -->
 <!-- reference sheets (standalone loops) -->
 <script src="src/sheets.js"></script>
 <!-- your video: add a script per scene file, in order -->
-<script src="src/scenes/demo.js"></script>
+<script src="src/scenes/rk_images.js"></script>
+<script src="src/scenes/sun_props.js"></script>
+<script src="src/scenes/sun.js"></script>
 <script>
   // Open studio.html?loop=emotions (or views) to scrub a standalone loop instead of the video.
   const q = new URLSearchParams(location.search).get('loop'); if (q && LOOPS[q]) window.LOOP = LOOPS[q];
