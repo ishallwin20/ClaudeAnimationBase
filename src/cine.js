@@ -130,6 +130,22 @@ function figure(c, draw, o = {}) {
   DEPTH = d;
 }
 
+// Named lighting setups for figure(), from the Shiva/Sati reel. Use one as it is, or spread it and change a part:
+//   figure(c, draw, { ...LIGHTS.moon, rim: { ...LIGHTS.moon.rim, a: .8 + flash } })
+// rim dx/dy are screen pixels: about 6 for a figure ~1500 px tall, 3 for a small one, 9 for a face filling the frame.
+//   moon            a coloured figure at night: cool cast, darker toward the feet, pale edge, moonlight rim from the right
+//   moonSilhouette  a small far figure at night: nearly black, with a cool edge and rim
+//   fire            lit by a fire in front of it (often from behind the figure): warm dark cast, orange edge and rim
+//   dawnBack        backlit by the rising sun: dark warm cast that keeps a little colour, a strong gold edge all round
+//   storm           a near-black silhouette against a red sky: hot orange edge, rim from above (add lightning to rim.a)
+const LIGHTS = {
+  moon: { tint: ['#16224A', .3], grade: [[600, 'rgba(0,0,0,0)'], [1900, 'rgba(4,7,18,.7)']], edge: { col: '#D4E0FA', w: 2.4, a: .55 }, rim: { col: '#EAF1FF', dx: 6, dy: -3, a: .8, blur: 1 } },
+  moonSilhouette: { tint: ['#0A0F1C', .84], edge: { col: '#C9D7F5', w: 1.8, a: .55 }, rim: { col: '#E4EDFF', dx: 3, dy: -2, a: .9 } },
+  fire: { tint: ['#1A0806', .5], edge: { col: '#FFB070', w: 2.5, a: .75 }, rim: { col: '#FFD08A', dx: 6, dy: -3, a: .9, blur: 1 } },
+  dawnBack: { tint: ['#2A1018', .55], edge: { col: '#FFD9A0', w: 2.4, a: .85 }, rim: { col: '#FFF0C8', dx: 5, dy: -3, a: .9, blur: 1 } },
+  storm: { tint: ['#140810', .88], edge: { col: '#FF9A6A', w: 2.5, a: .8 }, rim: { col: '#FFB08A', dx: 0, dy: -5, a: .8, blur: 1 } },
+};
+
 // ---------- camera ----------
 // plane(c, cam, depth, draw): draw a layer of the set at a depth. cam = { x, y, z } pans (px) and zooms the stage plane
 // (depth 1); depth 0 never moves (the sky), 0.3 moves a little (far mountains), >1 moves more (foreground rocks).
