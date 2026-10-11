@@ -243,11 +243,11 @@ const strikes = (t, ts) => ts.reduce((s, t0) => { const u = t - t0; return u < 0
 // ---------- karaoke captions ----------
 // say(a, b, text, o): a caption chunk on screen from a to b. Words light up one by one as they're spoken: from o.at
 // (word start times, e.g. from TTS timestamps) or, without them, spread over [a + o.lead, b - o.tail] by length.
-// Words wrapped in *stars* are names and land in gold. o.y = centre line (screen px), o.size.
+// Words wrapped in *stars* are names and land in gold; a lone | breaks the line. o.y = centre line (screen px), o.size.
 const CAPTIONS = [];
 const CAP = { font: 'Cinzel', weight: 700, size: 56, y: 960, x: 520, maxW: 820, lit: '#FFF3DC', gold: '#F4C46A', dim: .34 };
 function say(a, b, text, o = {}) {
-  const words = text.split(/\s+/).filter(Boolean).map(w => ({ txt: w.replace(/\*/g, ''), gold: /\*/.test(w) }));
+  const words = []; text.split(/\s+/).filter(Boolean).forEach(w => w === '|' ? (words.length && (words[words.length - 1].br = true)) : words.push({ txt: w.replace(/\*/g, ''), gold: /\*/.test(w) }));
   let at = o.at;
   if (!at) {
     const s0 = a + (o.lead ?? .05), s1 = b - (o.tail ?? .45), lens = words.map(w => w.txt.length + 2), tot = lens.reduce((x, y) => x + y, 0);
@@ -263,7 +263,7 @@ function drawCaptions(c, t) {
     if (vis <= 0) continue;
     c.save(); c.font = `${CAP.weight} ${size}px ${CAP.font}`; c.letterSpacing = (size * .03) + 'px'; c.textBaseline = 'middle';
     const sp = c.measureText(' ').width, lines = [[]]; let lw = 0;
-    for (const w of k.words) { w.w = c.measureText(w.txt).width; if (lw + w.w > CAP.maxW && lines[lines.length - 1].length) { lines.push([]); lw = 0; } lines[lines.length - 1].push(w); lw += w.w + sp; }
+    for (const w of k.words) { w.w = c.measureText(w.txt).width; if (lw + w.w > CAP.maxW && lines[lines.length - 1].length) { lines.push([]); lw = 0; } lines[lines.length - 1].push(w); lw += w.w + sp; if (w.br) { lines.push([]); lw = 0; } }
     const lh = size * 1.32, y0 = clamp(k.y, 420 + lh * lines.length / 2, 1500 - lh * lines.length / 2) - (lines.length - 1) * lh / 2 + (1 - vis) * 10;
     lines.forEach((ln, li) => {
       const tw = ln.reduce((s, w) => s + w.w, 0) + sp * (ln.length - 1); let x = CAP.x - tw / 2;
@@ -277,6 +277,30 @@ function drawCaptions(c, t) {
     });
     c.restore();
   }
+}
+
+// ---------- pictures and plain lettering (end cards) ----------
+// PICS.name = an Image from a data URI (src/scenes/rk_images.js fills in the book covers and the logo); setup waits for them.
+// picture(c, img, x, y, w, h, o) centred on (x, y): o.rot, o.pop (seconds since it appeared: springs in), o.alpha,
+// o.r (corner radius), o.shadow (soft shadow blur px), o.glow ([col, blur] a halo behind it).
+// text(c, txt, x, y, font, col, o): centred lettering; o.pop, o.alpha, o.maxW, o.glow ([col, blur]), o.spacing (px).
+const PICS = {};
+const popK = s => s == null ? 1 : s <= 0 ? 0 : (x => 1 + 2.9 * Math.pow(x - 1, 3) + 1.9 * Math.pow(x - 1, 2))(clamp(s * 4));
+function picture(c, img, x, y, w, h, o = {}) {
+  const k = popK(o.pop); if (k <= .01 || !img || !img.naturalWidth) return;
+  c.save(); c.translate(x, y); c.rotate(o.rot || 0); c.scale(k, k); c.globalAlpha *= (o.alpha ?? 1) * clamp(k);
+  if (o.glow) { c.save(); c.shadowColor = o.glow[0]; c.shadowBlur = o.glow[1]; c.fillStyle = o.glow[0]; c.beginPath(); c.roundRect(-w / 2, -h / 2, w, h, o.r || 0); c.fill(); c.restore(); }
+  if (o.shadow) { c.save(); c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = o.shadow; c.shadowOffsetY = o.shadow * .4; c.fillStyle = '#000'; c.beginPath(); c.roundRect(-w / 2, -h / 2, w, h, o.r || 0); c.fill(); c.restore(); }
+  if (o.r) { c.beginPath(); c.roundRect(-w / 2, -h / 2, w, h, o.r); c.clip(); }
+  c.drawImage(img, -w / 2, -h / 2, w, h); c.restore();
+}
+function text(c, txt, x, y, font, col, o = {}) {
+  const k = popK(o.pop); if (k <= .01) return;
+  c.save(); c.translate(x, y); c.scale(k, k); c.globalAlpha *= (o.alpha ?? 1) * clamp(k);
+  c.font = font; c.letterSpacing = (o.spacing || 0) + 'px'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  if (o.maxW) { const w = c.measureText(txt).width; if (w > o.maxW) c.scale(o.maxW / w, o.maxW / w); }
+  if (o.glow) { c.shadowColor = o.glow[0]; c.shadowBlur = o.glow[1]; }
+  c.fillStyle = col; c.fillText(txt, 0, 0); c.restore();
 }
 
 // ---------- the frame ----------
@@ -330,6 +354,7 @@ async function cineSetup() {
   outC = document.getElementById('out'); outC.width = W; outC.height = H; outC.style.aspectRatio = W + ' / ' + H; outX = outC.getContext('2d');
   VIG = makeVignette(); GRAIN = [1, 2, 3, 4].map(makeGrain);
   await Promise.all([`${CAP.weight} ${CAP.size}px ${CAP.font}`, ...(PROJECT.fonts || [])].map(f => document.fonts.load(f)));
+  await Promise.all(Object.values(PICS).map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
   window.ready = true;
   if (!location.search.includes('render')) devUI();
 }
