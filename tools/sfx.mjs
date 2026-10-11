@@ -119,6 +119,44 @@ export const drone = (dur, f, amp = 1) => mixb(tone(dur, t => f + 2 * Math.sin(t
 // a slide-whistle glide f0 → f1 (exponential, with vibrato): up = a boing / jolt / launch, down = a fall or dive
 export const slide = (dur, f0, f1, amp = 1) => tone(dur, t => f0 * Math.pow(f1 / f0, t / dur), { e: env.swell(.02, .06), fm: t => .003 * Math.sin(t * TAU * 6), amp });
 
+// ---------- epic and devotional sounds (the Cinematic style's beds; first used in the Shiva/Sati reel) ----------
+// thunder: a crack, then a long low roll that swells and dies away. near 0..1 (far = less crack). Gain ~.5–.75.
+export const thunder = (dur, near = 1) => mixb(
+  crackle(.5 * near, .7 * near),
+  noise(.25, { hp: 300, lp: 4000, e: env.pluck(14), amp: .8 * near }),
+  noise(dur, { brown: true, lp: 260, e: (t) => Math.min(1, t * 6) * Math.exp(-t * 1.1) * (.75 + .25 * Math.sin(t * 9)), amp: 1.4 }));
+// one damru stroke (a bead on a small tight skin). Alternate two pitches ~12% apart for the roll; 14–16 strokes/s.
+export const damru = (f = 240, amp = 1) => mixb(tone(.16, t => f * (1 + .5 * Math.exp(-t * 60)), { e: env.pluck(26), amp }), noise(.06, { hp: 1200, lp: 6000, e: env.pluck(60), amp: amp * .35 }));
+// wind: a band of noise whose filter drifts; ph decorrelates two copies for stereo (pan them -.5 and .5)
+export const wind = (dur, ph = 0, fade = 1.2) => noise(dur, { lp: t => Math.max(220, 600 + 400 * Math.sin(t * .7 + ph) + 250 * Math.sin(t * 1.9 + ph)), hp: 120, e: env.swell(fade, fade), amp: 1 });
+// a deep drum: a pitched body that drops, and a slap. f ~40–70 Hz; len longer = a boom (a stamp, an insult, an impact)
+export const drum = (f = 70, amp = 1, len = .7) => mixb(tone(len, t => f * (1 + 1.4 * Math.exp(-t * 28)), { e: env.pluck(5 / len), amp }), noise(.08, { lp: 1200, e: env.pluck(40), amp: amp * .5 }));
+// a fire burning: a brown-noise roar from a0 to a1 over its length, with crackle
+export const fire = (dur, a0 = .5, a1 = 1) => mixb(
+  noise(dur, { brown: true, lp: 500, e: (t, D) => lerp(a0, a1, t / D) * Math.min(1, t / .5) * Math.min(1, (D - t) / .3), amp: 1.2 }),
+  crackle(dur, .5));
+// om: a low chanted tone with its octave and fifth, breathing in and out (f 73–110 Hz). Temples, meditation, card beds.
+export const om = (dur, f = 110, amp = 1) => mixb(
+  tone(dur, t => f * (1 + .003 * Math.sin(t * 5)), { e: env.swell(.8, .8), amp }),
+  tone(dur, f * 2, { type: 'tri', e: env.swell(1, .8), amp: amp * .25 }),
+  tone(dur, f * 3, { e: env.swell(1.2, .8), amp: amp * .08 }),
+  noise(dur, { hp: 300, lp: 900, e: env.swell(1, .8), amp: amp * .05 }));
+// shankh (conch): a horn-like tone that bends up into pitch, with breath. For a goddess's or a god's arrival.
+export const conch = (dur, f = 311, amp = 1) => {
+  const fq = t => f * (1 - .06 * Math.exp(-t * 6)) * (1 + .004 * Math.sin(t * 31)), e = env.swell(.25, .6);
+  return mixb(tone(dur, fq, { e, amp }), tone(dur, t => fq(t) * 2, { e, amp: amp * .45 }), tone(dur, t => fq(t) * 3, { e, amp: amp * .2 }), tone(dur, t => fq(t) * 4, { e, amp: amp * .08 }), noise(dur, { hp: 500, lp: 3000, e, amp: amp * .08 }));
+};
+// a crowd laughing (a band of voices pulsing at a laughing rate); lay two, panned apart
+export const laughter = (dur, amp = 1) => { const b = noise(dur, { hp: 350, lp: 1800, e: env.swell(.15, .5), amp }); for (let i = 0; i < b.length; i++) { const t = i / SR; b[i] *= .35 + .65 * Math.max(0, Math.sin(t * TAU * (5.2 + Math.sin(t * 1.3)))) ** 2; } return b; };
+// a heartbeat (lub-dub); space them ~.6 s
+export const heart = (amp = 1) => { const a = drum(48, amp, .35), b = drum(44, amp * .7, .3), o = buf(.18 + b.length / SR); for (let i = 0; i < a.length; i++) o[i] += a[i]; const s = Math.round(.18 * SR); for (let i = 0; i < b.length; i++) o[s + i] += b[i]; return o; };
+// a spinning weapon closing in (a chakra, a discus): a rising buzz whose wobble speeds up
+export const whir = (dur, amp = 1) => tone(dur, t => 180 + 500 * (t / dur) ** 2, { type: 'saw', e: (t, D) => clamp(t / .2) * (.3 + .7 * t / D) * (.6 + .4 * Math.sin(t * TAU * (8 + 30 * t / D))), amp });
+// a small temple bell / chime; a pentatonic run of them sparkles (lights appearing, a card landing)
+export const chime = (f, amp = 1, dur = 2) => bell(f, dur, { partials: [[1, 1], [2.76, .4], [5.4, .15]], k: 2.2, amp });
+// a bird's chirp (dawn); scatter a few at random times and pans
+export const chirp = (amp = 1) => tone(.09, t => 3200 + 2400 * Math.sin(t * 60), { e: env.hann(), amp });
+
 // ---------- the timeline ----------
 // track(dur) → { at, write, L, R }: a stereo timeline. Sounds past either end are clipped.
 export function track(dur) {
@@ -163,6 +201,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     ['shimmer(.5, C E G C)', shimmer(.5, [72, 76, 79, 84].map(note)), .45], ['wah(note(55)) wah(note(53))', null, .35],
     ['burp()', burp(), .3], ['drone(1, 98)', drone(1, 98), .5], ['slide(.25, 300, 520) boing', slide(.25, 300, 520), .5],
     ['slide(.6, 1600, 300) fall', slide(.6, 1600, 300), .35], ['bell(note(84), 1.5)', bell(note(84), 1.5), .3],
+    ['thunder(2, 1)', thunder(2, 1), .6], ['damru(240)', damru(240), .5], ['drum(42, 1, 1.1) a stamp', drum(42, 1, 1.1), .7],
+    ['fire(1.5)', fire(1.5), .4], ['om(1.5, 110)', om(1.5, 110), .3], ['conch(1.6)', conch(1.6), .3], ['laughter(1.2)', laughter(1.2), .3],
+    ['heart()', heart(), .5], ['whir(1)', whir(1), .2], ['chime(note(84))', chime(note(84)), .2], ['chirp()', chirp(), .1], ['wind(1.5)', wind(1.5, 0, .4), .3],
   ];
   const T = track(demos.length * 1.2 + 1);
   demos.forEach(([name, b, g], i) => {

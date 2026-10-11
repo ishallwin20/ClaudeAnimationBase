@@ -1,18 +1,27 @@
 # Working in this repo
 
-Read [ANIMATION_GUIDE.md](ANIMATION_GUIDE.md) before drawing anything. This file adds what the guide doesn't say: how this
+Every reel is made in a named style ([STYLES.md](STYLES.md)): **Painted** ([ANIMATION_GUIDE.md](ANIMATION_GUIDE.md), the
+hand-painted p5.brush cartoon) or **Cinematic** ([CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md), the film-lit motion comic). The owner
+names the style; read that style's guide before drawing anything. This file adds what the guides don't say: how this
 project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishikatha), and what the owner has learned works.
 
 ## Branches
 - `main` holds the engine and the shared characters (Clawd, Bappa, Bal Bappa, Mooshak, Vayu, Shiva, Kartikeya, Parvati,
   Nandi, Shailputri, Brahmacharini, Chandraghanta, Menavati, Kalaratri and her donkey, Kamadeva and his parrot, a modern boy in a mustard tee, Aarav, the turquoise-tee kid of the book-doorway reels, Sher, Durga's lion, who also draws Chandraghanta's tigress and runs and leaps in side view, Maa Durga with her ten
-  arms and the gods' gifts, Mahishasura, the buffalo demon, with his buffalo form, the other asuras on his rig (Shumbha and Nishumbha, Chanda and Munda, Dhumralochana, a messenger), Raktabija, the blood-seed demon whose clones sprout from the ground, Maa Kali with her tongue out, Shiva lying down, Ravana with his ten heads (each a personality) and twenty arms, Bal Hanuman, baby Hanuman with golden fur, a curly tuft and a long tail, who sits, stands and flies, and Indra on Airavata, his four-tusked white elephant, with the vajra) and opens the demo. Shared characters and engine changes are committed to `main`.
+  arms and the gods' gifts, Mahishasura, the buffalo demon, with his buffalo form, the other asuras on his rig (Shumbha and Nishumbha, Chanda and Munda, Dhumralochana, a messenger), Raktabija, the blood-seed demon whose clones sprout from the ground, Maa Kali with her tongue out, Shiva lying down, Ravana with his ten heads (each a personality) and twenty arms, Bal Hanuman, baby Hanuman with golden fur, a curly tuft and a long tail, who sits, stands and flies, and Indra on Airavata, his four-tusked white elephant, with the vajra) and opens the demo. It also holds the Cinematic
+  style: its engine (`src/cine.js`), `cine.html` with the cast and lighting sheet, and its cast (`src/cine_shiva.js`: Shiva in
+  colour with the third eye, and the Nataraja; `src/cine_cast.js`: Sati, who becomes Shailputri with a trishul and lotus,
+  Daksha, crowds, the Rudra Tandava, Shiva seated, Nandi lying, the Sudarshan chakra, the yagna fire) and sets
+  (`src/cine_sets.js`: Kailash, cliffs, clouds, the ring of fire, a fire-lit hall, cracks, meteors, stars, shrines, the end
+  card). Shared characters and engine changes, in either style, are committed to `main`: enrich them there when a reel
+  needs more.
 - Each video gets its own branch off `main`: `reel/<idea>` for comedy reels, `ad/<n>-<book>-<idea>` for Rishi Katha
   book ads (e.g. `ad/1-book1-bull`). The branch holds `STORYBOARD.md`, `src/scenes/<name>.js` (+ `_props.js`),
   `tools/<name>_sfx.mjs` and its WAV in `assets/`, and the reel's `src/config.js` and `studio.html`. Merge `main` into it
   when the shared code moves on.
 - `ad/1-book1-bull` ("Why does Shailputri ride a bull?") is the reference for an explainer + book ad: start a new ad by
-  reading its storyboard and scene.
+  reading its storyboard and scene. `reel/shiva-cinematic` ("There is one dance even the gods fear") is the reference for
+  the Cinematic style: its `studio.html` is a copy of `cine.html` loading `src/config.js` and the reel's scene.
 
 ## Reel rules (from what worked and what didn't)
 - **9:16, 1080×1920.** Captions and every story read sit inside Instagram's safe band: y 420–1500, left of x 930
@@ -22,6 +31,8 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
 - **Ads end on the full call-to-action card** (no fade out): real covers via `picture()`, the RK logo, the price line,
   the `rishikatha.com` pill, "Follow @therishikatha". Model it on `assets/last_slide_sample.png`, but use the current
   offer: **Books 1–3, set of 3 for ₹500** (as of Oct 2026; Book 7 is "coming soon").
+- In the Cinematic style, captions are karaoke chunks (`say()`, 2.2–3 s each, names in gold) and the card is
+  `rkCardCine()`; the same safe band, frame-0 and card rules apply.
 - No voiceover by default: captions carry the explanation, a synthesized SFX track sits under it (`tools/sfx.mjs`), and
   music is added on Instagram, so always render a `--audio=none` copy too.
 - With a finished reel, also write the Instagram caption: the keyword question in the first ~125 characters, the

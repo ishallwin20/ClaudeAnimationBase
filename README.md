@@ -31,7 +31,11 @@ On Linux, `render.mjs` starts Chrome with `--no-sandbox` (Ubuntu 23.10+ blocks C
 
 | path | what it is |
 |---|---|
-| [ANIMATION_GUIDE.md](ANIMATION_GUIDE.md) | The rules, the workflow and the full API. Read it first. |
+| [STYLES.md](STYLES.md) | The named styles (Painted, Cinematic): which to use when, and where each one's guide, engine and characters are |
+| [ANIMATION_GUIDE.md](ANIMATION_GUIDE.md) | The Painted style: the rules, the workflow and the full API. Read it first. |
+| [CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md) | The Cinematic style: the look, the engine, building and lighting characters, shots, captions and sound |
+| [cine.html](cine.html), [src/cine.js](src/cine.js) | The Cinematic style's studio page (the cast and lighting sheet) and its Canvas 2D engine |
+| [src/cine_shiva.js](src/cine_shiva.js), [src/cine_cast.js](src/cine_cast.js), [src/cine_sets.js](src/cine_sets.js) | The Cinematic cast (Shiva, Nataraja, Sati/Shailputri, Daksha, the Rudra Tandava, Nandi, the chakra …) and sets |
 | [src/clawd.js](src/clawd.js) | Clawd: views, emotions, eyes, mouths, hats, emotes, dances |
 | [src/bappa.js](src/bappa.js) | Bappa (chibi Ganesha) and Mooshak, painted with Clawd's tools |
 | [src/bal_bappa.js](src/bal_bappa.js) | Bal Bappa: baby Ganesha in a blue turban and shawl, sitting or standing |
@@ -47,4 +51,4 @@ On Linux, `render.mjs` starts Chrome with `--no-sandbox` (Ubuntu 23.10+ blocks C
 | [src/scenes/](src/scenes/) | Your video goes here (the demo is an example) |
 | [render.mjs](render.mjs) | Headless renderer: contact sheets, frame strips, crops, stills, MP4 |
 | [tools/sfx.mjs](tools/sfx.mjs) | Cartoon sound effects synthesized in Node (whoosh, thud, zap, bite, burp, sparkle …) and placed on a timeline, written as a WAV to mux into the video |
-| [docs/](docs/) | Model sheets: [emotions](docs/emotions.jpg) (also [animated](docs/emotions.webp)) and [views, motion and hats](docs/views.jpg) |
+| [docs/](docs/) | Model sheets: [emotions](docs/emotions.jpg) (also [animated](docs/emotions.webp)) and [views, motion and hats](docs/views.jpg); the Cinematic [cast](docs/cine_cast.jpg) and [lighting](docs/cine_lighting.jpg) |
