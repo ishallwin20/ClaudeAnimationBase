@@ -8,6 +8,11 @@
 //   nandiLying(c, o)    Nandi lying down, side view facing left
 //   chakra(c, ...)      the Sudarshan chakra: a spinning, flaming disc of light
 //   yagna(c, ...)       the fire altar and its fire
+//   nandiStanding(c, o) Nandi, the great white bull, standing, side view facing left; in colour (or o.col), o.eyes glow
+//   pushpak(c, o)       Ravana's flying chariot, side view flying right; o.layer 'back' | 'front' to put a rider between
+//   shivaFoot(c, o)     Shiva's foot, side view (toes to screen right) on a rock: o.press 0..1, the big toe pressing down
+//   parvatiCling(c, o)  Parvati seated, leaning to clutch Shiva's arm (to her left): a silhouette (o.col)
+//   hanumanLeap(c, o)   Hanuman in mid-leap to screen right, his tail curled up: a silhouette; returns the tail tip
 const SATI = { skin: '#B9785A', skinSh: '#8E5640', hair: '#16101A', hairLt: '#33263A', sari: '#A51E2C', sariSh: '#6E1320', border: '#E3A93B', blouse: '#7A1420', flower: '#F3EBD8' };
 
 // ---------- Sati, seen from behind ----------
@@ -219,4 +224,164 @@ function yagna(c, x, y, w, t, k = 1) {
     }
   }
   c.restore();
+}
+
+// ---------- Nandi standing ----------
+// The great white bull, side view facing screen left, about 600 long and 470 to the horn tips; feet at y 0, x -260..270.
+// o: t, col (one colour: a silhouette), eyes (0..1 a gold glow in the eye: his anger), light (1 from the right).
+const NANDI = { white: '#E9E4DA', sh: '#B7AEA2', dk: '#857B70', muzzle: '#CDBDB4', nose: '#5A4A48', hoof: '#3A302C', horn: '#D9CFBF', hornSh: '#9E9282',
+  cloth: '#9E1E2A', clothSh: '#6A1420', gold: '#D9A441', marigold: '#F0A030', marigoldSh: '#C8701E' };
+function nandiStanding(c, o = {}) {
+  const t = o.t || 0, N = NANDI, one = o.col, C = (k) => one || N[k], br = Math.sin(t * 1.5) * 1.5, nod = Math.sin(t * 1.1) * .02;
+  // the far legs, in shade
+  for (const [x, w] of [[-120, 52], [196, 62]]) { limb(c, [[x, -190], [x + 6, -90], [x + 2, -16]], [w, w * .7, w * .55], C('dk')); ellipse(c, x + 2, -10, w * .32, 12, C('hoof')); }
+  // the tail
+  limb(c, [[250, -310], [268, -240], [266 + Math.sin(t * 1.3) * 6, -160], [260 + Math.sin(t * 1.3) * 10, -110]], [16, 11, 8, 6], C('sh'), false);
+  ellipse(c, 260 + Math.sin(t * 1.3) * 10, -96, 12, 22, C('dk'));
+  // body and hump
+  const BODY = `M -214 -250 C -224 -312 -172 ${-352 + br} -110 ${-354 + br} C -20 ${-352 + br} 80 ${-342 + br} 160 -338 C 222 -336 254 -300 254 -250 C 254 -200 234 -170 204 -166 C 120 -158 -40 -150 -150 -160 C -192 -166 -210 -200 -214 -250 Z`;
+  fillPath(c, BODY, C('white'));
+  fillPath(c, `M -178 -330 C -170 ${-430 + br} -86 ${-432 + br} -60 -342 Z`, C('white'));
+  if (!one) inside(c, BODY, () => { fillPath(c, 'M -240 -210 C -100 -196 100 -206 270 -224 L 270 -140 L -240 -140 Z', rgba(N.sh, .85)); ellipse(c, 170, -290, 80, 50, rgba(N.sh, .35)); });
+  // the cloth over his back: red with a gold border and tassels
+  const CL = `M -96 ${-350 + br} C 0 ${-352 + br} 90 -344 150 -338 L 142 -236 C 60 -240 -40 -242 -108 -236 Z`;
+  fillPath(c, CL, C('cloth'));
+  if (!one) { inside(c, CL, () => { fillPath(c, 'M -140 -256 L 180 -256 L 180 -226 L -140 -226 Z', N.gold); fillPath(c, 'M 40 -360 L 200 -360 L 200 -220 L 40 -220 Z', rgba(N.clothSh, .6)); for (let i = 0; i < 5; i++) ellipse(c, -60 + i * 46, -300, 9, 9, N.gold); }); for (let i = 0; i < 9; i++) limb(c, [[-104 + i * 30, -238], [-104 + i * 30, -222]], [6, 3], N.gold, false); }
+  // the near legs
+  for (const [x, w, k] of [[-150, 56, 0], [164, 68, 1]]) {
+    limb(c, [[x, -200], [x - 4 + k * 10, -120], [x - 2, -18]], [w * 1.2, w * .66, w * .52], C('white'));
+    if (!one) limb(c, [[x + w * .3, -190], [x + w * .2 + k * 8, -120], [x + 10, -24]], [w * .4, w * .25, w * .2], rgba(N.sh, .8));
+    ellipse(c, x - 2, -10, w * .34, 12, C('hoof'));
+  }
+  // neck, dewlap, head (muzzle down and forward), horns, ear, eye
+  c.save(); c.translate(-200, -300); c.rotate(nod);
+  fillPath(c, 'M 30 -60 C -10 -80 -60 -86 -90 -76 L -110 10 C -70 30 -10 40 40 46 Z', C('white'));
+  fillPath(c, 'M -10 30 C -30 80 -60 96 -84 70 C -84 40 -80 10 -70 -10 Z', C('white'));
+  if (!one) fillPath(c, 'M -10 30 C -30 80 -60 96 -84 70 C -70 74 -50 64 -40 30 Z', rgba(N.sh, .8));
+  const HEAD = 'M -60 -90 C -92 -102 -128 -94 -146 -66 C -160 -42 -168 -2 -160 22 C -150 40 -126 42 -112 30 C -96 6 -74 -26 -48 -44 Z';
+  limb(c, [[-104, -94], [-96, -140], [-70, -168], [-52, -172]], [20, 15, 9, 3], C('horn'));
+  if (!one) limb(c, [[-100, -100], [-90, -140], [-68, -164]], [7, 5, 2], rgba(N.hornSh, .9));
+  fillPath(c, HEAD, C('white'));
+  if (!one) inside(c, HEAD, () => { fillPath(c, 'M -170 -10 C -150 -10 -120 0 -100 30 L -170 60 Z', rgba(N.muzzle, .9)); ellipse(c, -100, -60, 40, 18, rgba(N.sh, .5), -.6); });
+  ellipse(c, -152, 18, 7, 5, C('nose'), .4);
+  limb(c, [[-58, -86], [-46, -132], [-30, -150]], [16, 11, 3], C('horn'));
+  ellipse(c, -50, -66, 30, 11, C('white'), .5); if (!one) ellipse(c, -50, -66, 20, 5, rgba(N.muzzle, .9), .5);
+  if (!one) {
+    ellipse(c, -110, -60, 8, 6, '#1A1210', -.2); ellipse(c, -108, -62, 2.2, 2, '#FFF4E0');
+    strokePath(c, 'M -122 -66 Q -110 -72 -98 -64', rgba(N.dk, .9), 2.4);
+  }
+  if (o.eyes) { glow(c, -110, -60, 70 * o.eyes, '#FFC54A', .9 * o.eyes); ellipse(c, -110, -60, 8, 6, mixCol('#1A1210', '#FFE27A', o.eyes), -.2); }
+  // the bell on a red band, and a marigold garland
+  strokePath(c, 'M 10 -40 C -10 10 -40 30 -70 34', C('cloth'), 12);
+  fillPath(c, 'M -54 38 C -66 38 -72 52 -72 66 L -36 66 C -36 52 -42 38 -54 38 Z', C('gold'));
+  for (let i = 0; i < 11; i++) { const u = i / 10, x = lerp(26, -96, u), y = -54 + Math.sin(u * Math.PI) * 70; ellipse(c, x, y, 11, 11, C(i % 2 ? 'marigold' : 'marigoldSh')); }
+  c.restore();
+}
+
+// ---------- the Pushpak vimana ----------
+// Kubera's flying chariot, taken by Ravana: a gilded boat with a swan prow, a pillared pavilion and a temple tower,
+// wings, pennants, light underneath. Side view flying right; the deck at y 0, x -320..360. o: t, layer ('back' draws
+// the wing, tower, pillars and canopy; 'front' the hull, rail and prow; omit for both), col (silhouette), glow (0..1).
+const PUSHPAK = { gold: '#D9A441', goldSh: '#93692A', goldLt: '#F6D58A', wood: '#7A3A22', woodSh: '#4E2414', roof: '#A8342A', roofSh: '#6E1E1A', cloth: '#C8452B', white: '#F2EBDC', wing: '#E9DFC8', wingSh: '#B5A684' };
+function pushpak(c, o = {}) {
+  const t = o.t || 0, P = PUSHPAK, one = o.col, C = (k) => one || P[k], back = o.layer !== 'front', front = o.layer !== 'back';
+  if (back) {
+    // the wing, beating slowly
+    const fl = Math.sin(t * 2.2) * .18;
+    c.save(); c.translate(-40, -10); c.rotate(-.15 + fl);
+    fillPath(c, 'M 0 0 C -60 -120 -200 -230 -380 -260 C -330 -220 -320 -190 -340 -170 C -290 -170 -270 -140 -290 -110 C -230 -120 -200 -90 -220 -60 C -150 -70 -90 -40 -60 0 Z', C('wing'));
+    if (!one) for (let i = 0; i < 4; i++) strokePath(c, `M ${-40 - i * 20} ${-10 - i * 8} C ${-120 - i * 40} ${-80 - i * 30} ${-220 - i * 30} ${-150 - i * 25} ${-330 + i * 10} ${-170 - i * 20}`, rgba(P.wingSh, .9), 3);
+    c.restore();
+    // the temple tower at the back, then the pillars and the canopy
+    fillPath(c, 'M -250 -20 L -250 -230 L -90 -230 L -90 -20 Z', C('wood'));
+    for (let i = 0; i < 4; i++) { const w = 90 - i * 18, y = -230 - i * 48; fillPath(c, `M ${-170 - w} ${y} L ${-170 + w} ${y} L ${-170 + w * .82} ${y - 50} L ${-170 - w * .82} ${y - 50} Z`, C(i % 2 ? 'roofSh' : 'roof')); fillPath(c, `M ${-170 - w - 6} ${y} L ${-170 + w + 6} ${y} L ${-170 + w + 6} ${y - 8} L ${-170 - w - 6} ${y - 8} Z`, C('gold')); }
+    ellipse(c, -170, -440, 26, 22, C('gold')); fillPath(c, 'M -176 -458 L -164 -458 L -170 -500 Z', C('gold'));
+    limb(c, [[-170, -500], [-170, -560]], [5, 4], C('goldSh'), false);
+    const wv = (k) => Math.sin(t * 6 - k * 3) * 10 * k;
+    limb(c, [[-170, -556], [-210, -548 + wv(.3)], [-250, -544 + wv(.6)], [-300, -530 + wv(1)]], [24, 22, 16, 4], C('cloth'), false);
+    for (const x of [-60, 30, 120, 210]) { fillPath(c, `M ${x - 9} -10 L ${x + 9} -10 L ${x + 9} -210 L ${x - 9} -210 Z`, C('gold')); if (!one) fillPath(c, `M ${x + 2} -10 L ${x + 9} -10 L ${x + 9} -210 L ${x + 2} -210 Z`, P.goldSh); }
+    fillPath(c, 'M -90 -200 C 0 -250 150 -250 250 -200 L 250 -224 C 150 -280 0 -280 -90 -224 Z', C('roof'));
+    fillPath(c, 'M -100 -196 L 260 -196 L 260 -212 L -100 -212 Z', C('gold'));
+    for (let i = 0; i < 9; i++) { const x = -80 + i * 40; strokePath(c, `M ${x} -196 L ${x} -176`, C('goldSh'), 2); ellipse(c, x, -172, 5, 6, C('gold')); }
+  }
+  if (front) {
+    if (!one && (o.glow ?? 1) > 0) { glow(c, 0, 70, 420, '#FFC86A', .5 * (o.glow ?? 1)); glow(c, 0, 50, 160, '#FFF0C0', .5 * (o.glow ?? 1)); }
+    const HULL = 'M -320 -40 C -260 40 -150 74 0 76 C 150 74 270 44 330 -30 L 316 -42 C 210 -10 100 -2 0 -2 C -100 -2 -210 -8 -320 -40 Z';
+    fillPath(c, HULL, C('gold'));
+    if (!one) inside(c, HULL, () => { fillPath(c, 'M -400 30 C -200 90 200 90 400 20 L 400 120 L -400 120 Z', P.goldSh); for (let i = 0; i < 13; i++) { const x = -270 + i * 45; ellipse(c, x, 26 + Math.sin(i / 12 * Math.PI) * 12, 10, 10, i % 2 ? P.cloth : P.goldLt); } strokePath(c, 'M -320 -26 C -200 4 200 4 330 -18', P.goldLt, 3); });
+    // the rail
+    strokePath(c, 'M -300 -66 C -200 -40 160 -40 300 -62', C('gold'), 6);
+    for (let i = 0; i < 14; i++) { const x = -290 + i * 44; strokePath(c, `M ${x} -4 L ${x} ${-60 + Math.abs(x) * .02}`, C('goldSh'), 4); }
+    // the swan prow
+    limb(c, [[300, -30], [356, -90], [360, -150], [338, -186]], [44, 34, 26, 22], C('white'));
+    ellipse(c, 330, -196, 26, 20, C('white'));
+    fillPath(c, 'M 306 -196 L 270 -188 L 308 -184 Z', C('gold'));
+    if (!one) { ellipse(c, 326, -200, 3.5, 3.5, '#1A1210'); limb(c, [[356, -110], [368, -150]], [6, 3], rgba(P.wingSh, .8), false); }
+    // a tail of feathers at the stern
+    for (let i = 0; i < 4; i++) limb(c, [[-316, -40], [-360 - i * 6, -90 - i * 22 + Math.sin(t * 3 + i) * 4], [-372 - i * 10, -150 - i * 30]], [26, 18, 4], C(i % 2 ? 'wing' : 'cloth'), false);
+  }
+}
+
+// ---------- Shiva's foot, close ----------
+// Side view, the toes to screen right, on a snowy rock; the shin rises from the ankle (-200) to the tiger skin (-560).
+// About 360 long. o: t, press (0..1: the big toe bears down and the light rings out from it), light (glow at the toe).
+function shivaFoot(c, o = {}) {
+  const S = SHV, p = o.press || 0, dy = p * 6;
+  c.save(); c.translate(0, dy);
+  const SHIN = 'M -62 -640 C -58 -480 -54 -320 -50 -170 L 50 -170 C 52 -320 60 -480 66 -640 Z';
+  fillPath(c, SHIN, S.skin); inside(c, SHIN, () => fillPath(c, 'M -90 -660 L -22 -660 C -18 -480 -18 -320 -20 -150 L -90 -150 Z', rgba(S.skinSh, .9)));
+  const FOOT = 'M -50 -190 L 50 -190 C 54 -150 72 -116 112 -94 C 140 -80 164 -70 186 -64 C 210 -56 232 -44 240 -28 C 246 -14 240 0 226 4 L -50 4 C -86 4 -98 -20 -94 -56 C -90 -100 -68 -150 -50 -190 Z';
+  fillPath(c, FOOT, S.skin);
+  inside(c, FOOT, () => { fillPath(c, 'M -110 -40 C -40 -20 120 -18 290 -18 L 290 20 L -110 20 Z', rgba(S.skinSh, .85)); strokePath(c, 'M 50 -130 C 80 -100 120 -80 170 -68', rgba(S.palm, .5), 5); ellipse(c, -62, -80, 26, 40, rgba(S.skinSh, .5)); ellipse(c, 34, -150, 12, 10, rgba(S.skinDk, .4)); });
+  // the toes, the little one furthest back; each lobe edged dark so they read apart; the big toe bends down as he presses
+  for (const [x, y, rx, ry] of [[196, -60, 10, 9], [206, -55, 12, 10], [218, -48, 14, 11], [230, -40, 16, 12]]) {
+    ellipse(c, x, y, rx + 2, ry + 2, rgba(S.skinDk, .8)); ellipse(c, x, y, rx, ry, mixCol(S.skin, S.skinSh, .25));
+  }
+  c.save(); c.translate(226, -28); c.rotate(p * .2);
+  ellipse(c, 34, 6, 34, 23, S.skinDk); ellipse(c, 34, 6, 31.5, 20.5, S.skin);
+  fillPath(c, 'M 4 14 C 20 28 50 30 64 18 L 66 30 L 4 30 Z', rgba(S.skinSh, .9));
+  ellipse(c, 50, -2, 13, 8, '#B9CDEC', -.2);
+  c.restore();
+  // anklet with little bells
+  ellipse(c, 0, -176, 58, 13, S.gold); ellipse(c, 0, -182, 54, 5, S.goldSh);
+  for (let i = 0; i < 7; i++) ellipse(c, -44 + i * 15, -161 + Math.abs(i - 3) * 1.5, 6, 7, S.gold);
+  // the tiger-skin hem at the top
+  fillPath(c, 'M -110 -700 L 120 -700 L 110 -600 L 70 -620 L 30 -590 L -10 -620 L -50 -592 L -90 -616 L -116 -600 Z', S.tiger);
+  for (const [x, y] of [[-60, -660], [0, -670], [60, -655]]) fillPath(c, `M ${x - 22} ${y} C ${x - 8} ${y - 8} ${x + 8} ${y - 8} ${x + 22} ${y + 3} C ${x + 8} ${y - 2} ${x - 8} ${y - 1} ${x - 22} ${y} Z`, S.stripe);
+  c.restore();
+  if (p > 0) { glow(c, 280, 4, 160 * p, '#BFD8FF', .8 * p); glow(c, 280, 4, 50 * p, '#FFFFFF', .7 * p); }
+}
+
+// ---------- Parvati clinging to Shiva (a silhouette, to sit at Shiva's left: screen right of shivaSeated) ----------
+function parvatiCling(c, o = {}) {
+  const col = o.col || '#0E1220', t = o.t || 0, sh = Math.sin(t * 9) * (o.shake || 0) * 3;
+  fillPath(c, 'M -110 0 C -110 -54 -50 -80 20 -80 C 90 -80 130 -48 130 0 Z', col);
+  c.save(); c.translate(10 + sh, -66); c.rotate(-.32);
+  fillPath(c, 'M -52 0 C -58 -80 -66 -150 -74 -196 C -48 -212 46 -212 74 -196 C 66 -150 58 -80 52 0 Z', col);
+  fillPath(c, 'M -14 -200 L -14 -226 L 14 -226 L 14 -200 Z', col);
+  ellipse(c, 0, -258, 28, 34, col);
+  fillPath(c, 'M -22 -282 L -18 -312 L -8 -298 L 0 -322 L 8 -298 L 18 -312 L 22 -282 Z', col);   // a small crown
+  limb(c, [[16, -270], [40, -220], [56, -150], [70, -80]], [30, 34, 26, 12], col, false);   // her hair down her back
+  limb(c, [[60, -190], [96 + Math.sin(t * 2) * 6, -120], [120 + Math.sin(t * 2.4) * 10, -60]], [40, 30, 8], col, false);   // the pallu
+  limb(c, [[-62, -186], [-150, -200], [-214, -236]], [28, 22, 18], col); ellipse(c, -222, -240, 15, 12, col);
+  limb(c, [[-54, -170], [-130, -130], [-200, -160]], [26, 20, 16], col); ellipse(c, -208, -164, 14, 11, col);
+  c.restore();
+}
+
+// ---------- Hanuman leaping (a silhouette) ----------
+// Mid-leap to screen right, arms forward, legs trailing, the tail curled high. About 520 long; the body's centre at
+// (0, -250). Returns the tail tip [x, y] (local units) so a scene can set it on fire.
+function hanumanLeap(c, o = {}) {
+  const col = o.col || '#0C0608', t = o.t || 0, w = Math.sin(t * 6) * 6;
+  const tail = [[-70, -220], [-170, -300 + w], [-170, -430], [-100, -500 + w], [-20, -480], [6, -430]];
+  limb(c, tail, [24, 20, 17, 14, 12, 10], col);
+  limb(c, [[-50, -210], [-140, -180], [-230, -214 + w]], [58, 42, 30], col); ellipse(c, -246, -216 + w, 26, 12, col, -.3);
+  limb(c, [[-40, -196], [-120, -130], [-210, -120]], [54, 38, 28], col); ellipse(c, -226, -116, 26, 12, col);
+  limb(c, [[-60, -214], [20, -252], [110, -262]], [100, 106, 86], col);
+  limb(c, [[100, -270], [196, -290], [282, -270]], [42, 32, 26], col); ellipse(c, 296, -268, 22, 18, col);
+  limb(c, [[96, -246], [180, -226], [262, -206]], [40, 30, 24], col); ellipse(c, 276, -204, 20, 16, col);
+  ellipse(c, 160, -312, 44, 48, col); ellipse(c, 196, -296, 26, 22, col);
+  fillPath(c, 'M 130 -346 L 134 -392 L 150 -372 L 162 -408 L 174 -372 L 190 -392 L 192 -346 Z', col);
+  ellipse(c, 128, -312, 12, 16, col);
+  return tail[tail.length - 1];
 }

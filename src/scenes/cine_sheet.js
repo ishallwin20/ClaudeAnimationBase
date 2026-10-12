@@ -1,9 +1,11 @@
 // cine_sheet.js: the Cinematic style's reference sheet (cine.html). One panel a second, each a lit, finished frame:
 //   0–9   the cast and sets: what each function draws, in the light it was made for
 //   10–14 the lighting presets (LIGHTS.*) on the same Shiva, each against its own sky
+//   15–22 Ravana and the Kailash story (ad 15): Ravana's poses and faces, Nandi standing, the Pushpak, Shiva's foot, the sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
 //   node render.mjs --page=cine.html --sheet=10.5,11.5,12.5,13.5,14.5 --cols=5 --w=300 --out=docs/cine_lighting.jpg
+//   node render.mjs --page=cine.html --sheet=15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5 --cols=4 --w=300 --out=docs/cine_cast_ravana.jpg
 const panel = (i, label, draw) => SHOTS.push({ a: i, b: i + 1, draw(c, u, t) { draw(c, u + 2, t); const g = c.createLinearGradient(0, 1540, 0, 1760); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.8)'); c.fillStyle = g; c.fillRect(0, 1540, W, 400); text(c, label, 540, 1700, '700 42px Cinzel', '#F4C46A', { glow: ['rgba(0,0,0,.9)', 18], maxW: 980 }); } });
 const cam0 = { z: 1 };
 const nightSky = (c) => { sky(c, [[0, '#070B17'], [700, '#152039'], [1400, '#2F3B5B'], [1900, '#3E4A68']]); glow(c, 840, 420, 520, '#7F97CC', .42); ellipse(c, 840, 420, 44, 44, '#E6ECF6'); };
@@ -47,3 +49,31 @@ lit(11, 'fire', (c, t) => { fireSky(c); pillars(c, 560, 1380, 560, '#2A130F', t)
 lit(12, 'dawnBack', dawnSky);
 lit(13, 'storm', redSky);
 lit(14, 'moonSilhouette', nightSky);
+
+// ---------- Ravana and the Kailash story (cine_ravana.js, and the later additions to cine_cast.js / cine_sets.js) ----------
+panel(15, 'ravana({ weapons })  ·  LIGHTS.storm', (c, t) => { redSky(c); ridge(c, 1760, 60, 22, '#12050A');
+  figure(c, (f) => { f.translate(540, 1720); f.scale(.95, .95); ravana(f, { t, weapons: true, expr: 'smirk' }); }, LIGHTS.storm); });
+panel(16, 'ravana(): colour, LIGHTS.fire', (c, t) => { fireSky(c); pillars(c, 560, 1380, 560, '#2A130F', t);
+  figure(c, (f) => { f.translate(540, 2100); f.scale(1.25, 1.25); ravana(f, { t, weapons: true, expr: 'smirk', armFx: { edge: { col: '#FFB070', w: 2, a: .6 } } }); }, LIGHTS.fire); });
+panel(17, "ravana({ pose: 'lift' })", (c, t) => { redSky(c); ridge(c, 1760, 60, 22, '#12050A');
+  figure(c, (f) => { f.translate(540, 1760); f.scale(.9, .9); ravana(f, { t, pose: 'lift', expr: 'grit', strain: 1 }); }, { ...LIGHTS.fire, tint: ['#1A0806', .35] }); });
+panel(18, "ravanaHeads(): laugh", (c, t) => { fireSky(c);
+  figure(c, (f) => { f.translate(540, 1000); f.scale(1.45, 1.45); f.translate(0, 800); ravanaHeads(f, { t, expr: 'laugh' }); }, { ...LIGHTS.fire, tint: ['#1A0806', .25] }); });
+panel(19, "ravanaHeads(): scream · sing · grit", (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(540, 900); f.scale(4.6, 4.6); f.translate(0, 815); rvHead(f, { t, expr: 'scream', crown: 'mukut', neck: true }); }, { ...LIGHTS.fire, tint: ['#1A0806', .2] });
+  figure(c, (f) => { f.translate(250, 1500); f.scale(2, 2); f.translate(0, 815); rvHead(f, { t, expr: 'sing', neck: true }); }, { ...LIGHTS.moon, tint: ['#16224A', .25] });
+  figure(c, (f) => { f.translate(830, 1500); f.scale(2, 2); f.translate(0, 815); rvHead(f, { t, expr: 'grit', neck: true }); }, { ...LIGHTS.fire, tint: ['#1A0806', .2] }); });
+panel(20, 'nandiStanding()  ·  pushpak()', (c, t) => { dawnSky(c); ridge(c, 1500, 120, 62, '#3A1E34');
+  c.save(); c.translate(560, 560); c.scale(.85, .85); pushpak(c, { t, layer: 'back' }); figure(c, (f) => { f.translate(40, 0); f.scale(.2, .2); ravana(f, { t, expr: 'smirk' }); }, { ...LIGHTS.dawnBack, tint: ['#2A1018', .3] }); pushpak(c, { t, layer: 'front' }); c.restore();
+  fillPath(c, 'M -100 1640 C 200 1600 500 1590 700 1600 C 900 1610 1100 1640 1180 1660 L 1180 2100 L -100 2100 Z', '#24121E');
+  figure(c, (f) => { f.translate(600, 1620); f.scale(1.15, 1.15); nandiStanding(f, { t, eyes: 1 }); }, { tint: ['#3A1830', .15], edge: { col: '#FFD9A0', w: 2.2, a: .7 }, rim: { col: '#FFF0C8', dx: 5, dy: -3, a: .9, blur: 1 } }); });
+panel(21, 'shivaFoot({ press })  ·  shockRings()', (c, t) => { sky(c, [[0, '#060914'], [1900, '#1D2846']]);
+  fillPath(c, 'M -100 1300 C 300 1270 700 1280 1180 1310 L 1180 2100 L -100 2100 Z', '#C7D3EA'); fillPath(c, 'M -100 1340 C 300 1320 700 1330 1180 1350 L 1180 2100 L -100 2100 Z', '#1A2236');
+  shockRings(c, 780, 1300, t, [t - .4]);
+  figure(c, (f) => { f.translate(260, 1300); f.scale(1.8, 1.8); shivaFoot(f, { t, press: 1 }); }, LIGHTS.moon); });
+panel(22, 'uprooted()  ·  parvatiCling()  ·  lanka()  ·  hanumanLeap()  ·  stotram()', (c, t) => { redSky(c);
+  lanka(c, 1800, t, 1); const tip = [0, 0];
+  c.save(); c.translate(540, 1500); c.scale(.6, .6); const tt = hanumanLeap(c, { t }); glow(c, tt[0], tt[1], 120, '#FF8A2A', .9); c.restore();
+  c.save(); c.translate(540, 200); c.scale(.6, .6); c.translate(-540, 0); uprooted(c, 540, 0, 600, t); c.restore();
+  figure(c, (f) => { f.translate(500, 214); f.scale(.25, .25); shivaSeated(f, { t }); f.translate(250, 0); parvatiCling(f, { t }); }, LIGHTS.storm);
+  stotram(c, ['जटाटवीगलज्जलप्रवाहपावितस्थले', 'गलेऽवलम्ब्य लम्बितां भुजङ्गतुङ्गमालिकाम्'], 540, 1000, t, t - 3); });

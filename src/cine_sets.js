@@ -11,6 +11,11 @@
 //   meteors(c, t, t0, n, seed)     shooting stars from t0 on (deterministic, so SFX can match them)
 //   stars(c, n, seed, t, a)        a twinkling starfield in the top 1100 px
 //   shrine(c, x, y, k, col)        a small temple silhouette with a red flag (Shakti Peethas, villages)
+//   uprooted(c, cx, top, w, t, k)  Kailash torn out of the ground: kailash() over a jagged underside with hanging rocks
+//   debris(c, box, t, t0, n, seed) rocks and snow falling from t0 (deterministic): box = [x0, y0, x1] where they start
+//   shockRings(c, x, y, t, ts, col) rings of light racing out from (x, y) at each time in ts
+//   lanka(c, y, t, burn, seed)     the golden city of Lanka at night: towers and domes, lit windows, fire as burn rises
+//   stotram(c, lines, x, y, t, t0) lines of Devanagari rising and glowing (needs the Tiro Devanagari Sanskrit font)
 //   rkCardCine(c, u, t, o)         the Rishi Katha end card in this style (see below)
 const PALETTES = {
   night: ['#151B2E', '#2A3452', '#5A6788'], nightFar: ['#1A2238', '#27304B', '#3C4766'],
@@ -104,6 +109,69 @@ function meteors(c, t, t0, n, seed) {
 }
 function stars(c, n, seed, t, a = 1) { for (let i = 0; i < n; i++) { const x = hash(i * 1.7 + seed) * W, y = hash(i * 2.9 + seed) * 1100, r = .8 + hash(i * 4.1) * 1.8; ellipse(c, x, y, r, r, rgba('#E8ECFF', a * (.4 + .6 * (.5 + .5 * Math.sin(t * 2 + i))))); } }
 function shrine(c, x, y, k, col) { fillPath(c, `M ${x - 18 * k} ${y} L ${x - 18 * k} ${y - 18 * k} C ${x - 14 * k} ${y - 40 * k} ${x - 4 * k} ${y - 54 * k} ${x} ${y - 62 * k} C ${x + 4 * k} ${y - 54 * k} ${x + 14 * k} ${y - 40 * k} ${x + 18 * k} ${y - 18 * k} L ${x + 18 * k} ${y} Z`, col); strokePath(c, `M ${x} ${y - 62 * k} L ${x} ${y - 80 * k}`, col, 2 * k); fillPath(c, `M ${x} ${y - 80 * k} L ${x + 14 * k} ${y - 74 * k} L ${x} ${y - 70 * k} Z`, '#E0402A'); }
+
+// ---------- the Kailash story ----------
+function uprooted(c, cx, top, w, t, k = {}) {
+  const base = top + 700, rock = k.rock || '#1A2236', dark = k.under || '#0C0F18';
+  c.fillStyle = dark; c.beginPath(); c.moveTo(cx - w, base - 10);
+  for (let x = cx - w; x <= cx + w; x += 26) { const d = (x - cx) / w; c.lineTo(x, base + 30 + (1 - d * d) * (k.depth ?? 220) + fbm(x * .03, 5) * 50 + (hash(Math.floor(x / 26) + 3) > .7 ? 40 : 0)); }
+  c.lineTo(cx + w, base - 10); c.closePath(); c.fill();
+  // hanging rocks and roots at the underside, swinging a little
+  for (let i = 0; i < 9; i++) { const x = cx + (hash(i * 4.3) - .5) * w * 1.6, d = (x - cx) / w, y = base + 20 + (1 - d * d) * (k.depth ?? 220) * .9, l = 30 + hash(i * 7.1) * 70, sw = Math.sin(t * 2 + i) * 4;
+    limb(c, [[x, y], [x + sw, y + l * .5], [x + sw * 2, y + l]], [26, 16, 6], dark, false); }
+  kailash(c, cx, top, w, k);
+}
+function debris(c, box, t, t0, n, seed, col = '#140E14', lit = '#FF9A6A') {
+  const [x0, y0, x1] = box;
+  for (let i = 0; i < n; i++) {
+    const st = t0 + hash(i * 2.1 + seed) * 1.6, u = t - st; if (u < 0) continue;
+    const x = lerp(x0, x1, hash(i * 3.7 + seed)) + (hash(i * 5.3 + seed) - .5) * 160 * u, y = y0 + 900 * u * u + 60 * u; if (y > 2200) continue;
+    const r = 8 + hash(i * 9.1 + seed) * 26, rot = u * (hash(i + seed) - .5) * 8, pts = [];
+    for (let j = 0; j < 6; j++) { const a = j / 6 * TAU + rot, rr = r * (.7 + hash(i * 11 + j) * .5); pts.push([x + Math.cos(a) * rr, y + Math.sin(a) * rr]); }
+    poly(c, pts, col); strokePath(c, `M ${pts[4][0]} ${pts[4][1]} L ${pts[5][0]} ${pts[5][1]} L ${pts[0][0]} ${pts[0][1]}`, rgba(lit, .7), 2.5);
+  }
+  motes(c, { n: n * 2, seed: seed + 50, box: [x0 - 100, y0, x1 + 100, y0 + 1600 * Math.min(1, Math.max(0, t - t0))], r: 4, col: '#E8ECF8', a: .5 * clamp(t - t0), vx: 30, vy: 400, t });
+}
+function shockRings(c, x, y, t, ts, col = '#FFE2B0') {
+  for (const t0 of ts) {
+    const u = t - t0; if (u < 0 || u > 1.4) continue;
+    const r = 60 + 1500 * Math.pow(u / 1.4, .6), a = 1 - u / 1.4;
+    soft(c, 4, (s) => { s.globalCompositeOperation = 'lighter'; s.strokeStyle = rgba(col, .6 * a); s.lineWidth = 70 * a + 10; s.beginPath(); s.ellipse(x, y, r, r * .55, 0, 0, TAU); s.stroke(); }, { blur: 4, op: 'lighter' });
+    c.save(); c.globalCompositeOperation = 'lighter'; c.strokeStyle = rgba(col, .8 * a); c.lineWidth = 4; c.beginPath(); c.ellipse(x, y, r, r * .55, 0, 0, TAU); c.stroke(); c.restore();
+  }
+}
+function lanka(c, y, t, burn = 0, seed = 7) {
+  const rnd = lcg(seed), towers = [];
+  for (let x = -60; x < W + 80; x += 70 + rnd() * 70) towers.push([x, 160 + rnd() * 420, 34 + rnd() * 40, rnd()]);
+  glow(c, W / 2, y - 200, 900, '#FF6A1E', .35 * burn + .05);
+  for (const [x, h, w, r] of towers) {
+    const col = '#1A0C10', top = y - h;
+    fillPath(c, `M ${x - w} ${y} L ${x - w} ${top + 40} L ${x + w} ${top + 40} L ${x + w} ${y} Z`, col);
+    if (r < .5) { fillPath(c, `M ${x - w - 6} ${top + 44} C ${x - w} ${top - 10} ${x - 10} ${top - 40} ${x} ${top - 70} C ${x + 10} ${top - 40} ${x + w} ${top - 10} ${x + w + 6} ${top + 44} Z`, col); strokePath(c, `M ${x} ${top - 70} L ${x} ${top - 100}`, col, 4); }
+    else { ellipse(c, x, top + 40, w + 4, w * .9, col); fillPath(c, `M ${x - 4} ${top + 40 - w * .9} L ${x + 4} ${top + 40 - w * .9} L ${x} ${top - w * 1.4} Z`, col); }
+    for (let j = 0; j < 4; j++) { const wy = top + 80 + j * 70; if (wy > y - 30) break; ellipse(c, x + (j % 2 ? 10 : -10), wy, 5, 9, rgba('#FFB050', .7 + .3 * Math.sin(t * 5 + x))); }
+    if (burn > 0 && hash(x * .13) < .8) {
+      const fb = burn * (.6 + .6 * hash(x * .7)), base = r < .5 ? top + 20 : top + 30;
+      glow(c, x, base - 60 * fb, 200 * fb, '#FF7A22', .55);
+      c.save(); c.globalCompositeOperation = 'lighter';
+      for (const [col2, sc] of [['#C8321A', 1], ['#FF7A22', .75], ['#FFC04A', .5], ['#FFF3C4', .25]]) for (let i = 0; i < 5; i++) {
+        const u = (i + .5) / 5 - .5, bx = x + u * w * 2, hh = 220 * fb * sc * (.6 + .4 * Math.cos(u * Math.PI)) * (.75 + .25 * Math.sin(t * (7 + i) + x + sc * 9)), ww = w * .4 * sc + 6, lean = Math.sin(t * 3 + i + x) * 14;
+        c.fillStyle = rgba(col2, .7); c.beginPath(); c.moveTo(bx - ww, base); c.quadraticCurveTo(bx - ww, base - hh * .5, bx + lean, base - hh); c.quadraticCurveTo(bx + ww, base - hh * .5, bx + ww, base); c.closePath(); c.fill();
+      }
+      c.restore();
+    }
+  }
+  fillPath(c, `M -100 ${y - 4} L ${W + 100} ${y - 4} L ${W + 100} ${y + 600} L -100 ${y + 600} Z`, '#120709');
+  if (burn > 0) motes(c, { n: 70, seed: seed + 3, box: [-50, y - 900, W + 50, y], r: 3.2, col: '#FFB060', a: .9 * burn, vx: 20, vy: -140, t });
+}
+function stotram(c, lines, x, y, t, t0, o = {}) {
+  const size = o.size || 50, gap = o.gap || 1.1, rise = o.rise || 46;
+  lines.forEach((ln, i) => {
+    const u = t - t0 - i * gap; if (u < 0) return;
+    const a = Math.min(1, u / .8) * (o.fade ? 1 - clamp((u - o.fade) / 1.2) : 1); if (a <= 0) return;
+    text(c, ln, x, y + i * size * 1.5 - u * rise, `${size}px "Tiro Devanagari Sanskrit"`, '#FFE2A0', { alpha: a, glow: ['rgba(255,170,60,.9)', 24], maxW: o.maxW || 900 });
+  });
+}
 
 // ---------- the Rishi Katha end card ----------
 // Dark teal with gold dust: RK logo, a gold title, one line, the three covers fanned, the price, a note (the offer's

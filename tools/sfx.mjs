@@ -157,6 +157,27 @@ export const chime = (f, amp = 1, dur = 2) => bell(f, dur, { partials: [[1, 1], 
 // a bird's chirp (dawn); scatter a few at random times and pans
 export const chirp = (amp = 1) => tone(.09, t => 3200 + 2400 * Math.sin(t * 60), { e: env.hann(), amp });
 
+// a monster's roar or scream: n detuned growling voices (saw, wobbling pitch, a vowel-ish filter) over breath noise. f
+// ~90–160 Hz; n = 10 for Ravana's ten heads. The pitch rises and sags over the length. Loud: gain ~.4–.6.
+export const roar = (dur, f = 120, n = 6, amp = 1) => {
+  const vs = [];
+  for (let k = 0; k < n; k++) {
+    const d = 1 + (rnd() - .5) * .14, ph = rnd() * 6, v = tone(dur, t => f * d * (1 + .35 * Math.sin(Math.PI * clamp(t / dur)) - .15 * t / dur) * (1 + .03 * Math.sin(t * 37 + ph)),
+      { type: 'saw', e: env.swell(.08, .6), fm: t => .4 * Math.sin(t * TAU * (27 + k * 3)), amp: amp / Math.sqrt(n) });
+    let l = 0; for (let i = 0; i < v.length; i++) { const t = i / SR, fc = 500 + 900 * Math.sin(Math.PI * clamp(t / dur)) + 200 * Math.sin(t * 7 + ph), a = 1 - Math.exp(-TAU * fc / SR); l += a * (v[i] - l); v[i] = l * 1.6; }
+    vs.push(v);
+  }
+  return mixb(...vs, noise(dur, { hp: 600, lp: 3200, e: env.swell(.05, .5), amp: amp * .35 }));
+};
+// stone: a sharp crack and a spill of small rocks bouncing down (dur s). Avalanches, a mountain torn loose, a wall breaking.
+export const rockfall = (dur, amp = 1) => {
+  const o = buf(dur + .3), put = (t0, b) => { const s = Math.round(t0 * SR); for (let i = 0; i < b.length && s + i < o.length; i++) o[s + i] += b[i]; };
+  put(0, mixb(noise(.18, { hp: 1500, lp: 7000, e: env.pluck(30), amp }), tone(.25, t => 160 * Math.exp(-t * 10) + 60, { e: env.pluck(14), amp: amp * .8 })));
+  for (let i = 0; i < dur * 22; i++) { const t0 = .05 + rnd() * dur, f = 250 + rnd() * 900; put(t0, mixb(noise(.05, { hp: f, lp: f * 4, e: env.pluck(70), amp: amp * (.2 + rnd() * .4) * (1 - t0 / (dur + .3)) }), tone(.06, f * .5, { e: env.pluck(60), amp: amp * .15 }))); }
+  put(0, noise(dur, { brown: true, lp: 300, e: env.swell(.05, dur * .7), amp: amp * .9 }));
+  return o;
+};
+
 // ---------- the timeline ----------
 // track(dur) → { at, write, L, R }: a stereo timeline. Sounds past either end are clipped.
 export function track(dur) {

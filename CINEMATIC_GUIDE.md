@@ -15,6 +15,7 @@ series.
 
 ![the cast](docs/cine_cast.jpg)
 ![the lighting presets](docs/cine_lighting.jpg)
+![Ravana and the Kailash story](docs/cine_cast_ravana.jpg)
 
 ---
 
@@ -43,10 +44,11 @@ for rage, warm orange for fire and court, gold for joy and grace, deep violet fo
 |---|---|
 | [src/cine.js](src/cine.js) | the engine: math, layers, `figure()` and `LIGHTS`, camera planes, skies, clouds, haze, rays, motes, lightning, flashes, karaoke captions, pictures and text, the frame (bloom, vignette, grain), and the page hooks `render.mjs` uses |
 | [src/cine_shiva.js](src/cine_shiva.js) | Shiva in colour (front view, trishul and damru, abhaya, snake, mala, jata with the moon; eyes and third eye open), his head for close-ups, and the Nataraja silhouette |
-| [src/cine_cast.js](src/cine_cast.js) | Sati (from behind; with `trishul` and `lotus` she is Shailputri), Daksha on his throne, crowds, the Rudra Tandava (Shiva carrying Sati), Shiva seated, Nandi lying, the Sudarshan chakra, the yagna fire |
-| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash, a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, and `rkCardCine()`, the end card |
+| [src/cine_cast.js](src/cine_cast.js) | Sati (from behind; with `trishul` and `lotus` she is Shailputri), Daksha on his throne, crowds, the Rudra Tandava (Shiva carrying Sati), Shiva seated, Nandi lying and standing (white, in colour, eyes that flare), the Sudarshan chakra, the yagna fire, the Pushpak vimana (in two layers, for a rider), Shiva's foot close (a toe that presses), Parvati clinging, Hanuman leaping |
+| [src/cine_ravana.js](src/cine_ravana.js) | Ravana: ten heads (centre mukut, four left and five right in crowns), twenty arms; `pose` stand (arms fanned, `weapons`), lift and pinned (palms round an arch, `ravanaArch()`, so a scene can cut the matching cave), bow; `expr` calm, smirk, laugh, scream, sing, grit; `ravanaHeads()` and `rvHead()` for close-ups |
+| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines, and `rkCardCine()`, the end card |
 | [cine.html](cine.html) | the style's studio page; on `main` it shows [src/scenes/cine_sheet.js](src/scenes/cine_sheet.js), the cast and lighting sheet |
-| [tools/sfx.mjs](tools/sfx.mjs) | the synth; its "epic and devotional" section (thunder, damru, wind, drum, fire, om, conch, laughter, heart, whir, chime, chirp) is this style's sound kit |
+| [tools/sfx.mjs](tools/sfx.mjs) | the synth; its "epic and devotional" section (thunder, damru, wind, drum, fire, om, conch, laughter, heart, whir, chime, chirp, roar, rockfall) is this style's sound kit |
 
 `node render.mjs --page=cine.html --sheet=…` renders the sheet. The engine renders about 30 ms a frame (a 62 s reel
 takes under a minute).
@@ -185,8 +187,14 @@ sound is the score. Build it from the shared kit in `tools/sfx.mjs`:
 - a bed per beat: `wind` (two copies panned), an `om` drone for the sacred, `fire` for fire scenes;
 - events on the frame: `thunder` on `strikes` times, `drum` booms on stamps and impacts, a `damru` roll on "Tandava",
   `whir` + a metallic `bell` for a chakra, `conch` on a goddess's name, `chime`s for lights appearing (pentatonic),
-  `heart` under a tense walk, `laughter` for a mocking crowd, `chirp`s at dawn;
+  `heart` under a tense walk, `laughter` for a mocking crowd, `chirp`s at dawn, `roar` (n voices) for a monster's scream,
+  `rockfall` for stone tearing or falling;
 - an arc: quiet hook, building, the loudest beat at the climax, calmer after, a soft chime and drone on the card.
+**Music, when wanted (cheap):** one `google/lyria-3-pro-preview` call on OpenRouter (`OPEN_ROUTER_KEY` in `.env`; $0.08
+a song; it needs `stream: true` and `modalities: ['audio', 'text']`; the audio comes back as base64 chunks in
+`delta.audio.data`, an MP3). Give it a timestamped section list matching `TL`: it follows the timings closely but runs
+long (a 65 s brief came back 92.7 s), so cut it and crossfade into its own ending, then mix the SFX on top with
+ffmpeg (score ~.4, `loudnorm=I=-15`). See `ad/15-books123-ravana-kailash`'s `tools/ravana_kailash_sfx.mjs`.
 Check the levels without listening: print the loudness per 2 s and look for the arc (and for silence, which means one
 sound blew up and crushed the normalisation: a filter cutoff below 0 does that).
 
@@ -216,3 +224,15 @@ for(let s=0;s*sr<n;s+=2){let q=0;for(let i=s*sr;i<Math.min(n,(s+2)*sr);i++){cons
   does).
 - The Nataraja follows the texts (the left leg raised and swung across, the lower left hand pointing to it); confirm the
   orientation against a bronze before the next close look at it.
+
+## Lessons from the Ravana reel (ad 15)
+
+- Twenty arms reaching straight up read as two rakes. Radiate them round an arch over the heads, palms flat on it (the
+  Ellora Ravananugraha composition), and cut the same arch as a cave into the mountain: then it reads as lifting.
+- Ten overlapping heads merge: draw the outer ones first, smaller and lower, with a soft shadow from the nearer head.
+- Under a vertical grade, a figure low in the frame goes dark into the background (the first toe shot): light close-ups
+  with a flat tint and the edge and rim, no grade.
+- Cinzel caps run about 0.69 em a letter: at 56 px a line holds ~21 letters, at 64 ~18, at 72 ~16. Break every
+  caption by hand with `|`, or the wrap leaves orphans ("AT / HIM").
+- Dim (not yet lit) karaoke words vanish on a bright sunset: put captions over dark land or a dark sky. Light the whole
+  hook at frame 0 (`at: Array(n).fill(-.35)`) so the thumbnail reads.
