@@ -56,3 +56,7 @@ node render.mjs --clip --out=out/ravana_kailash.mp4                       # scor
 ffmpeg -i out/ravana_kailash.mp4 -i assets/ravana_kailash_sfx.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out/ravana_kailash_sfx.mp4
 ffmpeg -i out/ravana_kailash.mp4 -map 0:v -c:v copy out/ravana_kailash_silent.mp4    # for music in Edits
 ```
+
+## Cover
+`cover.html` (studio.html + `src/scenes/ravana_cover.js`): the hook image with "RAVANA LIFTED / SHIVA'S MOUNTAIN" and
+"SHIVA USED / ONE TOE", kept inside the 3:4 grid crop (y 240–1680). `node render.mjs --page=cover.html --stills=0 --out=out/ravana_cover`
