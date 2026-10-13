@@ -43,8 +43,11 @@ Comment: "Which temple's NANDI have YOU whispered to? Comment your city!" Pinned
 - New shared Cinematic cast and sets (on `main`, ac5a291): Nandi redrawn as a zebu (`nandiStanding`, `nandiLying`,
   `stone`, `ear`), `rishi`, `plough`, `boy`, `devotee`, `nandanar`; `linga`, `deepa`, `sanctum`, `furrows`, `river`,
   `gopuram`; `tools/lyria.mjs`.
-- Sound: `tools/nandi_sfx.mjs` → `assets/nandi_sfx.wav`, then mixes `assets/nandi_score.mp3` (its first 65.6 s, at .5)
-  under it → `assets/nandi_mix.wav` (loudnorm −15 LUFS).
+- Sound: `tools/nandi_sfx.mjs` → `assets/nandi_sfx_v2.wav`, then mixes `assets/nandi_score.mp3` (its first 65.6 s, at .5)
+  under it → `assets/nandi_mix_v2.wav` (loudnorm −15 LUFS). **v2** (the owner's note: the score sounded cheerful under
+  "He will die at EIGHT"): the score fades out from 16 s to near-silence by 18.4 s; a heartbeat, a low D drone and the
+  hit carry the doom; the score returns from 21 s on "Little NANDI didn't cry" (dread → silence → hope). v1's
+  `assets/nandi_sfx.wav` / `nandi_mix.wav` are kept.
 - The score: `node tools/lyria.mjs --prompt=tools/nandi_score.txt --out=assets/nandi_score.mp3` (two takes, $0.16 in
   all). Take 1 stretched every section ×2.34 (154 s) and began with 6 s of near silence. Take 2, with the length
   stated at the start and the end of the brief, follows the timestamps for 0–65 s; it then goes silent and plays an
@@ -53,9 +56,9 @@ Comment: "Which temple's NANDI have YOU whispered to? Comment your city!" Pinned
 ## Render
 ```sh
 node tools/nandi_sfx.mjs
-node render.mjs --clip --out=out/nandi.mp4                       # score + SFX (PROJECT.audio)
-ffmpeg -i out/nandi.mp4 -i assets/nandi_sfx.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out/nandi_sfx.mp4
-ffmpeg -i out/nandi.mp4 -map 0:v -c:v copy out/nandi_silent.mp4  # for music in Edits
+node render.mjs --clip --out=out/nandi_v2.mp4                    # score + SFX (PROJECT.audio)
+ffmpeg -i out/nandi_v2.mp4 -i assets/nandi_sfx_v2.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest out/nandi_sfx_v2.mp4
+ffmpeg -i out/nandi_v2.mp4 -map 0:v -c:v copy out/nandi_silent_v2.mp4  # for music in Edits
 node render.mjs --stills=0 --out=out/stills                      # the cover: frame 0, inside the 3:4 grid crop (y 240–1680)
 ```
 

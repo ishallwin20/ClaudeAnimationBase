@@ -3,10 +3,13 @@
 // this reel, so the effects stay sparse: temple bells and lamps, the plough's thud and the light rising, the heartbeat
 // and the doom hit on "EIGHT", the river at night, Shiva's om and the white-out, the bull's bell, the whisper and the
 // chimes of the wish travelling, Lanka's fire, the gate's light, a chime on the card.
-//   node tools/nandi_sfx.mjs   → assets/nandi_sfx.wav and assets/nandi_mix.wav
+// v2 (the owner's note: the score sounded cheerful under "He will die at EIGHT"): the score fades out from 16 s, the
+// doom is carried by the heartbeat, a low drone and the hit in near-silence, and the score comes back at 21 s on
+// "Little NANDI didn't cry" (dread → silence → hope).
+//   node tools/nandi_sfx.mjs   → assets/nandi_sfx_v2.wav and assets/nandi_mix_v2.wav
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { track, tone, noise, bell, mixb, whoosh, crackle, env, note, seed, rnd, thunder, damru, wind, drum, fire, om, conch, chime, heart } from './sfx.mjs';
+import { track, tone, noise, bell, mixb, whoosh, crackle, env, note, seed, rnd, thunder, damru, wind, drum, fire, om, conch, chime, heart, drone } from './sfx.mjs';
 
 const TL = { hook: 0, eye: 2.6, shilada: 5.0, field: 8.0, glow: 9.6, child: 10.4, boy: 13.0, sages: 15.6, doom: 18.4,
   river: 20.9, shiva: 26.0, appear: 26.6, bless: 28.8, bull: 30.0, kailash: 34.0, whisper: 39.4, thread: 42.2, faces: 44.8,
@@ -38,7 +41,10 @@ T.at(TL.child + .4, templeBell(69, 3, 1.4), .12);
 // ---------- the boy, the sages, the doom (13.0–20.9) ----------
 for (let i = 0; i < 4; i++) T.at(TL.boy + .3 + i * .7, tone(.05, 3000 + rnd() * 1500, { e: env.hann(), amp: 1 }), .02, rnd() - .5);   // birds
 T.at(TL.sages, wind(TL.river - TL.sages, 1, 1), .12, -.4);
-for (let t0 = TL.sages + .8, i = 0; t0 < TL.doom; t0 += .95 - i * .04, i++) T.at(t0, heart(1), .22 + i * .03);   // the heartbeat, quickening
+for (let t0 = TL.sages + .8, i = 0; t0 < TL.doom; t0 += .95 - i * .04, i++) T.at(t0, heart(1), .26 + i * .04);   // the heartbeat, quickening
+T.at(TL.sages + .4, drone(TL.river - TL.sages + .4, note(38), 1), .16);                               // a low dark drone under it (D2)
+T.at(TL.sages + 1.2, tone(TL.river - TL.sages - .4, t => note(39) + .4 * Math.sin(t * 1.3), { e: env.swell(1.6, 1.2), amp: 1 }), .05);   // a minor second rubbing against it
+for (let i = 0; i < 3; i++) T.at(TL.doom + 1.1 + i * 1.05, heart(.7), .2 - i * .05);                   // after the words, the heart, slowing
 T.at(TL.doom, mixb(drum(34, 1, 2.6), thunder(2.6, .5)), .7);   // "He will die at EIGHT"
 T.at(TL.doom, tone(2.4, note(38), { type: 'saw', e: env.swell(.02, 1.6), amp: .6 }), .06);
 
@@ -93,14 +99,15 @@ T.at(TL.ask, fire(TL.card - TL.ask + .5, .15, .2), .06);
 T.at(TL.ask + .1, templeBell(50, 4, .7), .25);
 T.at(TL.card + .3, chime(note(84), 1, 3), .14, -.2); T.at(TL.card + .6, chime(note(88), 1, 3), .12, .2); T.at(TL.card + 1.4, chime(note(91), 1, 3), .1);
 
-T.write('assets/nandi_sfx.wav');
+T.write('assets/nandi_sfx_v2.wav');
 
 // ---------- the score under it: the Lyria take's first 65.6 s (it then goes silent, then plays a separate tail) ----------
 const SCORE = 'assets/nandi_score.mp3';
 if (existsSync(SCORE)) {
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', SCORE, '-i', 'assets/nandi_sfx.wav', '-filter_complex', [
-    `[0:a]aresample=48000,atrim=0:${TL.end},asetpts=PTS-STARTPTS,volume=0.5,afade=t=out:st=${TL.end - 1.2}:d=1.2[m]`,
+    // the score: down from 16 s to near-silence by the doom (18.4), back from 21 s ("Little NANDI didn't cry") by 22.6
+    `[0:a]aresample=48000,atrim=0:${TL.end},asetpts=PTS-STARTPTS,volume='0.5*if(lt(t,16),1,if(lt(t,18.4),1-0.95*(t-16)/2.4,if(lt(t,21),0.05,if(lt(t,22.6),0.05+0.95*(t-21)/1.6,1))))':eval=frame,afade=t=out:st=${TL.end - 1.2}:d=1.2[m]`,
     '[m][1:a]amix=inputs=2:duration=longest:normalize=0,loudnorm=I=-15:TP=-1.5:LRA=14,aresample=48000[o]'].join(';'),
-    '-map', '[o]', '-t', String(TL.end), '-ar', '48000', '-ac', '2', 'assets/nandi_mix.wav'], { stdio: 'inherit' });
-  console.log('wrote assets/nandi_mix.wav');
+    '-map', '[o]', '-t', String(TL.end), '-ar', '48000', '-ac', '2', 'assets/nandi_mix_v2.wav'], { stdio: 'inherit' });
+  console.log('wrote assets/nandi_mix_v2.wav');
 }
