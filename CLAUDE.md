@@ -13,11 +13,12 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   colour with the third eye, and the Nataraja; `src/cine_cast.js`: Sati, who becomes Shailputri with a trishul and lotus,
   Daksha, crowds, the Rudra Tandava, Shiva seated, Nandi (a zebu bull) lying and standing, white or as the black stone temple Nandi, the Sudarshan chakra, the yagna fire, the
   Pushpak, Shiva's foot, Parvati clinging, Hanuman leaping, and the Nandi
-  story's silhouettes: a rishi with a plough, the boy Nandi, a devotee, Nandanar; `src/cine_ravana.js`: Ravana with ten heads and twenty arms, who
+  story's silhouettes: a rishi with a plough, the boy Nandi, a devotee, Nandanar; `src/cine_devi.js`: the Devi in colour with four arms, first as Bhramari with her bees, the base for a
+  Cinematic Durga; `src/cine_asura.js`: Arunasura, a horned demon king on his throne or in tapas; `src/cine_ravana.js`: Ravana with ten heads and twenty arms, who
   stands, lifts Kailash, is pinned under it and bows) and sets (`src/cine_sets.js`: Kailash, uprooted Kailash, cliffs,
   clouds, the ring of fire, a fire-lit hall, cracks, meteors, stars, shrines, debris, shock rings, burning Lanka, Devanagari
-  verses, a linga, oil lamps, the sanctum doorway, furrows, a river, a gopuram, the end card). `tools/lyria.mjs` makes a
-  reel's score. Shared characters and engine changes, in either style, are committed to `main`: enrich them there when a reel
+  verses, a linga, oil lamps, the sanctum doorway, furrows, a river, a gopuram, bees and swarms, the macro bee, the
+  demon's throne, the end card). `tools/lyria.mjs` makes a reel's score; `tools/sarvam_tts.mjs` a voiceover. Shared characters and engine changes, in either style, are committed to `main`: enrich them there when a reel
   needs more.
 - Each video gets its own branch off `main`: `reel/<idea>` for comedy reels, `ad/<n>-<book>-<idea>` for Rishi Katha
   book ads (e.g. `ad/1-book1-bull`). The branch holds `STORYBOARD.md`, `src/scenes/<name>.js` (+ `_props.js`),
@@ -37,7 +38,7 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   offer: **Books 1–3, set of 3 for ₹500** (as of Oct 2026; Book 7 is "coming soon").
 - In the Cinematic style, captions are karaoke chunks (`say()`, 2.2–3 s each, names in gold) and the card is
   `rkCardCine()`; the same safe band, frame-0 and card rules apply.
-- No voiceover by default: captions carry the explanation, a synthesized SFX track sits under it (`tools/sfx.mjs`), and
+- No voiceover by default (when the owner asks for one, see the Cinematic guide's Voice section): captions carry the explanation, a synthesized SFX track sits under it (`tools/sfx.mjs`), and
   music is added on Instagram, so always render a `--audio=none` copy too.
 - With a finished reel, also write the Instagram caption: the keyword question in the first ~125 characters, the
   explanation, the book offer with rishikatha.com (link in bio), a save/share/comment prompt, and 12–15 hashtags.

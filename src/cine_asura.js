@@ -13,7 +13,7 @@
 //     the swarm) | 'point' (the right hand up, pointing at a bee on his left armrest)
 //   expr: 'calm' | 'smirk' | 'laugh' | 'scream' | 'chant' (eyes shut, mouth round) | 'shock'; look ([x, y])
 //   eyes (0..1 the glow of the eyes), lean (radians: the head tilts back to laugh), armFx (figure() options per arm)
-// asuraHead(c, o): the head alone at (0, -815): expr, eyes, look, t, light.
+// asuraHead(c, o): the head alone at (0, -815): expr, eyes, look, t, light; crownOnly (just the horned helmet, e.g. fallen).
 const ARU = {
   skin: '#7C3529', skinSh: '#5A2219', skinDk: '#3B140F', lip: '#3E1410', mouth: '#1A0606', tongue: '#A3343A',
   hair: '#0E0A0C', hairLt: '#2A1E22', eye: '#FFD23A', eyeHot: '#FFF2A0', brow: '#0E0808', tusk: '#E8DCC0', tuskSh: '#A8987A',
@@ -35,8 +35,25 @@ function asuraMane(c, t) {
     limb(c, [[s * 40, y0], [s * (80 + k * 10), y0 + 30 + Math.sin(ph) * 4], [s * (104 + k * 10), y0 + 90 + Math.sin(ph + 1) * 6], [s * (112 + k * 8), y0 + 150]], [40, 40, 28, 4], i % 3 ? S.hair : S.hairLt, false);
   }
 }
+// the helmet crown alone: a black cap with a gold band and a ruby, and the two horns (head units)
+function asuraCrown(c, L = 1) {
+  const S = ARU;
+  for (const s of [-1, 1]) {
+    const P = [[s * 52, -884], [s * 120, -912], [s * 168, -980], [s * 176, -1060], [s * 150, -1118]];
+    limb(c, P, [40, 34, 26, 16, 3], S.horn, false);
+    limb(c, P.map(([x, y]) => [x + s * 6, y + 4]), [16, 14, 10, 6, 1], rgba(S.hornSh, .7), false);
+    for (let k = 1; k < 7; k++) { const C = through(P), q = C[Math.floor(k / 7 * (C.length - 1))]; ellipse(c, q[0], q[1], 14 - k * 1.5, 3, rgba(S.hornSh, .6), s * (.6 - k * .15)); }
+  }
+  const HELM = 'M -64 -860 C -70 -908 -40 -940 0 -944 C 40 -940 70 -908 64 -860 C 40 -876 -40 -876 -64 -860 Z';
+  fillPath(c, HELM, S.helm);
+  inside(c, HELM, () => { strokePath(c, 'M -40 -930 C -20 -940 20 -940 40 -930', rgba(S.helmLt, .9), 3); c.save(); c.scale(L, 1); fillPath(c, 'M -80 -950 L -30 -950 L -40 -860 L -80 -860 Z', rgba('#000', .3)); c.restore(); });
+  fillPath(c, 'M -66 -856 C -40 -874 40 -874 66 -856 L 66 -870 C 40 -888 -40 -888 -66 -870 Z', S.gold);
+  fillPath(c, 'M 0 -900 L 16 -872 L 0 -852 L -16 -872 Z', S.gold); ellipse(c, 0, -873, 6, 8, S.ruby);
+  for (const s of [-1, 1]) for (let k = 1; k <= 3; k++) fillPath(c, `M ${s * k * 16} -870 L ${s * (k * 16 + 5)} -892 L ${s * (k * 16 + 10)} -868 Z`, S.goldSh);
+}
 function asuraHead(c, o = {}) {
   const t = o.t || 0, L = o.light ?? 1, S = ARU, E = ARU_EXPR[o.expr || 'calm'] || ARU_EXPR.calm, eg = o.eyes ?? 1;
+  if (o.crownOnly) { asuraCrown(c, L); return; }
   const shake = o.expr === 'laugh' ? Math.sin(t * 22) * 1.6 : o.expr === 'scream' ? Math.sin(t * 31) * 1.2 : 0;
   c.save(); c.translate(0, shake);
   if (o.mane !== false) asuraMane(c, t);
@@ -93,19 +110,7 @@ function asuraHead(c, o = {}) {
   // the moustache, curled up at the ends, and a short pointed beard
   for (const s of [-1, 1]) fillPath(c, `M ${s * 3} -784 C ${s * 16} -788 ${s * 34} -786 ${s * 46} -778 C ${s * 58} -770 ${s * 66} -782 ${s * 64} -796 C ${s * 72} -782 ${s * 66} -762 ${s * 50} -764 C ${s * 36} -766 ${s * 18} -776 ${s * 3} -774 Z`, S.hair);
   { const j = op > .05 ? oh * .75 : 0; fillPath(c, `M -34 ${-744 + j * .5} C -24 ${-734 + j} 24 ${-734 + j} 34 ${-744 + j * .5} C 30 ${-722 + j} 14 ${-704 + j} 0 ${-696 + j} C -14 ${-704 + j} -30 ${-722 + j} -34 ${-744 + j * .5} Z`, S.hair); }
-  // the helmet crown: a black cap with a gold band and a ruby, and the two horns
-  for (const s of [-1, 1]) {
-    const P = [[s * 52, -884], [s * 120, -912], [s * 168, -980], [s * 176, -1060], [s * 150, -1118]];
-    limb(c, P, [40, 34, 26, 16, 3], S.horn, false);
-    limb(c, P.map(([x, y]) => [x + s * 6, y + 4]), [16, 14, 10, 6, 1], rgba(S.hornSh, .7), false);
-    for (let k = 1; k < 7; k++) { const C = through(P), q = C[Math.floor(k / 7 * (C.length - 1))]; ellipse(c, q[0], q[1], 14 - k * 1.5, 3, rgba(S.hornSh, .6), s * (.6 - k * .15)); }
-  }
-  const HELM = 'M -64 -860 C -70 -908 -40 -940 0 -944 C 40 -940 70 -908 64 -860 C 40 -876 -40 -876 -64 -860 Z';
-  fillPath(c, HELM, S.helm);
-  inside(c, HELM, () => { strokePath(c, 'M -40 -930 C -20 -940 20 -940 40 -930', rgba(S.helmLt, .9), 3); c.save(); c.scale(L, 1); fillPath(c, 'M -80 -950 L -30 -950 L -40 -860 L -80 -860 Z', rgba('#000', .3)); c.restore(); });
-  fillPath(c, 'M -66 -856 C -40 -874 40 -874 66 -856 L 66 -870 C 40 -888 -40 -888 -66 -870 Z', S.gold);
-  fillPath(c, 'M 0 -900 L 16 -872 L 0 -852 L -16 -872 Z', S.gold); ellipse(c, 0, -873, 6, 8, S.ruby);
-  for (const s of [-1, 1]) for (let k = 1; k <= 3; k++) fillPath(c, `M ${s * k * 16} -870 L ${s * (k * 16 + 5)} -892 L ${s * (k * 16 + 10)} -868 Z`, S.goldSh);
+  asuraCrown(c, L);
   c.restore();
 }
 // one arm from shoulder S through elbow E to the wrist T; hand 'fist' | 'grip' (on an armrest) | 'open' (claws) | 'point'

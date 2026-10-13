@@ -12,10 +12,11 @@
 //   The script: { name, dur, defaults: { speaker, model, lang, pace, temperature }, lines: [line, ...] }, a line being
 //     { id, t (start in s; or gap: s after the previous line ends), caps: ['caption *chunk* | one', ...], tts (optional
 //       spoken text, when it should differ from the captions), speaker, pace, fx ('devi' | 'asura' | 'none'), y, size }
-//   It writes assets/<name>_vo.wav (the lines laid out at their times; raw takes cached in assets/vo/<name>/), and
+//   It writes assets/<name>_vo.wav (the lines laid out at their times; raw takes cached in assets/vo/<name>/, a changed
+//   line is the only one re-requested, and takes no line uses any more are deleted), and
 //   src/scenes/<name>_vo.js: const VO = { lines: { id: { a, end } }, caps: [{ a, b, text, at, y, size }] }. The scene
 //   draws the captions with VO.caps.forEach(k => say(k.a, k.b, k.text, { at: k.at, y: k.y, size: k.size })).
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 
@@ -109,13 +110,16 @@ for (const L of S.lines) {
     caps.push({ id: L.id, a: +(at[idx[0]] - .12).toFixed(3), end: +wEnd[idx.at(-1)].toFixed(3), text: c, at: idx.map(i => +at[i].toFixed(3)), y: L.y, size: L.size, hold: L.hold });
   });
   lines[L.id] = { a: +(t + s0).toFixed(3), end: +(t + s1).toFixed(3), file: +t.toFixed(3) };
-  placed.push({ wav, t, gain: L.gain ?? 1 });
+  placed.push({ wav, raw, t, gain: L.gain ?? 1 });
   prevEnd = t + s1;
   console.log(`${L.id.padEnd(10)} ${(t + s0).toFixed(2).padStart(6)} → ${(t + s1).toFixed(2).padStart(6)}  ${segs.length} seg / ${phrases.length} phr  "${text.slice(0, 60)}"`);
 }
 // a caption stays up until the next one comes (at most hold s after its last word; at least 1.1 s)
 caps.forEach((k, i) => { const nx = caps[i + 1]; let b = Math.max(k.end + (k.hold ?? .45), k.a + 1.1); if (nx) b = Math.min(b, nx.a - .02); k.b = +b.toFixed(3); delete k.end; delete k.hold; if (k.y == null) delete k.y; if (k.size == null) delete k.size; });
 const total = S.dur || Math.ceil(prevEnd + 2);
+// drop the cached takes no line uses any more (old wording, voices or paces)
+const used = new Set(placed.map(p => p.raw));
+for (const f of readdirSync(`assets/vo/${name}`)) if (f.endsWith('.raw.wav') && !used.has(`assets/vo/${name}/${f}`)) unlinkSync(`assets/vo/${name}/${f}`);
 // lay the lines out: adelay each one, then mix
 const inputs = placed.flatMap(p => ['-i', p.wav]);
 const fc = placed.map((p, i) => `[${i}:a]adelay=${Math.max(0, Math.round(p.t * 1000))}|${Math.max(0, Math.round(p.t * 1000))},volume=${p.gain}[v${i}]`).join(';') +
