@@ -178,6 +178,28 @@ export const rockfall = (dur, amp = 1) => {
   return o;
 };
 
+// one bee flying by: a buzzing sawtooth at the wingbeat (~200–260 Hz) with a little vibrato through a soft band; the
+// pitch glides f0 → f1 (higher coming at you, lower going away: a fly-by). Pan it across with two at() calls or one.
+export const buzz = (dur, f0 = 240, f1 = f0, amp = 1) => {
+  const ph = rnd() * 6, b = tone(dur, t => lerp(f0, f1, t / dur) * (1 + .02 * Math.sin(t * 31 + ph) + .01 * Math.sin(t * 73)), { type: 'saw', e: env.hann(), fm: t => .08 * Math.sin(t * TAU * 11 + ph), amp });
+  let l1 = 0, l2 = 0, h = 0, prev = 0; const al = 1 - Math.exp(-TAU * 2600 / SR), ah = Math.exp(-TAU * 300 / SR);
+  for (let i = 0; i < b.length; i++) { l1 += al * (b[i] - l1); l2 += al * (l1 - l2); h = ah * (h + l2 - prev); prev = l2; b[i] = h * (1 + .35 * Math.sin(i / SR * TAU * (6 + ph))) * 1.4; }
+  return b;
+};
+// a swarm: n buzzing voices, detuned and wandering, over a band of wing noise. rise: how far it swells over its length
+// (0 = flat; 1 = from near silence to full: one bee becoming millions). Low voices make it menacing (f ~120–300 Hz).
+export const swarmHum = (dur, n = 24, rise = 0, amp = 1, f = 210) => {
+  const vs = [];
+  for (let k = 0; k < n; k++) {
+    const d = .7 + rnd() * .75, ph = rnd() * 6, w = .5 + rnd();
+    vs.push(tone(dur, t => f * d * (1 + .03 * Math.sin(t * w + ph) + .015 * Math.sin(t * 13 * w + ph)), { type: 'saw', e: (t, D) => clamp(t / .3) * clamp((D - t) / .5) * (.6 + .4 * Math.sin(t * w * 3 + ph)), fm: t => .06 * Math.sin(t * TAU * (9 + k % 5) + ph), amp: 1 / Math.sqrt(n) }));
+  }
+  const o = mixb(...vs, noise(dur, { hp: 400, lp: 4200, e: env.swell(.3, .5), amp: .35 }));
+  let l1 = 0, l2 = 0; const al = 1 - Math.exp(-TAU * 2200 / SR);
+  for (let i = 0; i < o.length; i++) { const t = i / SR; l1 += al * (o[i] - l1); l2 += al * (l1 - l2); o[i] = l2 * amp * lerp(1 - rise, 1, (t / dur) ** 1.6) * 1.6; }
+  return o;
+};
+
 // ---------- the timeline ----------
 // track(dur) → { at, write, L, R }: a stereo timeline. Sounds past either end are clipped.
 export function track(dur) {
@@ -224,7 +246,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     ['slide(.6, 1600, 300) fall', slide(.6, 1600, 300), .35], ['bell(note(84), 1.5)', bell(note(84), 1.5), .3],
     ['thunder(2, 1)', thunder(2, 1), .6], ['damru(240)', damru(240), .5], ['drum(42, 1, 1.1) a stamp', drum(42, 1, 1.1), .7],
     ['fire(1.5)', fire(1.5), .4], ['om(1.5, 110)', om(1.5, 110), .3], ['conch(1.6)', conch(1.6), .3], ['laughter(1.2)', laughter(1.2), .3],
-    ['heart()', heart(), .5], ['whir(1)', whir(1), .2], ['chime(note(84))', chime(note(84)), .2], ['chirp()', chirp(), .1], ['wind(1.5)', wind(1.5, 0, .4), .3],
+    ['heart()', heart(), .5], ['whir(1)', whir(1), .2], ['chime(note(84))', chime(note(84)), .2], ['chirp()', chirp(), .1], ['wind(1.5)', wind(1.5, 0, .4), .3], ['buzz(1, 280, 200) a fly-by', buzz(1, 280, 200), .3], ['swarmHum(1.1, 24, .8)', swarmHum(1.1, 24, .8), .4],
   ];
   const T = track(demos.length * 1.2 + 1);
   demos.forEach(([name, b, g], i) => {

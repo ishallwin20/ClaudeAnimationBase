@@ -2,6 +2,7 @@
 //   0–9   the cast and sets: what each function draws, in the light it was made for
 //   10–14 the lighting presets (LIGHTS.*) on the same Shiva, each against its own sky
 //   15–22 Ravana and the Kailash story (ad 15): Ravana's poses and faces, Nandi standing, the Pushpak, Shiva's foot, the sets
+//   28–31 the Bhramari story: the Devi (Bhramari, four arms, bees), Arunasura on his throne, the macro bee, the swarm
 //   23–27 Nandi (a zebu: hump, dewlap, black muzzle) and the Nandi story: the stone temple Nandi, rishi, boy, devotee, Nandanar, sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
@@ -95,3 +96,15 @@ panel(25, "rishi({ pose })  ·  plough()  ·  boy({ pose })", (c, t) => { dawnSk
 panel(26, "devotee({ pose })  ·  nandanar({ raise })", (c, t) => { dawnSky(c); fillPath(c, 'M -100 1500 L 1180 1500 L 1180 2100 L -100 2100 Z', '#1C111B');
   figure(c, (f) => { f.translate(240, 1500); f.scale(.9, .9); devotee(f, { t }); f.setTransform(c.getTransform()); f.translate(560, 1500); f.scale(.9, .9); devotee(f, { t, pose: 'pray' }); f.setTransform(c.getTransform()); f.translate(880, 1500); f.scale(.9, .9); nandanar(f, { t }); }, { ...LIGHTS.dawnBack, tint: ['#1A0C14', .85] }); });
 panel(27, 'gopuram()  ·  furrows()  ·  river()  ·  linga()', (c, t) => { sky(c, [[0, '#0E0A1E'], [700, '#2A1838'], [1100, '#6A3048']]); river(c, 1100, 160, t, 540); gopuram(c, 380, 1500, .8, { door: .8 }); furrows(c, 1500, t); linga(c, 820, 1460, .9, { glow: .6 }); });
+
+// ---------- the Bhramari story ----------
+const violetSky = (c) => { sky(c, [[0, '#08040F'], [700, '#1A0C2A'], [1300, '#3A1A48'], [1900, '#2A1230']]); glow(c, 540, 700, 700, '#C08AFF', .18); };
+panel(28, 'devi(): Bhramari, four arms, bees', (c, t) => { violetSky(c); glow(c, 540, 1000, 600, '#FFC860', .2);
+  figure(c, (f) => { f.translate(540, 1830); f.scale(1.35, 1.35); devi(f, { t, bees: 1, wind: .5 }); }, { tint: ['#1A0A28', .12], edge: { col: '#FFD9A0', w: 2.4, a: .7 }, rim: { col: '#FFE6B0', dx: 6, dy: -3, a: .8, blur: 1 } }); });
+panel(29, 'deviHead({ fire })', (c, t) => { sky(c, [[0, '#0A0512'], [1900, '#24102E']]);
+  figure(c, (f) => { f.translate(540, 900); f.scale(6.2, 6.2); f.translate(0, 815); deviHead(f, { t, eyes: 1, fire: .6 }); }, { tint: ['#1A0A28', .1], edge: { col: '#FFD9A0', w: 3, a: .35 }, rim: { col: '#FFE6B0', dx: 9, dy: -4, a: .7, blur: 1.5 } }); });
+panel(30, "arunasura() on throne()  ·  expr: 'laugh'", (c, t) => { redSky(c); ridge(c, 1700, 80, 31, '#12050A');
+  figure(c, (f) => { f.translate(540, 1720); f.scale(1.1, 1.1); throne(f, { layer: 'back' }); arunasura(f, { t, expr: 'laugh', lean: -.06 }); throne(f, { layer: 'front' }); }, { tint: ['#2A0A10', .2], edge: { col: '#FF9A6A', w: 2.4, a: .7 }, rim: { col: '#FFB08A', dx: 0, dy: -5, a: .8, blur: 1 } }); });
+panel(31, 'bee({ lit })  ·  swarm()  ·  lotusLight()', (c, t) => { sky(c, [[0, '#0A0610'], [1900, '#1E1218']]); lotusLight(c, 820, 420, 110, t, .9);
+  swarm(c, t, { mode: 'stream', n: 900, path: [[-100, 1500], [300, 1300], [700, 1450], [1200, 1200]], spread: [40, 200], k: .7, seed: 3, speed: .25 });
+  bee(c, 540, 900, { k: 1.3, t, lit: Math.min(6, Math.floor(t * 2)), wings: 0, rot: -.2 }); });

@@ -17,6 +17,9 @@
 //   lanka(c, y, t, burn, seed)     the golden city of Lanka at night: towers and domes, lit windows, fire as burn rises
 //   stotram(c, lines, x, y, t, t0) lines of Devanagari rising and glowing (needs the Tiro Devanagari Sanskrit font)
 //   rkCardCine(c, u, t, o)         the Rishi Katha end card in this style (see below)
+//   the Bhramari story: flyBee / beeCloud / beeStream (small bees flying, in a ball, along a path), swarm(c, t, o)
+//     (thousands: 'stream', 'form' into shapePoints(), 'engulf'), bee(c, x, y, o) (the macro bee from above, six legs
+//     that light up one by one), throne(c, o) (the demon's rock throne, front view), lotusLight() (Brahma's boon)
 const PALETTES = {
   night: ['#151B2E', '#2A3452', '#5A6788'], nightFar: ['#1A2238', '#27304B', '#3C4766'],
   red: ['#2A0A10', '#4A1218', '#7A2A22'], dawn: ['#5A2C46', '#9C4B55', '#E8A06C'],
@@ -268,4 +271,178 @@ function gopuram(c, x, y, k, o = {}) {
   c.beginPath(); c.moveTo(-80, 0); c.lineTo(-80, -170); c.quadraticCurveTo(0, -240, 80, -170); c.lineTo(80, 0); c.closePath(); c.fill();
   c.restore();
   if (o.door) glow(c, x, y - 100 * k, 300 * k, '#FFC870', .5 * o.door);
+}
+
+// ---------- the Bhramari story: bees, the swarm, the demon's throne, Brahma's lotus ----------
+// A small flying bee as a cached sprite (side view, flying right): a black body with a gold band and fuzz, violet-blue
+// wings. Two wing frames; gold (true) draws the divine bee, glowing gold. Drawn 32 px long at k 1.
+function beeSprite(frame, gold) {
+  return sprite(`bee${frame}${gold ? 'g' : ''}`, 64, 48, (g) => {
+    g.translate(32, 26);
+    const body = gold ? '#FFC64A' : '#121016', band = gold ? '#FFF2B0' : '#C8962E', wing = gold ? 'rgba(255,240,190,.75)' : 'rgba(170,175,255,.55)';
+    if (gold) { const gr = g.createRadialGradient(0, 0, 0, 0, 0, 30); gr.addColorStop(0, 'rgba(255,200,90,.5)'); gr.addColorStop(1, 'rgba(255,200,90,0)'); g.fillStyle = gr; g.fillRect(-32, -26, 64, 48); }
+    const wy = frame ? -4 : -14, wr = frame ? .2 : -.5;
+    g.fillStyle = wing; g.beginPath(); g.ellipse(-2, wy, 13, 6, wr, 0, TAU); g.fill();
+    g.beginPath(); g.ellipse(-8, wy + 3, 9, 4.5, wr - .3, 0, TAU); g.fill();
+    g.fillStyle = body; g.beginPath(); g.ellipse(-8, 4, 12, 8, .15, 0, TAU); g.fill();       // the abdomen
+    g.fillStyle = band; g.fillRect(-12, -3, 4, 14);
+    g.fillStyle = body; g.beginPath(); g.ellipse(4, 1, 7.5, 7, 0, 0, TAU); g.fill();         // the thorax
+    g.fillStyle = gold ? '#FFF6D0' : '#7A5A2A'; g.beginPath(); g.ellipse(4, -3, 6, 3.2, 0, 0, TAU); g.fill();   // fuzz
+    g.fillStyle = body; g.beginPath(); g.ellipse(12, 3, 4.8, 4.8, 0, 0, TAU); g.fill();      // the head
+    g.strokeStyle = body; g.lineWidth = 1.4; g.beginPath(); g.moveTo(14, 0); g.quadraticCurveTo(19, -6, 21, -5); g.stroke();
+    for (const x of [0, 4, 8]) { g.beginPath(); g.moveTo(x, 6); g.lineTo(x - 3, 13); g.stroke(); }
+  });
+}
+// One flying bee at (x, y): k size, dir (+1 right, -1 left), t (wing flaps), seed, gold, rot (radians), a (alpha)
+function flyBee(c, x, y, k, dir, t, seed = 0, gold = false, rot = 0, a = 1) {
+  const s = beeSprite(Math.floor(t * 38 + seed * 7) % 2, gold), w = 64 * k * .5, h = 48 * k * .5;
+  c.save(); c.globalAlpha *= a; c.translate(x, y); if (rot) c.rotate(rot); c.scale(dir < 0 ? -1 : 1, 1); c.drawImage(s, -w / 2, -h / 2, w, h); c.restore();
+}
+// A ball of bees swirling round (x, y), radius r: each on its own tilted orbit. o: n, seed, k (bee size), gold (0..1
+// the share of gold bees), speed
+function beeCloud(c, x, y, r, t, o = {}) {
+  const n = o.n ?? 40, seed = o.seed ?? 0, k = o.k ?? 1, sp = o.speed ?? 1, gold = o.gold ?? .35;
+  for (let i = 0; i < n; i++) {
+    const h = (j) => hash(i * 7.31 + seed * 1.7 + j), w = (2 + 3 * h(1)) * (h(2) < .5 ? -1 : 1) * sp, a = h(3) * TAU + t * w;
+    const rr = r * (.35 + .65 * h(4)), tilt = (h(5) - .5) * 1.4, px = Math.cos(a) * rr, py = Math.sin(a) * rr * .45;
+    const bx = x + px * Math.cos(tilt) - py * Math.sin(tilt), by = y + px * Math.sin(tilt) + py * Math.cos(tilt) + Math.sin(t * 5 + i) * 3;
+    flyBee(c, bx, by, k * (.75 + .5 * (Math.sin(a) * .5 + .5)), -Math.sin(a) * w, t, i, h(6) < gold);
+  }
+}
+// Bees streaming along the points P (Catmull-Rom through them), flowing from the first to the last and thinning out.
+// o: n, seed, k, spread (px across the path), speed (path lengths a second), gold
+function beeStream(c, P, t, o = {}) {
+  const C = through(P, 10), n = o.n ?? 20, seed = o.seed ?? 0, k = o.k ?? 1, sp = o.speed ?? .45, spread = o.spread ?? 30, gold = o.gold ?? .3;
+  for (let i = 0; i < n; i++) {
+    const h = (j) => hash(i * 5.17 + seed * 3.3 + j), u = frac(h(1) + t * sp * (.7 + .6 * h(2))), f = u * (C.length - 1), j = Math.min(C.length - 2, Math.floor(f));
+    const p = [lerp(C[j][0], C[j + 1][0], f - j), lerp(C[j][1], C[j + 1][1], f - j)], dx = C[j + 1][0] - C[j][0], dy = C[j + 1][1] - C[j][1], d = Math.hypot(dx, dy) || 1;
+    const off = spread * (h(3) - .5) * 2 * (.4 + u) + vnoise(t * 1.3 + i, seed) * spread * .6;
+    flyBee(c, p[0] - dy / d * off, p[1] + dx / d * off, k * (1 - u * .4), dx, t, i, h(4) < gold, 0, clamp(u * 8) * clamp((1 - u) * 4));
+  }
+}
+// Points inside a shape: draw(ctx) is drawn once on a full-frame canvas and n opaque pixels are picked (cached by key).
+const SHAPE_PTS = new Map();
+function shapePoints(key, draw, n = 2000, seed = 1) {
+  if (SHAPE_PTS.has(key)) return SHAPE_PTS.get(key);
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d'); draw(g);
+  const d = g.getImageData(0, 0, W, H).data, all = [];
+  for (let y = 0; y < H; y += 3) for (let x = 0; x < W; x += 3) if (d[(y * W + x) * 4 + 3] > 128) all.push([x, y]);
+  const rnd = lcg(seed), pts = [];
+  for (let i = 0; i < n && all.length; i++) pts.push(all[Math.floor(rnd() * all.length)]);
+  SHAPE_PTS.set(key, pts); return pts;
+}
+// The great swarm: n bees, a pure function of t. Modes (o.mode):
+//   'stream': along o.path (points), o.spread px wide (a number, or [start, end]), flowing at o.speed
+//   'form':   flying in from o.from ([x0, y0, x1, y1], a box) to o.pts (points, e.g. from shapePoints) as o.gather goes
+//             0 → 1; formed bees keep buzzing in place (o.jit px)
+//   'engulf': a dense churning cloud round (o.x, o.y), o.r wide (o.ry tall)
+// o: seed, k (bee size), gold (0..1 the share of gold bees), a (alpha), dots (true: far bees as dots, cheaper)
+function swarm(c, t, o) {
+  const n = o.n ?? 1500, seed = o.seed ?? 0, k = o.k ?? .6, gold = o.gold ?? .15, mode = o.mode || 'stream';
+  let C; if (mode === 'stream') C = through(o.path, 12);
+  c.save(); c.globalAlpha *= o.a ?? 1;
+  for (let i = 0; i < n; i++) {
+    const h = (j) => hash(i * 3.71 + seed * 11.3 + j * 1.37);
+    let x, y, dir = 1, kk = k * (.6 + .8 * h(9));
+    if (mode === 'stream') {
+      const u = frac(h(1) + t * (o.speed ?? .3) * (.75 + .5 * h(2))), f = u * (C.length - 1), j = Math.min(C.length - 2, Math.floor(f));
+      const px = lerp(C[j][0], C[j + 1][0], f - j), py = lerp(C[j][1], C[j + 1][1], f - j), dx = C[j + 1][0] - C[j][0], dy = C[j + 1][1] - C[j][1], d = Math.hypot(dx, dy) || 1;
+      const sp = Array.isArray(o.spread) ? lerp(o.spread[0], o.spread[1], u) : (o.spread ?? 120);
+      const off = sp * ((h(3) - .5) * 2 * .7 + vnoise(t * .9 + i * .13, seed + 1) * .3), along = vnoise(t * 1.1 + i * .7, seed + 2) * sp * .25;
+      x = px - dy / d * off + dx / d * along; y = py + dx / d * off + dy / d * along; dir = dx;
+      if (o.fade !== false) c.globalAlpha = (o.a ?? 1) * clamp(u * 10) * clamp((1 - u) * 6);
+    } else if (mode === 'form') {
+      const [x0, y0, x1, y1] = o.from, P = o.pts[i % o.pts.length], d0 = h(4) * .45, kf = easeIO(seg(o.gather ?? 1, d0, d0 + .55));
+      const sx = lerp(x0, x1, h(5)), sy = lerp(y0, y1, h(6)), jit = (o.jit ?? 4) + (1 - kf) * 60;
+      const bend = Math.sin(kf * Math.PI) * (h(7) - .5) * 400;
+      x = lerp(sx, P[0], kf) + bend + vnoise(t * 3 + i, seed) * jit; y = lerp(sy, P[1], kf) - Math.sin(kf * Math.PI) * 120 * h(8) + vnoise(t * 3 + i + 50, seed) * jit * .7;
+      dir = P[0] - sx; kk *= lerp(1, o.kForm ?? .7, kf);
+    } else {
+      const a = h(1) * TAU + t * (1.5 + 3 * h(2)) * (h(3) < .5 ? -1 : 1), rr = Math.sqrt(h(4)) * o.r, ry = (o.ry ?? o.r) / o.r;
+      x = o.x + Math.cos(a) * rr + vnoise(t * 2 + i, seed) * 30; y = o.y + Math.sin(a) * rr * ry + vnoise(t * 2 + i + 40, seed) * 30; dir = -Math.sin(a) * (h(3) < .5 ? -1 : 1);
+    }
+    if (o.dots && kk < .45) { c.fillStyle = h(10) < gold ? '#FFC64A' : '#0E0C12'; c.fillRect(x - kk * 5, y - kk * 3, kk * 10, kk * 6); }
+    else flyBee(c, x, y, kk, dir, t, i, h(10) < gold);
+  }
+  c.restore();
+}
+// The macro bee, seen from above, head up, about 330 long at k 1, centred at (x, y): a black carpenter bee (the
+// bhramara) with a gold-furred thorax and violet-blue wings. o: k, rot, t, lit (0..6: how many legs glow, counted
+// left front, left middle, left hind, right front, right middle, right hind), wings (0 folded .. 1 buzzing), gold (0..1 glow)
+function bee(c, x, y, o = {}) {
+  const k = o.k ?? 1, t = o.t || 0, lit = o.lit ?? 0, wg = o.wings ?? 0, B = '#0E0C12', Bs = '#26222E', fur = '#B8862E', furLt = '#F2C25A';
+  c.save(); c.translate(x, y); c.rotate(o.rot || 0); c.scale(k, k);
+  if (o.gold) glow(c, 0, 0, 320, '#FFC860', .35 * o.gold);
+  // six legs, three each side: coxa at the thorax, femur out, tibia and tarsus bending back to the ground
+  const LEGS = [[-1, -62, [[-60, -90], [-104, -150]], 0], [-1, -40, [[-82, -36], [-140, -40]], 1], [-1, -20, [[-70, 30], [-120, 110]], 2],
+                [1, -62, [[60, -90], [104, -150]], 3], [1, -40, [[82, -36], [140, -40]], 4], [1, -20, [[70, 30], [120, 110]], 5]];
+  for (const [s, y0, [knee, foot], idx] of LEGS) {
+    const on = lit > idx ? clamp(lit - idx) : 0, col = on ? mixCol(Bs, '#FFD27A', on) : Bs, tw = Math.sin(t * 9 + idx) * 1.5;
+    if (on) { glow(c, (s * 18 + knee[0]) / 2, (y0 + knee[1]) / 2, 120, '#FFB43A', .5 * on); glow(c, foot[0], foot[1], 70, '#FFD27A', .6 * on); }
+    limb(c, [[s * 18, y0], [knee[0], knee[1] + tw], [(knee[0] + foot[0]) / 2 + s * 4, (knee[1] + foot[1]) / 2], [foot[0], foot[1]]], [14, 10, 7, 4], col);
+    for (let j = 0; j < 5; j++) { const u = .3 + j * .15, px = lerp(knee[0], foot[0], u), py = lerp(knee[1], foot[1], u); strokePath(c, `M ${px} ${py} l ${s * 6} -4`, col, 1.4); }   // the hairs
+    ellipse(c, foot[0], foot[1], 5, 4, col);
+  }
+  // wings: folded back over the abdomen, or buzzing out to the sides (a blur of two positions)
+  const wing = (s, ang, a) => { c.save(); c.translate(s * 16, -54); c.rotate(s * ang); c.globalAlpha *= a;
+    fillPath(c, `M 0 0 C ${s * 30} -20 ${s * 120} -10 ${s * 150} 30 C ${s * 160} 60 ${s * 120} 80 ${s * 70} 70 C ${s * 40} 60 ${s * 10} 30 0 0 Z`, 'rgba(120,110,230,.42)');
+    strokePath(c, `M 0 0 C ${s * 40} 4 ${s * 90} 20 ${s * 140} 40 M ${s * 30} 10 C ${s * 50} 40 ${s * 70} 60 ${s * 90} 70`, 'rgba(200,190,255,.45)', 1.6); c.restore(); };
+  for (const s of [-1, 1]) {
+    if (wg > .05) { const f = Math.sin(t * 80) * .5 + .5; wing(s, lerp(1.3, .5, f) * wg + (1 - wg) * 1.9, .55); wing(s, lerp(.5, 1.3, f) * wg + (1 - wg) * 1.9, .35); }
+    else wing(s, 1.95, .8);
+  }
+  // abdomen: black, glossy, with a faint gold band
+  const ABD = 'M 0 -8 C 50 -6 70 30 68 78 C 66 124 36 152 0 156 C -36 152 -66 124 -68 78 C -70 30 -50 -6 0 -8 Z';
+  fillPath(c, ABD, B);
+  inside(c, ABD, () => { for (let i = 0; i < 4; i++) strokePath(c, `M -70 ${28 + i * 30} Q 0 ${46 + i * 30} 70 ${28 + i * 30}`, rgba('#3A3448', .9), 3); strokePath(c, 'M -20 10 C -26 50 -24 100 -12 140', 'rgba(150,150,255,.35)', 8); });
+  // thorax: round and furred gold
+  ellipse(c, 0, -50, 44, 42, B);
+  for (let i = 0; i < 70; i++) { const a = hash(i * 1.3) * TAU, r = Math.sqrt(hash(i * 2.1)) * 38; strokePath(c, `M ${Math.cos(a) * r} ${-50 + Math.sin(a) * r * .95} l ${Math.cos(a) * 6} ${Math.sin(a) * 6}`, hash(i * 3) < .5 ? fur : furLt, 2.2); }
+  // head: black, two big eyes, antennae
+  ellipse(c, 0, -112, 30, 26, B);
+  for (const s of [-1, 1]) { ellipse(c, s * 18, -114, 11, 17, '#1C1828', s * .2); ellipse(c, s * 20, -120, 3.5, 5, 'rgba(210,210,255,.6)'); strokePath(c, `M ${s * 8} -134 C ${s * 14} -170 ${s * 34} -190 ${s * (52 + Math.sin(t * 3 + s) * 4)} -196`, B, 4); }
+  c.restore();
+}
+// The demon's throne, front view, in the seated figure's units (the seat at -300, the back up to about -1060, the arms
+// at -430); draw it with the figure's transform. o.layer 'back' (the back and seat) | 'front' (the armrests' fronts).
+// col: the stone, lit: the edge colour.
+function throne(c, o = {}) {
+  const col = o.col || '#120E14', sh = o.sh || '#07060A', lit = o.lit || '#FF9A6A';
+  if (o.layer !== 'front') {
+    // the back: a tall slab with a pointed top and two horns curving out
+    fillPath(c, 'M -200 -300 L -210 -840 C -212 -930 -120 -1010 0 -1060 C 120 -1010 212 -930 210 -840 L 200 -300 Z', col);
+    for (const s of [-1, 1]) {
+      fillPath(c, `M ${s * 150} -940 C ${s * 230} -980 ${s * 300} -1060 ${s * 300} -1180 C ${s * 270} -1090 ${s * 220} -1030 ${s * 168} -1000 Z`, col);
+      strokePath(c, `M ${s * 160} -950 C ${s * 230} -990 ${s * 290} -1070 ${s * 300} -1180`, rgba(lit, .55), 3);
+    }
+    inside(c, 'M -200 -300 L -210 -840 C -212 -930 -120 -1010 0 -1060 C 120 -1010 212 -930 210 -840 L 200 -300 Z', () => {
+      fillPath(c, 'M -150 -320 L -156 -820 C -150 -900 -80 -950 0 -980 C 80 -950 150 -900 156 -820 L 150 -320 Z', sh);
+      for (let i = 0; i < 5; i++) strokePath(c, `M -150 ${-420 - i * 100} L 150 ${-420 - i * 100}`, rgba(lit, .08), 2);
+    });
+    strokePath(c, 'M -210 -840 C -212 -930 -120 -1010 0 -1060 C 120 -1010 212 -930 210 -840', rgba(lit, .6), 3);
+    // a skull-and-horn crest on top
+    ellipse(c, 0, -1000, 34, 30, sh); for (const s of [-1, 1]) ellipse(c, s * 12, -1002, 8, 9, rgba(lit, .55));
+    // the seat block
+    fillPath(c, 'M -230 -300 L 230 -300 L 240 -250 L -240 -250 Z', col); strokePath(c, 'M -230 -300 L 230 -300', rgba(lit, .6), 3);
+    fillPath(c, 'M -240 -250 L 240 -250 L 250 0 L -250 0 Z', sh);
+  }
+  if (o.layer !== 'back') {
+    for (const s of [-1, 1]) {
+      fillPath(c, `M ${s * 170} -430 L ${s * 290} -440 C ${s * 320} -440 ${s * 330} -420 ${s * 326} -400 L ${s * 300} -380 L ${s * 300} 0 L ${s * 240} 0 L ${s * 240} -380 L ${s * 170} -390 Z`, col);
+      strokePath(c, `M ${s * 170} -430 L ${s * 290} -440 C ${s * 320} -440 ${s * 330} -420 ${s * 326} -400`, rgba(lit, .7), 3);
+      ellipse(c, s * 308, -420, 20, 20, sh); strokePath(c, `M ${s * 296} -428 a 12 12 0 0 1 22 6`, rgba(lit, .7), 2.4);   // a carved knob
+    }
+  }
+}
+// Brahma's boon: a golden lotus of light at (x, y), r wide, its petals opening (open 0..1), rays and a glow.
+function lotusLight(c, x, y, r, t, open = 1) {
+  glow(c, x, y, r * 4, '#FFC860', .55 * open); glow(c, x, y, r * 1.4, '#FFF2C8', .7 * open);
+  rays(c, x, y, { n: 18, dir: -Math.PI / 2, spread: Math.PI * 2, len: r * 5 * open, w: r * .9, col: '#FFD890', a: .35 * open, t });
+  c.save(); c.translate(x, y); c.globalCompositeOperation = 'lighter';
+  for (const [ring, n, len, wid] of [[0, 8, 1, .32], [1, 8, .78, .3], [2, 6, .55, .28]]) for (let i = 0; i < n; i++) {
+    const a = -Math.PI / 2 + (i + ring * .5) / n * TAU * .5 - Math.PI * .25 + Math.sin(t * .6 + i) * .02, sp = lerp(.15, 1, open);
+    const ang = -Math.PI / 2 + (a + Math.PI / 2) * sp, L = r * len, w = r * wid;
+    c.save(); c.rotate(ang + Math.PI / 2); fillPath(c, `M 0 0 C ${w} ${-L * .3} ${w * .8} ${-L * .8} 0 ${-L} C ${-w * .8} ${-L * .8} ${-w} ${-L * .3} 0 0 Z`, rgba(['#FF9A4A', '#FFC060', '#FFE6A0'][ring], .55)); c.restore();
+  }
+  c.restore();
 }
