@@ -83,3 +83,8 @@ More stories of the Devi and the gods: follow @therishikatha · rishikatha.com (
 
 #bhramari #maadurga #durgamaa #navadurga #srisailam #bhramaramba #kateel #devibhagavatam #hindumythology #sanatandharma #jaimatadi #mythologystories #indianmythology #reelsindia #rishikatha
 ```
+
+## Cover
+`cover.html` (studio.html + `src/scenes/bhramari_cover.js`): Arunasura laughing on his throne in the storm, the gold bee on
+his arm with its six legs lit, "NOTHING WITH 2 OR 4 LEGS / COULD KILL HIM" and "MAA DURGA CAME WITH / SIX LEGS", kept
+inside the 3:4 grid crop (y 240–1680). `node render.mjs --page=cover.html --stills=0 --out=out/bhramari_cover`
