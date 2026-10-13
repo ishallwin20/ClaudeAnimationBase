@@ -17,6 +17,7 @@ series.
 ![the lighting presets](docs/cine_lighting.jpg)
 ![Ravana and the Kailash story](docs/cine_cast_ravana.jpg)
 ![Nandi and the Nandi story](docs/cine_cast_nandi.jpg)
+![Bhramari and Arunasura](docs/cine_cast_bhramari.jpg)
 
 ---
 
@@ -47,10 +48,13 @@ for rage, warm orange for fire and court, gold for joy and grace, deep violet fo
 | [src/cine_shiva.js](src/cine_shiva.js) | Shiva in colour (front view, trishul and damru, abhaya, snake, mala, jata with the moon; eyes and third eye open), his head for close-ups, and the Nataraja silhouette |
 | [src/cine_cast.js](src/cine_cast.js) | Sati (from behind; with `trishul` and `lotus` she is Shailputri), Daksha on his throne, crowds, the Rudra Tandava (Shiva carrying Sati), Shiva seated, Nandi (an Ongole zebu: lying in the temple pose and standing; white, or `stone` for the black temple Nandi; eyes that flare, an ear that perks), the Sudarshan chakra, the yagna fire, the Pushpak vimana (in two layers, for a rider), Shiva's foot close (a toe that presses), Parvati clinging, Hanuman leaping; for the Nandi story, silhouettes facing left: a `rishi` (stand, sit, plough, point) and his `plough`, the `boy` (baby, sit, stand), a `devotee` (whisper, pray), `nandanar` (hands raised) |
 | [src/cine_ravana.js](src/cine_ravana.js) | Ravana: ten heads (centre mukut, four left and five right in crowns), twenty arms; `pose` stand (arms fanned, `weapons`), lift and pinned (palms round an arch, `ravanaArch()`, so a scene can cut the matching cave), bow; `expr` calm, smirk, laugh, scream, sing, grit; `ravanaHeads()` and `rvHead()` for close-ups |
-| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines; a `linga`, a `deepa` (oil lamp), the `sanctum` doorway, ploughed `furrows`, a night `river`, a `gopuram`; and `rkCardCine()`, the end card |
+| [src/cine_devi.js](src/cine_devi.js) | the Devi, front view in colour: four arms (two raised, cupping orbs of bees; abhaya; the trishul), a tiered gold mukut, a red sari with the pallu, jhumkas and a nath; `bees` (orbs and streams from her hair), `eyes`, `fire` (the irises burn gold); `deviHead()` for close-ups. First drawn as Bhramari; the base for a Cinematic Durga |
+| [src/cine_asura.js](src/cine_asura.js) | Arunasura, the demon king: red-brown, a horned black-and-gold helmet crown, pointed ears, yellow eyes, tusks, gold pauldrons; seated (`pose` throne, or tapas cross-legged), `arms` rest, namaste, knees, up, point; `expr` calm, smirk, laugh, scream, chant, shock; `asuraHead()` (and `crownOnly`, the fallen crown) |
+| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines; a `linga`, a `deepa` (oil lamp), the `sanctum` doorway, ploughed `furrows`, a night `river`, a `gopuram`; for the Bhramari story, flying bees (`flyBee`, `beeCloud`, `beeStream`), `swarm()` (thousands: a stream along a path, `form` into `shapePoints()` of any drawing, `engulf`), the macro `bee()` seen from above with six legs that light up one by one, the demon's `throne()` and Brahma's `lotusLight()`; and `rkCardCine()`, the end card |
 | [cine.html](cine.html) | the style's studio page; on `main` it shows [src/scenes/cine_sheet.js](src/scenes/cine_sheet.js), the cast and lighting sheet |
 | [tools/lyria.mjs](tools/lyria.mjs) | one Lyria 3 Pro score on OpenRouter from a timestamped brief (`--prompt=… --out=….mp3`) |
-| [tools/sfx.mjs](tools/sfx.mjs) | the synth; its "epic and devotional" section (thunder, damru, wind, drum, fire, om, conch, laughter, heart, whir, chime, chirp, roar, rockfall) is this style's sound kit |
+| [tools/sfx.mjs](tools/sfx.mjs) | the synth; its "epic and devotional" section (thunder, damru, wind, drum, fire, om, conch, laughter, heart, whir, chime, chirp, roar, rockfall, buzz, swarmHum) is this style's sound kit |
+| [tools/sarvam_tts.mjs](tools/sarvam_tts.mjs) | a voiceover from Sarvam TTS: voice auditions, then a reel's lines rendered, laid out and turned into karaoke caption timings (see Voice) |
 
 `node render.mjs --page=cine.html --sheet=…` renders the sheet. The engine renders about 30 ms a frame (a 62 s reel
 takes under a minute).
@@ -205,6 +209,28 @@ node -e "const b=require('fs').readFileSync('assets/<name>_sfx.wav'),d=b.subarra
 for(let s=0;s*sr<n;s+=2){let q=0;for(let i=s*sr;i<Math.min(n,(s+2)*sr);i++){const v=d.readInt16LE(i*4)/32768;q+=v*v}o.push(s+':'+(10*Math.log10(q/2/sr)).toFixed(0))}console.log(o.join(' '))"
 ```
 
+## Voice (Sarvam TTS), when the owner asks for one
+
+First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`.
+- **Audition first.** `node tools/sarvam_tts.mjs --audition="<the hook line>" --speakers=a,b,c [--pace=] [--fx=devi|asura]`
+  writes `out/vo_audition/<n>-<speaker>.wav`; concatenate them into one file with a second's gap so the owner can play
+  them straight through, and let the owner pick. A speaker with an underscore is a `bulbul:v4-flash` persona
+  (`girish_en_devotional`, `rustom_en_suspense`, `aditi_en_stories`, …); a bare name is `bulbul:v3`. An invalid
+  speaker's error lists every valid one.
+- **The script** is `tools/<name>_vo.json`: `{ name, defaults: { speaker, lang, pace }, lines: [{ id, t | gap, caps: [chunks], speaker, pace, fx, y, size, hold }] }`.
+  The captions ARE the script: each line's `caps` are its karaoke chunks (with `*names*` and `|` breaks), and the
+  voice reads them with the emphasis capitals lower-cased (a voice spells an all-caps word out: "BEE" came back as
+  "B-E-E"). `node tools/sarvam_tts.mjs --script=tools/<name>_vo.json` writes `assets/<name>_vo.wav` and
+  `src/scenes/<name>_vo.js` (`VO.lines[id] = { a, end }`, `VO.caps = [{ a, b, text, at, y, size }]`).
+- **Build TL from VO** (`src/scenes/<name>_tl.js`, loaded after the VO file): shot times from line starts and word times,
+  so re-rendering the voice moves the picture and the SFX with it. The SFX tool loads both files with `vm`.
+- **Pace.** The devotional and documentary personas are slow (~2.3 words/s at pace 1): the first Bhramari script ran
+  85 s. Pace 1.2 and tighter lines brought it to 62 s and still sounded measured.
+- **Check the words** with Sarvam's speech-to-text (`saaras:v3`) on each raw take: names came back right
+  (Arunasura, Brihaspati, Bhramari), but "A bee?" came back "A B" (a homophone): say "A tiny bee?".
+- **Mix:** the voice at full level, the score side-chain ducked under it (`sidechaincompress`, the voice as the key), the
+  SFX at ~.85, `loudnorm` −14 LUFS. Also write a voice + SFX copy (no score) for music added on Instagram.
+
 ## Checking your work
 
 - `node render.mjs --sheet=…` at each caption and shot change; `--crop=x,y,w,h` for faces and hands; `--strip=a:b` for
@@ -253,3 +279,17 @@ for(let s=0;s*sr<n;s+=2){let q=0;for(let i=s*sr;i<Math.min(n,(s+2)*sr);i++){cons
 - In a temple shot with a standing figure, put the captions at the top (y ~545), above the statue's horns: at the
   bottom they run over the figure's legs.
 
+
+## Lessons from the Bhramari reel (reel/bhramari-bees)
+
+- Lyria followed the brief's first half (the hit at 0, the drop, the swell, the war) but played straight through the
+  near-silences asked for at 26–35 s; a second take stretched to 160 s and lost the opening hit. Make the silences in
+  the mix instead: a piecewise level curve on the score (`volume='if(lt(t,…),…)':eval=frame`), keyed to TL.
+- A caption's dark glow hides anything under it: the hook's gold bee flew right behind "SIX LEGS" and vanished. Keep
+  a key prop's path clear of the caption band.
+- `figure()` inside `soft()` shrinks twice (blit scales its full-frame layer into the small canvas). For an
+  out-of-focus background, draw the figure into a `scratch()` layer and `blit` it with `filter: 'blur(9px)'`.
+- Thousands of bees read as glitter unless some are big: mix far bees as dots (`dots: true`) with near ones as sprites,
+  give a share of them gold, and let the shape (a river, a goddess, a cloud round him) carry the read.
+- A countable moment works on screen: the six legs light one by one with a number by each and a rising tick, then
+  "SIX." lands with a sub drop.
