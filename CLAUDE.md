@@ -11,11 +11,13 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   arms and the gods' gifts, Mahishasura, the buffalo demon, with his buffalo form, the other asuras on his rig (Shumbha and Nishumbha, Chanda and Munda, Dhumralochana, a messenger), Raktabija, the blood-seed demon whose clones sprout from the ground, Maa Kali with her tongue out, Shiva lying down, Ravana with his ten heads (each a personality) and twenty arms, Bal Hanuman, baby Hanuman with golden fur, a curly tuft and a long tail, who sits, stands and flies, and Indra on Airavata, his four-tusked white elephant, with the vajra) and opens the demo. It also holds the Cinematic
   style: its engine (`src/cine.js`), `cine.html` with the cast and lighting sheet, and its cast (`src/cine_shiva.js`: Shiva in
   colour with the third eye, and the Nataraja; `src/cine_cast.js`: Sati, who becomes Shailputri with a trishul and lotus,
-  Daksha, crowds, the Rudra Tandava, Shiva seated, Nandi lying and standing, the Sudarshan chakra, the yagna fire, the
-  Pushpak, Shiva's foot, Parvati clinging, Hanuman leaping; `src/cine_ravana.js`: Ravana with ten heads and twenty arms, who
+  Daksha, crowds, the Rudra Tandava, Shiva seated, Nandi (a zebu bull) lying and standing, white or as the black stone temple Nandi, the Sudarshan chakra, the yagna fire, the
+  Pushpak, Shiva's foot, Parvati clinging, Hanuman leaping, and the Nandi
+  story's silhouettes: a rishi with a plough, the boy Nandi, a devotee, Nandanar; `src/cine_ravana.js`: Ravana with ten heads and twenty arms, who
   stands, lifts Kailash, is pinned under it and bows) and sets (`src/cine_sets.js`: Kailash, uprooted Kailash, cliffs,
   clouds, the ring of fire, a fire-lit hall, cracks, meteors, stars, shrines, debris, shock rings, burning Lanka, Devanagari
-  verses, the end card). Shared characters and engine changes, in either style, are committed to `main`: enrich them there when a reel
+  verses, a linga, oil lamps, the sanctum doorway, furrows, a river, a gopuram, the end card). `tools/lyria.mjs` makes a
+  reel's score. Shared characters and engine changes, in either style, are committed to `main`: enrich them there when a reel
   needs more.
 - Each video gets its own branch off `main`: `reel/<idea>` for comedy reels, `ad/<n>-<book>-<idea>` for Rishi Katha
   book ads (e.g. `ad/1-book1-bull`). The branch holds `STORYBOARD.md`, `src/scenes/<name>.js` (+ `_props.js`),

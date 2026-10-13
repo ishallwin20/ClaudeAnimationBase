@@ -195,3 +195,77 @@ function rkCardCine(c, u, t, o = {}) {
   text(c, 'rishikatha.com', X, 1398, '700 52px Poppins', '#FFFFFF', { pop: pk(1.65) });
   text(c, 'Follow @therishikatha for more!', X, 1482, '500 36px Poppins', '#CFE3DF', { pop: pk(1.95), maxW: 860 });
 }
+
+// ---------- the Nandi story: the temple, the field, the river, the gopuram ----------
+// A Shiva linga on its yoni pedestal at (x, y) (the pedestal's foot), k = scale (about 240 wide at k 1), the spout to
+// screen right; o: col (stone), lit (the lamp-lit edge colour), garland (true), glow (0..1 a light round it).
+function linga(c, x, y, k, o = {}) {
+  const col = o.col || '#151012', lit = o.lit || '#FFB060';
+  if (o.glow) glow(c, x, y - 180 * k, 420 * k, '#FFC870', .6 * o.glow);
+  c.save(); c.translate(x, y); c.scale(k, k);
+  fillPath(c, 'M -90 0 L -80 -40 L 80 -40 L 90 0 Z', col);
+  fillPath(c, 'M -120 -40 C -124 -60 -110 -76 -80 -80 L 80 -80 C 100 -80 120 -76 150 -70 L 190 -62 C 196 -56 192 -48 184 -48 L 120 -46 C 110 -40 100 -40 80 -40 L -80 -40 C -110 -40 -118 -32 -120 -40 Z', col);
+  fillPath(c, 'M -56 -80 L -56 -200 C -56 -250 -30 -270 0 -270 C 30 -270 56 -250 56 -200 L 56 -80 Z', col);
+  strokePath(c, 'M -46 -200 C -40 -250 -20 -262 0 -262', rgba(lit, .7), 4);
+  for (let i = 0; i < 3; i++) strokePath(c, `M -44 ${-206 + i * 14} L 44 ${-206 + i * 14}`, rgba('#E8DCC4', .8), 4);   // the tripundra
+  ellipse(c, 0, -192, 6, 6, '#C8202A');
+  if (o.garland !== false) for (let i = 0; i < 11; i++) { const a = Math.PI * i / 10; ellipse(c, -Math.cos(a) * 56, -110 + Math.sin(a) * 26, 10, 10, i % 2 ? '#F0A030' : '#C8701E'); }
+  strokePath(c, 'M -110 -56 L 140 -56', rgba(lit, .5), 3);
+  c.restore();
+}
+// A brass oil lamp (deepa) at (x, y) (its foot), k scale; the flame flickers with t.
+function deepa(c, x, y, k, t, a = 1, seed = 0) {
+  const f = 1 + .12 * Math.sin(t * 11 + seed) + .08 * Math.sin(t * 17 + seed * 2);
+  glow(c, x, y - 90 * k, 260 * k * f, '#FF9A3A', .55 * a); glow(c, x, y - 80 * k, 70 * k, '#FFE2A0', .7 * a);
+  c.save(); c.translate(x, y); c.scale(k, k);
+  fillPath(c, 'M -26 0 L 26 0 L 14 -10 L 6 -50 L -6 -50 L -14 -10 Z', '#8A5A1E');
+  fillPath(c, 'M -40 -50 C -30 -66 30 -66 40 -50 C 30 -44 -30 -44 -40 -50 Z', '#C8902E');
+  fillPath(c, `M -4 -58 C -10 -70 -6 ${-90 * f} 0 ${-104 * f} C 6 ${-90 * f} 10 -70 4 -58 Z`, '#FFB040');
+  fillPath(c, `M -2 -60 C -5 -70 -3 ${-82 * f} 0 ${-90 * f} C 3 ${-82 * f} 5 -70 2 -60 Z`, '#FFF2C0');
+  c.restore();
+}
+// The garbhagriha: a stone doorway (its sill centred at x, y; about 360 wide and 620 tall at k 1), dark inside, the
+// linga within lit by its lamps; open (0..1) lights the inside up gold. col: the stone, lit: the edge facing the lamps.
+function sanctum(c, x, y, k, t, o = {}) {
+  const col = o.col || '#1E1412', open = o.open ?? .4;
+  c.save(); c.translate(x, y); c.scale(k, k);
+  const g = c.createLinearGradient(0, -560, 0, 0); g.addColorStop(0, '#070405'); g.addColorStop(1, mixCol('#1A0C08', '#6A3A14', open)); c.fillStyle = g; c.fillRect(-140, -560, 280, 560);
+  glow(c, 0, -160, 380, '#FFB050', .25 + .5 * open);
+  c.restore();
+  linga(c, x, y - 4 * k, .62 * k, { glow: open, lit: '#FFC070' });
+  deepa(c, x - 100 * k, y, .7 * k, t, 1, 1); deepa(c, x + 100 * k, y, .7 * k, t, 1, 2);
+  c.save(); c.translate(x, y); c.scale(k, k);
+  for (const s of [-1, 1]) { fillPath(c, `M ${s * 140} 0 L ${s * 140} -560 L ${s * 200} -580 L ${s * 200} 0 Z`, col); for (let i = 0; i < 6; i++) fillPath(c, `M ${s * 146} ${-60 - i * 90} L ${s * 194} ${-60 - i * 90} L ${s * 194} ${-70 - i * 90} L ${s * 146} ${-70 - i * 90} Z`, rgba('#FFB070', .14)); strokePath(c, `M ${s * 141} -10 L ${s * 141} -556`, rgba('#FFB070', .45), 3); }
+  fillPath(c, 'M -230 -560 L 230 -560 L 230 -640 L -230 -640 Z', col);
+  fillPath(c, 'M -170 -640 C -120 -720 120 -720 170 -640 Z', col);   // the arch over the lintel
+  ellipse(c, 0, -690, 26, 26, rgba('#FFB070', .35));
+  fillPath(c, 'M -260 0 L 260 0 L 250 -16 L -250 -16 Z', col);   // the sill
+  c.restore();
+}
+// A ploughed field at dawn, furrows running from the horizon (y) toward the viewer; k = 0..1 a glow rising from vx.
+function furrows(c, y, t, o = {}) {
+  const g = c.createLinearGradient(0, y, 0, H); g.addColorStop(0, o.far || '#4A2A22'); g.addColorStop(1, o.near || '#140A08'); c.fillStyle = g; c.fillRect(-300, y, W + 600, H - y + 400);
+  for (let i = -14; i <= 14; i++) { const x0 = 540 + i * 30, x1 = 540 + i * 220; strokePath(c, `M ${x0} ${y} L ${x1} ${H + 200}`, rgba(o.line || '#0A0504', .55), 3 + Math.abs(i) * .3); strokePath(c, `M ${x0 + 6} ${y} L ${x1 + 40} ${H + 200}`, rgba(o.lit || '#B0603A', .18), 2); }
+}
+// A river at night: a dark band from y to y + h with a moon's broken reflection at mx.
+function river(c, y, h, t, mx = 540, col = '#0C1428') {
+  fillPath(c, `M -200 ${y} L ${W + 200} ${y} L ${W + 200} ${y + h} L -200 ${y + h} Z`, col);
+  for (let i = 0; i < 26; i++) { const yy = y + 10 + (i / 26) ** 1.4 * (h - 20), w = 30 + i * 9, x = mx + Math.sin(t * 1.2 + i * 1.7) * 14; strokePath(c, `M ${x - w / 2} ${yy} L ${x + w / 2} ${yy}`, rgba('#C8D6F5', .5 - i * .015), 2 + i * .15); }
+  for (let i = 0; i < 40; i++) { const xx = hash(i * 3.3) * W, yy = y + hash(i * 5.1) * h, w = 20 + hash(i) * 60; strokePath(c, `M ${xx + Math.sin(t + i) * 10} ${yy} l ${w} 0`, rgba('#7A8CB8', .18), 2); }
+}
+// A south Indian gopuram (temple gate tower) silhouette, its foot centred at (x, y), k scale (about 520 wide and 900
+// tall at k 1), with the gateway open at the bottom (door 0..1 how bright the inside is).
+function gopuram(c, x, y, k, o = {}) {
+  const col = o.col || '#140C0E', lit = o.lit || '#FFB070';
+  c.save(); c.translate(x, y); c.scale(k, k);
+  fillPath(c, 'M -260 0 L -260 -260 L 260 -260 L 260 0 Z', col);
+  for (let i = 0; i < 6; i++) { const w = 240 - i * 30, y0 = -260 - i * 100; fillPath(c, `M ${-w} ${y0} L ${w} ${y0} L ${w - 22} ${y0 - 100} L ${-w + 22} ${y0 - 100} Z`, col);
+    strokePath(c, `M ${-w} ${y0 - 2} L ${w} ${y0 - 2}`, rgba(lit, .35), 3);
+    for (let j = 0; j < 5 - Math.floor(i / 2); j++) { const xx = lerp(-w + 40, w - 40, (j + .5) / (5 - Math.floor(i / 2))); fillPath(c, `M ${xx - 12} ${y0 - 20} L ${xx + 12} ${y0 - 20} L ${xx + 12} ${y0 - 70} C ${xx + 12} ${y0 - 84} ${xx - 12} ${y0 - 84} ${xx - 12} ${y0 - 70} Z`, rgba(lit, .12)); } }
+  fillPath(c, 'M -110 -860 C -110 -930 110 -930 110 -860 Z', col);   // the barrel vault on top
+  for (let i = 0; i < 5; i++) { const xx = -80 + i * 40; fillPath(c, `M ${xx - 8} -900 L ${xx + 8} -900 L ${xx} -950 Z`, col); }   // kalashas
+  const d = o.door ?? 0, g = c.createLinearGradient(0, -230, 0, 0); g.addColorStop(0, mixCol('#08040A', '#C07A30', d * .6)); g.addColorStop(1, mixCol('#0A0606', '#FFC870', d)); c.fillStyle = g;
+  c.beginPath(); c.moveTo(-80, 0); c.lineTo(-80, -170); c.quadraticCurveTo(0, -240, 80, -170); c.lineTo(80, 0); c.closePath(); c.fill();
+  c.restore();
+  if (o.door) glow(c, x, y - 100 * k, 300 * k, '#FFC870', .5 * o.door);
+}

@@ -2,6 +2,7 @@
 //   0–9   the cast and sets: what each function draws, in the light it was made for
 //   10–14 the lighting presets (LIGHTS.*) on the same Shiva, each against its own sky
 //   15–22 Ravana and the Kailash story (ad 15): Ravana's poses and faces, Nandi standing, the Pushpak, Shiva's foot, the sets
+//   23–27 Nandi (a zebu: hump, dewlap, black muzzle) and the Nandi story: the stone temple Nandi, rishi, boy, devotee, Nandanar, sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
 //   node render.mjs --page=cine.html --sheet=10.5,11.5,12.5,13.5,14.5 --cols=5 --w=300 --out=docs/cine_lighting.jpg
@@ -77,3 +78,20 @@ panel(22, 'uprooted()  ·  parvatiCling()  ·  lanka()  ·  hanumanLeap()  ·  s
   c.save(); c.translate(540, 200); c.scale(.6, .6); c.translate(-540, 0); uprooted(c, 540, 0, 600, t); c.restore();
   figure(c, (f) => { f.translate(500, 214); f.scale(.25, .25); shivaSeated(f, { t }); f.translate(250, 0); parvatiCling(f, { t }); }, LIGHTS.storm);
   stotram(c, ['जटाटवीगलज्जलप्रवाहपावितस्थले', 'गलेऽवलम्ब्य लम्बितां भुजङ्गतुङ्गमालिकाम्'], 540, 1000, t, t - 3); });
+
+// ---------- Nandi (redrawn as a zebu) and the Nandi story (reel/nandi-whisper) ----------
+//   node render.mjs --page=cine.html --sheet=23.5,24.5,25.5,26.5,27.5 --cols=5 --w=300 --out=docs/cine_cast_nandi.jpg
+const templeSky = (c) => { sky(c, [[0, '#0E0806'], [1900, '#2A1610']]); glow(c, 250, 1200, 700, '#FF9A40', .5); };
+panel(23, 'nandiStanding()  ·  col: a bull, not a goat', (c, t) => { dawnSky(c); fillPath(c, 'M -100 1640 C 200 1600 500 1590 700 1600 C 900 1610 1100 1640 1180 1660 L 1180 2100 L -100 2100 Z', '#24121E');
+  figure(c, (f) => { f.translate(560, 900); f.scale(.8, .8); nandiStanding(f, { t, col: '#140C12' }); }, { edge: { col: '#FFD9A0', w: 2, a: .7 } });
+  figure(c, (f) => { f.translate(560, 1620); f.scale(1.15, 1.15); nandiStanding(f, { t }); }, { tint: ['#3A1830', .15], edge: { col: '#FFD9A0', w: 2.2, a: .7 }, rim: { col: '#FFF0C8', dx: 5, dy: -3, a: .9, blur: 1 } }); });
+panel(24, 'nandiLying({ stone, ear })  ·  sanctum()  ·  deepa()', (c, t) => { templeSky(c); fillPath(c, 'M -100 1400 L 1180 1400 L 1180 2100 L -100 2100 Z', '#1A0E0A'); sanctum(c, 170, 1440, .9, t, { open: .6 });
+  figure(c, (f) => { f.translate(760, 1400); f.scale(1.2, 1.2); nandiLying(f, { t, stone: true, ear: .6 }); }, { edge: { col: '#FFB070', w: 2.2, a: .5 }, rim: { col: '#FFD08A', dx: -6, dy: -3, a: .85, blur: 1 } });
+  figure(c, (f) => { f.translate(560, 920); f.scale(.7, .7); nandiLying(f, { t }); }, { edge: { col: '#FFD9A0', w: 2, a: .7 } }); });
+panel(25, "rishi({ pose })  ·  plough()  ·  boy({ pose })", (c, t) => { dawnSky(c); fillPath(c, 'M -100 1500 L 1180 1500 L 1180 2100 L -100 2100 Z', '#1C111B');
+  figure(c, (f) => { f.translate(140, 1000); f.scale(.55, .55); rishi(f, { t }); f.setTransform(c.getTransform()); f.translate(400, 1000); f.scale(.55, .55); rishi(f, { t, pose: 'sit' });
+    f.setTransform(c.getTransform()); f.translate(470, 1000); f.scale(.55, .55); plough(f); f.setTransform(c.getTransform()); f.translate(800, 1000); f.scale(.55, .55); rishi(f, { t, pose: 'plough' });
+    f.setTransform(c.getTransform()); f.translate(200, 1500); boy(f, { t, pose: 'baby' }); f.setTransform(c.getTransform()); f.translate(540, 1500); boy(f, { t, pose: 'sit' }); f.setTransform(c.getTransform()); f.translate(840, 1500); boy(f, { t }); }, { ...LIGHTS.dawnBack, tint: ['#1A0C14', .85] }); });
+panel(26, "devotee({ pose })  ·  nandanar({ raise })", (c, t) => { dawnSky(c); fillPath(c, 'M -100 1500 L 1180 1500 L 1180 2100 L -100 2100 Z', '#1C111B');
+  figure(c, (f) => { f.translate(240, 1500); f.scale(.9, .9); devotee(f, { t }); f.setTransform(c.getTransform()); f.translate(560, 1500); f.scale(.9, .9); devotee(f, { t, pose: 'pray' }); f.setTransform(c.getTransform()); f.translate(880, 1500); f.scale(.9, .9); nandanar(f, { t }); }, { ...LIGHTS.dawnBack, tint: ['#1A0C14', .85] }); });
+panel(27, 'gopuram()  ·  furrows()  ·  river()  ·  linga()', (c, t) => { sky(c, [[0, '#0E0A1E'], [700, '#2A1838'], [1100, '#6A3048']]); river(c, 1100, 160, t, 540); gopuram(c, 380, 1500, .8, { door: .8 }); furrows(c, 1500, t); linga(c, 820, 1460, .9, { glow: .6 }); });

@@ -16,6 +16,7 @@ series.
 ![the cast](docs/cine_cast.jpg)
 ![the lighting presets](docs/cine_lighting.jpg)
 ![Ravana and the Kailash story](docs/cine_cast_ravana.jpg)
+![Nandi and the Nandi story](docs/cine_cast_nandi.jpg)
 
 ---
 
@@ -44,10 +45,11 @@ for rage, warm orange for fire and court, gold for joy and grace, deep violet fo
 |---|---|
 | [src/cine.js](src/cine.js) | the engine: math, layers, `figure()` and `LIGHTS`, camera planes, skies, clouds, haze, rays, motes, lightning, flashes, karaoke captions, pictures and text, the frame (bloom, vignette, grain), and the page hooks `render.mjs` uses |
 | [src/cine_shiva.js](src/cine_shiva.js) | Shiva in colour (front view, trishul and damru, abhaya, snake, mala, jata with the moon; eyes and third eye open), his head for close-ups, and the Nataraja silhouette |
-| [src/cine_cast.js](src/cine_cast.js) | Sati (from behind; with `trishul` and `lotus` she is Shailputri), Daksha on his throne, crowds, the Rudra Tandava (Shiva carrying Sati), Shiva seated, Nandi lying and standing (white, in colour, eyes that flare), the Sudarshan chakra, the yagna fire, the Pushpak vimana (in two layers, for a rider), Shiva's foot close (a toe that presses), Parvati clinging, Hanuman leaping |
+| [src/cine_cast.js](src/cine_cast.js) | Sati (from behind; with `trishul` and `lotus` she is Shailputri), Daksha on his throne, crowds, the Rudra Tandava (Shiva carrying Sati), Shiva seated, Nandi (an Ongole zebu: lying in the temple pose and standing; white, or `stone` for the black temple Nandi; eyes that flare, an ear that perks), the Sudarshan chakra, the yagna fire, the Pushpak vimana (in two layers, for a rider), Shiva's foot close (a toe that presses), Parvati clinging, Hanuman leaping; for the Nandi story, silhouettes facing left: a `rishi` (stand, sit, plough, point) and his `plough`, the `boy` (baby, sit, stand), a `devotee` (whisper, pray), `nandanar` (hands raised) |
 | [src/cine_ravana.js](src/cine_ravana.js) | Ravana: ten heads (centre mukut, four left and five right in crowns), twenty arms; `pose` stand (arms fanned, `weapons`), lift and pinned (palms round an arch, `ravanaArch()`, so a scene can cut the matching cave), bow; `expr` calm, smirk, laugh, scream, sing, grit; `ravanaHeads()` and `rvHead()` for close-ups |
-| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines, and `rkCardCine()`, the end card |
+| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines; a `linga`, a `deepa` (oil lamp), the `sanctum` doorway, ploughed `furrows`, a night `river`, a `gopuram`; and `rkCardCine()`, the end card |
 | [cine.html](cine.html) | the style's studio page; on `main` it shows [src/scenes/cine_sheet.js](src/scenes/cine_sheet.js), the cast and lighting sheet |
+| [tools/lyria.mjs](tools/lyria.mjs) | one Lyria 3 Pro score on OpenRouter from a timestamped brief (`--prompt=… --out=….mp3`) |
 | [tools/sfx.mjs](tools/sfx.mjs) | the synth; its "epic and devotional" section (thunder, damru, wind, drum, fire, om, conch, laughter, heart, whir, chime, chirp, roar, rockfall) is this style's sound kit |
 
 `node render.mjs --page=cine.html --sheet=…` renders the sheet. The engine renders about 30 ms a frame (a 62 s reel
@@ -191,8 +193,8 @@ sound is the score. Build it from the shared kit in `tools/sfx.mjs`:
   `rockfall` for stone tearing or falling;
 - an arc: quiet hook, building, the loudest beat at the climax, calmer after, a soft chime and drone on the card.
 **Music, when wanted (cheap):** one `google/lyria-3-pro-preview` call on OpenRouter (`OPEN_ROUTER_KEY` in `.env`; $0.08
-a song; it needs `stream: true` and `modalities: ['audio', 'text']`; the audio comes back as base64 chunks in
-`delta.audio.data`, an MP3). Give it a timestamped section list matching `TL`: it follows the timings closely but runs
+a song; `node tools/lyria.mjs --prompt=tools/<name>_score.txt --out=assets/<name>_score.mp3` makes the call: it needs
+`stream: true` and `modalities: ['audio', 'text']`, and the MP3 comes back base64 in one very long `delta.audio.data` line). Give it a timestamped section list matching `TL`: it follows the timings closely but runs
 long (a 65 s brief came back 92.7 s), so cut it and crossfade into its own ending, then mix the SFX on top with
 ffmpeg (score ~.4, `loudnorm=I=-15`). See `ad/15-books123-ravana-kailash`'s `tools/ravana_kailash_sfx.mjs`.
 Check the levels without listening: print the loudness per 2 s and look for the arc (and for silence, which means one
@@ -236,3 +238,18 @@ for(let s=0;s*sr<n;s+=2){let q=0;for(let i=s*sr;i<Math.min(n,(s+2)*sr);i++){cons
   caption by hand with `|`, or the wrap leaves orphans ("AT / HIM").
 - Dim (not yet lit) karaoke words vanish on a bright sunset: put captions over dark land or a dark sky. Light the whole
   hook at frame 0 (`at: Array(n).fill(-.35)`) so the thumbnail reads.
+
+## Lessons from the Nandi reel (reel/nandi-whisper)
+
+- A viewer called ad 15's Nandi a goat: a small wedge head, thin swept-back horns, a small hump. An Indian bull reads
+  from the hump over the shoulders, the long dewlap, a broad blocky head with a black muzzle, and short thick horns
+  curving up and forward. Check any animal as a black silhouette (`col`): if the outline doesn't name it, redraw it.
+- A red dot near an animal's eye reads as a second eye; keep forehead marks off a side-view face.
+- Lyria runs long in two ways. Ad 15's take was stretched (92.7 s for 65 s). This reel's first take stretched every
+  section ×2.34 (154 s) and opened with 6 s of near silence. A brief that opens with "a SHORT cue: exactly 66 seconds…
+  do not extend it" and closes with the length again came back right for its first 65 s (then silence and an unrelated
+  tail, cut off). Print the loudness per second before using a take: the dips and hits show whether it followed the
+  timestamps.
+- In a temple shot with a standing figure, put the captions at the top (y ~545), above the statue's horns: at the
+  bottom they run over the figure's legs.
+

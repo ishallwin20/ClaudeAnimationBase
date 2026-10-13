@@ -5,10 +5,10 @@
 //   crowd(c, ...)       a row of seated guests (heads and shoulders), bobbing when they laugh
 //   rudra(c, o)         Shiva's Rudra Tandava: stamping, Sati's body across his shoulders, locks flying
 //   shivaSeated(c, o)   Shiva in padmasana with the trishul planted beside him
-//   nandiLying(c, o)    Nandi lying down, side view facing left
+//   nandiLying(c, o)    Nandi lying in the temple pose (legs folded, head up), facing left; o.stone: the black temple Nandi
 //   chakra(c, ...)      the Sudarshan chakra: a spinning, flaming disc of light
 //   yagna(c, ...)       the fire altar and its fire
-//   nandiStanding(c, o) Nandi, the great white bull, standing, side view facing left; in colour (or o.col), o.eyes glow
+//   nandiStanding(c, o) Nandi, the great white bull (an Ongole zebu), standing, facing left; o.col, o.stone, o.eyes glow, o.ear perks
 //   pushpak(c, o)       Ravana's flying chariot, side view flying right; o.layer 'back' | 'front' to put a rider between
 //   shivaFoot(c, o)     Shiva's foot, side view (toes to screen right) on a rock: o.press 0..1, the big toe pressing down
 //   parvatiCling(c, o)  Parvati seated, leaning to clutch Shiva's arm (to her left): a silhouette (o.col)
@@ -173,24 +173,6 @@ function shivaSeated(c, o = {}) {
   for (const s of [-1, 1]) limb(c, [[s * 30, -380], [s * 44, -330], [s * 60, -290]], [16, 14, 4], col, false);
 }
 
-// ---------- Nandi, lying down, side view facing screen left ----------
-function nandiLying(c, o = {}) {
-  const col = o.col || '#140C12', t = o.t || 0, nod = Math.sin(t * 1.2) * .03;
-  fillPath(c, 'M 230 -40 C 250 -110 220 -190 120 -200 C 40 -226 -60 -226 -120 -196 C -170 -170 -190 -110 -180 -40 C -180 -10 -150 0 -110 0 L 200 0 C 224 0 232 -20 230 -40 Z', col);
-  fillPath(c, 'M -160 -190 C -150 -296 -60 -306 -20 -206 Z', col);   // the hump
-  limb(c, [[-150, -40], [-230, -16], [-276, -8]], [50, 34, 26], col);   // the folded foreleg
-  limb(c, [[226, -60], [262, -30], [270, 10]], [14, 10, 6], col, false); ellipse(c, 272, 12, 10, 14, col);   // tail
-  c.save(); c.translate(-150, -180); c.rotate(nod);
-  limb(c, [[0, 0], [-56, -40], [-104, -76]], [120, 90, 66], col);   // the neck, raised
-  fillPath(c, 'M -70 -40 C -86 -10 -100 10 -112 14 C -100 -20 -96 -40 -90 -60 Z', col);   // the dewlap
-  limb(c, [[-104, -76], [-128, -48], [-142, -14]], [64, 54, 44], col);   // the head, the muzzle down
-  ellipse(c, -146, -12, 24, 20, col);
-  limb(c, [[-92, -100], [-84, -150], [-60, -176]], [16, 12, 4], col, false);   // horns
-  limb(c, [[-112, -104], [-118, -152], [-100, -184]], [15, 11, 4], col, false);
-  ellipse(c, -70, -92, 26, 10, col, .45);   // the ear
-  c.restore();
-}
-
 // ---------- the Sudarshan chakra ----------
 function chakra(c, x, y, r, ang, a = 1, t = 0) {
   if (a <= 0) return;
@@ -226,56 +208,142 @@ function yagna(c, x, y, w, t, k = 1) {
   c.restore();
 }
 
-// ---------- Nandi standing ----------
-// The great white bull, side view facing screen left, about 600 long and 470 to the horn tips; feet at y 0, x -260..270.
-// o: t, col (one colour: a silhouette), eyes (0..1 a gold glow in the eye: his anger), light (1 from the right).
-const NANDI = { white: '#E9E4DA', sh: '#B7AEA2', dk: '#857B70', muzzle: '#CDBDB4', nose: '#5A4A48', hoof: '#3A302C', horn: '#D9CFBF', hornSh: '#9E9282',
-  cloth: '#9E1E2A', clothSh: '#6A1420', gold: '#D9A441', marigold: '#F0A030', marigoldSh: '#C8701E' };
-function nandiStanding(c, o = {}) {
-  const t = o.t || 0, N = NANDI, one = o.col, C = (k) => one || N[k], br = Math.sin(t * 1.5) * 1.5, nod = Math.sin(t * 1.1) * .02;
-  // the far legs, in shade
-  for (const [x, w] of [[-120, 52], [196, 62]]) { limb(c, [[x, -190], [x + 6, -90], [x + 2, -16]], [w, w * .7, w * .55], C('dk')); ellipse(c, x + 2, -10, w * .32, 12, C('hoof')); }
-  // the tail
-  limb(c, [[250, -310], [268, -240], [266 + Math.sin(t * 1.3) * 6, -160], [260 + Math.sin(t * 1.3) * 10, -110]], [16, 11, 8, 6], C('sh'), false);
-  ellipse(c, 260 + Math.sin(t * 1.3) * 10, -96, 12, 22, C('dk'));
-  // body and hump
-  const BODY = `M -214 -250 C -224 -312 -172 ${-352 + br} -110 ${-354 + br} C -20 ${-352 + br} 80 ${-342 + br} 160 -338 C 222 -336 254 -300 254 -250 C 254 -200 234 -170 204 -166 C 120 -158 -40 -150 -150 -160 C -192 -166 -210 -200 -214 -250 Z`;
-  fillPath(c, BODY, C('white'));
-  fillPath(c, `M -178 -330 C -170 ${-430 + br} -86 ${-432 + br} -60 -342 Z`, C('white'));
-  if (!one) inside(c, BODY, () => { fillPath(c, 'M -240 -210 C -100 -196 100 -206 270 -224 L 270 -140 L -240 -140 Z', rgba(N.sh, .85)); ellipse(c, 170, -290, 80, 50, rgba(N.sh, .35)); });
-  // the cloth over his back: red with a gold border and tassels
-  const CL = `M -96 ${-350 + br} C 0 ${-352 + br} 90 -344 150 -338 L 142 -236 C 60 -240 -40 -242 -108 -236 Z`;
-  fillPath(c, CL, C('cloth'));
-  if (!one) { inside(c, CL, () => { fillPath(c, 'M -140 -256 L 180 -256 L 180 -226 L -140 -226 Z', N.gold); fillPath(c, 'M 40 -360 L 200 -360 L 200 -220 L 40 -220 Z', rgba(N.clothSh, .6)); for (let i = 0; i < 5; i++) ellipse(c, -60 + i * 46, -300, 9, 9, N.gold); }); for (let i = 0; i < 9; i++) limb(c, [[-104 + i * 30, -238], [-104 + i * 30, -222]], [6, 3], N.gold, false); }
-  // the near legs
-  for (const [x, w, k] of [[-150, 56, 0], [164, 68, 1]]) {
-    limb(c, [[x, -200], [x - 4 + k * 10, -120], [x - 2, -18]], [w * 1.2, w * .66, w * .52], C('white'));
-    if (!one) limb(c, [[x + w * .3, -190], [x + w * .2 + k * 8, -120], [x + 10, -24]], [w * .4, w * .25, w * .2], rgba(N.sh, .8));
-    ellipse(c, x - 2, -10, w * .34, 12, C('hoof'));
-  }
-  // neck, dewlap, head (muzzle down and forward), horns, ear, eye
-  c.save(); c.translate(-200, -300); c.rotate(nod);
-  fillPath(c, 'M 30 -60 C -10 -80 -60 -86 -90 -76 L -110 10 C -70 30 -10 40 40 46 Z', C('white'));
-  fillPath(c, 'M -10 30 C -30 80 -60 96 -84 70 C -84 40 -80 10 -70 -10 Z', C('white'));
-  if (!one) fillPath(c, 'M -10 30 C -30 80 -60 96 -84 70 C -70 74 -50 64 -40 30 Z', rgba(N.sh, .8));
-  const HEAD = 'M -60 -90 C -92 -102 -128 -94 -146 -66 C -160 -42 -168 -2 -160 22 C -150 40 -126 42 -112 30 C -96 6 -74 -26 -48 -44 Z';
-  limb(c, [[-104, -94], [-96, -140], [-70, -168], [-52, -172]], [20, 15, 9, 3], C('horn'));
-  if (!one) limb(c, [[-100, -100], [-90, -140], [-68, -164]], [7, 5, 2], rgba(N.hornSh, .9));
-  fillPath(c, HEAD, C('white'));
-  if (!one) inside(c, HEAD, () => { fillPath(c, 'M -170 -10 C -150 -10 -120 0 -100 30 L -170 60 Z', rgba(N.muzzle, .9)); ellipse(c, -100, -60, 40, 18, rgba(N.sh, .5), -.6); });
-  ellipse(c, -152, 18, 7, 5, C('nose'), .4);
-  limb(c, [[-58, -86], [-46, -132], [-30, -150]], [16, 11, 3], C('horn'));
-  ellipse(c, -50, -66, 30, 11, C('white'), .5); if (!one) ellipse(c, -50, -66, 20, 5, rgba(N.muzzle, .9), .5);
-  if (!one) {
-    ellipse(c, -110, -60, 8, 6, '#1A1210', -.2); ellipse(c, -108, -62, 2.2, 2, '#FFF4E0');
-    strokePath(c, 'M -122 -66 Q -110 -72 -98 -64', rgba(N.dk, .9), 2.4);
-  }
-  if (o.eyes) { glow(c, -110, -60, 70 * o.eyes, '#FFC54A', .9 * o.eyes); ellipse(c, -110, -60, 8, 6, mixCol('#1A1210', '#FFE27A', o.eyes), -.2); }
-  // the bell on a red band, and a marigold garland
-  strokePath(c, 'M 10 -40 C -10 10 -40 30 -70 34', C('cloth'), 12);
-  fillPath(c, 'M -54 38 C -66 38 -72 52 -72 66 L -36 66 C -36 52 -42 38 -54 38 Z', C('gold'));
-  for (let i = 0; i < 11; i++) { const u = i / 10, x = lerp(26, -96, u), y = -54 + Math.sin(u * Math.PI) * 70; ellipse(c, x, y, 11, 11, C(i % 2 ? 'marigold' : 'marigoldSh')); }
+// ---------- Nandi ----------
+// The great white bull, an Ongole zebu, side view facing screen left. What makes him read as a bull and not a goat (a
+// viewer called ad 15's first Nandi a goat): the big hump over the shoulders, the long folded dewlap, a broad blocky
+// head with a black muzzle and a big kohl-rimmed eye, short thick horns curving up and forward, a heavy front end.
+//   nandiStanding: feet at y 0, x about -330..300, the hump top at -494.
+//   nandiLying: the temple pose (legs folded under, head up), resting on y 0, x about -330..300, horn tips near -330.
+// o: t, col (one colour: a silhouette), stone (the temple Nandi: oiled black basalt with a sheen and a fresh marigold
+// garland), eyes (0..1 a gold glow in the eye: his anger), ear (0..1 the near ear lifts: listening), look (the
+// head raised, radians; lying defaults to .2), bare (no cloth, band or garland).
+const NANDI = { white: '#ECE7DD', sh: '#BBB2A6', dk: '#8A8076', hump: '#A39B91', muzzle: '#3C3536', nose: '#1C1617', inEar: '#C9A7A0',
+  eye: '#1A1210', iris: '#3A2418', lid: '#6E645C', hoof: '#2E2826', horn: '#D8CDBB', hornSh: '#9E9282', switch: '#2A2422', sheen: '#FFFFFF',
+  cloth: '#9E1E2A', clothSh: '#6A1420', gold: '#D9A441', goldSh: '#9A6E22', marigold: '#F0A030', marigoldSh: '#C8701E', tilak: '#C8202A', sandal: '#E8C98A' };
+const NANDI_STONE = { ...NANDI, white: '#3F3B38', sh: '#272422', dk: '#1E1C1A', hump: '#2E2A28', muzzle: '#1E1B1A', nose: '#0E0C0B', inEar: '#6A615A',
+  eye: '#0E0C0B', iris: '#0E0C0B', lid: '#55504A', hoof: '#1E1B1A', horn: '#4A4540', hornSh: '#2A2725', switch: '#1E1B1A', sheen: '#A8A198',
+  cloth: '#48413C', clothSh: '#2F2A27', gold: '#615A52', goldSh: '#3A3531' };
+const ndPal = (o) => { const P = o.stone ? NANDI_STONE : NANDI, one = o.col; return [P, (k) => one || P[k], one]; };
+const ndHoof = (c, x, w, col, sh) => { fillPath(c, `M ${x - w} 0 L ${x - w * .78} -26 L ${x + w * .78} -26 L ${x + w} 0 Z`, col); if (sh) strokePath(c, `M ${x - w * .1} -2 L ${x - w * .05} -20`, sh, 2.4); };
+
+// The head, in its own frame: the origin is where the neck meets the back of the skull; the muzzle hangs down-left.
+function ndHead(c, o, P, C, one) {
+  const t = o.t || 0, HEAD = 'M -50 -72 C -66 -46 -84 -8 -98 24 C -110 48 -122 62 -126 80 C -130 98 -122 114 -102 116 C -84 118 -62 112 -44 104 C -22 94 -2 76 8 56 C 16 30 16 0 10 -18 C 2 -46 -22 -70 -50 -72 Z';
+  // the far horn, then the near ear (behind the near horn), the head, the near horn
+  limb(c, [[-58, -66], [-58, -102], [-70, -134], [-90, -146]], [28, 22, 13, 5], C('hornSh'));
+  if (!o.bare) limb(c, [[-72, -134], [-90, -146]], [14, 6], C('goldSh'));
+  const lift = (o.ear || 0) * .45 + Math.sin(t * .9) * .03 * (1 - (o.ear || 0));
+  c.save(); c.translate(-14, -48); c.rotate(-lift);
+  const EAR = 'M -2 -8 C 20 -22 50 -16 66 2 C 48 12 20 12 0 8 Z';
+  fillPath(c, EAR, C('white')); if (o.stone && !one) strokePath(c, 'M 4 -10 C 24 -22 48 -16 62 0', rgba(P.sheen, .5), 3); if (!one) { fillPath(c, 'M 6 -2 C 24 -12 46 -8 58 2 C 44 8 22 7 6 4 Z', rgba(P.inEar, .8)); fillPath(c, 'M -2 -8 C 20 -22 50 -16 66 2 C 46 -6 22 -8 -2 -8 Z', rgba(P.sh, .6)); }
   c.restore();
+  fillPath(c, HEAD, C('white'));
+  if (!one) inside(c, HEAD, () => {
+    fillPath(c, 'M -70 120 C -30 104 -4 76 12 40 L 30 40 L 30 130 Z', rgba(P.sh, .9));   // the jaw, in shade
+    strokePath(c, 'M -46 -2 C -58 30 -78 58 -102 72', rgba(P.sh, .55), 10);   // the ridge down the face
+    fillPath(c, 'M -134 46 C -112 48 -94 66 -86 90 C -82 104 -86 116 -94 122 L -140 122 Z', P.muzzle);   // the black muzzle
+    ellipse(c, -120, 72, 9, 5.5, P.nose, -1);
+    strokePath(c, 'M -128 102 Q -112 108 -92 106', rgba(P.nose, .8), 3);
+    if (o.stone) { strokePath(c, 'M -46 -70 C -62 -44 -78 -10 -92 20', rgba(P.sheen, .35), 7); ellipse(c, 2, 20, 10, 26, rgba(P.sheen, .12)); }
+  });
+  // the eye: kohl-rimmed, a heavy lid, calm
+  ellipse(c, -60, -20, 19, 12, C('eye'), -.35);
+  if (!one) {
+    ellipse(c, -61, -20, 13, 8.5, P.iris, -.35); ellipse(c, -66, -23, 3, 2.4, '#FFF4E0');
+    fillPath(c, 'M -82 -24 C -72 -38 -50 -38 -40 -20 C -52 -30 -70 -30 -82 -24 Z', P.lid);
+    strokePath(c, 'M -42 -16 L -30 -10', C('eye'), 3);
+  }
+  if (o.eyes) { glow(c, -61, -20, 80 * o.eyes, '#FFC54A', .9 * o.eyes); ellipse(c, -61, -20, 12, 8, mixCol('#1A1210', '#FFE27A', o.eyes), -.35); }
+  // the near horn: short and thick, curving up and forward, a gold cap
+  limb(c, [[-36, -62], [-30, -100], [-38, -134], [-58, -150]], [34, 27, 16, 6], C('horn'));
+  if (!one) limb(c, [[-28, -66], [-22, -100], [-30, -130]], [9, 7, 3], rgba(P.hornSh, .9));
+  if (!o.bare) { limb(c, [[-40, -132], [-58, -150]], [17, 7], C('gold')); limb(c, [[-31, -112], [-35, -122]], [24, 22], C('gold'), false); }
+  // the forehead: a kumkum dot (not on stone: there it reads as a second eye)
+  if (!o.stone && !o.bare && !one) ellipse(c, -56, -54, 4.5, 4.5, P.tilak);
+}
+
+// The body with the neck and hump (no legs), its saddle cloth, and the dewlap; br breathes the topline.
+const ndBody = (br) => `M -232 -330 C -232 -370 -224 -396 -206 -404 C -192 -412 -182 -424 -176 -440 C -166 -468 -140 ${-482 + br} -108 ${-478 + br} C -74 ${-472 + br} -48 -446 -20 -400 C 40 ${-382 + br} 120 ${-376 + br} 190 -372 C 232 -372 262 -358 274 -328 C 286 -292 282 -250 270 -214 C 262 -196 250 -184 232 -178 C 160 -186 60 -192 -40 -188 C -100 -186 -150 -176 -180 -190 C -204 -204 -212 -250 -214 -290 Z`;
+const ND_DEW = 'M -236 -246 C -262 -212 -262 -184 -244 -172 C -226 -160 -206 -164 -192 -172 C -180 -166 -166 -168 -158 -180 L -172 -250 L -196 -270 Z';
+function ndTorso(c, o, P, C, one, br, legs) {
+  const BODY = ndBody(br);
+  fillPath(c, BODY, C('white'));
+  if (!one) inside(c, BODY, () => {
+    fillPath(c, 'M -260 -400 C -200 -500 -60 -500 -10 -392 C -80 -360 -170 -330 -260 -300 Z', rgba(P.hump, o.stone ? .4 : .38));   // the grey hump and neck of an Ongole
+    fillPath(c, 'M -240 -232 C -100 -214 100 -222 300 -246 L 300 -140 L -240 -140 Z', rgba(P.sh, .85));   // the belly
+    strokePath(c, 'M 176 -364 C 146 -304 156 -246 200 -204', rgba(P.sh, .9), 5);   // the thigh
+    strokePath(c, 'M -138 -388 C -110 -330 -124 -274 -160 -236', rgba(P.sh, .7), 5);   // the shoulder blade
+    if (o.stone) { strokePath(c, `M -164 -446 C -146 ${-470 + br} -110 ${-476 + br} -76 -464`, rgba(P.sheen, .45), 8); strokePath(c, 'M -20 -386 C 60 -372 140 -368 200 -364', rgba(P.sheen, .3), 6); ellipse(c, 230, -310, 30, 46, rgba(P.sheen, .14)); }
+  });
+  legs && legs();
+  // the saddle cloth: red with a gold border, gold studs and tassels (in stone, carved)
+  if (!o.bare) {
+    const CL = `M -30 ${-392 + br} C 40 ${-380 + br} 120 ${-374 + br} 188 -372 L 182 -264 C 100 -258 20 -260 -42 -270 Z`;
+    fillPath(c, CL, C('cloth'));
+    if (!one) inside(c, CL, () => { fillPath(c, 'M -60 -294 L 200 -292 L 200 -262 L -60 -262 Z', P.gold); fillPath(c, 'M 90 -400 L 210 -400 L 210 -250 L 90 -250 Z', rgba(P.clothSh, .6)); for (let i = 0; i < 5; i++) ellipse(c, -6 + i * 40, -334, 8, 8, P.gold); });
+    for (let i = 0; i < 8; i++) limb(c, [[-30 + i * 29, -266], [-30 + i * 29, -248]], [6, 3], C('gold'), false);
+  }
+}
+function ndDewlap(c, o, P, C, one) {
+  fillPath(c, ND_DEW, C('white'));
+  if (!one) inside(c, ND_DEW, () => { fillPath(c, 'M -270 -200 C -240 -176 -200 -172 -150 -190 L -150 -150 L -270 -150 Z', rgba(P.sh, .8));
+    strokePath(c, 'M -246 -222 C -236 -204 -220 -194 -202 -192', rgba(P.sh, .9), 3); strokePath(c, 'M -232 -246 C -222 -230 -206 -220 -188 -216', rgba(P.sh, .9), 3); });
+}
+// the red band with a bell, and a marigold garland, over the neck (the garland stays fresh on a stone Nandi)
+function ndNeckDress(c, o, P, C, one) {
+  if (o.bare) return;
+  if (!o.stone) { strokePath(c, 'M -186 -414 C -170 -350 -200 -290 -236 -262', C('cloth'), 12);
+    fillPath(c, 'M -240 -262 C -254 -262 -260 -246 -260 -230 L -222 -230 C -222 -246 -228 -262 -240 -262 Z', C('gold')); if (!one) fillPath(c, 'M -246 -230 L -234 -230 L -240 -222 Z', P.goldSh); }
+  for (let i = 0; i < 15; i++) { const u = i / 14, x = (1 - u) ** 2 * -196 + 2 * u * (1 - u) * -132 + u * u * -238, y = (1 - u) ** 2 * -408 + 2 * u * (1 - u) * -286 + u * u * -262;
+    ellipse(c, x, y, 11, 11, one || (i % 2 ? NANDI.marigold : NANDI.marigoldSh)); }
+}
+
+// ---------- Nandi standing ----------
+function nandiStanding(c, o = {}) {
+  const t = o.t || 0, [P, C, one] = ndPal(o), br = Math.sin(t * 1.5) * 1.5, nod = Math.sin(t * 1.1) * .02 - (o.look || 0), sw = Math.sin(t * 1.3) * 8;
+  // the far legs, in shade
+  limb(c, [[-112, -220], [-112, -140], [-108, -90], [-110, -34], [-112, -14]], [56, 42, 30, 26, 24], C('dk')); ndHoof(c, -113, 17, C('hoof'));
+  limb(c, [[158, -270], [164, -190], [194, -112], [188, -36], [186, -14]], [84, 52, 30, 26, 24], C('dk')); ndHoof(c, 186, 17, C('hoof'));
+  // the tail, down the back of the thighs to a black switch
+  limb(c, [[266, -346], [290, -300], [296, -220], [294 + sw * .5, -150], [292 + sw, -96]], [18, 13, 10, 8, 7], C('sh'), false);
+  ellipse(c, 292 + sw, -76, 13, 30, C('switch'));
+  ndTorso(c, o, P, C, one, br, () => {});
+  ndDewlap(c, o, P, C, one);
+  // the near legs: a thick foreleg with a knee, a heavy thigh and a hock
+  for (const [Pts, Wd, x] of [[[[-162, -280], [-158, -190], [-152, -110], [-150, -36], [-152, -14]], [86, 60, 38, 32, 30], -152],
+                              [[[214, -326], [218, -212], [246, -118], [238, -38], [234, -14]], [132, 74, 36, 32, 30], 234]]) {
+    limb(c, Pts, Wd, C('white'));
+    if (!one) limb(c, Pts.slice(1).map(([px, py], i) => [px + Wd[i + 1] * .28, py]), Wd.slice(1).map((w) => w * .34), rgba(P.sh, .85));
+    ndHoof(c, x, 19, C('hoof'), one ? 0 : rgba(P.sh, .5));
+  }
+  if (!one) ellipse(c, -153, -110, 21, 16, rgba(P.sh, .35));
+  ndNeckDress(c, o, P, C, one);
+  c.save(); c.translate(-200, -330); c.rotate(nod); ndHead(c, o, P, C, one); c.restore();
+}
+
+// ---------- Nandi lying: the temple pose ----------
+function nandiLying(c, o = {}) {
+  const t = o.t || 0, [P, C, one] = ndPal(o), br = Math.sin(t * 1.5) * 1.2, D = 180, look = (o.look ?? .2) + Math.sin(t * 1.1) * .015;
+  c.save(); c.translate(0, D);
+  // the tail, laid along the ground and curling forward
+  limb(c, [[266, -346], [290, -290], [292, -220], [270, -186], [220, -184]], [18, 13, 10, 8, 7], C('sh'), false);
+  ellipse(c, 206, -186, 28, 10, C('switch'));
+  // the far foreleg, folded, its hoof just showing in front
+  limb(c, [[-120, -230], [-176, -204], [-236, -196], [-190, -184]], [56, 40, 30, 26], C('dk')); ellipse(c, -186, -186, 18, 10, C('hoof'));
+  ndTorso(c, o, P, C, one, br);
+  ndDewlap(c, o, P, C, one);
+  c.restore();
+  // the near hind leg folded: the haunch, the hock behind, the hoof tucked forward beside the belly
+  const HAUNCH = 'M 120 -150 C 150 -196 240 -200 270 -150 C 290 -110 284 -40 262 -12 C 230 4 160 2 120 -10 C 96 -40 98 -110 120 -150 Z';
+  fillPath(c, HAUNCH, C('white')); if (!one) { inside(c, HAUNCH, () => fillPath(c, 'M 80 -60 C 160 -50 240 -50 300 -70 L 300 20 L 80 20 Z', rgba(P.sh, .85))); strokePath(c, 'M 124 -146 C 102 -100 100 -50 120 -14', rgba(P.dk, .7), 4); }
+  limb(c, [[252, -26], [180, -14], [92, -14]], [36, 30, 26], C('white')); if (!one) limb(c, [[252, -18], [180, -6], [92, -6]], [14, 12, 10], rgba(P.sh, .9));
+  ellipse(c, 80, -14, 18, 13, C('hoof'));
+  // the near foreleg folded under: the elbow, the knee forward, the cannon back along the ground
+  limb(c, [[-150, -96], [-196, -50], [-226, -22]], [72, 50, 38], C('white'));
+  limb(c, [[-226, -22], [-176, -14], [-116, -14]], [38, 30, 26], C('white'));
+  if (!one) { limb(c, [[-226, -12], [-176, -6], [-116, -6]], [14, 12, 10], rgba(P.sh, .9)); ellipse(c, -224, -24, 22, 18, rgba(P.sh, .3)); strokePath(c, 'M -200 -60 C -196 -40 -180 -30 -150 -30', rgba(P.dk, .6), 4); }
+  ellipse(c, -106, -14, 18, 13, C('hoof'));
+  c.save(); c.translate(0, D); ndNeckDress(c, o, P, C, one); c.translate(-200, -330); c.rotate(look); ndHead(c, o, P, C, one); c.restore();
 }
 
 // ---------- the Pushpak vimana ----------
@@ -384,4 +452,121 @@ function hanumanLeap(c, o = {}) {
   fillPath(c, 'M 130 -346 L 134 -392 L 150 -372 L 162 -408 L 174 -372 L 190 -392 L 192 -346 Z', col);
   ellipse(c, 128, -312, 12, 16, col);
   return tail[tail.length - 1];
+}
+
+// ---------- the Nandi story: Sage Shilada, the boy Nandi, sages, a devotee, Nandanar (silhouettes, facing left) ----------
+// All are drawn in one colour (o.col, near-black by default) with a recognisable outline, to be lit by figure() with an
+// edge and rim. Adults stand about 900 tall, feet at (0, 0); the boy about 540.
+
+// A rishi: a long beard, a topknot, a dhoti and shawl, a staff. o: t, col, pose ('stand' with the staff | 'sit' in
+// meditation, hands joined | 'plough', leaning on a plough's handle, striding | 'point' the right arm out), staff.
+function rishi(c, o = {}) {
+  const col = o.col || '#120C10', t = o.t || 0, pose = o.pose || 'stand', br = Math.sin(t * 1.4) * 1.5;
+  const head = (x, y, lean = 0) => {
+    c.save(); c.translate(x, y); c.rotate(lean);
+    ellipse(c, 0, 0, 36, 44, col);
+    fillPath(c, 'M -34 -6 L -48 8 L -34 14 Z', col);   // the nose
+    fillPath(c, 'M -36 10 C -60 50 -76 120 -70 190 C -54 160 -30 110 -10 80 C 0 60 10 40 14 30 Z', col);   // the beard, long and forward
+    ellipse(c, 6, -54, 22, 18, col); ellipse(c, 10, -70, 14, 12, col);   // the topknot
+    c.restore();
+  };
+  if (pose === 'sit') {
+    fillPath(c, 'M -130 0 C -130 -56 -70 -86 0 -86 C 70 -86 120 -56 120 0 Z', col);   // crossed legs
+    fillPath(c, `M -44 -70 C -50 -170 -56 -260 -46 ${-330 + br} L 50 ${-330 + br} C 60 -260 56 -170 48 -70 Z`, col);
+    fillPath(c, `M -50 ${-330 + br} C -40 -350 40 -350 50 ${-330 + br} Z`, col);
+    limb(c, [[-30, -310], [-56, -230], [-84, -270]], [34, 28, 22], col);   // forearm up to the joined hands
+    fillPath(c, 'M -96 -262 C -100 -290 -92 -316 -84 -330 C -76 -316 -72 -290 -76 -262 Z', col);
+    fillPath(c, 'M -12 -350 L -10 -376 L 18 -376 L 16 -350 Z', col);
+    head(0, -416);
+    return;
+  }
+  const lean = pose === 'plough' ? -.32 : 0, stride = pose === 'plough' ? 1 : 0;
+  // legs and dhoti
+  if (stride) { limb(c, [[-10, -440], [-60, -230], [-110, -20]], [74, 56, 40], col); limb(c, [[20, -440], [60, -230], [110, -20]], [74, 56, 40], col); ellipse(c, -124, -10, 30, 12, col); ellipse(c, 100, -10, 30, 12, col); }
+  else { fillPath(c, 'M -50 -470 C -60 -320 -78 -160 -86 -30 L 84 -30 C 76 -160 64 -320 56 -470 Z', col); ellipse(c, -30, -12, 34, 14, col); ellipse(c, 34, -12, 30, 14, col); }
+  c.save(); c.translate(0, -440); c.rotate(lean);
+  fillPath(c, `M -56 ${-266 + br} C -64 -190 -56 -90 -46 0 L 54 0 C 64 -90 70 -190 62 ${-266 + br} C 34 ${-292 + br} -26 ${-292 + br} -56 ${-266 + br} Z`, col);
+  fillPath(c, `M -50 ${-266 + br} C -20 -200 30 -120 60 -40 L 70 -90 C 50 -160 30 -220 30 ${-280 + br} Z`, col);   // the shawl
+  fillPath(c, 'M -14 -282 L -16 -306 L 14 -306 L 12 -282 Z', col);
+  head(-4, -350);
+  // arms
+  if (pose === 'plough') { limb(c, [[-30, -250], [-90, -170], [-160, -140]], [36, 30, 24], col); limb(c, [[20, -250], [-50, -170], [-130, -130]], [34, 28, 22], col); }
+  else if (pose === 'point') { limb(c, [[-30, -250], [-130, -240], [-230, -250]], [36, 30, 24], col); limb(c, [[-232, -250], [-266, -254]], [16, 8], col); limb(c, [[30, -250], [44, -150], [40, -60]], [34, 28, 22], col); }
+  else { limb(c, [[-30, -250], [-60, -160], [-86, -100]], [36, 30, 24], col); limb(c, [[30, -250], [44, -150], [40, -60]], [34, 28, 22], col); }
+  c.restore();
+  if (pose === 'stand' && o.staff !== false) { fillPath(c, 'M -100 6 L -100 -980 L -88 -980 L -88 6 Z', col); ellipse(c, -94, -986, 14, 14, col); }
+}
+// The plough of Shilada's yagna field: a wooden plough, the share in the soil at (0, 0), the handle up and back.
+function plough(c, o = {}) {
+  const col = o.col || '#120C10';
+  limb(c, [[0, 0], [70, -40], [190, -150], [210, -220]], [30, 24, 18, 14], col);   // the stilt to the handle
+  limb(c, [[60, -40], [-160, -90], [-360, -96]], [22, 18, 16], col);              // the beam
+  fillPath(c, 'M -30 6 L 40 -10 L 30 -40 L -10 -30 Z', col);                       // the share
+}
+// The boy Nandi: o.pose 'baby' (a newborn curled in the furrow), 'sit' (cross-legged, hands joined: praying), 'stand'
+// (hands joined, looking up); o.col; o.t. A small tuft (shikha) on the head.
+function boy(c, o = {}) {
+  const col = o.col || '#120C10', t = o.t || 0, pose = o.pose || 'stand', br = Math.sin(t * 1.8) * 1.2;
+  if (pose === 'baby') {
+    ellipse(c, 10, -46, 86, 48, col);                     // the body, curled
+    ellipse(c, -86, -64, 46, 44, col);                    // the head
+    limb(c, [[-30, -40], [-60, -10], [-30, 6]], [26, 22, 18], col);   // an arm tucked
+    limb(c, [[80, -30], [60, 0], [20, 6]], [34, 28, 22], col);        // the legs drawn up
+    ellipse(c, -96, -112, 8, 10, col);
+    return;
+  }
+  const head = (x, y) => { ellipse(c, x, y, 40, 46, col); fillPath(c, `M ${x - 38} ${y - 4} L ${x - 50} ${y + 8} L ${x - 38} ${y + 14} Z`, col); limb(c, [[x + 4, y - 42], [x + 16, y - 62], [x + 30, y - 66]], [12, 9, 4], col, false); };
+  if (pose === 'sit') {
+    fillPath(c, 'M -90 0 C -90 -40 -50 -62 0 -62 C 50 -62 84 -40 84 0 Z', col);
+    fillPath(c, `M -32 -50 C -36 -120 -40 -180 -32 ${-226 + br} L 36 ${-226 + br} C 42 -180 40 -120 34 -50 Z`, col);
+    limb(c, [[-20, -210], [-44, -150], [-64, -184]], [26, 22, 18], col);
+    fillPath(c, 'M -74 -176 C -78 -200 -72 -222 -64 -234 C -58 -222 -54 -200 -58 -176 Z', col);
+    fillPath(c, 'M -10 -240 L -8 -258 L 12 -258 L 10 -240 Z', col);
+    head(0, -298);
+    return;
+  }
+  limb(c, [[-12, -250], [-18, -130], [-22, -16]], [36, 30, 24], col); limb(c, [[14, -250], [20, -130], [24, -16]], [36, 30, 24], col);
+  ellipse(c, -32, -10, 24, 11, col); ellipse(c, 14, -10, 22, 11, col);
+  fillPath(c, 'M -40 -300 C -46 -270 -48 -240 -46 -214 L 48 -214 C 50 -240 46 -270 40 -300 Z', col);   // the dhoti
+  fillPath(c, `M -36 -300 C -40 -360 -40 -400 -34 ${-430 + br} L 38 ${-430 + br} C 42 -400 42 -360 38 -300 Z`, col);
+  limb(c, [[-20, -420], [-50, -360], [-66, -400]], [26, 22, 18], col);
+  fillPath(c, 'M -76 -392 C -80 -416 -74 -438 -66 -450 C -60 -438 -56 -416 -60 -392 Z', col);
+  fillPath(c, 'M -10 -440 L -8 -456 L 12 -456 L 10 -440 Z', col);
+  head(0, -496);
+}
+// A woman at the temple, her sari's pallu over her head. o.pose: 'whisper' (leaning in, a hand cupped at her mouth),
+// 'pray' (hands joined); o.lean (radians forward, default .1 for whisper); o.col; o.t.
+function devotee(c, o = {}) {
+  const col = o.col || '#120C10', t = o.t || 0, pose = o.pose || 'whisper', br = Math.sin(t * 1.5) * 1.2, lean = o.lean ?? (pose === 'whisper' ? .1 : 0);
+  fillPath(c, 'M -46 -470 C -60 -320 -76 -150 -86 0 L 90 0 C 82 -150 66 -320 52 -470 Z', col);   // the sari's skirt
+  ellipse(c, -40, -8, 30, 12, col);
+  c.save(); c.translate(0, -470); c.rotate(-lean);
+  fillPath(c, `M -46 0 C -52 -60 -62 -130 -56 ${-190 + br} C -50 -220 -40 -236 -30 ${-250 + br} L 40 ${-250 + br} C 50 -200 54 -100 52 0 Z`, col);   // the torso
+  fillPath(c, 'M -12 -246 L -14 -276 L 14 -276 L 12 -246 Z', col);
+  // the head, a profile: brow, nose, lips, chin
+  c.save(); c.translate(-2, -316); c.rotate(-lean * .8);
+  fillPath(c, 'M 30 -40 C 22 -52 -6 -54 -24 -44 C -34 -36 -36 -22 -36 -12 L -44 6 L -36 10 C -38 16 -34 18 -36 24 C -32 30 -36 34 -30 40 C -20 50 0 50 14 44 C 30 34 38 10 36 -10 C 36 -24 34 -34 30 -40 Z', col);
+  // the pallu: over the head and down her back
+  fillPath(c, 'M -30 -40 C -20 -66 30 -70 46 -40 C 60 -10 64 60 66 140 L 30 160 C 34 80 34 20 26 -10 C 20 -30 0 -40 -30 -40 Z', col);
+  c.restore();
+  limb(c, [[50, -220], [80, -100], [74, 40]], [40, 50, 60], col, false);   // the pallu's fall
+  if (pose === 'whisper') { limb(c, [[-20, -236], [-48, -170], [-58, -300]], [30, 26, 20], col); fillPath(c, 'M -66 -326 C -82 -312 -84 -290 -70 -280 C -64 -296 -60 -312 -50 -322 Z', col); }
+  else { limb(c, [[-20, -236], [-50, -170], [-74, -206]], [30, 26, 20], col); fillPath(c, 'M -84 -196 C -88 -222 -82 -244 -74 -256 C -68 -244 -64 -222 -68 -196 Z', col); }
+  limb(c, [[26, -236], [34, -150], [24, -70]], [28, 24, 20], col);
+  c.restore();
+}
+// Nandanar, a devotee kept outside the temple: a lean man in a dhoti, his joined hands raised over his head (o.raise
+// 0..1), a cloth over his shoulder; o.col; o.t.
+function nandanar(c, o = {}) {
+  const col = o.col || '#120C10', t = o.t || 0, r = o.raise ?? 1, br = Math.sin(t * 1.4) * 1.2;
+  fillPath(c, 'M -40 -460 C -46 -320 -56 -170 -60 -30 L 56 -30 C 54 -170 46 -320 40 -460 Z', col);
+  ellipse(c, -30, -12, 30, 13, col); ellipse(c, 30, -12, 28, 13, col);
+  fillPath(c, `M -40 -460 C -44 -540 -46 -620 -40 ${-700 + br} L 42 ${-700 + br} C 46 -620 44 -540 40 -460 Z`, col);
+  fillPath(c, `M -42 ${-696 + br} C -10 -620 20 -540 44 -480 L 44 -520 C 20 -580 0 -640 -20 ${-700 + br} Z`, col);
+  fillPath(c, 'M -12 -700 L -14 -726 L 14 -726 L 12 -700 Z', col);
+  ellipse(c, -4, -770, 36, 44, col); fillPath(c, 'M -38 -772 L -50 -760 L -38 -752 Z', col); ellipse(c, 8, -808, 20, 14, col);
+  const hy = lerp(-640, -900, r), hx = lerp(-80, -30, r);
+  limb(c, [[-24, -690], [lerp(-70, -60, r), lerp(-600, -800, r)], [hx, hy]], [30, 26, 20], col);
+  limb(c, [[24, -690], [lerp(-10, 10, r), lerp(-600, -800, r)], [hx + 8, hy]], [30, 26, 20], col);
+  fillPath(c, `M ${hx - 8} ${hy + 10} C ${hx - 12} ${hy - 16} ${hx - 6} ${hy - 38} ${hx + 2} ${hy - 50} C ${hx + 10} ${hy - 38} ${hx + 14} ${hy - 16} ${hx + 10} ${hy + 10} Z`, col);
 }
