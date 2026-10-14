@@ -1,18 +1,20 @@
-A SHORT cue: exactly 61 seconds long in total (1:01), for a 61-second Instagram reel; do not extend it. Instrumental Indian mythological cinematic film score with choir, for a short animated film: the sun god Surya burns two devotees of Shiva to ashes, Shiva hurls his trishul at the sun, Surya falls unconscious and the world goes dark and freezes, until a goddess steps out of a blinding light and wraps the earth in warmth. Key of D minor, turning to D major at the end. Dark, epic and devotional, like a big-budget Indian mythological film trailer. A narrator speaks over it, so leave room in the mids: no lead melody instrument competing with the voice except where asked. No lead vocals; choir only on syllables ("aah", "om"). Follow these timestamps closely:
+A SHORT cue: exactly 68 seconds long in total (1:08), for a 68-second Instagram reel; do not extend it. Instrumental Indian mythological cinematic film score with choir, for a short animated film: two devotees of Shiva pray until they glow like the sun, the jealous sun god Surya comes closer and burns them to ashes, Shiva hurls his trishul at the sun, Surya falls unconscious and the world goes dark and freezes, until a goddess steps out of a blinding light and wraps the earth in warmth. Key of D minor, turning to D major at the end. Dark, epic and devotional, like a big-budget Indian mythological film trailer. A narrator speaks over it, so leave room in the mids: no lead melody instrument competing with the voice except where asked. No lead vocals; choir only on syllables ("aah", "om"). Follow these timestamps closely:
 
 0:00-0:04.3 Cold and eerie, audible from the very first second: a deep low drum hit at 0:00, an icy high string cluster, a wind-like breathy choir, a glassy shimmer; a low accent at 0:00.8.
-0:04.3-0:09.2 Devotional night: tanpura drone, soft temple bells, a low male choir humming "om", gentle and reverent.
-0:09.2-0:13.3 Fire: a rising brass swell, fast taiko building, heat and danger; a heavy hit at 0:11.3 and a bigger crash at 0:12.4.
-0:13.3-0:15.2 Wrath: a sudden low drop, a growling choir, a damru roll building.
-0:15.2-0:17.1 A huge rising whoosh of strings and brass, faster and faster, climaxing in one massive impact with a deep sub boom at 0:17.1.
-0:17.1-0:21.2 Collapse: the orchestra falls downward, a long descending string glissando, a slow heavy drum at 0:19.4; at 0:21.2 everything cuts to near silence.
-0:21.2-0:26.0 Frozen silence: only a very soft high icy drone and a faint glassy shimmer, cold and empty, sad.
-0:26.0-0:33.6 Doom: low ominous drums, dark brass, a deep male choir; a thunderous hit at 0:28.4; tension rising; a big accent at 0:32.7.
-0:33.6-0:36.7 Mystery and awe: a sacred low "om" choir, a temple bell at 0:34.5, soft and grand.
-0:36.7-0:41.1 Hope in the darkness: a very soft low pad, then a single high female choir note rising at 0:40.0.
-0:41.1-0:45.0 The goddess appears: a radiant swell, warm strings, harp glissando, a bright female choir "aah" growing to a glowing climax at 0:43.0; the key turns to D major.
-0:45.0-0:49.8 Suspense: the music holds on one long warm sustained chord with a soft heartbeat drum, a question left hanging.
-0:49.8-0:57.2 A bright, uplifting devotional theme: santoor, flute, warm strings, light dhol, joyful and inviting, a big warm hit at 0:49.8.
-0:57.2-1:01 A soft outro, fading; end on one resonant temple bell at 1:00.
+0:04.3-0:12.9 Devotional night: tanpura drone, soft temple bells, a low male choir humming "om", gentle and reverent; from 0:09.5 it grows warmer and brighter, a radiant shimmer rising to 0:12.9.
+0:12.9-0:16.0 Menace: a dark low brass motif, tense strings, jealousy.
+0:16.0-0:18.3 Heat rising: a fast crescendo of taiko and brass, louder and louder.
+0:18.3-0:20.2 Fire: a heavy hit at 0:18.3 and a bigger crash at 0:19.3, then roaring.
+0:20.2-0:22.1 Wrath: a sudden low drop, a growling choir, a damru roll building.
+0:22.1-0:24.0 A huge rising whoosh of strings and brass, faster and faster, climaxing in one massive impact with a deep sub boom at 0:24.0.
+0:24.0-0:28.1 Collapse: the orchestra falls downward, a long descending string glissando, a slow heavy drum at 0:26.3; at 0:28.1 everything cuts to near silence.
+0:28.1-0:32.9 Frozen silence: only a very soft high icy drone and a faint glassy shimmer, cold and empty, sad.
+0:32.9-0:40.4 Doom: low ominous drums, dark brass, a deep male choir; a thunderous hit at 0:35.3; tension rising; a big accent at 0:39.6.
+0:40.4-0:43.6 Mystery and awe: a sacred low "om" choir, a temple bell at 0:41.4, soft and grand.
+0:43.6-0:48.0 Hope in the darkness: a very soft low pad, then a single high female choir note rising at 0:46.9.
+0:48.0-0:51.9 The goddess appears: a radiant swell, warm strings, harp glissando, a bright female choir "aah" growing to a glowing climax at 0:49.9; the key turns to D major.
+0:51.9-0:56.7 Suspense: the music holds on one long warm sustained chord with a soft heartbeat drum, a question left hanging.
+0:56.7-1:04.0 A bright, uplifting devotional theme: santoor, flute, warm strings, light dhol, joyful and inviting, a big warm hit at 0:56.7.
+1:04.0-1:08 A soft outro, fading; end on one resonant temple bell at 1:07.
 
-The music must be 61 seconds long, ending at 1:01. Keep every section at the length given: they are short and change fast, like a film trailer.
+The music must be 68 seconds long, ending at 1:08. Keep every section at the length given: they are short and change fast, like a film trailer.

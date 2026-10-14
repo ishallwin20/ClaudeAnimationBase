@@ -12,7 +12,9 @@ const TL = (() => {
   const T = {
     hook: 0, sunOut: w('hook1', 'sun'),
     mali: a('mali') - .35,
-    surya: a('surya') - .3, blaze: w('surya', 'surya'), burn: a('surya') + 1.75, burned: w('surya', 'burned'), ashes: w('surya', 'ashes'),
+    glow: a('glow'), glowing: w('glow', 'glow'),
+    surya: a('surya') - .3, blaze: w('surya', 'surya'), jealous: w('surya', 'jealous'),
+    closer: a('closer') - .2, burn: w('closer', 'burned') - .3, burned: w('closer', 'burned'), ashes: w('closer', 'ashes'),
     fury: a('fury') - .15, eyes: a('fury') + .05, third: w('fury', 'furious'),
     hurl: a('hurl') - .15, throw: w('hurl', 'hurled'), impact: w('hurl', 'sun'),
     fell: a('fell') - .2, closing: w('fell', 'fell'), drop: w('fell', 'unconscious') + .2,

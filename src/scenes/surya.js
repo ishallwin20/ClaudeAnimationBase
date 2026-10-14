@@ -16,7 +16,7 @@ const pulse = (t, t0, up, down) => t < t0 - up || t > t0 + 3 ? 0 : t < t0 ? ease
 function brothers(c, t, x, y, k, fx) {
   [[x - 290 * k, MALI], [x + 290 * k, null]].forEach(([bx, pal], i) => { const f = fx(i); if (f.alpha === 0) return; figure(c, (g) => { g.translate(bx, y); g.scale(.62 * k, .62 * k); arunasura(g, { t: t + i, pose: 'tapas', arms: 'namaste', expr: f.expr || 'chant', pal, eyes: f.eyes ?? 1 }); }, f); });
 }
-const CAPY = { surya: 1470, fury: 1440, hurl: 1450, fell: 1440, curse1: 1400, curse2: 1400, ganesha: 1400, warm: 1400, ask: 480 };
+const CAPY = { fury: 1440, hurl: 1450, fell: 1440, curse1: 1400, curse2: 1400, ganesha: 1400, warm: 1400, ask: 480 };
 
 // ---------- shot 1: the hook. A dead black sun over a frozen land ----------
 SHOTS.push({ a: TL.hook, b: TL.mali + .45, draw(c, u, t) {
@@ -36,20 +36,45 @@ SHOTS.push({ a: TL.mali, b: TL.surya + .45, xf: .5, draw(c, u, t) {
   plane(c, cam, 1, (c) => {
     fillPath(c, 'M -200 1560 L 1280 1560 L 1280 2400 L -200 2400 Z', '#1A0E0A');
     linga(c, 540, 1590, .8, { glow: .7 }); deepa(c, 380, 1600, .8, t, 1, 1); deepa(c, 700, 1600, .8, t, 1, 2);
-    brothers(c, t, 540, 1620, 1.1, () => LIGHTS.fire);
+    const g = ease(seg(t, TL.glow, TL.glowing + .6));
+    if (g > 0) for (const x of [221, 859]) { glow(c, x, 1440, 380 * g, '#FFD27A', .55 * g); rays(c, x, 1440, { n: 10, dir: -Math.PI / 2, spread: TAU, len: 420 * g, w: 50, col: '#FFE6A0', a: .22 * g, t, seed: x }); }
+    brothers(c, t, 540, 1620, 1.1, () => ({ ...LIGHTS.fire, tint: [mixCol('#1A0806', '#FFD890', g), .35 * g], edge: { col: '#FFF2C8', w: 2.4 + 3 * g, a: .6 + .4 * g }, rim: { col: '#FFF6DA', dx: 0, dy: -5, a: .5 + .5 * g, blur: 1 } }));
+    if (g > 0) for (const x of [221, 859]) { glow(c, x, 1420, 240, '#FFE6A0', .4 * g * (.9 + .1 * Math.sin(t * 5 + x))); glow(c, x, 1180, 90, '#FFF6DA', .5 * g); }
   });
   plane(c, cam, 1.2, (c) => embers(c, 540, 1600, t, 20, 5, 500, 700));
 } });
 
 // ---------- shot 3: Surya blazing in the sky ----------
-SHOTS.push({ a: TL.surya, b: TL.burn + .35, xf: .4, draw(c, u, t) {
-  const cam = { z: lerp(1.0, 1.1, easeIO(u / 2.4)), fx: 540, fy: 700 }, heat = seg(t, TL.surya, TL.blaze + .8);
+SHOTS.push({ a: TL.surya, b: TL.jealous - .1, xf: .4, draw(c, u, t) {
+  const heat = seg(t, TL.surya, TL.blaze + .8), cam = { z: lerp(1.0, 1.1, easeIO(u / 2.4)), fx: 540, fy: 700 };
   plane(c, cam, 0, (c) => sky(c, [[0, '#2A0806'], [700, '#9A3010'], [1300, '#E8702A'], [1920, '#FFB050']]));
   plane(c, cam, .1, (c) => sunDisc(c, 540, 700, 330 + 40 * heat, t, { life: 1 }));
   plane(c, cam, .4, (c) => { ridge(c, 1380, 90, 23, '#3A0E06'); haze(c, 1370, 160, '#FF8A3A', .25); });
   plane(c, cam, .7, (c) => { fillPath(c, 'M -200 1420 C 300 1400 800 1410 1280 1430 L 1280 2400 L -200 2400 Z', '#1E0804'); cracks(c, 540, 1460, heat, t, 6); });
   plane(c, cam, 1, (c) => figure(c, (f) => { f.translate(540, 1290); f.scale(.86, .86); surya(f, { t, eyes: 1, wind: .6 }); }, SUNLIT));
   plane(c, cam, 1.2, (c) => { motes(c, { n: 50, seed: 8, box: [-100, 200, W + 100, 1950], r: 3, col: '#FFE2A0', a: .6, vx: 0, vy: -80, t }); glow(c, 540, 700, 900, '#FFB050', .2 * heat); });
+} });
+
+// ---------- shot 3a: his face, the eyes narrowing, looking down at them ----------
+SHOTS.push({ a: TL.jealous - .4, b: TL.closer + .35, xf: .3, draw(c, u, t) {
+  const jl = ease(seg(t, TL.jealous - .2, TL.jealous + .5)), cam = { z: lerp(1.0, 1.08, easeIO(u / 1.8)), fx: 540, fy: 820 };
+  plane(c, cam, 0, (c) => { sky(c, [[0, '#2A0806'], [1900, '#8A2E10']]); sunDisc(c, 540, 820, 600, t, { life: 1 }); });
+  plane(c, cam, 1, (c) => figure(c, (f) => { f.translate(540, 880); f.scale(6.2, 6.2); f.translate(0, 815); suryaHead(f, { t, eyes: 1 - .5 * jl, look: [-.8 * jl, .7 * jl] }); }, { tint: ['#3A1206', .18], edge: { col: '#FFF0C0', w: 3, a: .4 }, rim: { col: '#FFF6D8', dx: 0, dy: -9, a: .8, blur: 1.5 } }));
+  plane(c, cam, 1.2, (c) => { const g = c.createLinearGradient(0, 1300, 0, 1650); g.addColorStop(0, 'rgba(20,4,2,0)'); g.addColorStop(.5, 'rgba(20,4,2,.6)'); g.addColorStop(1, 'rgba(20,4,2,0)'); c.fillStyle = g; c.fillRect(-200, 1300, W + 400, 350); });
+} });
+
+// ---------- shot 3b: the sun comes down, closer and closer, over the glowing brothers ----------
+SHOTS.push({ a: TL.closer, b: TL.burn + .3, xf: .35, draw(c, u, t) {
+  const k = easeIn(seg(t, TL.closer, TL.burn + .2)), cam = { z: lerp(1.0, 1.06, k), fx: 540, fy: 1500, ...shake(t, 7 * k) };
+  plane(c, cam, 0, (c) => sky(c, [[0, mixCol('#06040A', '#9A3010', k)], [800, mixCol('#140A12', '#E8702A', k)], [1500, mixCol('#2A1410', '#FFB050', k)]]));
+  plane(c, cam, .1, (c) => sunDisc(c, 540, lerp(260, 760, k), lerp(90, 520, k), t, { life: 1 }));
+  plane(c, cam, .4, (c) => ridge(c, 1560, 60, 7, mixCol('#0E0808', '#3A1008', k)));
+  plane(c, cam, 1, (c) => {
+    fillPath(c, 'M -200 1620 C 300 1605 800 1605 1280 1620 L 1280 2400 L -200 2400 Z', '#1A0A06'); cracks(c, 540, 1700, k, t, 3);
+    for (const x of [380, 700]) glow(c, x, 1660, 220, '#FFD27A', .6);
+    brothers(c, t, 540, 1770, .55, () => ({ tint: [mixCol('#FFD890', '#FFFFFF', k), .25 + .4 * k], edge: { col: '#FFF2C8', w: 2.4, a: .9 }, rim: { col: '#FFFFFF', dx: 0, dy: -4, a: .8, blur: 1 }, expr: k > .5 ? 'shock' : 'chant' }));
+  });
+  plane(c, cam, 1.2, (c) => motes(c, { n: 50, seed: 18, box: [-100, 200, W + 100, 1950], r: 3, col: '#FFE2A0', a: .6 * k, vx: 0, vy: -100, t }));
 } });
 
 // ---------- shot 4: the brothers burn to ashes ----------

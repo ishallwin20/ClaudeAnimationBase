@@ -117,7 +117,7 @@ ff(['assets/surya_vo.wav', 'assets/surya_sfx.wav'], `${voFx};[key]anullsink;[1:a
 console.log('wrote assets/surya_vo_sfx.wav');
 const SCORE = 'assets/surya_score.mp3';
 if (existsSync(SCORE)) {
-  // the score's level over time (Lyria take 2 of 3, cut to 61 s): full under the story, a near silence for the frozen
+  // the score's level over time (Lyria take 6, the third of a second batch of three, cut to 67.7 s): full under the story, a near silence for the frozen
   // world (the take only dipped for 2 s there), low at the plea, back up as she steps out
   const keys = [[0, 1], [TL.dark - .2, 1], [TL.dark + .2, .08], [TL.curse - .4, .08], [TL.curse + .4, .8], [TL.plea - .2, .8], [TL.plea + .4, .25],
     [TL.warm - .2, .3], [TL.stepped + .2, 1], [TL.end, 1]];
