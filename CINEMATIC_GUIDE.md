@@ -18,6 +18,7 @@ series.
 ![Ravana and the Kailash story](docs/cine_cast_ravana.jpg)
 ![Nandi and the Nandi story](docs/cine_cast_nandi.jpg)
 ![Bhramari and Arunasura](docs/cine_cast_bhramari.jpg)
+![Surya and the sun story](docs/cine_cast_surya.jpg)
 
 ---
 
@@ -49,8 +50,9 @@ for rage, warm orange for fire and court, gold for joy and grace, deep violet fo
 | [src/cine_cast.js](src/cine_cast.js) | Sati (from behind; with `trishul` and `lotus` she is Shailputri), Daksha on his throne, crowds, the Rudra Tandava (Shiva carrying Sati), Shiva seated, Nandi (an Ongole zebu: lying in the temple pose and standing; white, or `stone` for the black temple Nandi; eyes that flare, an ear that perks), the Sudarshan chakra, the yagna fire, the Pushpak vimana (in two layers, for a rider), Shiva's foot close (a toe that presses), Parvati clinging, Hanuman leaping; for the Nandi story, silhouettes facing left: a `rishi` (stand, sit, plough, point) and his `plough`, the `boy` (baby, sit, stand), a `devotee` (whisper, pray), `nandanar` (hands raised) |
 | [src/cine_ravana.js](src/cine_ravana.js) | Ravana: ten heads (centre mukut, four left and five right in crowns), twenty arms; `pose` stand (arms fanned, `weapons`), lift and pinned (palms round an arch, `ravanaArch()`, so a scene can cut the matching cave), bow; `expr` calm, smirk, laugh, scream, sing, grit; `ravanaHeads()` and `rvHead()` for close-ups |
 | [src/cine_devi.js](src/cine_devi.js) | the Devi, front view in colour: four arms (two raised, cupping orbs of bees; abhaya; the trishul), a tiered gold mukut, a red sari with the pallu, jhumkas and a nath; `bees` (orbs and streams from her hair), `eyes`, `fire` (the irises burn gold); `deviHead()` for close-ups. First drawn as Bhramari; the base for a Cinematic Durga |
-| [src/cine_asura.js](src/cine_asura.js) | Arunasura, the demon king: red-brown, a horned black-and-gold helmet crown, pointed ears, yellow eyes, tusks, gold pauldrons; seated (`pose` throne, or tapas cross-legged), `arms` rest, namaste, knees, up, point; `expr` calm, smirk, laugh, scream, chant, shock; `asuraHead()` (and `crownOnly`, the fallen crown) |
-| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines; a `linga`, a `deepa` (oil lamp), the `sanctum` doorway, ploughed `furrows`, a night `river`, a `gopuram`; for the Bhramari story, flying bees (`flyBee`, `beeCloud`, `beeStream`), `swarm()` (thousands: a stream along a path, `form` into `shapePoints()` of any drawing, `engulf`), the macro `bee()` seen from above with six legs that light up one by one, the demon's `throne()` and Brahma's `lotusLight()`; and `rkCardCine()`, the end card |
+| [src/cine_asura.js](src/cine_asura.js) | Arunasura, the demon king: red-brown, a horned black-and-gold helmet crown, pointed ears, yellow eyes, tusks, gold pauldrons; seated (`pose` throne, or tapas cross-legged), `arms` rest, namaste, knees, up, point; `expr` calm, smirk, laugh, scream, chant, shock; `asuraHead()` (and `crownOnly`, the fallen crown); `pal` recolours him into another demon (Mali and Sumali) |
+| [src/cine_surya.js](src/cine_surya.js) | Surya, the sun god, front view in colour: golden skin, a tall gold kirita, sun-disc kundalas, a gold kavach with a sun medallion, a saffron dhoti, both hands raised with lotuses; `eyes` (closed with a furrowed brow: falling unconscious); `suryaHead()` for close-ups. Put `sunDisc()` behind him |
+| [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines; a `linga`, a `deepa` (oil lamp), the `sanctum` doorway, ploughed `furrows`, a night `river`, a `gopuram`; for the Bhramari story, flying bees (`flyBee`, `beeCloud`, `beeStream`), `swarm()` (thousands: a stream along a path, `form` into `shapePoints()` of any drawing, `engulf`), the macro `bee()` seen from above with six legs that light up one by one, the demon's `throne()` and Brahma's `lotusLight()`; for the sun story, `sunDisc()` (blazing, cracked, or dead black with a cold corona), `trishulProp()` (the trishul alone, thrown), `frost()` (ice creeping over the ground), `ganeshaLine()` (Ganesha's head drawn in lines of light); and `rkCardCine()`, the end card (`hero` for a new book's launch: its cover big, the books already out in a row) |
 | [cine.html](cine.html) | the style's studio page; on `main` it shows [src/scenes/cine_sheet.js](src/scenes/cine_sheet.js), the cast and lighting sheet |
 | [tools/lyria.mjs](tools/lyria.mjs) | one Lyria 3 Pro score on OpenRouter from a timestamped brief (`--prompt=… --out=….mp3`) |
 | [tools/sfx.mjs](tools/sfx.mjs) | the synth; its "epic and devotional" section (thunder, damru, wind, drum, fire, om, conch, laughter, heart, whir, chime, chirp, roar, rockfall, buzz, swarmHum) is this style's sound kit |
@@ -293,3 +295,14 @@ First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`.
   give a share of them gold, and let the shape (a river, a goddess, a cloud round him) carry the read.
 - A countable moment works on screen: the six legs light one by one with a number by each and a rising tick, then
   "SIX." lands with a sub drop.
+
+## Lessons from the sun reel (ad/16-book4-sun)
+
+- A goddess kept secret until the card reads as a backlit silhouette (`LIGHTS.dawnBack` with the tint near .9). Extra
+  arms fanned behind `devi()` (each holding a simple shape: a chakra, a lotus, a kalash, a mace) say "Durga" without a face.
+- Karaoke captions on a bright shot (a god in his blazing sun, a white-hot burn) vanish: frame those shots so dark
+  land sits under the caption band (reframe the figure smaller and higher), or put the caption on the dark side.
+- Lyria, a third time: take 1 stretched ×2.4 (150 s), take 3 put its silence in the wrong place, take 2 followed the
+  brief for its first 61 s. Ask for 2–3 takes at once in the background ($0.08 each) and pick by the loudness per second.
+- Sarvam STT caught "Two rakshasa" as "Guru Rakshas": a line's `tts` field can respell a word ("Raakshasa") without
+  changing the caption.

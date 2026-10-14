@@ -180,6 +180,8 @@ function stotram(c, lines, x, y, t, t0, o = {}) {
 // Dark teal with gold dust: RK logo, a gold title, one line, the three covers fanned, the price, a note (the offer's
 // deadline), the rishikatha.com pill and the Follow line, each springing in. u = seconds since the card's shot began.
 // o: title, line, price, note, books (draw order, the last on top; default ['book1', 'book3', 'book2']).
+// o.hero (a PICS key, e.g. 'book4'): a new book's launch instead: its cover big in the middle with o.badge on its
+// corner ('NEW · 16 OCT'), o.price under it, the books in o.books in a small row below, then o.note (use title, not line).
 // Needs src/scenes/rk_images.js (PICS) and the card fonts in PROJECT.fonts: '42px Marcellus', '700 54px Poppins',
 // '500 36px Poppins'. End the reel on it without a fade, held at least 3 s after the last line lands.
 function rkCardCine(c, u, t, o = {}) {
@@ -190,9 +192,19 @@ function rkCardCine(c, u, t, o = {}) {
   picture(c, PICS.logo, X, 505, 132, 132, { pop: pk(.2), r: 66 });
   if (o.title) text(c, o.title, X, 645, '700 66px Cinzel', '#F4C46A', { pop: pk(.35), glow: ['rgba(244,196,106,.55)', 26], spacing: 3, maxW: 860 });
   if (o.line) text(c, o.line, X, 718, '42px Marcellus', '#FBE0CF', { pop: pk(.55), maxW: 840 });
-  books.forEach((b, j) => { const i = [-1, 1, 0][j] ?? 0; picture(c, PICS[b], X + i * 215, 975 + Math.abs(i) * 30, 270, 270, { rot: i * .1 + br, pop: pk(.7 + j * .12), r: 10, shadow: 26, glow: ['rgba(255,196,120,.28)', 40] }); });
-  if (o.price) text(c, o.price, X, 1238, '700 54px Poppins', '#FFFFFF', { pop: pk(1.25), maxW: 860 });
-  if (o.note) text(c, o.note, X, 1302, '500 34px Poppins', '#FF9A6A', { pop: pk(1.45), maxW: 860 });
+  if (o.hero) {
+    // a new book: its cover big in the middle (with a badge on its corner), the books already out in a row under it
+    glow(c, X, 900, 360, '#FFC870', .35 + .08 * Math.sin(t * 2));
+    picture(c, PICS[o.hero], X, 900, 310, 310, { rot: br, pop: pk(.6), r: 12, shadow: 30, glow: ['rgba(255,200,120,.45)', 50] });
+    if (o.badge) { const kb = popK(pk(1.0)); if (kb > .01) { c.save(); c.translate(X + 150, 1030); c.rotate(-.12); c.scale(kb, kb); c.fillStyle = '#F15A24'; c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = 16; c.beginPath(); c.roundRect(-112, -30, 224, 60, 30); c.fill(); c.restore(); text(c, o.badge, X + 150, 1032, '700 30px Poppins', '#FFFFFF', { pop: pk(1.0) }); } }
+    if (o.price) text(c, o.price, X, 1112, '700 44px Poppins', '#FFFFFF', { pop: pk(1.15), maxW: 860 });
+    books.forEach((b, j) => picture(c, PICS[b], X + (j - 1) * 140, 1205, 120, 120, { rot: (j - 1) * .06, pop: pk(1.3 + j * .1), r: 6, shadow: 14 }));
+    if (o.note) text(c, o.note, X, 1300, '500 34px Poppins', '#FF9A6A', { pop: pk(1.55), maxW: 860 });
+  } else {
+    books.forEach((b, j) => { const i = [-1, 1, 0][j] ?? 0; picture(c, PICS[b], X + i * 215, 975 + Math.abs(i) * 30, 270, 270, { rot: i * .1 + br, pop: pk(.7 + j * .12), r: 10, shadow: 26, glow: ['rgba(255,196,120,.28)', 40] }); });
+    if (o.price) text(c, o.price, X, 1238, '700 54px Poppins', '#FFFFFF', { pop: pk(1.25), maxW: 860 });
+    if (o.note) text(c, o.note, X, 1302, '500 34px Poppins', '#FF9A6A', { pop: pk(1.45), maxW: 860 });
+  }
   const k = popK(pk(1.65)) * (1 + .03 * Math.max(0, Math.sin(t * 5)));
   if (k > .01) { c.save(); c.translate(X, 1395); c.scale(k, k); c.fillStyle = '#F15A24'; c.shadowColor = 'rgba(241,90,36,.6)'; c.shadowBlur = 30; c.beginPath(); c.roundRect(-220, -44, 440, 88, 44); c.fill(); c.restore(); }
   text(c, 'rishikatha.com', X, 1398, '700 52px Poppins', '#FFFFFF', { pop: pk(1.65) });
@@ -445,4 +457,96 @@ function lotusLight(c, x, y, r, t, open = 1) {
     c.save(); c.rotate(ang + Math.PI / 2); fillPath(c, `M 0 0 C ${w} ${-L * .3} ${w * .8} ${-L * .8} 0 ${-L} C ${-w * .8} ${-L * .8} ${-w} ${-L * .3} 0 0 Z`, rgba(['#FF9A4A', '#FFC060', '#FFE6A0'][ring], .55)); c.restore();
   }
   c.restore();
+}
+
+// ---------- the sun story (ad 16): the sun, the trishul in flight, frost, Ganesha drawn in light ----------
+// The sun as a disc of radius r at (x, y). o.life: 1 blazing (white-gold core, a turning corona of rays, a huge glow),
+// 0 dead (a black disc with a thin cold corona, as in an eclipse); between, it flickers. o.crack (0..1): fissures of
+// light across it; o.rays (0..1, default life) the length of the corona.
+function sunDisc(c, x, y, r, t, o = {}) {
+  const life = o.life ?? 1, crack = o.crack ?? 0, fl = life > 0 && life < 1 ? .85 + .15 * Math.sin(t * 37) * Math.sin(t * 13) : 1, L = life * fl, ry = o.rays ?? life;
+  if (L > .01) { glow(c, x, y, r * 7, '#FF8A2A', .35 * L); glow(c, x, y, r * 3.4, '#FFB44A', .6 * L); glow(c, x, y, r * 1.8, '#FFE6A0', .8 * L); }
+  // the corona: long thin rays turning slowly, warm when alive, cold white when dead
+  c.save(); c.translate(x, y); c.rotate(t * .05); c.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 48; i++) { const a = i * TAU / 48 + Math.sin(i * 7.3) * .04, len = r * (.35 + .55 * hash(i * 3.1)) * (.3 + ry) * (1 + .1 * Math.sin(t * 2 + i)), w = r * (.018 + .02 * hash(i));
+    const col = mixCol('#C8D4F0', '#FFD27A', life); c.fillStyle = rgba(col, .16 + .3 * Math.max(L, (1 - life) * .55));
+    c.beginPath(); c.moveTo(Math.cos(a - w / r) * r, Math.sin(a - w / r) * r); c.lineTo(Math.cos(a) * (r + len), Math.sin(a) * (r + len)); c.lineTo(Math.cos(a + w / r) * r, Math.sin(a + w / r) * r); c.fill(); }
+  c.restore();
+  if (life < 1) { c.save(); c.globalCompositeOperation = 'lighter'; c.strokeStyle = rgba('#DCE6FF', .5 * (1 - life)); c.lineWidth = r * .04; c.shadowColor = '#DCE6FF'; c.shadowBlur = r * .25; c.beginPath(); c.arc(x, y, r * 1.01, 0, TAU); c.stroke(); c.restore(); }
+  // the disc
+  const g = c.createRadialGradient(x - r * .2, y - r * .2, r * .1, x, y, r);
+  g.addColorStop(0, mixCol('#0A0A10', '#FFFBEA', L)); g.addColorStop(.7, mixCol('#06060A', '#FFE7A8', L)); g.addColorStop(1, mixCol('#020204', '#FFC25A', L));
+  c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill();
+  if (crack > .01) {
+    const rnd = lcg(77); c.save(); c.globalCompositeOperation = 'lighter'; c.lineCap = 'round';
+    for (let i = 0; i < 9; i++) { let a = rnd() * TAU, px = x + Math.cos(a) * r * .15 * rnd(), py = y + Math.sin(a) * r * .15 * rnd(); const n = Math.ceil(6 * crack);
+      c.strokeStyle = rgba('#FFB04A', .9 * crack); c.lineWidth = r * .025; c.shadowColor = '#FF8A2A'; c.shadowBlur = r * .1; c.beginPath(); c.moveTo(px, py);
+      for (let k = 0; k < n; k++) { a += (rnd() - .5) * 1.2; px += Math.cos(a) * r * .16; py += Math.sin(a) * r * .16; if (Math.hypot(px - x, py - y) > r * .98) break; c.lineTo(px, py); } c.stroke(); }
+    c.restore();
+  }
+}
+// Shiva's trishul alone, as a prop in flight: the junction of the prongs at (x, y), pointing along rot (0 = up),
+// k scale (the prongs about 130 tall and the shaft 1100 long at k 1); o.glow (0..1) a hot white edge for a thrown one.
+function trishulProp(c, x, y, k, rot, o = {}) {
+  const S = SHV, X = 0, gl = o.glow ?? 0;
+  c.save(); c.translate(x, y); c.rotate(rot); c.scale(k, k); c.translate(0, 1138);
+  if (gl > .01) { c.shadowColor = '#FFE6B0'; c.shadowBlur = 40 * gl; }
+  fillPath(c, `M ${X - 6} 0 L ${X - 6} -1130 L ${X + 6} -1130 L ${X + 6} 0 Z`, S.steelSh);
+  fillPath(c, `M ${X - 1} 0 L ${X - 1} -1130 L ${X + 5} -1130 L ${X + 5} 0 Z`, S.steel);
+  fillPath(c, `M ${X - 46} -1138 C ${X - 52} -1170 ${X - 48} -1205 ${X - 34} -1228 C ${X - 38} -1200 ${X - 36} -1170 ${X - 22} -1146 Z M ${X + 46} -1138 C ${X + 52} -1170 ${X + 48} -1205 ${X + 34} -1228 C ${X + 38} -1200 ${X + 36} -1170 ${X + 22} -1146 Z`, S.steel);
+  fillPath(c, `M ${X - 48} -1128 C ${X - 30} -1150 ${X + 30} -1150 ${X + 48} -1128 L ${X + 40} -1122 C ${X + 20} -1138 ${X - 20} -1138 ${X - 40} -1122 Z`, S.steelSh);
+  fillPath(c, `M ${X} -1268 C ${X + 14} -1240 ${X + 12} -1180 ${X + 6} -1138 L ${X - 6} -1138 C ${X - 12} -1180 ${X - 14} -1240 ${X} -1268 Z`, S.steel);
+  fillPath(c, `M ${X} -1268 C ${X + 14} -1240 ${X + 12} -1180 ${X + 6} -1138 L ${X} -1138 Z`, S.steelSh);
+  c.shadowBlur = 0;
+  if (gl > .01) { c.globalCompositeOperation = 'lighter'; strokePath(c, `M ${X} -1260 L ${X} -40`, rgba('#FFF4D8', .55 * gl), 5); }
+  c.restore();
+}
+// Frost over the ground from y down: an icy crust (k 0..1 how far it has spread in from the edges) with branching
+// crystals and glints.
+function frost(c, y, k, t, o = {}) {
+  if (k <= .01) return;
+  const col = o.col || '#BFD6F2', g = c.createLinearGradient(0, y, 0, H + 200); g.addColorStop(0, rgba(col, .0)); g.addColorStop(.25, rgba(col, .22 * k)); g.addColorStop(1, rgba(col, .4 * k));
+  c.fillStyle = g; c.fillRect(-300, y, W + 600, H - y + 400);
+  const rnd = lcg(o.seed || 31); c.save(); c.lineCap = 'round';
+  for (let i = 0; i < 26; i++) {
+    const side = i % 2 ? 1 : -1, x0 = side > 0 ? W + 40 : -40, y0 = y + 30 + rnd() * (H - y), reach = (260 + rnd() * 520) * k;
+    let a = side > 0 ? Math.PI + (rnd() - .5) * .8 : (rnd() - .5) * .8, px = x0, py = y0, len = 0;
+    c.strokeStyle = rgba('#EAF4FF', .26); c.lineWidth = 1.2;
+    while (len < reach) { const st = 26 + rnd() * 20, nx = px + Math.cos(a) * st, ny = py + Math.sin(a) * st * .6;
+      c.beginPath(); c.moveTo(px, py); c.lineTo(nx, ny); c.stroke();
+      for (const s of [-1, 1]) { const b = a + s * 1.1, bl = st * .18; c.beginPath(); c.moveTo(nx, ny); c.lineTo(nx + Math.cos(b) * bl, ny + Math.sin(b) * bl * .6); c.stroke(); }
+      px = nx; py = ny; len += st; a += (rnd() - .5) * .5; }
+  }
+  for (let i = 0; i < 60; i++) { const x = hash(i * 7.7) * W, yy = y + 20 + hash(i * 3.9) * (H - y), tw = Math.max(0, Math.sin(t * 3 + i * 2.1)); if (hash(i * 1.3) < k) ellipse(c, x, yy, 2 + tw * 2, 2 + tw * 2, rgba('#FFFFFF', .7 * tw)); }
+  c.restore();
+}
+// Ganesha's head from the front, drawn as lines of light: the tall mukut, the great ears, the trunk curling to his
+// left, the long tusk and the broken one. At (x, y) (the forehead), k scale (about 700 wide and 950 tall at k 1).
+// draw (0..1): how much of the line has been drawn; fill (0..1): the shape filled in behind the lines.
+const GANESHA_LINES = [
+  'M -110 -150 L -96 -300 L -60 -340 L -30 -420 L 0 -500 L 30 -420 L 60 -340 L 96 -300 L 110 -150 Z',
+  'M -96 -300 L 96 -300 M -60 -340 L 60 -340 M -30 -420 L 30 -420',
+  'M -110 -150 C -150 -110 -150 30 -110 110 C -90 150 -60 170 -38 186',
+  'M 110 -150 C 150 -110 150 30 110 110 C 90 150 60 170 38 186',
+  'M -128 -110 C -230 -180 -340 -120 -350 0 C -360 90 -320 170 -250 200 C -200 220 -150 190 -118 140',
+  'M 128 -110 C 230 -180 340 -120 350 0 C 360 90 320 170 250 200 C 200 220 150 190 118 140',
+  'M -38 186 C -48 280 -30 380 20 440 C 60 486 120 480 130 430 C 136 396 104 384 90 404',
+  'M 38 186 C 34 260 44 330 76 372 C 92 392 104 390 110 380',
+  'M -62 168 C -100 220 -120 270 -104 320',
+  'M 62 168 C 74 186 80 200 76 212',
+  'M -60 40 C -50 30 -36 30 -26 40 M 26 40 C 36 30 50 30 60 40',
+  'M 0 -110 L 0 -60 M -40 -100 Q 0 -120 40 -100',
+];
+const GANESHA_FILL = 'M -110 -150 L -96 -300 L -60 -340 L -30 -420 L 0 -500 L 30 -420 L 60 -340 L 96 -300 L 110 -150 C 230 -180 340 -120 350 0 C 360 90 320 170 250 200 C 200 220 150 190 118 140 C 90 150 60 170 38 186 C 34 260 44 330 76 372 C 92 392 104 390 110 380 C 136 396 136 470 70 476 C 20 470 -40 380 -38 186 C -60 170 -90 150 -118 140 C -150 190 -200 220 -250 200 C -320 170 -360 90 -350 0 C -340 -120 -230 -180 -110 -150 Z';
+function ganeshaLine(c, x, y, k, draw, o = {}) {
+  const col = o.col || '#FFD27A', fill = o.fill ?? 0;
+  c.save(); c.translate(x, y); c.scale(k, k);
+  if (fill > .01) { fillPath(c, GANESHA_FILL, rgba(o.fillCol || '#2A1606', fill)); }
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  const n = GANESHA_LINES.length;
+  for (let pass = 0; pass < 2; pass++) {
+    c.globalCompositeOperation = pass ? 'lighter' : 'source-over'; c.strokeStyle = pass ? rgba('#FFF4D8', .9) : col; c.lineWidth = (pass ? 3 : 9) / k; c.shadowColor = col; c.shadowBlur = pass ? 0 : 30;
+    GANESHA_LINES.forEach((d, i) => { const u = clamp(draw * n * .55 - i * .45); if (u <= 0) return; const p = new Path2D(d); c.setLineDash([3000 * u, 4000]); c.stroke(p); });
+  }
+  c.setLineDash([]); c.restore();
 }

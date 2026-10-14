@@ -3,12 +3,14 @@
 //   10–14 the lighting presets (LIGHTS.*) on the same Shiva, each against its own sky
 //   15–22 Ravana and the Kailash story (ad 15): Ravana's poses and faces, Nandi standing, the Pushpak, Shiva's foot, the sets
 //   28–31 the Bhramari story: the Devi (Bhramari, four arms, bees), Arunasura on his throne, the macro bee, the swarm
+//   32–37 the sun story (ad 16): Surya and sunDisc(), Mali and Sumali (arunasura pal), the dead sun and frost, ganeshaLine(), the hero card
 //   23–27 Nandi (a zebu: hump, dewlap, black muzzle) and the Nandi story: the stone temple Nandi, rishi, boy, devotee, Nandanar, sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
 //   node render.mjs --page=cine.html --sheet=10.5,11.5,12.5,13.5,14.5 --cols=5 --w=300 --out=docs/cine_lighting.jpg
 //   node render.mjs --page=cine.html --sheet=15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5 --cols=4 --w=300 --out=docs/cine_cast_ravana.jpg
 //   node render.mjs --page=cine.html --sheet=28.5,29.5,30.5,31.5 --cols=4 --w=300 --out=docs/cine_cast_bhramari.jpg
+//   node render.mjs --page=cine.html --sheet=32.5,33.5,34.5,35.5,36.5,37.5 --cols=6 --w=300 --out=docs/cine_cast_surya.jpg
 const panel = (i, label, draw) => SHOTS.push({ a: i, b: i + 1, draw(c, u, t) { draw(c, u + 2, t); const g = c.createLinearGradient(0, 1540, 0, 1760); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.8)'); c.fillStyle = g; c.fillRect(0, 1540, W, 400); text(c, label, 540, 1700, '700 42px Cinzel', '#F4C46A', { glow: ['rgba(0,0,0,.9)', 18], maxW: 980 }); } });
 const cam0 = { z: 1 };
 const nightSky = (c) => { sky(c, [[0, '#070B17'], [700, '#152039'], [1400, '#2F3B5B'], [1900, '#3E4A68']]); glow(c, 840, 420, 520, '#7F97CC', .42); ellipse(c, 840, 420, 44, 44, '#E6ECF6'); };
@@ -109,3 +111,17 @@ panel(30, "arunasura() on throne()  ·  expr: 'laugh'", (c, t) => { redSky(c); r
 panel(31, 'bee({ lit })  ·  swarm()  ·  lotusLight()', (c, t) => { sky(c, [[0, '#0A0610'], [1900, '#1E1218']]); lotusLight(c, 820, 420, 110, t, .9);
   swarm(c, t, { mode: 'stream', n: 900, path: [[-100, 1500], [300, 1300], [700, 1450], [1200, 1200]], spread: [40, 200], k: .7, seed: 3, speed: .25 });
   bee(c, 540, 900, { k: 1.3, t, lit: Math.min(6, Math.floor(t * 2)), wings: 0, rot: -.2 }); });
+
+// ---------- the sun story (ad 16) ----------
+const MALI = { skin: '#3E5A7A', skinSh: '#2A4060', skinDk: '#16243A', dhoti: '#5A1A1A', dhotiSh: '#2E0C0C' };
+panel(32, 'surya()  ·  sunDisc()', (c, t) => { sky(c, [[0, '#3A0E08'], [900, '#C2481A'], [1900, '#FFB050']]); sunDisc(c, 540, 860, 330, t);
+  figure(c, (f) => { f.translate(540, 1900); f.scale(1.45, 1.45); surya(f, { t }); }, { tint: ['#3A1206', .12], edge: { col: '#FFF0C0', w: 2.4, a: .8 }, rim: { col: '#FFF6D8', dx: 0, dy: -6, a: .9, blur: 1 } }); });
+panel(33, 'suryaHead({ eyes })', (c, t) => { sky(c, [[0, '#2A0A06'], [1900, '#8A2E10']]); sunDisc(c, 540, 820, 600, t, { life: .6 });
+  figure(c, (f) => { f.translate(540, 940); f.scale(6.2, 6.2); f.translate(0, 815); suryaHead(f, { t, eyes: .5 + .5 * Math.sin(t * 2) }); }, { tint: ['#3A1206', .1], edge: { col: '#FFF0C0', w: 3, a: .4 }, rim: { col: '#FFF6D8', dx: 0, dy: -9, a: .8, blur: 1.5 } }); });
+panel(34, "arunasura({ pal }): Mali and Sumali in tapas", (c, t) => { templeSky(c); fillPath(c, 'M -100 1500 L 1180 1500 L 1180 2100 L -100 2100 Z', '#1A0E0A'); linga(c, 540, 1530, .8, { glow: .7 });
+  for (const [x, pal] of [[250, MALI], [830, null]]) figure(c, (f) => { f.translate(x, 1560); f.scale(.62, .62); arunasura(f, { t, pose: 'tapas', arms: 'namaste', expr: 'chant', pal }); }, LIGHTS.fire); });
+panel(35, 'sunDisc({ life: 0 })  ·  frost()  ·  trishulProp()', (c, t) => { sky(c, [[0, '#04060C'], [1100, '#121C2E'], [1900, '#2A3448']]); sunDisc(c, 540, 640, 200, t, { life: 0 });
+  fillPath(c, 'M -100 1300 C 300 1270 700 1280 1180 1310 L 1180 2100 L -100 2100 Z', '#1A2234'); frost(c, 1300, .5 + .5 * Math.sin(t), t);
+  trishulProp(c, 820, 1000, .45, .6, { glow: 1 }); });
+panel(36, 'ganeshaLine()', (c, t) => { sky(c, [[0, '#050302'], [1900, '#140A04']]); ganeshaLine(c, 540, 860, .9, Math.min(1, (t - 2) * 2), { fill: .6 }); });
+panel(37, 'rkCardCine({ hero })', (c, t) => { c.save(); rkCardCine(c, 3, t, { hero: 'book4', badge: 'NEW · 16 OCT', title: 'FIND OUT IN BOOK 4', price: 'Book 4 · ₹200 · ships 16 Oct', note: 'Books 1–3 out now: set of 3 for ₹500', books: ['book1', 'book2', 'book3'] }); c.restore(); });

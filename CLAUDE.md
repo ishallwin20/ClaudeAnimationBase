@@ -14,11 +14,11 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   Daksha, crowds, the Rudra Tandava, Shiva seated, Nandi (a zebu bull) lying and standing, white or as the black stone temple Nandi, the Sudarshan chakra, the yagna fire, the
   Pushpak, Shiva's foot, Parvati clinging, Hanuman leaping, and the Nandi
   story's silhouettes: a rishi with a plough, the boy Nandi, a devotee, Nandanar; `src/cine_devi.js`: the Devi in colour with four arms, first as Bhramari with her bees, the base for a
-  Cinematic Durga; `src/cine_asura.js`: Arunasura, a horned demon king on his throne or in tapas; `src/cine_ravana.js`: Ravana with ten heads and twenty arms, who
+  Cinematic Durga; `src/cine_asura.js`: Arunasura, a horned demon king on his throne or in tapas (recoloured, Mali and Sumali); `src/cine_surya.js`: Surya, the sun god, with lotuses; `src/cine_ravana.js`: Ravana with ten heads and twenty arms, who
   stands, lifts Kailash, is pinned under it and bows) and sets (`src/cine_sets.js`: Kailash, uprooted Kailash, cliffs,
   clouds, the ring of fire, a fire-lit hall, cracks, meteors, stars, shrines, debris, shock rings, burning Lanka, Devanagari
   verses, a linga, oil lamps, the sanctum doorway, furrows, a river, a gopuram, bees and swarms, the macro bee, the
-  demon's throne, the end card). `tools/lyria.mjs` makes a reel's score; `tools/sarvam_tts.mjs` a voiceover. Shared characters and engine changes, in either style, are committed to `main`: enrich them there when a reel
+  demon's throne, the sun (blazing or dead), the thrown trishul, frost, Ganesha in lines of light, the end card). `tools/lyria.mjs` makes a reel's score; `tools/sarvam_tts.mjs` a voiceover. Shared characters and engine changes, in either style, are committed to `main`: enrich them there when a reel
   needs more.
 - Each video gets its own branch off `main`: `reel/<idea>` for comedy reels, `ad/<n>-<book>-<idea>` for Rishi Katha
   book ads (e.g. `ad/1-book1-bull`). The branch holds `STORYBOARD.md`, `src/scenes/<name>.js` (+ `_props.js`),

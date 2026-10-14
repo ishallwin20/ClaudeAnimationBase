@@ -13,13 +13,17 @@
 //     the swarm) | 'point' (the right hand up, pointing at a bee on his left armrest)
 //   expr: 'calm' | 'smirk' | 'laugh' | 'scream' | 'chant' (eyes shut, mouth round) | 'shock'; look ([x, y])
 //   eyes (0..1 the glow of the eyes), lean (radians: the head tilts back to laugh), armFx (figure() options per arm)
-// asuraHead(c, o): the head alone at (0, -815): expr, eyes, look, t, light; crownOnly (just the horned helmet, e.g. fallen).
+//   pal: colours over ARU's (skin, skinSh, skinDk, dhoti, gold, ...): another demon on the same rig (Mali and Sumali)
+// asuraHead(c, o): the head alone at (0, -815): expr, eyes, look, t, light, pal; crownOnly (just the horned helmet, e.g. fallen).
 const ARU = {
   skin: '#7C3529', skinSh: '#5A2219', skinDk: '#3B140F', lip: '#3E1410', mouth: '#1A0606', tongue: '#A3343A',
   hair: '#0E0A0C', hairLt: '#2A1E22', eye: '#FFD23A', eyeHot: '#FFF2A0', brow: '#0E0808', tusk: '#E8DCC0', tuskSh: '#A8987A',
   horn: '#D8C9A6', hornSh: '#8E7E60', helm: '#16121A', helmLt: '#3A3044', gold: '#C8912E', goldSh: '#7E5718', goldLt: '#F2C866',
   ruby: '#C81E2A', dhoti: '#2C1838', dhotiSh: '#170C1E', border: '#C8912E',
 };
+// the palette in use: ARU, or ARU with o.pal over it while a figure with o.pal is drawn
+let ARU_CUR = ARU;
+function aruWithPal(o, draw) { const prev = ARU_CUR; ARU_CUR = { ...ARU, ...o.pal }; try { return draw({ ...o, pal: null }); } finally { ARU_CUR = prev; } }
 // mouths per expression: [open 0..1, width, corner lift, shape]
 const ARU_EXPR = {
   calm: { open: 0, cw: 1, lift: -2, brow: 1, eyes: .8 }, smirk: { open: .1, cw: 1.05, lift: 4, brow: .6, eyes: .7, smirk: true },
@@ -29,7 +33,7 @@ const ARU_EXPR = {
 const AR_FACE = 'M 0 -736 C 22 -736 40 -744 52 -758 C 62 -772 66 -794 66 -818 C 66 -848 60 -870 48 -884 C 34 -898 -34 -898 -48 -884 C -60 -870 -66 -848 -66 -818 C -66 -794 -62 -772 -52 -758 C -40 -744 -22 -736 0 -736 Z';
 // the mane behind the head, wild, spilling onto the shoulders (head units)
 function asuraMane(c, t) {
-  const S = ARU;
+  const S = ARU_CUR;
   for (let i = 0; i < 9; i++) {
     const s = i % 2 ? 1 : -1, k = Math.floor(i / 2), y0 = -880 + k * 34, ph = t * 1.4 + i;
     limb(c, [[s * 40, y0], [s * (80 + k * 10), y0 + 30 + Math.sin(ph) * 4], [s * (104 + k * 10), y0 + 90 + Math.sin(ph + 1) * 6], [s * (112 + k * 8), y0 + 150]], [40, 40, 28, 4], i % 3 ? S.hair : S.hairLt, false);
@@ -37,7 +41,7 @@ function asuraMane(c, t) {
 }
 // the helmet crown alone: a black cap with a gold band and a ruby, and the two horns (head units)
 function asuraCrown(c, L = 1) {
-  const S = ARU;
+  const S = ARU_CUR;
   for (const s of [-1, 1]) {
     const P = [[s * 52, -884], [s * 120, -912], [s * 168, -980], [s * 176, -1060], [s * 150, -1118]];
     limb(c, P, [40, 34, 26, 16, 3], S.horn, false);
@@ -52,7 +56,8 @@ function asuraCrown(c, L = 1) {
   for (const s of [-1, 1]) for (let k = 1; k <= 3; k++) fillPath(c, `M ${s * k * 16} -870 L ${s * (k * 16 + 5)} -892 L ${s * (k * 16 + 10)} -868 Z`, S.goldSh);
 }
 function asuraHead(c, o = {}) {
-  const t = o.t || 0, L = o.light ?? 1, S = ARU, E = ARU_EXPR[o.expr || 'calm'] || ARU_EXPR.calm, eg = o.eyes ?? 1;
+  if (o.pal) return aruWithPal(o, (q) => asuraHead(c, q));
+  const t = o.t || 0, L = o.light ?? 1, S = ARU_CUR, E = ARU_EXPR[o.expr || 'calm'] || ARU_EXPR.calm, eg = o.eyes ?? 1;
   if (o.crownOnly) { asuraCrown(c, L); return; }
   const shake = o.expr === 'laugh' ? Math.sin(t * 22) * 1.6 : o.expr === 'scream' ? Math.sin(t * 31) * 1.2 : 0;
   c.save(); c.translate(0, shake);
@@ -115,7 +120,7 @@ function asuraHead(c, o = {}) {
 }
 // one arm from shoulder S through elbow E to the wrist T; hand 'fist' | 'grip' (on an armrest) | 'open' (claws) | 'point'
 function asuraArm(c, S0, E, T, hand, o = {}) {
-  const S = ARU, L = o.light ?? 1, s = Math.sign(T[0] - S0[0]) || 1;
+  const S = ARU_CUR, L = o.light ?? 1, s = Math.sign(T[0] - S0[0]) || 1;
   ellipse(c, S0[0], S0[1], 44, 52, S.skin, s * -.2);
   limb(c, [S0, [(S0[0] + E[0]) / 2, (S0[1] + E[1]) / 2], E], [82, 74, 62], S.skin);
   limb(c, [E, [(E[0] + T[0]) / 2, (E[1] + T[1]) / 2], T], [62, 56, 46], S.skin);
@@ -130,7 +135,8 @@ function asuraArm(c, S0, E, T, hand, o = {}) {
   c.restore();
 }
 function arunasura(c, o = {}) {
-  const t = o.t || 0, L = o.light ?? 1, S = ARU, pose = o.pose || 'throne', arms = o.arms || (pose === 'tapas' ? 'knees' : 'rest');
+  if (o.pal) return aruWithPal(o, (q) => arunasura(c, q));
+  const t = o.t || 0, L = o.light ?? 1, S = ARU_CUR, pose = o.pose || 'throne', arms = o.arms || (pose === 'tapas' ? 'knees' : 'rest');
   const br = Math.sin(t * 1.3) * 1.5, dy = pose === 'tapas' ? 220 : 0;   // tapas sits on the ground: the body 220 lower
   // ---- legs ----
   if (pose === 'throne') {
