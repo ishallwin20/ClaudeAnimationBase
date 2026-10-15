@@ -47,7 +47,8 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
 - In the Cinematic style, captions are karaoke chunks (`say()`, 2.2–3 s each, names in gold) and the card is
   `rkCardCine()`; the same safe band, frame-0 and card rules apply.
 - No voiceover by default (when the owner asks for one, see the Cinematic guide's Voice section): captions carry the explanation, a synthesized SFX track sits under it (`tools/sfx.mjs`), and
-  music is added on Instagram, so always render a `--audio=none` copy too.
+  music is added on Instagram. Render one final MP4, the SFX version (no `--audio=none` copy; owner, Oct 2026). Clear
+  `out/frames` first: the frame cache is resumable and will reuse the previous reel's frames.
 - With a finished reel, also write the Instagram caption: the keyword question in the first ~125 characters, the
   explanation, the book offer with rishikatha.com (link in bio), a save/share/comment prompt, and 12–15 hashtags.
 
