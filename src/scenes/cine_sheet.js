@@ -4,6 +4,7 @@
 //   15–22 Ravana and the Kailash story (ad 15): Ravana's poses and faces, Nandi standing, the Pushpak, Shiva's foot, the sets
 //   28–31 the Bhramari story: the Devi (Bhramari, four arms, bees), Arunasura on his throne, the macro bee, the swarm
 //   32–37 the sun story (ad 16): Surya and sunDisc(), Mali and Sumali (arunasura pal), the dead sun and frost, ganeshaLine(), the hero card
+//   38–40 the Durgama story (ad 19): devi({ durga }) with eight arms, deviHead({ tears }), arunasura standing (ash pal)
 //   23–27 Nandi (a zebu: hump, dewlap, black muzzle) and the Nandi story: the stone temple Nandi, rishi, boy, devotee, Nandanar, sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
@@ -125,3 +126,11 @@ panel(35, 'sunDisc({ life: 0 })  ·  frost()  ·  trishulProp()', (c, t) => { sk
   trishulProp(c, 820, 1000, .45, .6, { glow: 1 }); });
 panel(36, 'ganeshaLine()', (c, t) => { sky(c, [[0, '#050302'], [1900, '#140A04']]); ganeshaLine(c, 540, 860, .9, Math.min(1, (t - 2) * 2), { fill: .6 }); });
 panel(37, 'rkCardCine({ hero })', (c, t) => { c.save(); rkCardCine(c, 3, t, { hero: 'book4', badge: 'NEW · 16 OCT', title: 'FIND OUT IN BOOK 4', price: 'Book 4 · ₹200 · ships 16 Oct', note: 'Books 1–3 out now: set of 3 for ₹500', books: ['book1', 'book2', 'book3'] }); c.restore(); });
+// ---------- the Durgama story (ad 19): Durga with eight arms, Shatakshi's tears, a demon standing ----------
+const ASH = { skin: '#4A4246', skinSh: '#322C30', skinDk: '#1C181B', eye: '#FF5A2A', eyeHot: '#FFD0A0', dhoti: '#5A1418', dhotiSh: '#320A0E', helm: '#141014' };
+panel(38, 'devi({ durga }): eight arms, the gods\' gifts', (c, t) => { redSky(c); glow(c, 540, 1000, 700, '#FFC860', .25);
+  figure(c, (f) => { f.translate(540, 1800); f.scale(1.15, 1.15); devi(f, { t, durga: true, upper: 'open', wind: .6, fire: .7 }); }, { tint: ['#2A0A10', .12], edge: { col: '#FFD9A0', w: 2.4, a: .7 }, rim: { col: '#FFE6B0', dx: 6, dy: -3, a: .8, blur: 1 } }); });
+panel(39, 'deviHead({ tears })', (c, t) => { sky(c, [[0, '#060A18'], [1900, '#18233E']]);
+  figure(c, (f) => { f.translate(540, 900); f.scale(6.2, 6.2); f.translate(0, 815); deviHead(f, { t, eyes: .8, tears: 1, look: [0, .6] }); }, { tint: ['#0E1A3A', .18], edge: { col: '#CFE0FF', w: 3, a: .3 }, rim: { col: '#E4EEFF', dx: 9, dy: -4, a: .7, blur: 1.5 } }); });
+panel(40, "arunasura({ pose: 'stand', arms: 'roar', pal })", (c, t) => { redSky(c); ridge(c, 1760, 80, 33, '#12050A');
+  figure(c, (f) => { f.translate(540, 1800); f.scale(1.15, 1.15); arunasura(f, { t, pose: 'stand', arms: 'roar', expr: 'scream', pal: ASH }); }, { tint: ['#2A0A10', .15], edge: { col: '#FF9A6A', w: 2.4, a: .7 }, rim: { col: '#FFB08A', dx: 0, dy: -5, a: .8, blur: 1 } }); });

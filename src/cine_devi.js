@@ -9,6 +9,9 @@
 //   arms: 4 (two raised behind, holding orbs of bees; the front right in abhaya, the front left on the trishul)
 //   upper ('bees' | 'open'): the raised hands, cupping a swarm or open; bees (0..1): how many bees swirl in them and
 //   stream from her hair (needs cine_sets.js: beeCloud, beeStream)
+//   durga (true): Durga with eight arms and the gods' gifts: four more arms fanned behind (Kala's sword, Vayu's bow,
+//   the Ocean's lotus, Indra's vajra) and the raised hands holding Vishnu's chakra (spinning) and Varuna's conch
+//   tears (0..1): wet lids and tear tracks, drops running down the cheeks (Shatakshi weeping; ad 19)
 //   skin, sari: colour overrides; armFx: figure() options for each arm (its own edge light: costly, colour shots only)
 // deviHead(c, o): the head alone (neck, hair, crown, jewellery, face) at its rest position; same options.
 const DEVI = {
@@ -84,6 +87,21 @@ function deviHead(c, o = {}) {
     if (op < .3) for (let i = 0; i < 5; i++) { const u = (i + 1) / 6, x = lerp(ex - lw, ex + lw, u), y = ey + 1.5 + (up * 1.3 - 1) * 2 * u * (1 - u) * 1.2; strokePath(c, `M ${x} ${y} l ${(u - .5) * 2} 2.6`, S.kohl, 1.1); }
     // a fine arched brow
     fillPath(c, `M ${s * 6} -834 C ${s * 14} -842.5 ${s * 26} -844 ${s * 36} -837 C ${s * 26} -839.5 ${s * 15} -838.5 ${s * 7} -831.5 Z`, S.brow);
+  }
+  // tears: the lower lids wet, a glistening track down each cheek, drops welling and running down it
+  if (o.tears > 0) {
+    const k = clamp(o.tears);
+    for (const s of [-1, 1]) {
+      const ex = s * 18.5, ey = -821, x0 = ex - s * 5, len = 62 * k;
+      strokePath(c, `M ${ex - 11} ${ey + 3} Q ${ex} ${ey + 8} ${ex + 11} ${ey + 2.5}`, rgba('#D8ECFF', .35 * k), 1.2);
+      const track = `M ${x0} ${ey + 6} C ${x0 - s * 1.5} ${ey + 6 + len * .35} ${x0 + s * 1} ${ey + 6 + len * .7} ${x0 + s * 3} ${ey + 6 + len}`;
+      strokePath(c, track, rgba('#BFD8F2', .22 * k), 2.2); strokePath(c, track, rgba('#FFFFFF', .3 * k), .7);
+      for (let i = 0; i < 2; i++) {
+        const u = frac(t * .55 + i * .5 + (s > 0 ? .27 : 0)), y = ey + 6 + len * u, a = k * Math.sin(Math.PI * u);
+        ellipse(c, x0 + s * 3 * u, y, 2.4, 3.2, rgba('#E8F4FF', .9 * a)); ellipse(c, x0 + s * 3 * u - .8, y - 1, .9, .9, rgba('#FFFFFF', a));
+        glow(c, x0 + s * 3 * u, y, 10, '#BFE0FF', .35 * a);
+      }
+    }
   }
   // nose tip, the nath (a gold ring through the left nostril, screen right), lips
   strokePath(c, 'M -7 -791.5 C -4 -788 4 -788 7 -791.5', S.skinDk, 1.8);
@@ -165,7 +183,53 @@ function devi(c, o = {}) {
     ellipse(c, hx, hy - 6, 13, 6, rgba(S.palm, .8));
     return [hx, hy - 52];
   };
+  // Durga: four more arms fanned behind the shoulders (out and up, out and down), holding the gods' gifts
+  if (o.durga) for (const s of [-1, 1]) {
+    const sw = Math.sin(t * 1.1 + s) * 4;
+    const A = [[s * 100, -672], [s * 220, -712], [s * 318, -812 + sw]], B = [[s * 100, -640], [s * 214, -596], [s * 318, -512 - sw]];
+    for (const P of [A, B]) {
+      limb(c, P, [46, 40, 32], S.skin);
+      if (s === -L) limb(c, P.map(([x, y]) => [x - s * 4, y + 9]), [16, 14, 10], rgba(S.skinSh, .8));
+      ellipse(c, (P[0][0] + P[1][0]) / 2, (P[0][1] + P[1][1]) / 2, 20, 6, S.gold, Math.atan2(P[1][1] - P[0][1], P[1][0] - P[0][0]) + Math.PI / 2);
+      ellipse(c, P[2][0] - s * 14, P[2][1] + (P === A ? 8 : -8), 15, 5, S.gold, s * .8);
+    }
+    const [ax, ay] = A[2], [bx, by] = B[2];
+    if (s < 0) {
+      // Kala's sword, raised; Vayu's bow, held upright
+      fillPath(c, `M ${ax - 7} ${ay - 22} L ${ax - 14} ${ay - 250} L ${ax} ${ay - 290} L ${ax + 11} ${ay - 250} L ${ax + 7} ${ay - 22} Z`, S.steel);
+      fillPath(c, `M ${ax} ${ay - 22} L ${ax} ${ay - 290} L ${ax + 11} ${ay - 250} L ${ax + 7} ${ay - 22} Z`, S.steelSh);
+      fillPath(c, `M ${ax - 26} ${ay - 18} L ${ax + 26} ${ay - 18} L ${ax + 22} ${ay - 28} L ${ax - 22} ${ay - 28} Z`, S.gold);
+      strokePath(c, `M ${bx - 4} ${by - 190} Q ${bx - 74} ${by} ${bx - 4} ${by + 190}`, S.goldSh, 9); strokePath(c, `M ${bx - 4} ${by - 190} Q ${bx - 74} ${by} ${bx - 4} ${by + 190}`, S.gold, 4);
+      strokePath(c, `M ${bx - 4} ${by - 190} L ${bx - 4} ${by + 190}`, rgba('#F3EBD8', .8), 1.6);
+    } else {
+      // the lotus (the Ocean's gift), on a stem; Indra's vajra, held down
+      limb(c, [[ax, ay - 14], [ax + 6, ay - 80], [ax + 2, ay - 130]], [7, 6, 5], '#3E7A3A', false);
+      for (const r of [-.8, -.4, 0, .4, .8]) { c.save(); c.translate(ax + 2, ay - 130); c.rotate(r); fillPath(c, 'M 0 0 C -16 -14 -14 -40 0 -54 C 14 -40 16 -14 0 0 Z', r ? '#F2A2B8' : '#F7C2D0'); c.restore(); }
+      ellipse(c, ax + 2, ay - 134, 8, 5, '#FFD86A');
+      c.save(); c.translate(bx + 4, by); c.rotate(-s * .25);
+      fillPath(c, 'M -9 -44 L 9 -44 L 9 44 L -9 44 Z', S.goldSh);
+      for (const e of [-1, 1]) {   // a vajra: a grip and, at each end, prongs curling into a point
+        ellipse(c, 0, e * 50, 14, 9, S.gold);
+        for (const q of [-1, 0, 1]) fillPath(c, `M ${q * 6} ${e * 56} C ${q * 26} ${e * 76} ${q * 24} ${e * 104} ${q * 4} ${e * 124} C ${q * 12} ${e * 102} ${q * 10} ${e * 80} ${q * 2} ${e * 60} Z`, q ? S.gold : S.goldLt);
+      }
+      c.restore();
+    }
+    for (const [x, y] of [A[2], B[2]]) { ellipse(c, x, y, 21, 23, S.skin); ellipse(c, x + s * 6, y - 4, 9, 11, rgba(S.skinSh, .7)); }
+  }
   const orbs = [upper(-1), upper(1)];
+  // Durga's raised hands: Vishnu's chakra spinning on one, Varuna's conch in the other
+  if (o.durga) {
+    const [cx, cy] = orbs[0], [sx, sy] = orbs[1];
+    glow(c, cx, cy + 10, 90, '#FFC86A', .4);
+    c.save(); c.translate(cx, cy + 14); c.rotate(t * 3);
+    c.strokeStyle = S.gold; c.lineWidth = 9; c.beginPath(); c.arc(0, 0, 34, 0, TAU); c.stroke();
+    for (let k = 0; k < 12; k++) { c.rotate(TAU / 12); fillPath(c, 'M -5 -38 L 0 -54 L 5 -38 Z', S.goldLt); strokePath(c, 'M 0 -8 L 0 -30', S.goldSh, 3); }
+    ellipse(c, 0, 0, 9, 9, S.ruby); c.restore();
+    c.save(); c.translate(sx, sy + 22); c.rotate(.3);
+    fillPath(c, 'M -30 10 C -40 -14 -24 -40 0 -44 C 26 -44 38 -24 34 -4 C 30 12 14 24 -6 26 C -18 26 -26 20 -30 10 Z', S.pearl);
+    for (let k = 0; k < 4; k++) strokePath(c, `M ${-24 + k * 12} ${16 - k * 4} C ${-18 + k * 12} ${-6 - k * 4} ${-8 + k * 12} ${-24 - k * 2} ${4 + k * 10} ${-34 + k * 4}`, rgba('#B8A88A', .8), 2);
+    fillPath(c, 'M -30 10 C -42 18 -50 28 -48 34 C -38 32 -26 24 -20 20 Z', '#E6DCC4'); c.restore();
+  }
   // the trishul, held by the front left hand (screen right), behind that hand
   const X = 222;
   fillPath(c, `M ${X - 4.5} 10 L ${X - 4.5} -1100 L ${X + 4.5} -1100 L ${X + 4.5} 10 Z`, S.steelSh);

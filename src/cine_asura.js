@@ -8,9 +8,11 @@
 // gold belt, a dark violet dhoti with a gold border.
 //
 // arunasura(c, o): o (all optional):
-//   t, light (1 | -1), pose: 'throne' | 'tapas' (cross-legged on the ground)
+//   t, light (1 | -1), pose: 'throne' | 'tapas' (cross-legged on the ground) | 'stand' (feet wide, the dhoti to the
+//     knees; the body 250 higher than seated, so the face is centred at (0, -905) and the crown tops out near -1150)
 //   arms: 'rest' (hands on the throne's arms) | 'namaste' | 'knees' (on the knees, for tapas) | 'up' (flailing, under
-//     the swarm) | 'point' (the right hand up, pointing at a bee on his left armrest)
+//     the swarm) | 'point' (the right hand up, pointing at a bee on his left armrest) | 'roar' (both arms out and down,
+//     claws open: a war cry; for 'stand')
 //   expr: 'calm' | 'smirk' | 'laugh' | 'scream' | 'chant' (eyes shut, mouth round) | 'shock'; look ([x, y])
 //   eyes (0..1 the glow of the eyes), lean (radians: the head tilts back to laugh), armFx (figure() options per arm)
 //   pal: colours over ARU's (skin, skinSh, skinDk, dhoti, gold, ...): another demon on the same rig (Mali and Sumali)
@@ -137,7 +139,7 @@ function asuraArm(c, S0, E, T, hand, o = {}) {
 function arunasura(c, o = {}) {
   if (o.pal) return aruWithPal(o, (q) => arunasura(c, q));
   const t = o.t || 0, L = o.light ?? 1, S = ARU_CUR, pose = o.pose || 'throne', arms = o.arms || (pose === 'tapas' ? 'knees' : 'rest');
-  const br = Math.sin(t * 1.3) * 1.5, dy = pose === 'tapas' ? 220 : 0;   // tapas sits on the ground: the body 220 lower
+  const br = Math.sin(t * 1.3) * 1.5, dy = pose === 'tapas' ? 220 : pose === 'stand' ? -250 : 0;   // tapas sits on the ground: the body 220 lower; standing, 250 higher
   // ---- legs ----
   if (pose === 'throne') {
     for (const s of [-1, 1]) {
@@ -157,6 +159,27 @@ function arunasura(c, o = {}) {
       c.save(); c.scale(L, 1); fillPath(c, 'M -220 -430 L -90 -430 C -100 -330 -130 -260 -150 -240 L -220 -240 Z', rgba(S.dhotiSh, .55)); c.restore();
       strokePath(c, 'M -200 -290 C -190 -260 -170 -250 -150 -256 C -120 -230 -60 -150 0 -130 C 60 -150 120 -230 150 -256 C 170 -250 190 -260 200 -290', S.border, 8);
     });
+  } else if (pose === 'stand') {
+    // standing, feet planted wide: bare shins with gold anklets under a dhoti wrapped to the knees, a pleated panel
+    // hanging between the legs
+    for (const s of [-1, 1]) {
+      limb(c, [[s * 112, -350], [s * 122, -200], [s * 134, -52]], [92, 76, 58], s === -L ? S.skinSh : S.skin);
+      if (s === L) limb(c, [[s * 96, -340], [s * 106, -200], [s * 116, -60]], [20, 16, 12], rgba(S.skinSh, .6));
+      fillPath(c, `M ${s * 104} -56 C ${s * 96} -30 ${s * 92} -10 ${s * 98} 0 L ${s * 200} 0 C ${s * 204} -14 ${s * 186} -24 ${s * 170} -32 L ${s * 162} -56 Z`, S.skin);
+      fillPath(c, `M ${s * 100} -74 L ${s * 166} -74 L ${s * 168} -54 L ${s * 100} -54 Z`, S.gold);
+      for (let i = 0; i < 4; i++) ellipse(c, s * (112 + i * 22), 0, 8, 4, rgba(S.skinDk, .6));
+    }
+    const DH = 'M -96 -660 C -120 -560 -164 -420 -186 -320 C -150 -300 -100 -296 -60 -306 L -30 -420 L 30 -420 L 60 -306 C 100 -296 150 -300 186 -320 C 164 -420 120 -560 96 -660 Z';
+    fillPath(c, DH, S.dhoti);
+    inside(c, DH, () => {
+      for (const s of [-1, 1]) for (let i = 0; i < 3; i++) strokePath(c, `M ${s * (40 + i * 22)} -640 C ${s * (60 + i * 30)} -520 ${s * (80 + i * 34)} -420 ${s * (96 + i * 30)} -316`, rgba(S.dhotiSh, .9), 3);
+      c.save(); c.scale(L, 1); fillPath(c, 'M -200 -670 L -70 -670 C -90 -540 -110 -420 -120 -300 L -200 -300 Z', rgba(S.dhotiSh, .55)); c.restore();
+      strokePath(c, 'M -186 -320 C -150 -300 -100 -296 -60 -306 M 60 -306 C 100 -296 150 -300 186 -320', S.border, 8);
+    });
+    const PANEL = 'M -34 -640 C -40 -500 -44 -360 -40 -210 C -20 -198 20 -198 40 -210 C 44 -360 40 -500 34 -640 Z';
+    fillPath(c, PANEL, S.dhoti);
+    inside(c, PANEL, () => { for (let i = -2; i <= 2; i++) strokePath(c, `M ${i * 10} -630 L ${i * 13} -206`, rgba(S.dhotiSh, .9), 2.6); });
+    strokePath(c, 'M -40 -212 C -20 -200 20 -200 40 -212', S.border, 7);
   } else {
     // cross-legged: the knees out wide, the shins crossed in front, the soles turned up on the thighs; the dhoti over the lap
     for (const s of [-1, 1]) {
@@ -204,6 +227,7 @@ function arunasura(c, o = {}) {
     knees: [[[-240, -400], [-236, -300], 'fist'], [[240, -400], [236, -300], 'fist']],
     up: [[[-280, -680], [-250 + Math.sin(t * 9) * 20, -840], 'open'], [[280, -660], [270 + Math.sin(t * 8 + 1) * 20, -830], 'open']],
     point: [[[-250, -450], [-300, -450], 'grip'], [[260, -520], [330, -560], 'point']],
+    roar: [[[-290, -460], [-380, -370 + Math.sin(t * 3) * 8], 'open'], [[290, -460], [380, -370 + Math.sin(t * 3 + 1) * 8], 'open']],
   }[arms] || [];
   A.forEach(([E, T, hand], i) => arm(i, E, T, hand));
   if (arms === 'namaste') { fillPath(c, 'M -30 -540 C -20 -560 20 -560 30 -540 L 30 -470 C 20 -456 -20 -456 -30 -470 Z', S.skin); strokePath(c, 'M 0 -556 L 0 -462', S.skinDk, 2); }
