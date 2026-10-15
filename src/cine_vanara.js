@@ -9,7 +9,8 @@
 //   t, light (1 lit from screen right, -1 from the left), pal (colours over VN's: Sugriva, Vali, a colour Hanuman)
 //   pose: 'stand' | 'walk' (a step cycle, o.step 0..1) | 'plant' (feet wide, one foot stamped: o.press 0..1 sinks
 //     the body a little) | 'strike' (a deep crouch, both fists on the ground) | 'bow' (namaste, the head lowered)
-//   arms: 'hips' | 'fold' (crossed on the chest) | 'down' | 'namaste' | 'fists' (to the ground, for 'strike');
+//   arms: 'hips' | 'fold' (crossed on the chest) | 'down' | 'namaste' | 'fists' (to the ground, for 'strike') |
+//     'clamp' (the arm on screen right bent hard, pinning something under the armpit; the other on the hip);
 //     each pose has a default
 //   expr: 'calm' | 'smirk' | 'fierce' | 'laugh' | 'tears'; look ([x, y] irises), eyes (0..1 overrides how open)
 //   tail (true), armFx: figure() options for each arm (its own edge light)
@@ -247,6 +248,7 @@ function vanara(c, o = {}) {
   }, o.armFx || {});
   if (arms === 'hips') for (const s of [-1, 1]) arm(s, [s * 286, -566], [s * 128, -492], 'fist');
   else if (arms === 'down') for (const s of [-1, 1]) arm(s, [s * 214, -540], [s * 222, -404], 'fist');
+  else if (arms === 'clamp') { arm(-1, [-286, -566], [-128, -492], 'fist'); arm(1, [300, -540], [150, -560], 'fist'); }   // something pinned under his left arm
   else if (arms === 'fists') for (const s of [-1, 1]) arm(s, [s * 214, -530], [s * 150, -70 - D], 'fist', 1.14);
   else if (arms === 'namaste') {
     for (const s of [-1, 1]) arm(s, [s * 196, -556], [s * 16, -640], 'none');
@@ -311,25 +313,26 @@ function vanaraFoot(c, o = {}) {
 }
 
 // ---------- kneeling (a silhouette) ----------
-// On his knees facing screen right, the torso tipping forward with o.bow (0: upright, hands joined; 1: bowed to the
-// ground, the hands forward, as at a lord's feet). The knee at (0, 0); the hands land near (300, 0) at bow 1.
+// On his knees facing screen right, the torso tipping forward with o.bow (0: upright, hands joined; 1: bowed, the
+// hands reaching down to the ground ahead, as to clasp a lord's feet). The knee at (0, 0); the hands near (330, 0) at bow 1.
 function vanaraKneel(c, o = {}) {
   const col = o.col || '#120A08', t = o.t || 0, bw = clamp(o.bow ?? 1), w = Math.sin(t * 1.4) * 5;
-  const hip = [-50, -230], th = lerp(.2, 1.2, easeIO(bw)), sh = [hip[0] + Math.sin(th) * 290, hip[1] - Math.cos(th) * 290];
+  const hip = [-50, -230], th = lerp(.15, .78, easeIO(bw)), sh = [hip[0] + Math.sin(th) * 290, hip[1] - Math.cos(th) * 290];
   limb(c, [hip, [-170, -250], [-250, -340 + w], [-240, -450 + w], [-180, -480 + w], [-156, -440 + w]], [30, 26, 22, 18, 14, 11], col);   // the tail
   ellipse(c, -156, -442 + w, 15, 13, col);
   limb(c, [[-180, -18], [-90, -20], [0, -26]], [44, 56, 64], col);   // the shin on the ground
   fillPath(c, 'M -230 0 C -232 -30 -210 -44 -176 -44 L -150 0 Z', col);   // the foot behind
   limb(c, [[0, -30], [-20, -130], hip], [80, 100, 116], col);   // the thigh
   fillPath(c, `M ${hip[0] - 70} ${hip[1] + 40} C ${hip[0] - 60} ${hip[1] - 20} ${hip[0] + 60} ${hip[1] - 20} ${hip[0] + 80} ${hip[1] + 50} L ${hip[0]} ${hip[1] + 120} Z`, col);   // the dhoti
-  limb(c, [hip, [lerp(hip[0], sh[0], .5), lerp(hip[1], sh[1], .5) - 10], sh], [120, 112, 116], col);   // the torso
+  limb(c, [hip, [lerp(hip[0], sh[0], .5), lerp(hip[1], sh[1], .5) - 10], sh], [104, 112, 140], col);   // the torso, broad at the shoulders
   // the arms: hands joined at the chest, reaching down to the ground as he bows
-  const hd = [lerp(sh[0] + 80, sh[0] + 120, bw), lerp(sh[1] + 60, -12, bw)], el = [lerp(sh[0] + 40, sh[0] + 30, bw), lerp(sh[1] + 120, sh[1] + 140, bw)];
+  const hd = [lerp(sh[0] + 80, sh[0] + 170, bw), lerp(sh[1] + 60, -14, bw)], el = [lerp(sh[0] + 40, sh[0] + 90, bw), lerp(sh[1] + 120, sh[1] + 150, bw)];
   limb(c, [sh, el, hd], [52, 40, 32], col); ellipse(c, hd[0] + 10, hd[1] - 4, 26, 18, col);
   // the head, tipped down with the torso: the muzzle forward, the ear, the crown
   c.save(); c.translate(sh[0] + Math.sin(th) * 70, sh[1] - Math.cos(th) * 70); c.rotate(th - .1);
-  ellipse(c, 0, -10, 50, 56, col);
-  fillPath(c, 'M 28 -20 C 60 -16 74 4 68 26 C 56 40 30 40 14 30 Z', col);   // the muzzle, toward his chest
+  ellipse(c, 0, -10, 52, 58, col);
+  fillPath(c, 'M 30 -26 C 64 -24 82 -4 78 22 C 66 40 34 42 14 30 Z', col);   // the muzzle
+  for (let i = 0; i < 5; i++) fillPath(c, `M ${-40 + i * 6} ${20 + i * 4} L ${-62 + i * 4} ${44 + i * 6} L ${-30 + i * 6} ${30 + i * 4} Z`, col);   // the ruff at the jaw
   ellipse(c, -44, -10, 16, 20, col);   // the ear
   fillPath(c, 'M -36 -56 L -32 -110 L -12 -88 L 0 -134 L 12 -88 L 32 -110 L 36 -56 Z', col);   // the crown
   c.restore();
