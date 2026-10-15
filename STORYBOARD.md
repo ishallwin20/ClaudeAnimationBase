@@ -81,7 +81,7 @@ couldn't move it" and "held in Vali's armpit"; they claim no extra plot.
 - New shared Cinematic cast (on `main`, 9f2ca46): `src/cine_vanara.js` (Angad: `vanara()` with stand, walk, plant,
   strike, bow and five faces; `vanaraHead()`, `vanaraFoot()`, `vanaraKneel()`), Ravana's `pose: 'sit'`, `front`
   rest and grab, `crowns` off and `rvCrown()`, `goldThrone()`, `ramSil()`, `crowd({ rise })`; sheet panels 41–48 and
-  `docs/cine_cast_angad.jpg`. This branch adds `arms: 'clamp'` to `vanara()` and a reworked `vanaraKneel()` (fold into main).
+  `docs/cine_cast_angad.jpg`; then `arms: 'clamp'` and a more upright `vanaraKneel()` (52d3adc).
 - Sound: `tools/angad_sfx.mjs` → `assets/angad_sfx.wav`, then the mix → `assets/angad_mix.wav`: the score at .42 on a
   level curve (.75 under the dialogue and the roast, .6 in the hush), faded out from 72.6, the SFX on top, loudnorm −15 LUFS.
 - The score: `tools/angad_score.txt` → `assets/angad_score.mp3`, Lyria take 3 of 3, its first 0.5 s cut. The first brief
