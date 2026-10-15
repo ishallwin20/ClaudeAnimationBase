@@ -309,3 +309,17 @@ First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`.
   brief for its first 61 s. Ask for 2–3 takes at once in the background ($0.08 each) and pick by the loudness per second.
 - Sarvam STT caught "Two rakshasa" as "Guru Rakshas": a line's `tts` field can respell a word ("Raakshasa") without
   changing the caption.
+
+## Lessons from the Angad reel (ad/20-books123-angad)
+
+- Lyria, a fourth time: a 17-section brief came back stretched to 150–160 s on all three takes. A brief that pins the
+  tempo and the length in musical terms ("tempo 100 BPM in 4/4, exactly 32 bars, 76 seconds", said at the top and at
+  the end) with nine sections brought two of three takes back at ~78 s, with the hits, the hush and the sung words where
+  asked (within ~0.5 s; cut the take's head to line them up). Write the brief that way first.
+- A foot close-up reads as a lampshade if the garment's hem shows at the top: frame the shin out past the top edge
+  (`vanaraFoot` at ×2.4 with its sole low in frame) and darken the shin's top with a `grade` so a caption reads over it.
+- Arms reaching into frame read as poles unless the hand is drawn gripping: fingers curled round toward the camera, a
+  thumb under, a bracelet (`grabHand` in the reel's props).
+- A figure bowing low to the ground in silhouette reads as an animal on all fours; keep the torso under ~45°, broad at
+  the shoulders, the head clear of the back.
+- Two figures in a two-shot: draw the hero last, so his shape stays whole in front of a twenty-armed villain's fan.
