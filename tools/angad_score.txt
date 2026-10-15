@@ -1,0 +1,19 @@
+A SHORT film-score cue for a 76-second reel: tempo 100 BPM in 4/4, exactly 32 bars, 76 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:16. Every section below is short; keep moving.
+Epic Indian mythological film score for the Ramayana: a fearless messenger in a demon king's golden court. Dhol, nagada
+and taiko drums, low brass, cellos, a tanpura drone, a shehnai, a bansuri, a male choir. Big and cinematic, with a sly
+swagger in the middle. Instrumental, except the male choir singing "Jai Shri Ram" where asked.
+
+0:00-0:05  A huge drum and brass HIT on the very first beat, then a tense low drone with a heartbeat drum.
+0:05-0:14  Noble and calm for four seconds (bansuri, strings), then a heavy palace processional of nagada and brass.
+0:14-0:32  A sly, playful but dangerous groove: pizzicato strings, a tabla rhythm, cheeky shehnai trills, swagger.
+0:32-0:45  Menace: roaring low brass; the biggest drum hit so far at 0:36.6; scattering bells; then soaring strings and
+           choir vowels, flying, and a bright brass call at 0:43.
+0:45-0:54  A colossal hit at 0:45.0, a defiant pulse, then a fast driving dhol tug-of-war that collapses at 0:52 with a
+           comic downward brass slide.
+0:54-0:59  Very slow, heavy footsteps of drums and deep brass, dread; near silence from 0:57 to 0:59, one high string note.
+0:59-1:03  A radiant golden hit at 0:59 with choir and strings blooming, then a dark descending cello line.
+1:03-1:10  Devotional dawn: tender bansuri over warm strings; at 1:06 the male choir sings "Jai Shri Ram" twice, majestic.
+1:10-1:16  A warm held chord with soft bells, fading out completely by 1:16.
+
+Total length: 76 seconds, 32 bars at 100 BPM. End at 1:16.
