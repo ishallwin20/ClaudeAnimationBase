@@ -14,7 +14,8 @@
 // shoulders (±3.1, -14.6) · mantle about -17..-14.5 · head centres from rvHeadPos(o, i) (the boss at (0, -20.9),
 // r 2.55; the others r about 2, from x -12.35 (#0) to 15.3 (#9), lower toward the ends).
 // Options (all optional):
-//   pose:   dx, dy (u), sq, rot, flip, shake 0..1 (trembling), sit (cross-legged), still (no idle head bob)
+//   pose:   dx, dy (u), sq, rot, flip, shake 0..1 (trembling), sit (cross-legged), still (no idle head bob),
+//           knock 0..1 (knees pressed together, feet splayed: the bathroom dance), step -1..1 (lifts the left / right foot)
 //   heads:  all = {…} (fields for every head), heads[i] = {…} (fields for head i, over all and the head's own
 //           defaults); spread 0..1 (1: the row as drawn; less squeezes the heads together, the door gag)
 //           Head fields: eyes ('normal' | 'wide' | 'angry' | 'happy' | 'closed' | 'sleepy' | 'side' | 'shifty' |
@@ -288,10 +289,14 @@ function ravana(x, y, u, o = {}) {
     inkLine(P([[-5.6, -1.6], [-3, -.9], [0, -1.2], [3, -.9], [5.6, -1.6]]), sw * 1.6, C.gold, 'ink', .5);
   } else {
     rs('legs');
+    const kn = clamp(o.knock || 0), stp = clamp(o.step || 0, -1, 1);
     for (const s of [-1, 1]) {
-      paint(P([[s * .7, -4.2], [s * 2.5, -4.2], [s * 2.4, -1.0], [s * 1.0, -1.0]]), { wash: col, fill: dk, fillOp: 40, tex: .4, ink: INK, sw: sw * .8, curv: .3 });
-      paint(P([[s * .7, -1.3], [s * 2.6, -1.3], [s * 3.3, -.6], [s * 3.9, -1.1], [s * 4.0, -.5], [s * 3.4, 0], [s * .8, 0]]), { wash: C.gold, fill: C.goldDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .7, curv: .35 });
-      inkLine(P([[s * 1.0, -1.25], [s * 2.5, -1.25]]), sw * .9, C.ruby, 'ink', 0);
+      const lift = Math.max(0, s * stp) * 1.3, fo = s * kn * 1.1;   // knock: knees pressed in, feet splayed out; step: a foot lifts
+      const Lg = pts => P(pts.map(([a, b]) => [a + fo * clamp((b + 4.2) / 3.2), b - lift * clamp((b + 4.2) / 3.2)]));
+      paint(Lg([[s * lerp(.7, .1, kn), -4.2], [s * lerp(2.5, 1.9, kn), -4.2], [s * 2.4, -1.0], [s * 1.0, -1.0]]), { wash: col, fill: dk, fillOp: 40, tex: .4, ink: INK, sw: sw * .8, curv: .3 });
+      const F = pts => P(pts.map(([a, b]) => [a + fo, b - lift]));
+      paint(F([[s * .7, -1.3], [s * 2.6, -1.3], [s * 3.3, -.6], [s * 3.9, -1.1], [s * 4.0, -.5], [s * 3.4, 0], [s * .8, 0]]), { wash: C.gold, fill: C.goldDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .7, curv: .35 });
+      inkLine(F([[s * 1.0, -1.25], [s * 2.5, -1.25]]), sw * .9, C.ruby, 'ink', 0);
     }
   }
   rs('dhoti');
