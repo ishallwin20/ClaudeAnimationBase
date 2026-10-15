@@ -8,14 +8,21 @@
 // TWENTY arms: the front pair plus nine on each side behind, fanned like a peacock's tail (with weapons) or raised.
 //
 // ravana(c, o): the whole figure. o (all optional):
-//   t (seconds), light (1 lit from screen right, -1 from the left), pose: 'stand' | 'lift' | 'pinned' | 'bow'
+//   t (seconds), light (1 lit from screen right, -1 from the left), pose: 'stand' | 'lift' | 'pinned' | 'bow' | 'sit'
+//     ('sit': on a throne, the seat at -300 as for goldThrone() in cine_sets.js, the hips at -330, everything above
+//     140 lower than standing, so the centre face is at about (0, -675))
 //   expr: the face on every head: 'calm' | 'smirk' | 'laugh' | 'scream' | 'sing' | 'grit'; or exprs: [10] per head
 //   reach (0..1, 'lift': how high the hands are), weapons (true: the back hands of 'stand' hold swords, maces, a bow…)
-//   front ('hips' | 'down' | 'namaste' | 'up'), armFx / headFx: figure() options for each front arm / each head, so
+//   front ('hips' | 'down' | 'namaste' | 'up' | 'rest' (hands on the throne's arms) | 'grab' (both hands reaching
+//   down in front, to seize something at his feet)), crowns (false: bare heads, the crowns fallen; or [10] per head),
+//   armFx / headFx: figure() options for each front arm / each head, so
 //   they get their own edge light (costly: use them for colour shots, not silhouettes)
 // ravanaHeads(c, o): the row of heads and the collar alone, for a close-up (same units and options).
 // rvHead(c, o): one head at its rest position (centre (0, -815)): expr, crown ('mukut' | 'crown'), open (0..1 the
 //   mouth), t, light, look ([x, y] irises), neck (true). Scale a close-up like Shiva's: translate, scale(k), translate(0, 815).
+//   crown: false draws the bare head.
+// rvCrown(c, o): one crown alone, its band centred at (0, 0), about 120 wide: kind ('mukut' | 'crown'), light. For the
+//   crowns falling and flying.
 const RV = {
   skin: '#9C6A48', skinSh: '#76492F', skinDk: '#4F2E1D', palm: '#B88262', lip: '#5E3024', lipLo: '#7E4434',
   eyeW: '#EDE3D2', iris: '#3A160C', kohl: '#140B0B', hair: '#120C10', hairLt: '#2E2128', ash: '#EFE8DA',
@@ -121,9 +128,14 @@ function rvHead(c, o = {}) {
   // hair under the crown
   const CAP = 'M -57 -812 C -66 -856 -56 -900 0 -906 C 56 -900 66 -856 57 -812 C 56 -834 51 -858 43 -870 C 31 -882 12 -884 0 -880 C -12 -884 -31 -882 -43 -870 C -51 -858 -56 -834 -57 -812 Z';
   fillPath(c, CAP, S.hair);
-  // the crown
+  if (o.crown !== false) rvCrownShape(c, o.crown || 'crown', L);
+}
+
+// a crown in the head's units (the band at -890): 'mukut' (tall, tiered, the centre head's) | 'crown' (pointed)
+function rvCrownShape(c, kind, L = 1) {
+  const S = RV;
   const band = 'M -60 -874 C -40 -886 40 -886 60 -874 L 58 -904 C 38 -914 -38 -914 -58 -904 Z';
-  if ((o.crown || 'crown') === 'mukut') {
+  if (kind === 'mukut') {
     for (const s of [-1, 1]) fillPath(c, `M ${s * 54} -900 C ${s * 70} -910 ${s * 80} -926 ${s * 82} -946 C ${s * 72} -938 ${s * 64} -932 ${s * 50} -928 Z`, S.gold);   // side flares
     const T1 = 'M -54 -904 L -40 -966 L 40 -966 L 54 -904 Z', T2 = 'M -38 -964 L -24 -1010 L 24 -1010 L 38 -964 Z';
     fillPath(c, T1, S.gold); fillPath(c, T2, S.gold);
@@ -141,6 +153,7 @@ function rvHead(c, o = {}) {
   fillPath(c, band, S.goldSh); strokePath(c, 'M -58 -890 C -38 -898 38 -898 58 -890', S.goldLt, 2.2);
   for (let i = -4; i <= 4; i++) ellipse(c, i * 12, -893 - (4 - Math.abs(i)) * .6, 2.6, 2.6, i % 2 ? S.ruby : S.goldLt);
 }
+function rvCrown(c, o = {}) { c.save(); c.translate(0, 890); rvCrownShape(c, o.kind || 'crown', o.light ?? 1); c.restore(); }
 
 // ---------- the row of heads ----------
 // Head i (0..9, the centre one is 4): its place, size and drop toward the ends; the outer ones are drawn first.
@@ -170,7 +183,8 @@ function ravanaHeads(c, o = {}) {
       h.save(); h.translate(p.x + dx, p.y + dy - 815); h.rotate(rot); h.scale(p.s, p.s); h.translate(0, 815);
       // ambient occlusion from the nearer head onto this one
       if (p.k) glow(h, -Math.sign(p.k) * 70, -800, 90, '#000000', .35, 'source-atop');
-      rvHead(h, { t, light: L, expr, open, crown: p.k ? 'crown' : 'mukut', neck: !p.k, look: o.look || [p.k ? Math.sign(p.k) * .4 : 0, 0] });
+      const on = o.crowns === false ? false : Array.isArray(o.crowns) ? o.crowns[i] : true;
+      rvHead(h, { t, light: L, expr, open, crown: on ? (p.k ? 'crown' : 'mukut') : false, neck: !p.k, look: o.look || [p.k ? Math.sign(p.k) * .4 : 0, 0] });
       h.restore();
     };
     if (o.headFx) figure(c, draw, o.headFx); else draw(c);
@@ -225,13 +239,13 @@ function ravanaArch(o = {}) {
 const RV_WEAPONS = ['sword', 'mace', 'spear', 'axe', 'bow', 'disc', 'sword', 'mace', 'spear'];
 function ravana(c, o = {}) {
   const t = o.t || 0, L = o.light ?? 1, S = RV, pose = o.pose || 'stand', br = Math.sin(t * 1.4) * 1.5;
-  const sq = pose === 'lift' ? .55 : pose === 'pinned' ? 1 : pose === 'bow' ? 1 : 0, D = sq * 170;
+  const sit = pose === 'sit', sq = pose === 'lift' ? .55 : pose === 'pinned' ? 1 : pose === 'bow' ? 1 : 0, D = sit ? 140 : sq * 170;
     // the nine back arms each side, behind everything
   const back = [];
   for (const s of [-1, 1]) for (let j = 0; j < 9; j++) {
     const Sx = s * (140 + j * 7), Sy = -700 + j * 6 + D + br, Sp = [Sx, Sy];
     let T, bend = s;
-    if (pose === 'stand') {
+    if (pose === 'stand' || sit) {
       const phi = lerp(.3, 2.15, j / 8) + Math.sin(t * 1.1 + j * .9 + s) * .03, R = 370 + (j % 2) * 30;
       T = [Sx + s * Math.sin(phi) * R, Sy - Math.cos(phi) * R];
     } else if (pose === 'bow') {
@@ -247,10 +261,21 @@ function ravana(c, o = {}) {
   back.sort((p, q) => (pose === 'stand' ? q.j - p.j : q.j - p.j));
   for (const b of back) {
     const lift = pose === 'lift' || pose === 'pinned', [E, T] = rvReach(b.Sp, b.T, lift ? 265 : 235, lift ? 250 : 220, b.bend), col = mixCol(S.skin, S.skinDk, .12 + b.j * .045);
-    rvArm(c, b.Sp, E, T, col, { k: pose === 'stand' ? .95 : 1.08, hand: lift ? 'palm' : 'fist', palmRot: Math.atan2(T[1] - ravanaArch(o).cy, T[0]) + Math.PI / 2, weapon: pose === 'stand' && o.weapons ? RV_WEAPONS[(b.j + (b.s > 0 ? 4 : 0)) % 9] : null, side: b.s });
+    rvArm(c, b.Sp, E, T, col, { k: pose === 'stand' || sit ? .95 : 1.08, hand: lift ? 'palm' : 'fist', palmRot: Math.atan2(T[1] - ravanaArch(o).cy, T[0]) + Math.PI / 2, weapon: pose === 'stand' && o.weapons ? RV_WEAPONS[(b.j + (b.s > 0 ? 4 : 0)) % 9] : null, side: b.s });
   }
   // legs
-  for (const s of [-1, 1]) {
+  if (sit) for (const s of [-1, 1]) {
+    // seated: the thighs come toward us (short and wide), the shins straight down to the feet
+    const hip = [s * 66, -350], knee = [s * 168, -310], ank = [s * 158, -42];
+    limb(c, [knee, [lerp(knee[0], ank[0], .5), -170], ank], [104, 84, 58], S.skin);
+    if (s === -L) limb(c, [[knee[0] + s * 18, knee[1] + 20], [ank[0] + s * 12, -150], ank], [44, 34, 20], rgba(S.skinSh, .9));
+    fillPath(c, `M ${ank[0] - 30} -46 C ${ank[0] - 34} -20 ${ank[0] - 30} -6 ${ank[0] - 26} 0 L ${ank[0] + s * 60 + 10} 0 C ${ank[0] + s * 66} -12 ${ank[0] + s * 40} -24 ${ank[0] + 22} -46 Z`, S.skin);
+    ellipse(c, ank[0], -52, 30, 8, S.gold); ellipse(c, ank[0], -58, 27, 3, S.goldSh);
+    limb(c, [hip, [lerp(hip[0], knee[0], .5), -334], knee], [176, 168, 140], S.dhoti, false);
+    ellipse(c, knee[0], knee[1] + 8, 66, 54, S.dhoti);
+    strokePath(c, `M ${knee[0] - 62} ${knee[1] + 30} C ${knee[0] - 20} ${knee[1] + 64} ${knee[0] + 20} ${knee[1] + 64} ${knee[0] + 62} ${knee[1] + 30}`, S.gold, 10);
+  }
+  else for (const s of [-1, 1]) {
     const hip = [s * 64, -470 + D], knee = [s * lerp(78, 236, sq), lerp(-250, -238, sq)], ank = [s * lerp(64, 250, sq), -42];
     limb(c, [hip, knee], [132, 104], S.skin); limb(c, [knee, [lerp(knee[0], ank[0], .5), -150], ank], [98, 80, 56], S.skin);
     if (s === -L) limb(c, [[hip[0] + s * 20, hip[1]], [knee[0] + s * 18, knee[1]], ank], [50, 40, 22], rgba(S.skinSh, .9));
@@ -261,9 +286,10 @@ function ravana(c, o = {}) {
     limb(c, [[knee[0] * .9, knee[1] + 18], [knee[0] * 1.03, knee[1] + 30]], [108, 102], S.gold, false);
   }
   // front pleats and the gold belt
-  const PL = `M -52 ${-488 + D} L 52 ${-488 + D} L 44 ${-200 + D * .55} L -44 ${-200 + D * .55} Z`;
+  const PL = sit ? 'M -60 -360 L 60 -360 L 50 -150 L -50 -150 Z' : `M -52 ${-488 + D} L 52 ${-488 + D} L 44 ${-200 + D * .55} L -44 ${-200 + D * .55} Z`;
   fillPath(c, PL, S.dhoti);
-  inside(c, PL, () => { for (let i = -2; i <= 2; i++) strokePath(c, `M ${i * 16} ${-480 + D} L ${i * 14} ${-196 + D * .55}`, rgba(S.dhotiSh, .9), 4); fillPath(c, `M -60 ${-224 + D * .55} L 60 ${-224 + D * .55} L 60 ${-196 + D * .55} L -60 ${-196 + D * .55} Z`, S.gold); });
+  const pb = sit ? -150 : -200 + D * .55;
+  inside(c, PL, () => { for (let i = -2; i <= 2; i++) strokePath(c, `M ${i * 16} ${-480 + D} L ${i * 14} ${pb + 4}`, rgba(S.dhotiSh, .9), 4); fillPath(c, `M -60 ${pb - 24} L 60 ${pb - 24} L 60 ${pb + 4} L -60 ${pb + 4} Z`, S.gold); });
   c.save(); c.translate(0, D + br * .3);
   // torso (drawn 1.2× wide: he is massive)
   c.save(); c.scale(1.2, 1);
@@ -287,7 +313,7 @@ function ravana(c, o = {}) {
   ellipse(c, 0, -566, 12, 15, S.ruby); strokePath(c, 'M -16 -566 A 16 19 0 1 0 16 -566 A 16 19 0 1 0 -16 -566', S.gold, 4);
   c.restore();
   // the front pair of arms
-  const front = o.front || (pose === 'stand' ? 'hips' : pose === 'bow' ? 'namaste' : 'up');
+  const front = o.front || (pose === 'stand' ? 'hips' : pose === 'bow' ? 'namaste' : sit ? 'rest' : 'up');
   const fArm = (s) => {
     const Sp = [s * 192, -692 + br], d = (a) => ellipse(a, s * 190, -680 + br, 42, 52, S.skin, s * -.2);
     figure(c, (a) => {
@@ -295,6 +321,8 @@ function ravana(c, o = {}) {
       let E, T, hand = 'fist';
       if (front === 'hips') { E = [s * 300, -560]; T = [s * 140, -488]; }
       else if (front === 'down') { E = [s * 222, -540]; T = [s * 230, -400]; }
+      else if (front === 'rest') { E = [s * 284, -566]; T = [s * 300, -536]; }
+      else if (front === 'grab') { E = [s * 236, -536]; T = [s * 96, -414]; }
       else if (front === 'namaste') { E = [s * 200, -560]; T = [s * 16, -640]; hand = 'none'; }
       else { const A = ravanaArch(o), phi = .14; [E, T] = rvReach(Sp, [s * Math.sin(phi) * (A.rx - 26), A.cy - Math.cos(phi) * (A.ry - 26) - D], 265, 250, s); hand = 'palm'; }
       rvArm(a, Sp, E, T, S.skin, { k: 1.15, hand, palmRot: 0, shade: s === -L ? [s * 10, 4] : null });

@@ -5,6 +5,8 @@
 //   28–31 the Bhramari story: the Devi (Bhramari, four arms, bees), Arunasura on his throne, the macro bee, the swarm
 //   32–37 the sun story (ad 16): Surya and sunDisc(), Mali and Sumali (arunasura pal), the dead sun and frost, ganeshaLine(), the hero card
 //   38–40 the Durgama story (ad 19): devi({ durga }) with eight arms, deviHead({ tears }), arunasura standing (ash pal)
+//   41–48 the Angad story (ad 20): vanara() as Angad (stand, head, plant, strike), vanaraFoot(), Ravana seated on
+//         goldThrone(), crowns off and rvCrown(), ramSil() with vanaraKneel()
 //   23–27 Nandi (a zebu: hump, dewlap, black muzzle) and the Nandi story: the stone temple Nandi, rishi, boy, devotee, Nandanar, sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
@@ -12,6 +14,7 @@
 //   node render.mjs --page=cine.html --sheet=15.5,16.5,17.5,18.5,19.5,20.5,21.5,22.5 --cols=4 --w=300 --out=docs/cine_cast_ravana.jpg
 //   node render.mjs --page=cine.html --sheet=28.5,29.5,30.5,31.5 --cols=4 --w=300 --out=docs/cine_cast_bhramari.jpg
 //   node render.mjs --page=cine.html --sheet=32.5,33.5,34.5,35.5,36.5,37.5 --cols=6 --w=300 --out=docs/cine_cast_surya.jpg
+//   node render.mjs --page=cine.html --sheet=41.5,42.5,43.5,44.5,45.5,46.5,47.5,48.5 --cols=4 --w=300 --out=docs/cine_cast_angad.jpg
 const panel = (i, label, draw) => SHOTS.push({ a: i, b: i + 1, draw(c, u, t) { draw(c, u + 2, t); const g = c.createLinearGradient(0, 1540, 0, 1760); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.8)'); c.fillStyle = g; c.fillRect(0, 1540, W, 400); text(c, label, 540, 1700, '700 42px Cinzel', '#F4C46A', { glow: ['rgba(0,0,0,.9)', 18], maxW: 980 }); } });
 const cam0 = { z: 1 };
 const nightSky = (c) => { sky(c, [[0, '#070B17'], [700, '#152039'], [1400, '#2F3B5B'], [1900, '#3E4A68']]); glow(c, 840, 420, 520, '#7F97CC', .42); ellipse(c, 840, 420, 44, 44, '#E6ECF6'); };
@@ -134,3 +137,22 @@ panel(39, 'deviHead({ tears })', (c, t) => { sky(c, [[0, '#060A18'], [1900, '#18
   figure(c, (f) => { f.translate(540, 900); f.scale(6.2, 6.2); f.translate(0, 815); deviHead(f, { t, eyes: .8, tears: 1, look: [0, .6] }); }, { tint: ['#0E1A3A', .18], edge: { col: '#CFE0FF', w: 3, a: .3 }, rim: { col: '#E4EEFF', dx: 9, dy: -4, a: .7, blur: 1.5 } }); });
 panel(40, "arunasura({ pose: 'stand', arms: 'roar', pal })", (c, t) => { redSky(c); ridge(c, 1760, 80, 33, '#12050A');
   figure(c, (f) => { f.translate(540, 1800); f.scale(1.15, 1.15); arunasura(f, { t, pose: 'stand', arms: 'roar', expr: 'scream', pal: ASH }); }, { tint: ['#2A0A10', .15], edge: { col: '#FF9A6A', w: 2.4, a: .7 }, rim: { col: '#FFB08A', dx: 0, dy: -5, a: .8, blur: 1 } }); });
+// ---------- the Angad story (ad 20): Angad, Vali's son, in Ravana's court ----------
+const courtLight = { tint: ['#1A0806', .22], edge: { col: '#FFB070', w: 2.4, a: .7 }, rim: { col: '#FFD08A', dx: 6, dy: -3, a: .85, blur: 1 } };
+panel(41, "vanara(): Angad  ·  expr: 'calm'", (c, t) => { fireSky(c); pillars(c, 520, 1500, 540, '#120806', t);
+  figure(c, (f) => { f.translate(540, 1800); f.scale(1.25, 1.25); vanara(f, { t }); }, courtLight); });
+panel(42, "vanaraHead({ expr: 'smirk' })", (c, t) => { sky(c, [[0, '#0A0507'], [1900, '#3A1A12']]);
+  figure(c, (f) => { f.translate(540, 900); f.scale(6.4, 6.4); f.translate(0, 815); vanaraHead(f, { t, expr: ['calm', 'smirk', 'fierce', 'laugh', 'tears'][Math.floor(t * 2) % 5] }); }, { tint: ['#1A0806', .12], edge: { col: '#FFB070', w: 3, a: .35 }, rim: { col: '#FFD08A', dx: 9, dy: -4, a: .75, blur: 1.5 } }); });
+panel(43, "vanara({ pose: 'plant' })  ·  arms 'fold'", (c, t) => { fireSky(c); pillars(c, 520, 1500, 540, '#120806', t);
+  figure(c, (f) => { f.translate(540, 1800); f.scale(1.25, 1.25); vanara(f, { t, pose: 'plant', expr: 'smirk' }); }, courtLight); });
+panel(44, "vanara({ pose: 'strike' })", (c, t) => { fireSky(c); cracks(c, 540, 1790, 1, t, 4);
+  figure(c, (f) => { f.translate(540, 1800); f.scale(1.25, 1.25); vanara(f, { t, pose: 'strike', expr: 'fierce' }); }, courtLight); });
+panel(45, 'vanaraFoot({ press })', (c, t) => { fireSky(c); fillPath(c, 'M -100 1400 L 1180 1400 L 1180 2100 L -100 2100 Z', '#1A0C08');
+  figure(c, (f) => { f.translate(430, 1400); f.scale(1.6, 1.6); vanaraFoot(f, { t, press: .5 + .5 * Math.sin(t * 3) }); }, { tint: ['#1A0806', .15], edge: { col: '#FFB070', w: 2.6, a: .6 }, rim: { col: '#FFD08A', dx: 8, dy: -4, a: .8, blur: 1 } }); });
+panel(46, "ravana({ pose: 'sit' }) on goldThrone()", (c, t) => { fireSky(c); pillars(c, 420, 1500, 540, '#120806', t);
+  figure(c, (f) => { f.translate(540, 1780); f.scale(.95, .95); goldThrone(f, { layer: 'back' }); ravana(f, { t, pose: 'sit', expr: 'laugh' }); goldThrone(f, { layer: 'front' }); }, courtLight); });
+panel(47, "ravana({ crowns: false, front: 'grab' })  ·  rvCrown()", (c, t) => { fireSky(c);
+  figure(c, (f) => { f.translate(540, 1800); f.scale(1.0, 1.0); ravana(f, { t, pose: 'bow', front: 'grab', expr: 'grit', crowns: [1, 1, 0, 1, 0, 0, 1, 0, 1, 1] }); }, courtLight);
+  figure(c, (f) => { for (const [x, y, r, k] of [[250, 600, -.5, 'crown'], [800, 520, .4, 'mukut']]) { f.save(); f.translate(x, y); f.rotate(r); f.scale(1.3, 1.3); rvCrown(f, { kind: k }); f.restore(); } }, courtLight); });
+panel(48, 'ramSil({ bless })  ·  vanaraKneel()', (c, t) => { dawnSky(c); fillPath(c, 'M -100 1560 L 1180 1560 L 1180 2100 L -100 2100 Z', '#1C111B');
+  figure(c, (f) => { f.translate(800, 1560); f.scale(.95, .95); ramSil(f, { t, bless: 1 }); f.setTransform(c.getTransform()); f.translate(260, 1560); f.scale(.9, .9); vanaraKneel(f, { t, bow: .5 + .5 * Math.sin(t * 2) }); }, { ...LIGHTS.dawnBack, tint: ['#1A0C14', .85] }); });

@@ -2,7 +2,7 @@
 // Same units as cine_shiva.js: feet at (0, 0), up is -y, an adult stands about 820–1000 tall.
 //   sati(c, o)          Sati from behind: red sari with a gold border, the pallu over her shoulder, hair down her back
 //   daksha(c, o)        King Daksha on his throne, pointing (o.point), shaking with laughter (o.laugh)
-//   crowd(c, ...)       a row of seated guests (heads and shoulders), bobbing when they laugh
+//   crowd(c, ...)       a row of seated guests (heads and shoulders), bobbing when they laugh; rise (0..1) stands them up
 //   rudra(c, o)         Shiva's Rudra Tandava: stamping, Sati's body across his shoulders, locks flying
 //   shivaSeated(c, o)   Shiva in padmasana with the trishul planted beside him
 //   nandiLying(c, o)    Nandi lying in the temple pose (legs folded, head up), facing left; o.stone: the black temple Nandi
@@ -13,6 +13,7 @@
 //   shivaFoot(c, o)     Shiva's foot, side view (toes to screen right) on a rock: o.press 0..1, the big toe pressing down
 //   parvatiCling(c, o)  Parvati seated, leaning to clutch Shiva's arm (to her left): a silhouette (o.col)
 //   hanumanLeap(c, o)   Hanuman in mid-leap to screen right, his tail curled up: a silhouette; returns the tail tip
+//   ramSil(c, o)        Ram standing, facing screen left, the tall kirita and the Kodanda bow: a silhouette (o.bless: the right hand raised)
 const SATI = { skin: '#B9785A', skinSh: '#8E5640', hair: '#16101A', hairLt: '#33263A', sari: '#A51E2C', sariSh: '#6E1320', border: '#E3A93B', blouse: '#7A1420', flower: '#F3EBD8' };
 
 // ---------- Sati, seen from behind ----------
@@ -85,10 +86,13 @@ function daksha(c, o = {}) {
   c.restore();
 }
 // A row of seated guests from behind/side: n heads and shoulders across [x0, x1] at y, scale k; laugh makes them bob.
-function crowd(c, x0, x1, y, n, k, t, laugh, col, seed = 1) {
+// rise (0..1) stands them up, one by one in a ripple (a court rising when someone walks in).
+function crowd(c, x0, x1, y, n, k, t, laugh, col, seed = 1, rise = 0) {
   for (let i = 0; i < n; i++) {
     const x = lerp(x0, x1, (i + .5) / n) + (hash(i + seed) - .5) * 20 * k, b = laugh * Math.abs(Math.sin(t * (10 + hash(i * 3 + seed) * 6) + i)) * 5 * k, s = k * (.9 + hash(i * 7 + seed) * .2);
+    const up = rise ? easeOut(clamp(rise * 1.7 - hash(i * 5 + seed) * .7)) * 120 : 0;
     c.save(); c.translate(x, y - b); c.scale(s, s);
+    if (up) { fillPath(c, `M -56 4 L -50 ${-up} L 50 ${-up} L 56 4 Z`, col); c.translate(0, -up); }
     fillPath(c, 'M -60 0 C -60 -50 -40 -70 0 -72 C 40 -70 60 -50 60 0 Z', col);
     ellipse(c, 0, -94, 22, 26, col);
     if (hash(i * 11 + seed) > .5) ellipse(c, 0, -122, 12, 11, col); else fillPath(c, 'M -24 -104 C -26 -130 26 -130 24 -104 Z', col);
@@ -452,6 +456,46 @@ function hanumanLeap(c, o = {}) {
   fillPath(c, 'M 130 -346 L 134 -392 L 150 -372 L 162 -408 L 174 -372 L 190 -392 L 192 -346 Z', col);
   ellipse(c, 128, -312, 12, 16, col);
   return tail[tail.length - 1];
+}
+
+// ---------- Ram (a silhouette) ----------
+// Standing in profile, facing screen left, about 1030 tall to the kirita's tip: a heroic V torso, hair falling to the
+// shoulders, a tall kirita with a finial, a dhoti to the knees with a pleat hanging in front, the uttariya flowing
+// back, the Kodanda bow upright in his near hand, a quiver on his back. o: t, col, bless (0..1 the other hand rises
+// in blessing), wind.
+function ramSil(c, o = {}) {
+  const col = o.col || '#0C0810', t = o.t || 0, bl = o.bless || 0, wd = (o.wind ?? .4) * Math.sin(t * 1.7);
+  c.save(); c.translate(40, -690); c.rotate(.42);   // the quiver on his back
+  fillPath(c, 'M -18 0 L 18 0 L 15 250 L -15 250 Z', col); for (let i = -1; i <= 1; i++) fillPath(c, `M ${i * 10 - 4} 4 L ${i * 10} -50 L ${i * 10 + 4} 4 Z`, col);
+  c.restore();
+  limb(c, [[44, -700], [100 + wd * 10, -620], [130 + wd * 24, -500], [150 + wd * 34, -390]], [34, 30, 22, 5], col, false);   // the uttariya
+  // legs in stride, the feet pointing left
+  limb(c, [[16, -480], [26, -260], [34, -44]], [84, 66, 46], col); fillPath(c, 'M 50 -50 C 54 -20 56 -6 52 0 L -30 0 C -34 -12 -14 -22 10 -30 L 14 -50 Z', col);
+  limb(c, [[-14, -480], [-44, -262], [-66, -44]], [84, 66, 46], col); fillPath(c, 'M -50 -50 C -46 -20 -44 -6 -48 0 L -134 0 C -138 -12 -116 -22 -90 -30 L -86 -50 Z', col);
+  // the dhoti, flaring to the knees, a pleat hanging in front
+  fillPath(c, 'M -58 -506 C -82 -430 -104 -340 -118 -244 C -60 -232 20 -232 78 -244 C 72 -330 64 -420 56 -506 Z', col);
+  fillPath(c, 'M -44 -490 L -92 -150 L -58 -158 L -18 -470 Z', col);
+  // the torso: the chest forward, a narrow waist
+  fillPath(c, 'M -52 -500 C -70 -560 -100 -620 -96 -664 C -90 -698 -50 -722 0 -726 C 52 -724 92 -706 96 -662 C 100 -610 76 -550 56 -500 Z', col);
+  for (const x of [-30, 34]) ellipse(c, x, -690, 46, 40, col);   // the shoulders
+  // the bow arm and the Kodanda, upright, almost his height
+  limb(c, [[-24, -686], [-86, -588], [-128, -486]], [50, 40, 32], col); ellipse(c, -136, -470, 22, 24, col);
+  strokePath(c, 'M -136 -930 C -230 -760 -230 -190 -136 -30', col, 14); strokePath(c, 'M -136 -930 L -136 -30', col, 2.5);
+  for (const y of [-930, -30]) ellipse(c, -136, y, 9, 9, col);
+  // the other arm: down by his side, or raised in blessing, the palm out
+  const E = [lerp(30, -40, bl), lerp(-580, -610, bl)], H = [lerp(36, -70, bl), lerp(-460, -720, bl)];
+  limb(c, [[22, -688], E, H], [50, 40, 32], col); ellipse(c, H[0] - (bl > .5 ? 4 : 0), H[1] - (bl > .5 ? 20 : -14), bl > .5 ? 22 : 20, bl > .5 ? 30 : 24, col);
+  // the neck, the head in profile, the hair down to the shoulders
+  limb(c, [[-2, -712], [-12, -764]], [46, 40], col);
+  limb(c, [[16, -846], [44, -790], [54, -716]], [64, 56, 32], col, false);
+  ellipse(c, -10, -816, 48, 56, col);
+  fillPath(c, 'M -50 -834 C -56 -826 -60 -816 -54 -808 L -44 -802 Z', col);   // the nose
+  fillPath(c, 'M -50 -790 C -50 -776 -42 -764 -28 -760 L -22 -790 Z', col);   // the chin
+  ellipse(c, -2, -778, 8, 11, col);   // an earring
+  // the kirita: tall, tapering, a finial
+  fillPath(c, 'M -54 -852 L -44 -910 L -34 -960 C -26 -972 12 -974 20 -960 L 30 -910 L 42 -852 Z', col);
+  for (const s of [-1, 1]) fillPath(c, `M ${-6 + s * 40} -880 L ${-6 + s * 62} -920 L ${-6 + s * 34} -906 Z`, col);
+  ellipse(c, -7, -982, 14, 16, col); fillPath(c, 'M -13 -992 L -7 -1030 L -1 -992 Z', col);
 }
 
 // ---------- the Nandi story: Sage Shilada, the boy Nandi, sages, a devotee, Nandanar (silhouettes, facing left) ----------

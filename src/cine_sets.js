@@ -20,6 +20,7 @@
 //   the Bhramari story: flyBee / beeCloud / beeStream (small bees flying, in a ball, along a path), swarm(c, t, o)
 //     (thousands: 'stream', 'form' into shapePoints(), 'engulf'), bee(c, x, y, o) (the macro bee from above, six legs
 //     that light up one by one), throne(c, o) (the demon's rock throne, front view), lotusLight() (Brahma's boon)
+//   goldThrone(c, o)               Ravana's gold throne in Lanka, front view (back, seat, armrests; o.layer as throne())
 const PALETTES = {
   night: ['#151B2E', '#2A3452', '#5A6788'], nightFar: ['#1A2238', '#27304B', '#3C4766'],
   red: ['#2A0A10', '#4A1218', '#7A2A22'], dawn: ['#5A2C46', '#9C4B55', '#E8A06C'],
@@ -549,4 +550,46 @@ function ganeshaLine(c, x, y, k, draw, o = {}) {
     GANESHA_LINES.forEach((d, i) => { const u = clamp(draw * n * .55 - i * .45); if (u <= 0) return; const p = new Path2D(d); c.setLineDash([3000 * u, 4000]); c.stroke(p); });
   }
   c.setLineDash([]); c.restore();
+}
+
+// Ravana's gold throne, front view, in the seated figure's units (cine_ravana.js pose 'sit': the seat at -300, the
+// armrests at -400); wide and tall enough to stand behind his ten heads and twenty arms (the back reaches -1320).
+// o.layer 'back' (the back, its crest and the seat) | 'front' (the armrests with lion heads); o.lit the edge colour,
+// o.dim (0..1) dulls the gold (his glory gone).
+function goldThrone(c, o = {}) {
+  const dim = o.dim || 0, G = mixCol('#C8912E', '#4A3A26', dim), GS = mixCol('#7E5718', '#2A2018', dim), GL = mixCol('#F2C866', '#6A5A40', dim), V = '#4A0C16', VS = '#2A060C', lit = o.lit || '#FFD08A';
+  if (o.layer !== 'front') {
+    const BACK = 'M -440 -300 L -450 -1000 C -450 -1160 -260 -1290 0 -1320 C 260 -1290 450 -1160 450 -1000 L 440 -300 Z';
+    fillPath(c, BACK, G);
+    inside(c, BACK, () => {
+      fillPath(c, 'M -380 -320 L -388 -990 C -386 -1110 -230 -1220 0 -1246 C 230 -1220 386 -1110 388 -990 L 380 -320 Z', V);   // the velvet
+      for (let i = 0; i < 9; i++) strokePath(c, `M ${-340 + i * 85} -330 L ${-340 + i * 85} -1180`, rgba(VS, .6), 6);
+      fillPath(c, 'M -460 -320 L -380 -320 L -388 -990 C -386 -1110 -230 -1220 0 -1246 L 0 -1340 L -460 -1340 Z', rgba(GS, .25));
+    });
+    strokePath(c, 'M -384 -320 L -388 -990 C -386 -1110 -230 -1220 0 -1246 C 230 -1220 386 -1110 388 -990 L 384 -320', GL, 5);
+    strokePath(c, 'M -450 -1000 C -450 -1160 -260 -1290 0 -1320 C 260 -1290 450 -1160 450 -1000', rgba(lit, .7), 4);
+    for (let i = 0; i < 15; i++) { const a = Math.PI * (.08 + .84 * i / 14), x = -Math.cos(a) * 418, y = -1000 - Math.sin(a) * 290; ellipse(c, x, y, 9, 9, i % 2 ? '#B3202C' : GL); }
+    // the crest: a sun disc with rays over the top
+    for (let i = 0; i < 13; i++) { const a = Math.PI * (1.08 + .84 * i / 12); fillPath(c, `M ${Math.cos(a - .06) * 90} ${-1330 + Math.sin(a - .06) * 90} L ${Math.cos(a) * 170} ${-1330 + Math.sin(a) * 170} L ${Math.cos(a + .06) * 90} ${-1330 + Math.sin(a + .06) * 90} Z`, G); }
+    ellipse(c, 0, -1330, 92, 92, G); ellipse(c, 0, -1330, 70, 70, GS); ellipse(c, 0, -1330, 34, 34, '#B3202C'); glow(c, 0, -1330, 90, '#FF7A4A', .3 * (1 - dim));
+    // the side posts
+    for (const s of [-1, 1]) { fillPath(c, `M ${s * 420} -300 L ${s * 480} -300 L ${s * 470} -1060 L ${s * 430} -1060 Z`, GS); ellipse(c, s * 452, -1080, 30, 34, G); fillPath(c, `M ${s * 452 - 10} -1110 L ${s * 452} -1160 L ${s * 452 + 10} -1110 Z`, G); }
+    // the seat: a cushion on a gold block
+    fillPath(c, 'M -360 -330 C -200 -350 200 -350 360 -330 L 370 -290 C 200 -276 -200 -276 -370 -290 Z', V);
+    fillPath(c, 'M -380 -290 L 380 -290 L 392 -240 L -392 -240 Z', G); strokePath(c, 'M -380 -290 L 380 -290', GL, 4);
+    fillPath(c, 'M -392 -240 L 392 -240 L 400 0 L -400 0 Z', GS);
+    for (let i = -3; i <= 3; i++) { ellipse(c, i * 100, -130, 30, 50, rgba(G, .5)); ellipse(c, i * 100, -130, 14, 24, rgba('#B3202C', .6)); }
+  }
+  if (o.layer !== 'back') {
+    for (const s of [-1, 1]) {
+      // the armrest, ending in a lion's head facing forward
+      fillPath(c, `M ${s * 250} -420 L ${s * 380} -430 C ${s * 400} -430 ${s * 410} -410 ${s * 404} -390 L ${s * 384} -370 L ${s * 384} 0 L ${s * 324} 0 L ${s * 324} -370 L ${s * 250} -380 Z`, G);
+      inside(c, `M ${s * 324} -370 L ${s * 384} -370 L ${s * 384} 0 L ${s * 324} 0 Z`, () => fillPath(c, `M ${s * 324} -370 L ${s * 344} -370 L ${s * 344} 0 L ${s * 324} 0 Z`, rgba(GS, .7)));
+      strokePath(c, `M ${s * 250} -420 L ${s * 380} -430 C ${s * 400} -430 ${s * 410} -410 ${s * 404} -390`, rgba(lit, .7), 3);
+      c.save(); c.translate(s * 380, -410);
+      ellipse(c, 0, 0, 44, 42, GS); for (let i = 0; i < 10; i++) { const a = i / 10 * TAU; ellipse(c, Math.cos(a) * 40, Math.sin(a) * 38, 13, 13, G); }
+      ellipse(c, 0, 2, 28, 30, G); for (const e of [-1, 1]) ellipse(c, e * 10, -6, 4, 3, '#1A0C06'); ellipse(c, 0, 12, 10, 7, GS);
+      c.restore();
+    }
+  }
 }
