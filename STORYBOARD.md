@@ -16,9 +16,10 @@ Logline: Ram sends Angad, Vali's son, to Lanka to offer peace. The whole court s
          at RAM's feet." Ravana sits, head bowed, his glory gone. Angad returns and falls at Ram's feet. JAI SHRI RAM.
 Why it should travel: the most famous Ravana image after Kailash (ad 15, 1M views), a physical challenge anyone can
          picture, a roast played on ten faces (comedy in the performance, every line sourced), a payoff line that is the
-         moral, Dussehra timing, and a name call-out (the best comment lever).
-Comment: "Is your name ANGAD, RAM or HANUMAN? Comment it!" Pinned: "Where did YOU first see this scene at a Ramlila?
-         Comment your city 🏹" (the name call-out on screen, the place call-out pinned: both have worked)
+         moral, Dussehra timing, and a place call-out (Ramlila cities, as the Shakti Peeth cities worked).
+Comment: "Where did YOU first see this at a RAMLILA? Comment your city!" (a place call-out, as on the Shiva reel; it
+         replaced a name call-out the owner found weak for these names). Pinned: "Type Angad's line without Google:
+         जौं मम चरन… 🦶"
 ```
 
 ## Facts used
@@ -71,7 +72,7 @@ couldn't move it" and "held in Vali's armpit"; they claim no extra plot.
 | 58.3–60.9 | Close: his bronze hands close on the foot; at 58.8 Angad lifts it away; the hands slap bare floor; gold light. | fire → gold | "Why grab MY feet? / Fall at RAM's feet." |
 | 60.6–62.9 | Ravana on his throne, head bowed, the light and the gold draining away. | dim amber | Ravana sat down, / head bowed, / his glory GONE. |
 | 62.6–66.9 | Dawn on Suvela: Angad bows at Ram's feet; Ram blesses him. The score's choir sings "Jai Shri Ram". | dawn gold | Angad returned / and fell at / Ram's feet. → JAI SHRI RAM |
-| 66.6–70.5 | Angad in the dawn, hands joined, eyes closed; push in. | dawn gold | Is your name / ANGAD, RAM / or HANUMAN? / Comment it! |
+| 66.6–70.5 | Angad in the dawn, hands joined, eyes closed; push in. | dawn gold | Where did YOU first / see this at a / RAMLILA? / Comment your city! |
 | 70.4–75.4 | `rkCardCine`: JAI SHRI RAM, "Picture books of our gods, for kids", Books 1–3 · set of 3 for ₹500, rishikatha.com, Follow @therishikatha. Held, with no fade. | teal | |
 
 ## Files
@@ -119,7 +120,7 @@ Angad breaks the palace roof instead.)
 
 📚 Stories of our gods for your kids: Rishi Katha picture books, Books 1–3, set of 3 for ₹500 at rishikatha.com (link in bio)
 
-Is your name ANGAD, RAM or HANUMAN? Comment it 👇 Save this for Dussehra and share it with someone who never backs down!
+Where did YOU first see this scene at a Ramlila? Comment your city 👇 Save this for Dussehra and share it with someone who never backs down!
 
 #angad #ravana #ramayan #ramcharitmanas #jaishriram #dussehra #ramlila #hanuman #lankakand #hindumythology
 #indianmythology #sanatandharma #mythologystories #kidsbooks #rishikatha

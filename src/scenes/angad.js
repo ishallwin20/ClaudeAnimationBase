@@ -5,7 +5,7 @@
 // strikes the ground and the crowns fall; he flings them across the sea and Hanuman catches them for Ram; the foot
 // planted ("move it and Ram turns back"); warriors as strong as Meghnad can't move it; Ravana comes down himself and
 // grabs it; "Why grab MY feet? Fall at RAM's feet."; Ravana sits, head bowed, his glory gone; Angad at Ram's feet.
-// The name call-out, the Books 1–3 card. Times are in TL; tools/angad_sfx.mjs uses the same ones.
+// The place call-out (your first Ramlila), the Books 1–3 card. Times are in TL; tools/angad_sfx.mjs uses the same ones.
 const TL = { hook: 0, send: 4.6, peace: 7.2, court: 9.4, rise: 11.4, who: 13.6, intro: 15.8, friend: 18.2, ten: 20.4,
   roast: 22.8, sahas: 25.0, armpit: 27.2, which: 29.4, boast: 31.6, heads: 33.8, strike: 35.8, hit: 36.6, crowns: 38.0,
   fling: 40.0, catch: 42.2, foot: 44.4, plant: 45.0, close: 45.7, stakes: 46.6, rush: 49.2, fail: 51.8, slip: 52.2,
@@ -396,4 +396,4 @@ say(58.4, 60.6, '"Why grab MY feet? | Fall at *RAM*\'s feet."', { y: 560 });
 say(60.7, 62.7, '*Ravana* sat down, | head bowed, | his glory GONE.', { y: 1440 });
 say(62.7, 64.7, '*Angad* returned | and fell at | *Ram*\'s feet.', { y: 560 });
 say(64.7, 67.3, '*JAI* *SHRI* *RAM*', { y: 600, size: 96 });
-say(67.4, 70.4, 'Is your name | *ANGAD*, *RAM* | or *HANUMAN*? | Comment it!', { y: 600 });
+say(67.4, 70.4, 'Where did YOU first | see this at a | *RAMLILA*? | Comment your city!', { y: 600 });
