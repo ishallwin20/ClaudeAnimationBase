@@ -17,8 +17,8 @@
 // vanaraHead(c, o): the head alone at its rest position (0, -815), with the neck: expr, look, eyes, t, light, pal.
 //   A close-up: translate to the face, scale(k), translate(0, 815).
 // vanaraFoot(c, o): the foot, close, side view with the toes to screen right, the sole on y = 0, the heel at about
-//   x -110, the toes reaching x 280, the shin up to the dhoti hem at -600. o: t, press (0..1 the stamp: the toes
-//   grip and dust rings out), lift (0..1 the foot rises off the ground, heel first), pal.
+//   x -110, four long knuckled toes arching off the ball to grip the floor out to x 280 (nails, pads), the shin up to the dhoti hem at -600. o: t, press (0..1 the stamp: the toes
+//   curl harder), lift (0..1 the foot rises off the ground, heel first), pal.
 // vanaraKneel(c, o): a vanara kneeling in side view facing screen right, hands joined, head bowed, the tail curled
 //   behind: a silhouette (o.col) about 640 tall. o: t, bow (0..1 how low the head goes).
 const VN = {
@@ -277,31 +277,38 @@ function vanaraFoot(c, o = {}) {
   fillPath(c, SHIN, S.fur);
   inside(c, SHIN, () => {
     fillPath(c, 'M -100 -660 L -24 -660 C -20 -480 -20 -320 -22 -150 L -100 -150 Z', rgba(S.furSh, .9));
-    for (let i = 0; i < 16; i++) { const x = -50 + hash(i * 1.7) * 100, y = -600 + hash(i * 4.3) * 420; strokePath(c, `M ${x - 7} ${y - 5} l 7 10 l 7 -10`, rgba(S.furDk, .35), 2); }
+    for (let i = 0; i < 26; i++) { const x = -54 + hash(i * 1.7) * 104, y = -610 + hash(i * 4.3) * 430; strokePath(c, `M ${x} ${y} q 3 9 9 14`, rgba(S.furDk, .28), 2); strokePath(c, `M ${x + 5} ${y - 2} q 3 8 8 12`, rgba(S.furLt, .22), 1.6); }
   });
   // tufts of fur at the ankle
   for (let i = 0; i < 9; i++) { const x = -60 + i * 15, y = -178 + Math.abs(i - 4) * 2; fillPath(c, `M ${x - 9} ${y - 10} L ${x + 2} ${y + 16 + (i % 2) * 6} L ${x + 9} ${y - 10} Z`, i % 2 ? S.fur : S.furSh); }
-  // the foot: long, the sole dark, the top furred
-  const FOOT = 'M -56 -188 L 58 -188 C 62 -150 80 -118 118 -98 C 140 -88 160 -80 176 -72 C 192 -62 198 -46 194 -30 C 190 -10 178 0 160 2 L -60 2 C -98 2 -112 -22 -108 -60 C -104 -104 -78 -150 -56 -188 Z';
+  // the toes behind the foot first: four long, knuckled toes reaching off the ball and curling down onto the floor,
+  // fanned (the farther ones higher on screen and darker); a stamp (press) curls them harder. Each: base, knuckle, tip, width, shade.
+  const g = p, toe = ([B, K, P, w, d]) => {
+    const k2 = [K[0] - g * 5, K[1] - g * 8], p2 = [P[0] - g * 7, P[1]], col = mixCol(S.fur, S.furSh, d), dk = mixCol(S.furDk, '#000000', .2);
+    const a = Math.atan2(p2[1] - k2[1], p2[0] - k2[0]);
+    limb(c, [B, k2, p2].map(([x, y]) => [x + 1, y + 2]), [w + 5, w + 3, w - 1], dk);   // a dark rim so each toe reads apart
+    limb(c, [B, [lerp(B[0], k2[0], .5), lerp(B[1], k2[1], .5) - 3], k2], [w, w - 1, w - 2], col);
+    limb(c, [k2, [lerp(k2[0], p2[0], .5), lerp(k2[1], p2[1], .5)], p2], [w - 2, w - 4, w - 7], col);
+    ellipse(c, k2[0], k2[1] - 1, w * .56, w * .5, col);   // the knuckle
+    strokePath(c, `M ${B[0] + 4} ${B[1] - w * .38} Q ${lerp(B[0], k2[0], .5)} ${lerp(B[1], k2[1], .5) - w * .5} ${k2[0]} ${k2[1] - w * .48}`, rgba(S.furLt, .45), 2.4);   // light along the top
+    for (const u of [-.18, .18]) strokePath(c, `M ${k2[0] + u * w - 3} ${k2[1] - w * .3} q 3 5 1 10`, rgba(dk, .55), 1.6);   // creases at the knuckle
+    ellipse(c, p2[0] - 3, p2[1] + 1, w * .42, w * .24, S.sole);   // the pad on the floor
+    c.save(); c.translate(p2[0] - Math.cos(a) * w * .32, p2[1] - Math.sin(a) * w * .32 - w * .12); c.rotate(a);   // the nail
+    ellipse(c, 0, -w * .2, w * .34, w * .2, '#E9D3B2'); ellipse(c, -w * .06, -w * .26, w * .14, w * .06, rgba('#FFFFFF', .6));
+    c.restore();
+  };
+  [[[144, -92], [200, -106], [262, -40], 27, .45], [[156, -76], [226, -90], [308, -22], 30, .3]].forEach(toe);
+  // the foot: long, the sole dark, the top furred, ending in a rounded ball
+  const FOOT = 'M -56 -188 L 58 -188 C 62 -150 78 -122 108 -104 C 130 -92 152 -88 168 -80 C 186 -70 194 -48 188 -26 C 184 -10 172 0 156 2 L -60 2 C -98 2 -112 -22 -108 -60 C -104 -104 -78 -150 -56 -188 Z';
   fillPath(c, FOOT, S.fur);
   inside(c, FOOT, () => {
     fillPath(c, 'M -130 -30 C -40 -14 120 -14 300 -16 L 300 20 L -130 20 Z', S.sole);
     fillPath(c, 'M -130 -46 C -40 -34 120 -34 300 -34 L 300 -16 C 120 -14 -40 -14 -130 -30 Z', rgba(S.furSh, .9));
-    ellipse(c, -74, -70, 22, 34, rgba(S.furSh, .3));
-    for (let i = 0; i < 8; i++) { const x = -20 + i * 26, y = -150 + i * 12; strokePath(c, `M ${x - 7} ${y - 4} l 7 9 l 7 -9`, rgba(S.furDk, .3), 1.8); }
+    for (let i = 0; i < 12; i++) { const x = -40 + i * 18 + hash(i) * 8, y = -170 + i * 9 + hash(i * 3) * 20; strokePath(c, `M ${x} ${y} q 6 5 14 6`, rgba(S.furDk, .25), 1.8); }
+    ellipse(c, 150, -40, 30, 26, rgba(S.furSh, .45));   // the ball of the foot
   });
-  // the toes: four long, knuckled ones gripping the floor; they curl in as he stamps
-  const g = p * .22;
-  for (const [x, y, len, wd] of [[146, -70, 80, 28], [162, -54, 88, 30], [174, -38, 92, 31], [182, -22, 94, 32]]) {
-    const drop = -8 - y + g * 6, L2 = len * (1 - g * .25);
-    c.save(); c.translate(x, y);
-    const P = [[0, 0], [L2 * .55, drop * .2 - 4], [L2, drop]];
-    limb(c, P.map(([a, b]) => [a, b + 1.5]), [wd + 4, wd + 2, wd - 3], rgba(S.furDk, .9));
-    limb(c, P, [wd, wd - 2, wd - 6], S.fur);
-    strokePath(c, `M ${L2 * .5} ${drop * .2 - 4 - wd * .45} l 2 ${wd * .5}`, rgba(S.furDk, .45), 2);   // the knuckle
-    ellipse(c, L2 + 3, drop + 2, wd * .36, wd * .26, S.sole);   // the nail pad on the floor
-    c.restore();
-  }
+  // the two nearest toes over the ball
+  [[[166, -56], [230, -62], [278, -8], 32, .12], [[172, -36], [212, -38], [236, -3], 27, 0]].forEach(toe);
   // the anklet: a heavy gold band with bells
   ellipse(c, 0, -178, 64, 14, S.gold); ellipse(c, 0, -184, 60, 5, S.goldSh); strokePath(c, 'M -58 -174 C -20 -168 20 -168 58 -174', rgba(S.goldLt, .8), 2.4);
   for (let i = 0; i < 8; i++) ellipse(c, -50 + i * 14.3, -162 + Math.abs(i - 3.5) * 1.4, 6, 7, S.gold);
