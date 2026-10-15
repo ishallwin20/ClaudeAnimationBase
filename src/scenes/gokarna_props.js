@@ -1,15 +1,17 @@
-// gokarna_props.js: the sets and props for "RAVANA needed a TOILET." (src/scenes/gokarna.js). Loaded before it;
+// gokarna_props.js: the sets and props for "VISHNU faked a SUNSET." (src/scenes/gokarna.js). Loaded before it;
 // everything here is a pure function of its arguments (and T for boil).
 //
 //   TK, vanishPuff, sparkleBurst, whipH, impact, bonk, bubble, rkCard3      copied from ad 13
 //   GK                                       the palette of this reel
 //   whipV(k, dir, t, cols)                   a vertical whip pan (streaks up or down)
-//   hookBg(t), kailashSet(t), skySet(t), roadSet(t, o), coastSet(t), sanctumSet(t), sunsetSet(t)   the sets
+//   hookBg(t), kailashSet(t), skySet(t), roadSet(t, o: heat, dusk, cover, finger), coastSet(t), sanctumSet(t), sunsetSet(t)   the sets
 //   cloud(x, y, s, key, col), bush(x, y, s, key, o), palm(x, y, s, lean, key)                      set pieces
 //   atmalinga(x, y, s, o)                    the Atmalinga on its base; o.twist 0..1 curls it into a cow's ear
-//   waterPot(x, y, s, o)                     a brass lota; o.varuna 0..1 shows the little face in the water, o.wink
-//   fakeStache(x, y, s, rot, key)            the cowherd's fake handlebar moustache
-//   cowherdBag(x, y, s, t, peek)             the cloth bag with Mooshak peeking out
+//   sunChakra(x, y, r, t, o)                 the sun; o.cover 0..1 slides the Sudarshana chakra over it (the fake sunset),
+//                                            o.finger shows Vishnu's blue finger spinning it from a cloud
+//   fakeStache(x, y, s, rot, key)            the boy's fake handlebar moustache
+//   kamandalu(x, y, s, t, peek)              the brahmin boy's water pot, with Mooshak peeking out
+//   sacredThread(u, sw)                      the janeu, for Bal Bappa's held hook
 //   shepherdStick(u, sw)                     a crook, for Bal Bappa's armL hook
 //   shivaCloud(x, y, u, t, o)                Shiva peeking over a cloud (o: hand 0..1 raised, wince, smile)
 //   groundCrack(x, y, age, s)                the gold crack ring where the linga lands
@@ -30,8 +32,8 @@ const GK = {
   sea: '#3FA3A8', seaDk: '#2A7E8A', seaLt: '#8ED6D2', sand: '#F2D7A6', sandDk: '#DDB57A', coastSky: '#FCE9C8', coastSkyLt: '#FFF6E2',
   palm: '#4E8A4A', palmDk: '#32663A', trunk: '#8A6040', trunkDk: '#5E3E26', bush: '#5E9A52', bushDk: '#3E7440', bushLt: '#8CC070', flower: '#F4A6B8',
   stone: '#3A3844', stoneDk: '#26242E', stoneLt: '#5A5866', glowGold: '#FFD27A',
-  brass: '#E0A53A', brassDk: '#A87420', brassLt: '#FFE08A', water: '#7EC8E8', waterDk: '#4A9AC8', varuna: '#5AA8E0', varunaDk: '#2E76B8',
-  bag: '#C9A06A', bagDk: '#9A7442', stick: '#8A5A32', stickDk: '#5E3A1E', stache: '#2A2230',
+  brass: '#E0A53A', brassDk: '#A87420', brassLt: '#FFE08A', water: '#7EC8E8', vishnu: '#5A86D6', vishnuDk: '#3A5EA8',
+  chakra: '#8A4E1C', chakraDk: '#5E3010', thread: '#FFF6E0', stick: '#8A5A32', stickDk: '#5E3A1E', stache: '#2A2230',
   wall: '#2E2430', wallLt: '#4A3A46', lamp: '#FFC766', flame: '#FFB23A', flameLt: '#FFF0B0',
   dusk: '#F6905A', duskTop: '#B85A8A', duskLow: '#FFC27A', seaDusk: '#6A5A9A', seaDuskLt: '#E89A7A',
   ice: '#BFE6F6', iceDk: '#86C2E0', tag: '#FFF5E2',
@@ -163,22 +165,21 @@ function skySet(t) {
   cloud(930 + Math.sin(t * .3) * 20, 1000, 90, 'skyc2');
   cloud(540, 1720, 420, 'skyc3');
 }
-// o: heat 0..1 (shimmer), bushFar (the far bush on the horizon, for the BOSS's look)
+// o: heat 0..1 (shimmer), dusk 0..1 (the fake sunset's sky), cover 0..1 (the chakra over the sun), finger (Vishnu's)
 function roadSet(t, o = {}) {
+  const dk = clamp(o.dusk || 0);
   boilSeed('roadsky');
   paint(rectPts(-600, -600, W + 1200, H + 1200), { wash: GK.heat, ink: null });
-  paint(rectPts(-600, 200, W + 1200, 900), { fill: GK.heatLt, fillOp: 150, bleed: .3, tex: .3, ink: null });
-  glow(860, 780, 520, GK.sun, .7);
-  boilSeed('roadsun');
-  paint(ellPts(860, 780, 110, 110, 30), { wash: GK.sunCore, ink: null });
-  for (let i = 0; i < 12; i++) { const a = i / 12 * TAU + t * .3, r0 = 140, r1 = 200 + 30 * Math.sin(t * 5 + i); paint([[860 + Math.cos(a - .08) * r0, 780 + Math.sin(a - .08) * r0], [860 + Math.cos(a) * r1, 780 + Math.sin(a) * r1], [860 + Math.cos(a + .08) * r0, 780 + Math.sin(a + .08) * r0]], { wash: GK.sun, ink: null }); }
+  paint(rectPts(-600, 200, W + 1200, 900), { fill: GK.heatLt, fillOp: 150 * (1 - dk), bleed: .3, tex: .3, ink: null });
+  if (dk > 0) { paint(rectPts(-600, -600, W + 1200, 1720), { wash: GK.dusk, washOp: 235 * dk, ink: null }); paint(rectPts(-600, -600, W + 1200, 1100), { fill: GK.duskTop, fillOp: 150 * dk, bleed: .3, tex: .3, ink: null }); }
+  sunChakra(860, 860, 110, t, { cover: o.cover || 0, finger: o.finger });
   boilSeed('roadground');
   paint(rectPts(-600, 1120, W + 1200, 1400), { wash: GK.dust, fill: GK.dustDk, fillOp: 60, tex: .5, ink: null });
   inkLine([[-200, 1120], [1300, 1120]], 1, GK.ink, 'inkfine', 0);
   paint([[500, 1120], [580, 1120], [1400, 2200], [-300, 2200]], { wash: GK.road, fill: GK.roadDk, fillOp: 50, tex: .4, ink: GK.ink, sw: .8 });
   for (const [x, y, s] of [[90, 1260, 40], [980, 1300, 46], [170, 1500, 60], [1000, 1640, 70]]) { boilSeed('shrub' + x); for (let k = 0; k < 6; k++) inkLine([[x, y], [x + (k - 2.5) * s * .25, y - s * (.6 + .3 * hash(k + x))]], 1.6, GK.shrub, 'ink', .4); }
-  if (o.bushFar) bush(150, 1125, 28, 'farbush');
-  if (o.heat) { boilSeed('heat' + Math.floor(t * 6)); for (let i = 0; i < 6; i++) { const y = 1080 - i * 22, x0 = 300 + hash(i) * 300; inkLine([[x0, y], [x0 + 60, y - 6], [x0 + 120, y], [x0 + 180, y - 6]], 1.2, GK.heatLt, 'inkfine', .6); } }
+  if (dk > 0) paint(rectPts(-600, 1120, W + 1200, 1400), { wash: '#9A5A6A', washOp: 90 * dk, ink: null });
+  if (o.heat && dk < .5) { boilSeed('heat' + Math.floor(t * 6)); for (let i = 0; i < 6; i++) { const y = 1080 - i * 22, x0 = 300 + hash(i) * 300; inkLine([[x0, y], [x0 + 60, y - 6], [x0 + 120, y], [x0 + 180, y - 6]], 1.2, GK.heatLt, 'inkfine', .6); } }
 }
 function coastSet(t) {
   boilSeed('coastsky');
@@ -266,29 +267,29 @@ function atmalinga(x, y, s, o = {}) {
   }
   pop();
 }
-// a brass lota; (x, y) its bottom, s its size; o: rot, varuna 0..1 (his face in the water), wink 0..1
-function waterPot(x, y, s, o = {}) {
-  boilSeed(o.key || 'pot');
-  push(); translate(x, y); rotate(o.rot || 0);
-  paint([[-.45 * s, -.05 * s], [.45 * s, -.05 * s], [.75 * s, -.45 * s], [.6 * s, -.85 * s], [.35 * s, -1.0 * s], [.45 * s, -1.2 * s], [-.45 * s, -1.2 * s], [-.35 * s, -1.0 * s], [-.6 * s, -.85 * s], [-.75 * s, -.45 * s]], { wash: GK.brass, fill: GK.brassDk, fillOp: 60, tex: .5, ink: GK.ink, sw: .9, curv: .45 });
-  paint(ellPts(-.3 * s, -.55 * s, .12 * s, .25 * s, 10), { wash: GK.brassLt, ink: null });
-  inkLine([[-.68 * s, -.6 * s], [.68 * s, -.6 * s]], 1.2, GK.brassDk, 'inkfine', .3);
-  // the mouth, seen from a little above, and the water in it
-  paint(ellPts(0, -1.2 * s, .5 * s, .16 * s, 18), { wash: GK.brassLt, ink: GK.ink, sw: .8 });
-  paint(ellPts(0, -1.19 * s, .4 * s, .11 * s, 16), { wash: GK.water, ink: null });
-  const v = clamp(o.varuna || 0);
-  if (v > 0) {   // Varuna: a little blue face with a gold crown and a curly moustache, peeking out of the water
-    const fx = 0, fy = -1.22 * s - .14 * s * v, R = .3 * s;
-    paint(ellPts(fx, fy, R, R * .9, 14), { wash: GK.varuna, ink: GK.ink, sw: .6 });
-    paint([[fx - R * .7, fy - R * .7], [fx - R * .5, fy - R * 1.35], [fx - R * .2, fy - R * .95], [fx, fy - R * 1.5], [fx + R * .2, fy - R * .95], [fx + R * .5, fy - R * 1.35], [fx + R * .7, fy - R * .7]], { wash: TK.gold, ink: GK.ink, sw: .5 });
-    const wk = clamp(o.wink || 0);
-    paint(ellPts(fx - R * .38, fy - R * .1, R * .14, R * .18, 8), { wash: GK.ink, ink: null });
-    if (wk > .5) inkLine([[fx + R * .22, fy - R * .1], [fx + R * .38, fy - R * .2], [fx + R * .54, fy - R * .1]], 1.1, GK.ink, 'inkfine', .5);
-    else paint(ellPts(fx + R * .38, fy - R * .1, R * .14, R * .18, 8), { wash: GK.ink, ink: null });
-    inkLine([[fx - R * .55, fy + R * .3], [fx - R * .2, fy + R * .22], [fx, fy + R * .3], [fx + R * .2, fy + R * .22], [fx + R * .55, fy + R * .3]], 1.2, GK.varunaDk, 'ink', .5);
-    paint(ellPts(0, -1.19 * s, .4 * s, .05 * s, 16), { wash: GK.water, washOp: 200, ink: null });   // the water over his chin
+// the sun, radius r at (x, y); o.cover 0..1 slides the Sudarshana chakra in from the right until it hides the sun (the
+// fake sunset); o.finger: Vishnu's blue finger, poking up out of a cloud, spinning it
+function sunChakra(x, y, r, t, o = {}) {
+  const c = clamp(o.cover || 0), vis = 1 - .85 * c;
+  glow(x, y, r * 4.7, GK.sun, .7 * vis);
+  boilSeed('sun');
+  paint(ellPts(x, y, r, r, 30), { wash: GK.sunCore, ink: null });
+  for (let i = 0; i < 12; i++) { const a = i / 12 * TAU + t * .3, r0 = r * 1.27, r1 = r * (1.27 + (.55 + .27 * Math.sin(t * 5 + i)) * vis); paint([[x + Math.cos(a - .08) * r0, y + Math.sin(a - .08) * r0], [x + Math.cos(a) * r1, y + Math.sin(a) * r1], [x + Math.cos(a + .08) * r0, y + Math.sin(a + .08) * r0]], { wash: GK.sun, ink: null }); }
+  if (c <= 0) return;
+  const cx = x + (1 - easeOut(c)) * r * 4.2, cy = y, R = r * 1.12, sp = t * 9;
+  if (o.finger) {   // Vishnu's finger from a cloud below, the chakra spinning on its tip
+    boilSeed('vfinger');
+    paint(ribbon([[cx + .35 * r, cy + 2.7 * r], [cx + .1 * r, cy + 1.9 * r], [cx, cy + 1.15 * r]], .3 * r, .2 * r), { wash: GK.vishnu, fill: GK.vishnuDk, fillOp: 60, tex: .3, ink: GK.ink, sw: .8 });
+    paint(ellPts(cx + .45 * r, cy + 2.75 * r, .42 * r, .36 * r, 14), { wash: GK.vishnu, fill: GK.vishnuDk, fillOp: 60, tex: .3, ink: GK.ink, sw: .8 });
+    cloud(cx + .5 * r, cy + 3.05 * r, r * .75, 'vcloud');
   }
-  pop();
+  boilSeed('chakra');
+  glow(cx, cy, R * 1.8, '#FFB23A', .5);
+  for (let i = 0; i < 18; i++) { const a = i / 18 * TAU + sp, a2 = a + TAU / 36; paint([[cx + Math.cos(a) * R * .95, cy + Math.sin(a) * R * .95], [cx + Math.cos(a2 - .05) * R * 1.32, cy + Math.sin(a2 - .05) * R * 1.32], [cx + Math.cos(a + TAU / 18) * R * .95, cy + Math.sin(a + TAU / 18) * R * .95]], { wash: i % 2 ? '#FFB23A' : '#F5782A', ink: null }); }
+  paint(ellPts(cx, cy, R, R, 30), { wash: TK.gold, fill: TK.goldDk, fillOp: 60, tex: .4, ink: GK.ink, sw: 1 });
+  paint(ellPts(cx, cy, R * .8, R * .8, 28), { wash: GK.chakra, fill: GK.chakraDk, fillOp: 70, tex: .4, ink: GK.ink, sw: .8 });
+  for (let i = 0; i < 8; i++) { const a = i / 8 * TAU - sp * .6; paint(ribbon([[cx + Math.cos(a) * R * .15, cy + Math.sin(a) * R * .15], [cx + Math.cos(a) * R * .78, cy + Math.sin(a) * R * .78]], R * .07, R * .04), { wash: TK.goldLt, ink: null }); }
+  paint(ellPts(cx, cy, R * .2, R * .2, 14), { wash: TK.goldLt, ink: GK.ink, sw: .7 });
 }
 function fakeStache(x, y, s, rot = 0, key = 'stache') {
   boilSeed(key);
@@ -296,13 +297,19 @@ function fakeStache(x, y, s, rot = 0, key = 'stache') {
   for (const d of [-1, 1]) paint(ribbon([[d * .05 * s, 0], [d * .35 * s, -.02 * s], [d * .7 * s, .08 * s], [d * .95 * s, -.06 * s], [d * .92 * s, -.28 * s], [d * .78 * s, -.3 * s]], .24 * s, .05 * s), { wash: GK.stache, ink: GK.ink, sw: .6, curv: .5 });
   pop();
 }
-// the cowherd's bag; (x, y) its top centre; Mooshak's head peeks out of it (peek 0..1)
-function cowherdBag(x, y, s, t, peek = 1) {
-  if (peek > 0) mooshak(x + s * .1, y + s * .25 - peek * s * .45, s * .16, { boilKey: 'bagmouse', eyes: 'normal', lookX: Math.sin(t * 1.3) > .3 ? -1 : .6, mouth: 'smile', noShadow: true });
-  boilSeed('bag');
-  paint([[-.5 * s, 0], [.5 * s, 0], [.6 * s, .6 * s], [.4 * s, .95 * s], [-.4 * s, .95 * s], [-.6 * s, .6 * s]], { wash: GK.bag, fill: GK.bagDk, fillOp: 60, tex: .5, ink: GK.ink, sw: .9, curv: .4 });
-  inkLine([[-.5 * s, .06 * s], [.5 * s, .06 * s]], 2, GK.bagDk, 'ink', .3);
-  for (let i = 0; i < 3; i++) paint(ellPts((-.25 + i * .25) * s, .5 * s, .06 * s, .06 * s, 8), { wash: '#E8573A', ink: null });
+// the brahmin boy's kamandalu, hanging by its handle; (x, y) the handle's top, s its size; Mooshak peeks out (peek 0..1)
+function kamandalu(x, y, s, t, peek = 1) {
+  boilSeed('kamandalu');
+  inkLine([[x - .42 * s, y + .55 * s], [x - .3 * s, y + .05 * s], [x, y - .05 * s], [x + .3 * s, y + .05 * s], [x + .42 * s, y + .55 * s]], 2.2, GK.brassDk, 'ink', .4);
+  if (peek > 0) mooshak(x - .05 * s, y + .62 * s - peek * s * .38, s * .14, { boilKey: 'potmouse', eyes: 'normal', lookX: Math.sin(t * 1.3) > .3 ? -1 : .6, mouth: 'smile', noShadow: true });
+  paint([[-.42 * s, .55 * s], [.42 * s, .55 * s], [.62 * s, .85 * s], [.6 * s, 1.2 * s], [.3 * s, 1.42 * s], [-.3 * s, 1.42 * s], [-.6 * s, 1.2 * s], [-.62 * s, .85 * s]].map(([a, b]) => [x + a, y + b]), { wash: GK.brass, fill: GK.brassDk, fillOp: 60, tex: .5, ink: GK.ink, sw: .9, curv: .45 });
+  paint([[.55 * s, .95 * s], [.95 * s, .7 * s], [1.0 * s, .78 * s], [.62 * s, 1.08 * s]].map(([a, b]) => [x + a, y + b]), { wash: GK.brass, ink: GK.ink, sw: .7 });   // the spout
+  paint(ellPts(x - .25 * s, y + 1.0 * s, .1 * s, .2 * s, 10), { wash: GK.brassLt, ink: null });
+}
+// the janeu over Bal Bappa's left shoulder to his right hip (his held hook: body space, sitting coordinates)
+function sacredThread(u, sw) {
+  boilSeed('janeu');
+  inkLine([[-2.3 * u, -6.0 * u], [-1.2 * u, -5.0 * u], [.4 * u, -3.6 * u], [1.8 * u, -2.5 * u], [2.5 * u, -2.2 * u]], sw * 1.6, GK.thread, 'ink', .3);
 }
 function shepherdStick(u, sw) {
   boilSeed('stick');

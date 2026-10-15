@@ -1,16 +1,17 @@
-// gokarna_sfx.mjs: the sound effects for "RAVANA needed a TOILET." (src/scenes/gokarna.js) → assets/gokarna_sfx.wav.
-// Times are the scene's constants (keep them in sync). The signatures: the bathroom dance (squeaky juttis, a nervous
-// trill), Kailash's wind and Shiva's bell, Airavata's panicked trumpet, the heat (cicadas), ten gulps rising in pitch,
-// the GRRRGL, the waves at Gokarna, the cheeky "boing" of the slipping moustache, three dings VERY fast, ten heads
-// yelling WAIT, the BOOM of the linga, the strain and the stone's creak, a cow's moo, the BONK, the temple bell.
+// gokarna_sfx.mjs: the sound effects for "VISHNU faked a SUNSET." (src/scenes/gokarna.js) → assets/gokarna_sfx.wav.
+// Times are the scene's constants (keep them in sync). The signatures: the chakra's spinning hum, Kailash's wind and
+// Shiva's bell, Airavata's panicked trumpet, the noon cicadas giving way to dusk crickets, ten heads looking up, the
+// nervous trill, the waves at Gokarna, the cheeky "boing" of the slipping moustache, ten heads chanting, the boy's three
+// "RAVANA!"s VERY fast, ten heads yelling WAIT, the BOOM of the linga, the strain and the stone's creak, a cow's moo, the
+// BONK, the temple bell.
 import { track, tone, noise, bell, mixb, env, whoosh, rumble, plink, clang, click, thud, crunch, crinkle, shimmer, slide, drone, gurgle, squeak, chirp, wind, om, note, seed, rnd, clamp, lerp, SR } from './sfx.mjs';
 
 const TEASE = 2.7, B0 = 5.6;
 const PRAY = 5.7, GIVE = 7.0, ATMA = 8.4, RULE = 10.6, FAKE = 12.0, CATCH = 12.5, C0 = 14.0;
-const PANIC = 14.1, WALK = 16.6, POT = 17.3, WINK = 17.75, GULP0 = 18.25, GSTEP = .13, D0 = 19.6;
-const TEN = 19.7, GURGLE = 20.3, WAVE = 20.6, DANCE = 21.2, NOT = 23.2, LOOK = 23.8, E0 = 26.0;
+const PANIC = 14.1, WALK = 16.6, SUN = 17.0, DUSK = 17.9, UP = 18.1, D0 = 19.6;
+const EVE = 19.7, WAVE = 20.4, FRET = 21.2, NOT = 23.2, LOOK = 23.8, E0 = 26.0;
 const BOY = 26.1, TOTALLY = 28.4, SLIP = 29.0, SUSPECT = 29.6, KID = 30.7, HAND = 31.4, F0 = 33.0;
-const DEAL = 33.1, RUN = 33.9, HIDE = 34.6, COUNT = 35.5, N1 = 35.8, N2 = 36.0, N3 = 36.2, WAIT = 36.35, DOWN = 36.6, BOOM = 36.85, STAY = 37.9, G0 = 40.2;
+const DEAL = 33.1, RUN = 33.9, SIT = 34.6, COUNT = 35.5, N1 = 35.8, N2 = 36.0, N3 = 36.2, WAIT = 36.35, DOWN = 36.6, BOOM = 36.85, STAY = 37.9, G0 = 40.2;
 const PULL = 40.3, GRIP = 40.5, TWIST = 42.4, EAR = 42.9, FLICK = 43.6, H0 = 46.2;
 const ANGRY = 46.3, BONK = 47.1, TODAY = 48.6, I0 = 52.2;
 const ASK = 52.3, WIPE = 55.5;
@@ -40,8 +41,11 @@ const boing = (amp = 1, f = 1) => tone(.45, t => f * (300 + 500 * Math.sin(Math.
 const impactBoom = (amp = 1) => mixb(thud(amp), crunch(amp * .5), noise(.6, { lp: 900, hp: 40, e: env.ad(.005, .22), brown: true, amp: amp * .9 }), clang(note(50), amp * .25));
 const pop = (amp = 1, f = 1) => mixb(click(amp), tone(.07, t => f * (500 + 2600 * t / .07), { e: env.pluck(40), amp: amp * .7 }));
 const laugh = (n, f0, amp = 1) => voice(Array.from({ length: n }, (_, i) => [i * .17, .12, 1 - i * .04, .7]), f0, { amp, growl: 1.2 });
-const gulp = (f, amp = 1) => mixb(lp(tone(.14, t => f * (1.4 - 2.2 * t), { type: 'tri', e: env.hann(), amp }), 1400), tone(.05, t => f * 3, { e: env.pluck(60), amp: amp * .3 }));
-const squeakStep = (f, amp = 1) => mixb(squeak(f, f * 1.5, .07, amp * .6), click(amp * .4));
+// the Sudarshana chakra: a bright metallic whirr, pulsing with its spin
+const whirr = (d, amp = 1) => { const o = mixb(tone(d, t => 660 + 40 * Math.sin(t * 2 * Math.PI * 3), { type: 'saw', e: env.swell(.15, .3), amp: amp * .5 }), noise(d, { hp: 2500, lp: 7000, e: env.swell(.15, .3), amp: amp * .6 })); for (let i = 0; i < o.length; i++) o[i] *= .55 + .45 * Math.sin(i / SR * 2 * Math.PI * 14); return lp(o, 5000); };
+const crickets = (d, amp = 1) => { const o = new Float32Array(Math.round((d + .2) * SR)); for (let k = 0; k * .9 < d; k++) for (let j = 0; j < 3; j++) add(o, tone(.04, 4300 + (k % 2) * 300, { e: env.pluck(30), amp }), k * .9 + j * .06 + (k % 3) * .2); return o; };
+// ten heads chanting the evening prayers: a low drone of syllables, slightly out of step
+const chant = (d, f0, amp = 1) => voice(Array.from({ length: Math.floor(d / .42) }, (_, i) => [i * .42, .36, i % 4 === 3 ? .9 : 1, .25]), f0, { amp, fall: 0 });
 const step = (amp = 1) => mixb(thud(amp * .5), noise(.06, { hp: 300, lp: 2500, e: env.pluck(50), amp: amp * .4 }));
 const sandStep = (amp = 1) => noise(.09, { hp: 1200, lp: 6000, e: env.pluck(35), amp });
 const waves = (d, amp = 1) => { const n = noise(d, { lp: 1200, hp: 80, e: env.swell(1, 1), amp }); for (let i = 0; i < n.length; i++) n[i] *= .45 + .55 * Math.pow(Math.sin(i / SR * Math.PI / 3.2), 2); return n; };
@@ -52,10 +56,10 @@ const trumpet = (amp = 1) => lp(tone(.8, t => 420 + 380 * Math.sin(Math.PI * cla
 const chatter = (d, amp = 1) => { const o = new Float32Array(Math.round((d + .1) * SR)); for (let k = 0; k * .045 < d; k++) add(o, click(amp), k * .045); return o; };
 const trill = (d, amp = 1) => tone(d, t => 880 + 60 * Math.sign(Math.sin(t * 2 * Math.PI * 9)), { type: 'tri', e: env.swell(.1, .2), amp });
 
-// ---- A · the hook: squeaky dancing feet, a nervous trill, the embarrassed slide
-for (let t = .05; t < B0 - .3; t += 1 / 4.6) T.at(t, squeakStep(t % .43 < .22 ? 1200 : 1400, .5), .3, (t % .43 < .22) ? -.3 : .3);
-T.at(0, trill(B0 - .5, .4), .12, 0);
-T.at(.3, voice([[0, .25, 1.3, .6], [.35, .3, 1.2, .5], [.8, .4, 1.15, .4]], 300, { amp: .7 }), .22, 0);   // a whimper
+// ---- A · the hook: the chakra whirring over the sun, a nervous trill, the embarrassed slide
+T.at(0, whirr(B0 - .3, 1), .22, .5);
+T.at(0, trill(B0 - .5, .4), .1, 0);
+T.at(.3, voice([[0, .25, 1.3, .6], [.35, .3, 1.2, .5], [.8, .4, 1.15, .4]], 300, { amp: .7 }), .2, 0);   // a worried whimper
 T.at(TEASE + .55, slide(.5, 900, 300, 1), .25, 0);
 T.at(B0 - .32, whoosh(.4, 500, 4500, 1), .5, 0);
 
@@ -81,28 +85,26 @@ for (let k = 0; k < 9; k++) T.at(C0 + .1 + k * .26, whoosh(.18, 300, 1200, .8), 
 T.at(C0 + 1.1, voice([[0, .18, 1.5, .8], [.24, .18, 1.6, .8], [.48, .3, 1.7, .9]], 240, { amp: .8 }), .25, 0);
 T.at(WALK - .3, whoosh(.45, 3500, 400, 1), .45, 0);
 
-// ---- C2 · the hot road: cicadas, footsteps, panting; the pot, Varuna's ting, ten gulps
-T.at(WALK, cicadas(E0 - WALK, 1), .1, 0);
-for (let t = WALK + .1; t < D0; t += .3125) T.at(t, step(1), .35, 0);
+// ---- C2 · the road: cicadas and footsteps; the chakra slides over the sun; dusk crickets; ten heads look up
+T.at(WALK, cicadas(DUSK - WALK + .3, 1), .1, 0);
+for (let t = WALK + .1; t < UP; t += .3125) T.at(t, step(1), .35, 0);
 T.at(WALK + .2, voice([[0, .15, 1, .3], [.3, .15, .95, .3], [.6, .15, 1, .3]], 180, { amp: .6 }), .2, 0);
-T.at(POT, mixb(clang(note(86), .5), click(.8)), .25, .4);
-T.at(POT + .3, whoosh(.3, 600, 2000, .6), .2, .4);
-T.at(WINK, mixb(ting(98, 1), tone(.08, t => 1200 + 3000 * t, { e: env.pluck(40), amp: .6 })), .35, .3);
-for (let i = 0; i < 10; i++) T.at(GULP0 + i * GSTEP + .02, gulp(180 + i * 18, 1), .55, pan(i));
-T.at(GULP0 + 10 * GSTEP, whoosh(.4, 800, 4000, .8), .3, .8);
-T.at(GULP0 + 10 * GSTEP + .45, clang(note(81), .6), .15, 1);
+T.at(SUN, whoosh(.9, 3000, 600, 1), .35, .6);
+T.at(SUN, whirr(D0 - SUN + .2, 1), .25, .5);
+T.at(DUSK, mixb(lp(tone(1.4, t => 220 - 60 * t, { type: 'tri', e: env.swell(.05, .8), amp: 1 }), 900), clang(note(62), .3)), .3, .3);   // the light drops
+T.at(DUSK + .2, crickets(E0 - DUSK - .2, 1), .1, -.2);
+for (let i = 1; i < 10; i++) T.at(UP + i * .07, mixb(pop(.6, 1 + i * .06), voice([[0, .12, 1.4 + i * .04, .7]], 240, { amp: .5 })), .2, pan(i));
 
-// ---- D · ten heads, one bladder
-T.at(GURGLE, gurgle(1.2, 1), .6, 0);
-T.at(GURGLE, lp(tone(1.0, t => 70 + 25 * Math.sin(t * 30), { type: 'saw', e: env.swell(.05, .3), amp: 1 }), 400), .35, 0);
+// ---- D · evening prayers! He can't pray holding it, and can't put it down
+T.at(EVE + .1, bell(note(69), 1.5, { amp: .8 }), .2, 0);   // a far temple bell: prayer time
 for (let i = 1; i < 10; i++) T.at(WAVE + i * .08, mixb(pop(.7, 1 + i * .07), voice([[0, .1, 1.5 + i * .04, .8]], 260, { amp: .6 })), .25, pan(i));
-for (let t = DANCE; t < E0 - .3; t += 1 / 4.6) T.at(t, squeakStep(Math.floor((t - DANCE) * 4.6) % 2 ? 1200 : 1450, .5), .3, Math.floor((t - DANCE) * 4.6) % 2 ? -.3 : .3);
-T.at(DANCE, trill(E0 - DANCE - .3, .5), .14, 0);
-for (const k of [0, .6, 1.2]) T.at(LOOK + k, whoosh(.12, 600, 1600, .6), .12, k === .6 ? -.5 : 0);
+for (let t = FRET; t < E0 - .3; t += .42) T.at(t, mixb(step(.6), click(.3)), .2, Math.floor((t - FRET) / .42) % 2 ? -.3 : .3);
+T.at(FRET, trill(E0 - FRET - .3, .5), .14, 0);
+for (const k of [0, .6, 1.1]) T.at(LOOK + k, whoosh(.12, 600, 1600, .6), .12, k === 1.1 ? .4 : 0);
 T.at(LOOK + 1.6, voice([[0, .3, 1.3, .5], [.35, .35, 1.2, .4], [.75, .5, 1.1, .3]], 320, { amp: .8 }), .3, 0);   // the whimper
 T.at(E0 - .3, whoosh(.5, 400, 3000, 1), .45, 0);
 
-// ---- E · the coast: waves, gulls; the cowherd boy's light steps; the moustache; "KID! Hold this!"
+// ---- E · the coast: waves, gulls; the brahmin boy's light steps; the moustache; "KID! Hold this!"
 T.at(E0, waves(G0 + 6 - E0, 1), .3, 0);
 for (const t of [E0 + .4, E0 + 4.3, E0 + 9.7, E0 + 15.5]) { T.at(t, chirp(.8), .12, .6); T.at(t + .12, chirp(.7), .1, .6); }
 for (let t = BOY; t < BOY + 1.6; t += .29) T.at(t, mixb(sandStep(.7), plink(note(84), .3)), .22, .6);
@@ -114,14 +116,14 @@ T.at(KID, voice([[0, .14, 1.4, .9], [.2, .14, 1.4, .9], [.42, .16, 1.3, .8], [.6
 T.at(HAND, whoosh(.35, 500, 2500, 1), .4, .3);
 T.at(HAND + .45, mixb(thud(.6), voice([[0, .15, 1.8, .7]], 380, { amp: .7 })), .4, .5);   // the boy's "oof"
 
-// ---- F · three counts, VERY fast
+// ---- F · the prayers; three calls, VERY fast
 T.at(DEAL, voice([[0, .14, 1, .8], [.18, .14, 1.1, .8], [.36, .14, 1.05, .8], [.6, .16, 1.15, .8], [.84, .14, 1.0, .8], [1.05, .14, 1.1, .8], [1.3, .3, 1.2, .9]], 420, { amp: .8 }), .3, .5);
 T.at(RUN, whoosh(.55, 600, 5000, 1), .5, -.5);
-for (let t = RUN; t < HIDE; t += .09) T.at(t, sandStep(.8), .25, -.5);
-T.at(HIDE, crinkle(.6, 1), .35, -.5);
-T.at(HIDE + .2, voice([[0, .7, 1.0, .3]], 200, { amp: .7, fall: .3 }), .25, -.5);   // aaah
-[76, 79, 81, 79, 76].forEach((m, k) => T.at(HIDE + .9 + k * .14, tone(.12, note(m), { e: env.swell(.01, .05), amp: 1 }), .1, -.5));   // whistling
-[N1, N2, N3].forEach((n, j) => { T.at(n, bell(note(88 + j * 4), .8, { amp: 1 }), .4, .4); T.at(n, click(1), .3, .4); });
+for (let t = RUN; t < SIT; t += .09) T.at(t, sandStep(.8), .25, -.5);
+T.at(SIT, mixb(thud(.8), noise(.2, { hp: 600, lp: 4000, e: env.pluck(20), amp: .5 })), .4, -.5);
+T.at(SIT + .25, chant(WAIT - SIT - .25, 130, 1), .35, -.5);
+T.at(SIT + .25, om(WAIT - SIT - .1, 98, 1), .12, -.5);
+[N1, N2, N3].forEach((n, j) => { T.at(n, voice([[0, .06, 1.1, .8], [.07, .1, 1.35, 1], [.18, .05, 1.1, .7]], 400 + j * 30, { amp: 1 }), .4, .4); T.at(n, bell(note(88 + j * 4), .6, { amp: .6 }), .2, .4); });   // "ra-VA-na!"
 for (let i = 0; i < 10; i++) T.at(WAIT + i * .015, voice([[0, .18, 1.3, .9], [.22, .35, 1.6, 1]], 200 + i * 22, { amp: .5, growl: .5 }), .2, pan(i) - .3);
 T.at(DOWN, whoosh(.25, 1500, 400, .7), .3, .3);
 T.at(BOOM, impactBoom(1), .9, .2);
