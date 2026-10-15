@@ -31,6 +31,14 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
 ## Reel rules (from what worked and what didn't)
 - **9:16, 1080×1920.** Captions and every story read sit inside Instagram's safe band: y 420–1500, left of x 930
   (`SAFE` / `caption()` in core.js). The top and bottom are covered by the app.
+- **Retellings stay true to a source.** When a reel retells a purana, epic or temple legend, every plot beat (who did
+  what, why, and what it caused) comes from a citable source (the purana, the temple's sthala purana, a recognised
+  retelling) and is listed with it in the storyboard's "Facts used". Where versions differ, use the scriptural or most
+  widely cited one, never a variant picked because it's funnier. The comedy lives in the performance: faces, reactions,
+  timing, the caption voice, and hidden gags that claim no plot fact (a gag that implies one, like Varuna hiding in the
+  water pot, counts as a claim). Pure comedy concepts with an obviously made-up premise (Vahana Union) are fine, but every
+  fact they teach must be true. Ad 17 (Gokarna) was deleted after viewers pointed out Ravana stopped for his evening
+  prayers, not a toilet.
 - **Frame 0 is a finished picture**: the hook caption is already up (pass it an age offset, e.g. `caption(txt, y, t + 1, …)`),
   one simple subject on a plain background, no fade or iris in. Check it with `node render.mjs --stills=0`.
 - **Ads end on the full call-to-action card** (no fade out): real covers via `picture()`, the RK logo, the price line,
