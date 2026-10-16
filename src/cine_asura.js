@@ -12,8 +12,9 @@
 //     knees; the body 250 higher than seated, so the face is centred at (0, -905) and the crown tops out near -1150)
 //   arms: 'rest' (hands on the throne's arms) | 'namaste' | 'knees' (on the knees, for tapas) | 'up' (flailing, under
 //     the swarm) | 'point' (the right hand up, pointing at a bee on his left armrest) | 'roar' (both arms out and down,
-//     claws open: a war cry; for 'stand')
-//   expr: 'calm' | 'smirk' | 'laugh' | 'scream' | 'chant' (eyes shut, mouth round) | 'shock'; look ([x, y])
+//     claws open: a war cry; for 'stand') | 'raise' (the right fist raised high: holding something up)
+//   expr: 'calm' | 'smirk' | 'laugh' | 'scream' | 'chant' (eyes shut, mouth round) | 'shock' | 'sleep' | 'yawn' | 'speak';
+//     look ([x, y]); crown: 'helm' (default, the horned helmet) | 'mukut' (a tall gold kirita) | 'none'
 //   eyes (0..1 the glow of the eyes), lean (radians: the head tilts back to laugh), armFx (figure() options per arm)
 //   pal: colours over ARU's (skin, skinSh, skinDk, dhoti, gold, ...): another demon on the same rig (Mali and Sumali)
 // asuraHead(c, o): the head alone at (0, -815): expr, eyes, look, t, light, pal; crownOnly (just the horned helmet, e.g. fallen).
@@ -31,6 +32,8 @@ const ARU_EXPR = {
   calm: { open: 0, cw: 1, lift: -2, brow: 1, eyes: .8 }, smirk: { open: .1, cw: 1.05, lift: 4, brow: .6, eyes: .7, smirk: true },
   laugh: { open: .9, cw: 1.3, lift: 6, brow: .2, eyes: .45 }, scream: { open: 1, cw: 1.15, lift: -4, brow: 1.3, eyes: 1, tall: true },
   chant: { open: .35, cw: .55, lift: 0, brow: -.2, eyes: 0 }, shock: { open: .6, cw: .75, lift: -2, brow: -.6, eyes: 1, tall: true },
+  sleep: { open: .22, cw: .6, lift: 0, brow: -.1, eyes: 0 }, yawn: { open: 1, cw: 1.2, lift: 0, brow: -.9, eyes: 0, tall: true, big: 1.6 },
+  speak: { open: .55, cw: .9, lift: 0, brow: .4, eyes: 1 },
 };
 const AR_FACE = 'M 0 -736 C 22 -736 40 -744 52 -758 C 62 -772 66 -794 66 -818 C 66 -848 60 -870 48 -884 C 34 -898 -34 -898 -48 -884 C -60 -870 -66 -848 -66 -818 C -66 -794 -62 -772 -52 -758 C -40 -744 -22 -736 0 -736 Z';
 // the mane behind the head, wild, spilling onto the shoulders (head units)
@@ -57,10 +60,24 @@ function asuraCrown(c, L = 1) {
   fillPath(c, 'M 0 -900 L 16 -872 L 0 -852 L -16 -872 Z', S.gold); ellipse(c, 0, -873, 6, 8, S.ruby);
   for (const s of [-1, 1]) for (let k = 1; k <= 3; k++) fillPath(c, `M ${s * k * 16} -870 L ${s * (k * 16 + 5)} -892 L ${s * (k * 16 + 10)} -868 Z`, S.goldSh);
 }
+// a tall gold kirita (the crown of a rakshasa prince, Kumbhakarna's) instead of the horned helmet (head units)
+function asuraMukut(c, L = 1) {
+  const S = ARU_CUR, K = 'M -60 -870 C -58 -930 -42 -990 -24 -1030 L 0 -1084 L 24 -1030 C 42 -990 58 -930 60 -870 Z';
+  fillPath(c, K, S.gold);
+  inside(c, K, () => {
+    c.save(); c.scale(L, 1); fillPath(c, 'M -70 -1090 L -8 -1090 C -10 -1000 -14 -930 -18 -860 L -70 -860 Z', rgba(S.goldSh, .75)); c.restore();
+    for (const y of [-915, -965, -1012]) { strokePath(c, `M -70 ${y} C -30 ${y - 10} 30 ${y - 10} 70 ${y}`, S.goldSh, 5); strokePath(c, `M -70 ${y - 5} C -30 ${y - 15} 30 ${y - 15} 70 ${y - 5}`, rgba(S.goldLt, .8), 2); }
+    for (const [x, y] of [[0, -940], [0, -990], [-26, -936], [26, -936]]) { ellipse(c, x, y, 7, 9, S.ruby); ellipse(c, x - 2, y - 3, 2, 2, rgba('#FFFFFF', .7)); }
+  });
+  for (const s of [-1, 1]) fillPath(c, `M ${s * 56} -880 C ${s * 86} -900 ${s * 100} -930 ${s * 96} -960 C ${s * 84} -930 ${s * 70} -912 ${s * 52} -906 Z`, S.gold);
+  fillPath(c, 'M -66 -856 C -40 -874 40 -874 66 -856 L 66 -878 C 40 -896 -40 -896 -66 -878 Z', S.gold);
+  strokePath(c, 'M -66 -858 C -40 -876 40 -876 66 -858', S.goldSh, 2.4);
+  ellipse(c, 0, -1090, 8, 10, S.ruby);
+}
 function asuraHead(c, o = {}) {
   if (o.pal) return aruWithPal(o, (q) => asuraHead(c, q));
   const t = o.t || 0, L = o.light ?? 1, S = ARU_CUR, E = ARU_EXPR[o.expr || 'calm'] || ARU_EXPR.calm, eg = o.eyes ?? 1;
-  if (o.crownOnly) { asuraCrown(c, L); return; }
+  if (o.crownOnly) { o.crown === 'mukut' ? asuraMukut(c, L) : asuraCrown(c, L); return; }
   const shake = o.expr === 'laugh' ? Math.sin(t * 22) * 1.6 : o.expr === 'scream' ? Math.sin(t * 31) * 1.2 : 0;
   c.save(); c.translate(0, shake);
   if (o.mane !== false) asuraMane(c, t);
@@ -100,8 +117,8 @@ function asuraHead(c, o = {}) {
   // the nose: broad, flared nostrils
   fillPath(c, 'M -16 -796 C -20 -786 -14 -780 -6 -782 C -3 -778 3 -778 6 -782 C 14 -780 20 -786 16 -796 C 10 -790 -10 -790 -16 -796 Z', S.skinDk);
   // the mouth (an open one drops the jaw: more chin under it)
-  if (E.open > .05) { const j = E.open * (E.tall ? 54 : 32) * .75; fillPath(c, `M -40 -760 C -36 ${-744 + j} -20 ${-734 + j} 0 ${-734 + j} C 20 ${-734 + j} 36 ${-744 + j} 40 -760 Z`, S.skin); }
-  const ow = 24 * E.cw, op = E.open, my = -766 + op * 5, oh = op * (E.tall ? 54 : 32);
+  if (E.open > .05) { const j = E.open * (E.tall ? 54 : 32) * .75 * (E.big || 1); fillPath(c, `M -40 -760 C -36 ${-744 + j} -20 ${-734 + j} 0 ${-734 + j} C 20 ${-734 + j} 36 ${-744 + j} 40 -760 Z`, S.skin); }
+  const ow = 24 * E.cw, op = E.open, my = -766 + op * 5, oh = op * (E.tall ? 54 : 32) * (E.big || 1);
   if (op > .05) {
     const M = E.tall ? `M ${-ow * .7} ${my} C ${-ow * .8} ${my + oh * .9} ${ow * .8} ${my + oh * .9} ${ow * .7} ${my} C ${ow * .5} ${my - 6} ${-ow * .5} ${my - 6} ${-ow * .7} ${my} Z`
       : `M ${-ow} ${my - E.lift * .5} C ${-ow * .6} ${my + oh} ${ow * .6} ${my + oh} ${ow} ${my - E.lift * .5} C ${ow * .5} ${my - 4} ${-ow * .5} ${my - 4} ${-ow} ${my - E.lift * .5} Z`;
@@ -117,7 +134,7 @@ function asuraHead(c, o = {}) {
   // the moustache, curled up at the ends, and a short pointed beard
   for (const s of [-1, 1]) fillPath(c, `M ${s * 3} -784 C ${s * 16} -788 ${s * 34} -786 ${s * 46} -778 C ${s * 58} -770 ${s * 66} -782 ${s * 64} -796 C ${s * 72} -782 ${s * 66} -762 ${s * 50} -764 C ${s * 36} -766 ${s * 18} -776 ${s * 3} -774 Z`, S.hair);
   { const j = op > .05 ? oh * .75 : 0; fillPath(c, `M -34 ${-744 + j * .5} C -24 ${-734 + j} 24 ${-734 + j} 34 ${-744 + j * .5} C 30 ${-722 + j} 14 ${-704 + j} 0 ${-696 + j} C -14 ${-704 + j} -30 ${-722 + j} -34 ${-744 + j * .5} Z`, S.hair); }
-  asuraCrown(c, L);
+  if (o.crown === 'mukut') asuraMukut(c, L); else if (o.crown !== 'none') asuraCrown(c, L);
   c.restore();
 }
 // one arm from shoulder S through elbow E to the wrist T; hand 'fist' | 'grip' (on an armrest) | 'open' (claws) | 'point'
@@ -227,6 +244,7 @@ function arunasura(c, o = {}) {
     knees: [[[-240, -400], [-236, -300], 'fist'], [[240, -400], [236, -300], 'fist']],
     up: [[[-280, -680], [-250 + Math.sin(t * 9) * 20, -840], 'open'], [[280, -660], [270 + Math.sin(t * 8 + 1) * 20, -830], 'open']],
     point: [[[-250, -450], [-300, -450], 'grip'], [[260, -520], [330, -560], 'point']],
+    raise: [[[-290, -460], [-380, -370 + Math.sin(t * 3) * 8], 'open'], [[280, -700], [300, -880], 'fist']],
     roar: [[[-290, -460], [-380, -370 + Math.sin(t * 3) * 8], 'open'], [[290, -460], [380, -370 + Math.sin(t * 3 + 1) * 8], 'open']],
   }[arms] || [];
   A.forEach(([E, T, hand], i) => arm(i, E, T, hand));
