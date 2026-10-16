@@ -223,6 +223,11 @@ function rvWeapon(c, x, y, a, kind, k = 1) {
   else if (kind === 'mace') { fillPath(c, 'M -5 40 L 5 40 L 5 -120 L -5 -120 Z', RV.gold); ellipse(c, 0, -146, 30, 34, RV.gold); ellipse(c, 8, -152, 10, 14, rgba(RV.goldLt, .7)); for (let i = 0; i < 5; i++) ellipse(c, Math.cos(i * 1.26) * 30, -146 + Math.sin(i * 1.26) * 34, 5, 5, RV.goldSh); }
   else if (kind === 'spear') { fillPath(c, 'M -3.5 60 L 3.5 60 L 3.5 -200 L -3.5 -200 Z', RV.wood); fillPath(c, 'M 0 -262 C 12 -236 12 -214 6 -198 L -6 -198 C -12 -214 -12 -236 0 -262 Z', RV.steel); }
   else if (kind === 'axe') { fillPath(c, 'M -4 50 L 4 50 L 4 -130 L -4 -130 Z', RV.wood); fillPath(c, 'M 4 -128 C 40 -150 56 -110 52 -76 C 36 -92 18 -96 4 -92 Z', RV.steel); }
+  else if (kind === 'gembow') {   // the bow set with pearls and gemstones (Valmiki 3.51.10), upright
+    strokePath(c, 'M 0 -150 C 64 -100 64 100 0 150', RV.goldSh, 11); strokePath(c, 'M 0 -150 C 60 -100 60 100 0 150', RV.gold, 6);
+    for (let i = 0; i <= 8; i++) { const u = i / 8, x = 3 * (1 - u) * u * 2 * 62, y = lerp(-150, 150, u); ellipse(c, x, y, 5, 5, i % 2 ? RV.ruby : '#F3EBD8'); }
+    strokePath(c, 'M 0 -150 L 0 150', rgba('#E8DCC0', .8), 1.5);
+  }
   else if (kind === 'bow') { strokePath(c, 'M 0 -150 C 60 -100 60 100 0 150', RV.wood, 9); strokePath(c, 'M 0 -150 L 0 150', rgba('#E8DCC0', .8), 1.5); }
   else if (kind === 'disc') { ellipse(c, 0, -40, 30, 30, RV.gold); ellipse(c, 0, -40, 14, 14, RV.goldSh); }
   c.restore();
@@ -261,7 +266,11 @@ function ravana(c, o = {}) {
   back.sort((p, q) => (pose === 'stand' ? q.j - p.j : q.j - p.j));
   for (const b of back) {
     const lift = pose === 'lift' || pose === 'pinned', [E, T] = rvReach(b.Sp, b.T, lift ? 265 : 235, lift ? 250 : 220, b.bend), col = mixCol(S.skin, S.skinDk, .12 + b.j * .045);
+    const gone = b.s < 0 && o.lostLeft ? clamp(o.lostLeft * 9 - (8 - b.j)) : 0;
+    if (gone > .98) { ellipse(c, b.Sp[0], b.Sp[1], 30, 26, mixCol(col, '#3A0A0A', .5)); continue; }
+    c.save(); if (gone) { c.translate(b.Sp[0], b.Sp[1]); c.scale(1 - gone, 1 - gone); c.translate(-b.Sp[0], -b.Sp[1]); }
     rvArm(c, b.Sp, E, T, col, { k: pose === 'stand' || sit ? .95 : 1.08, hand: lift ? 'palm' : 'fist', palmRot: Math.atan2(T[1] - ravanaArch(o).cy, T[0]) + Math.PI / 2, weapon: pose === 'stand' && o.weapons ? RV_WEAPONS[(b.j + (b.s > 0 ? 4 : 0)) % 9] : null, side: b.s });
+    c.restore();
   }
   // legs
   if (sit) for (const s of [-1, 1]) {
@@ -318,14 +327,20 @@ function ravana(c, o = {}) {
     const Sp = [s * 192, -692 + br], d = (a) => ellipse(a, s * 190, -680 + br, 42, 52, S.skin, s * -.2);
     figure(c, (a) => {
       d(a);
-      let E, T, hand = 'fist';
-      if (front === 'hips') { E = [s * 300, -560]; T = [s * 140, -488]; }
+      let E, T, hand = 'fist', weapon = null, wk = 1.6;
+      const fm = (s > 0 ? o.frontR : o.frontL) || front;
+      if (fm === 'carry') return;   // drawn by rvCarryArm(), over whoever he holds
+      if (fm === 'sword') { const e = ease(clamp(o.swing || 0)); T = [lerp(s * 330, -s * 60, e), lerp(-1010, -470, e) - Math.sin(e * Math.PI) * 140]; [E, T] = rvReach(Sp, T, 265, 250, -s); weapon = 'sword'; wk = 3.4; }
+      else if (fm === 'bow') { E = [s * 330, -700]; T = [s * 470, -726]; weapon = o.bowBroken ? null : 'gembow'; wk = 2; }
+      else if (fm === 'fist') { E = [s * 300, -820]; T = [s * 300, -980]; }
+      else if (front === 'hips') { E = [s * 300, -560]; T = [s * 140, -488]; }
       else if (front === 'down') { E = [s * 222, -540]; T = [s * 230, -400]; }
       else if (front === 'rest') { E = [s * 284, -566]; T = [s * 300, -536]; }
       else if (front === 'grab') { E = [s * 236, -536]; T = [s * 96, -414]; }
       else if (front === 'namaste') { E = [s * 200, -560]; T = [s * 16, -640]; hand = 'none'; }
       else { const A = ravanaArch(o), phi = .14; [E, T] = rvReach(Sp, [s * Math.sin(phi) * (A.rx - 26), A.cy - Math.cos(phi) * (A.ry - 26) - D], 265, 250, s); hand = 'palm'; }
       rvArm(a, Sp, E, T, S.skin, { k: 1.15, hand, palmRot: 0, shade: s === -L ? [s * 10, 4] : null });
+      if (weapon) { const ang = Math.atan2(T[1] - E[1], T[0] - E[0]), hx = T[0] + Math.cos(ang) * 18, hy = T[1] + Math.sin(ang) * 18; rvWeapon(a, hx, hy, weapon === 'gembow' ? 0 : ang + Math.PI / 2, weapon, wk); }
       if (front === 'namaste') fillPath(a, `M ${s * 2} -700 C ${s * 18} -690 ${s * 30} -660 ${s * 24} -630 L ${s * 2} -626 Z`, S.skin);
     }, o.armFx || {});
   };
@@ -334,4 +349,129 @@ function ravana(c, o = {}) {
   ravanaHeads(c, { t, light: L, expr: o.expr, exprs: o.exprs, headFx: o.headFx, look: o.look, bow: pose === 'bow' });
   if (front !== 'up') { fArm(-1); fArm(1); }
   c.restore();
+}
+
+// ---------- for the Jatayu story (Valmiki, Aranya Kanda 49–52) ----------
+// rvCarryArm(c, o): Ravana's front arm on screen right (frontR: 'carry'), wrapped round someone held at his side: drawn
+//   after them, in his units (the same transform as ravana()). o: t, pose, hold ([x, y] where the hand grips, default
+//   the waist of a figure standing at x 300), fx (figure() options for its edge).
+function rvCarryArm(c, o = {}) {
+  const t = o.t || 0, br = Math.sin(t * 1.4) * 1.5, D = o.pose === 'sit' ? 140 : 0, H = o.hold || [330, -560];
+  c.save(); c.translate(0, D + br * .3);
+  figure(c, (a) => {
+    const Sp = [192, -692 + br]; ellipse(a, 190, -680 + br, 42, 52, RV.skin, -.2);
+    const [E, T] = rvReach(Sp, H, 265, 250, 1);
+    rvArm(a, Sp, E, T, RV.skin, { k: 1.15, hand: 'fist' });
+  }, o.fx || {});
+  c.restore();
+}
+
+// rvMule(c, o): one of the chariot's "ghost-faced mules" (3.49.19, 3.51.15), side view facing right, galloping through
+//   the air; about 640 long, the hooves near y 0, the head up at about (380, -520). Ash-dark with a spiky mane, long
+//   ears, a goblin's face: glowing eyes and a fanged grin. o: t, gallop (phase), glow (0..1 the eyes), dead (true: limp,
+//   the eyes out, the legs folded), col.
+function rvMule(c, o = {}) {
+  const t = o.t || 0, one = o.col, C = (k) => one || k, dead = o.dead, g = dead ? 0 : (o.gallop ?? t * 2.2) * TAU;
+  const body = '#3A3438', dark = '#221E22', lt = '#5E565C';
+  // legs: far pair first, the flying gallop (front reaching, back pushing)
+  const leg = (hx, hy, a, k, col) => { const kx = hx + Math.cos(a) * 130, ky = hy + Math.sin(a) * 130, a2 = a + (dead ? .9 : .5 * k), fx = kx + Math.cos(a2) * 120, fy = ky + Math.sin(a2) * 120;
+    limb(c, [[hx, hy], [kx, ky], [fx, fy]], [70, 42, 30], C(col)); ellipse(c, kx, ky, 22, 22, C(col)); ellipse(c, fx + Math.cos(a2) * 14, fy + Math.sin(a2) * 14, 22, 16, C('#141012'), a2); };
+  const sw = Math.sin(g), sw2 = Math.sin(g + 1.2);
+  leg(160, -280, dead ? 1.9 : .5 + sw * .5, -1, dark); leg(-150, -270, dead ? 1.7 : 2.3 + sw2 * .45, 1, dark);
+  // the tail
+  limb(c, [[-200, -330], [-270, -300 + Math.sin(t * 5) * 10], [-320, -250]], [22, 14, 8], C(dark)); ellipse(c, -326, -240, 18, 30, C(dark), .5);
+  // body and neck
+  ellipse(c, 0, -320, 210, 100, C(body));
+  if (!one) inside(c, new Path2D('M -220 -320 a 220 100 0 1 0 440 0 a 220 100 0 1 0 -440 0'), () => { ellipse(c, 0, -250, 220, 50, rgba(dark, .7)); ellipse(c, 40, -390, 160, 26, rgba(lt, .5)); });
+  const hd = dead ? 1 : 0, nx = 330, ny = dead ? -320 : -470;
+  limb(c, [[140, -350], [230, ny + 70 - hd * 20], [nx - 20, ny + 10]], [150, 110, 86], C(body));
+  // the spiky mane along the neck
+  for (let i = 0; i < 9; i++) { const u = i / 8, x = lerp(130, nx - 30, u), y = lerp(-400, ny - 26, u); fillPath(c, `M ${x - 16} ${y + 8} L ${x - 4 - 26} ${y - 40 - Math.sin(t * 6 + i) * 4} L ${x + 14} ${y + 4} Z`, C('#141012')); }
+  // the head: a long donkey's head angled down, tall ears, a goblin's face (a fanged grin, a slit of fire for an eye)
+  c.save(); c.translate(nx, ny); c.rotate(dead ? .9 : -.05 + Math.sin(g) * .04);
+  for (const [dx, a, l] of [[-34, -2.25, 160], [-8, -1.95, 170]]) { const ex = dx + Math.cos(a) * l, ey = -30 + Math.sin(a) * l, px = -Math.sin(a) * 22, py = Math.cos(a) * 22;
+    fillPath(c, `M ${dx - px} ${-30 - py} Q ${(dx + ex) / 2 - px * 1.4} ${(-30 + ey) / 2 - py * 1.4} ${ex} ${ey} Q ${(dx + ex) / 2 + px * 1.4} ${(-30 + ey) / 2 + py * 1.4} ${dx + px} ${-30 + py} Z`, C(dark)); }
+  const HD = 'M -44 -44 C 10 -66 64 -44 112 18 C 142 50 162 80 152 106 C 142 128 110 128 88 116 C 48 94 -2 64 -44 30 Z';
+  fillPath(c, HD, C(body));
+  if (!one) {
+    inside(c, HD, () => { fillPath(c, 'M -60 20 C 20 60 90 100 170 96 L 170 160 L -60 160 Z', rgba(dark, .8)); ellipse(c, 132, 96, 40, 30, '#1A1618'); strokePath(c, 'M -30 -40 C 20 -56 60 -40 100 10', rgba(lt, .7), 6); });
+    ellipse(c, 146, 86, 6, 4, '#0A0608');
+    fillPath(c, 'M 74 108 C 100 122 128 128 150 118 L 146 130 C 120 140 96 136 70 118 Z', '#120608');
+    for (const x of [86, 106, 126]) fillPath(c, `M ${x} 114 L ${x + 9} 116 L ${x + 3} 134 Z`, '#EDE4D2');
+    if (!dead) { const gl = o.glow ?? 1; glow(c, 22, -4, 70, '#FFB030', .7 * gl); fillPath(c, 'M 2 -2 C 12 -14 32 -16 44 -8 C 32 2 14 4 2 -2 Z', mixCol('#FFE070', '#FFF8D0', .5 * gl)); ellipse(c, 24, -7, 3, 6, '#3A0A04'); }
+    else strokePath(c, 'M 6 -6 L 40 -6', '#0E0A0C', 3);
+    fillPath(c, 'M -6 -22 C 14 -34 40 -30 58 -18 L 52 -10 C 36 -20 14 -22 -2 -14 Z', '#141012');   // the heavy brow
+    strokePath(c, 'M 96 70 C 110 60 128 62 140 72', RV.gold, 6);   // the noseband
+  }
+  c.restore();
+  if (!one) { strokePath(c, 'M 150 -400 C 200 -360 230 -300 220 -250', RV.gold, 16); for (let i = 0; i < 4; i++) ellipse(c, 168 + i * 18, -378 + i * 40, 5, 5, RV.ruby); }
+  // the near legs
+  leg(180, -270, dead ? 1.6 : .2 - sw * .5, -1, body); leg(-130, -260, dead ? 1.4 : 2.6 - sw2 * .45, 1, body);
+}
+
+// ravanaChariot(c, o): Ravana's gold chariot, side view flying right (3.49.19: golden wheels and parts, yoked to the
+//   mules; it flies at will). The floor at y 0 from x -420 to 460, the high back and the prow rising; one big gold wheel
+//   at (-60, 70); a red pennant on a staff at the back; the pole runs forward to the mules (drawn by rvMule, ahead of
+//   x 700). o: t, layer ('back' the staff, pennant and the far rail; 'front' the panel, the wheel, the pole; omit for
+//   both), spin (the wheel's turn, radians), driver (true: the charioteer at the prow, a dark rakshasa holding the
+//   reins), col (a silhouette), glow (0..1 maya light under it).
+function ravanaChariot(c, o = {}) {
+  const t = o.t || 0, one = o.col, C = (k) => one || RV[k] || k, back = o.layer !== 'front', front = o.layer !== 'back';
+  if (back) {
+    if (o.glow) glow(c, 0, 80, 520, '#FF9A40', .35 * o.glow);
+    fillPath(c, 'M -430 -10 L -446 -980 L -428 -980 L -410 -10 Z', C('goldSh'));
+    const fl = (x) => Math.sin(t * 4 - x * .02) * (x + 440) * .05;
+    let P = 'M -436 -970'; for (let x = -436; x <= -100; x += 28) P += ` L ${x} ${-970 + fl(x)}`; for (let x = -100; x >= -436; x -= 28) P += ` L ${x + (x === -100 ? 0 : 0)} ${-860 + fl(x) * 1.2 + (x + 436) * .15}`;
+    fillPath(c, P + ' Z', C('#9E1622'));
+    fillPath(c, 'M -400 -280 C -380 -330 -300 -330 -280 -280 L 360 -280 C 400 -300 440 -300 470 -270 L 470 -240 L -400 -240 Z', C('goldSh'));   // the far rail
+    if (o.driver) {
+      // the charioteer (3.51.18): a crouched dark rakshasa at the prow, horned, reins in hand
+      const dc = one || '#1C1216';
+      ellipse(c, 360, -330, 54, 80, dc); ellipse(c, 380, -430, 36, 40, dc);
+      for (const s of [-1, 1]) fillPath(c, `M ${380 + s * 20} -460 Q ${380 + s * 46} -500 ${380 + s * 30} -530 Q ${380 + s * 30} -496 ${380 + s * 8} -468 Z`, dc);
+      limb(c, [[380, -350], [440, -320], [500, -300]], [30, 24, 18], dc);
+      if (!one) ellipse(c, 394, -434, 6, 4, '#FFB040');
+    }
+  }
+  if (front) {
+    // the pole, out to the mules
+    limb(c, [[440, -60], [700, -150], [930, -250]], [30, 26, 22], C('goldSh'));
+    strokePath(c, 'M 500 -300 C 640 -320 800 -340 960 -390', rgba('#2A1A10', .9), 4);   // the reins
+    const PANEL = 'M -420 -10 L 380 -10 C 430 -10 462 -40 472 -96 L 482 -280 C 452 -300 420 -292 408 -262 L 396 -130 L -360 -130 L -384 -300 C -394 -334 -428 -334 -440 -300 Z';
+    fillPath(c, PANEL, C('gold'));
+    if (!one) inside(c, PANEL, () => {
+      fillPath(c, 'M -460 -70 L 500 -70 L 500 20 L -460 20 Z', rgba(RV.goldSh, .9));
+      strokePath(c, 'M -380 -110 L 400 -110', RV.goldSh, 6); strokePath(c, 'M -380 -96 L 400 -96', rgba(RV.goldLt, .8), 3);
+      for (let i = 0; i < 14; i++) { const x = -330 + i * 52; ellipse(c, x, -102, 7, 7, i % 2 ? RV.ruby : RV.emerald); }
+      for (let i = 0; i < 6; i++) strokePath(c, `M ${-300 + i * 120} -40 c 20 -24 40 -24 60 0`, rgba(RV.goldLt, .6), 3);
+      strokePath(c, 'M -436 -296 C -420 -320 -396 -320 -388 -296', rgba(RV.goldLt, .9), 4);
+    });
+    // the wheel: a gold rim, twelve spokes, a hub
+    c.save(); c.translate(-60, 70); c.rotate(o.spin ?? t * 2);
+    c.strokeStyle = C('goldSh'); c.lineWidth = 34; c.beginPath(); c.arc(0, 0, 170, 0, TAU); c.stroke();
+    c.strokeStyle = C('gold'); c.lineWidth = 18; c.beginPath(); c.arc(0, 0, 170, 0, TAU); c.stroke();
+    for (let i = 0; i < 12; i++) { c.rotate(TAU / 12); fillPath(c, 'M -6 0 L 6 0 L 4 -160 L -4 -160 Z', C('gold')); }
+    ellipse(c, 0, 0, 40, 40, C('gold')); if (!one) { ellipse(c, 0, 0, 18, 18, RV.ruby); for (let i = 0; i < 16; i++) ellipse(c, Math.cos(i * TAU / 16) * 170, Math.sin(i * TAU / 16) * 170, 5, 5, RV.goldLt); }
+    c.restore();
+  }
+}
+
+// rvBlade(c, o): Ravana's sword, close: a long curved blade along -y from the hilt at (0, 0) to the tip at about
+//   (60, -1000), a gold hilt with a ruby below. o: glint (0..1 a flash of light running up the blade), col.
+function rvBlade(c, o = {}) {
+  const one = o.col, C = (k) => one || RV[k];
+  fillPath(c, 'M -20 40 L 20 40 L 16 220 L -16 220 Z', C('wood'));
+  for (let i = 0; i < 6; i++) strokePath(c, `M -18 ${60 + i * 28} L 18 ${74 + i * 28}`, C('gold'), 4);
+  ellipse(c, 0, 240, 30, 26, C('gold')); if (!one) ellipse(c, 0, 240, 12, 12, RV.ruby);
+  fillPath(c, 'M -110 20 C -60 0 60 0 110 20 L 104 44 C 60 30 -60 30 -104 44 Z', C('gold')); if (!one) ellipse(c, 0, 24, 14, 14, RV.ruby);
+  const BL = 'M -34 0 C -40 -300 -20 -640 30 -880 C 44 -940 56 -980 64 -1010 C 62 -960 58 -900 52 -860 C 40 -620 40 -300 34 0 Z';
+  fillPath(c, BL, C('steel'));
+  if (!one) {
+    inside(c, BL, () => {
+      fillPath(c, 'M 0 0 C -4 -300 14 -640 50 -880 L 80 -1020 L 80 20 Z', RV.steelSh);
+      strokePath(c, 'M -6 -20 C -10 -300 4 -600 34 -820', rgba('#5E6670', .9), 6);
+      if (o.glint != null) { const y = lerp(40, -1040, o.glint); fillPath(c, `M -80 ${y + 80} L 100 ${y - 40} L 100 ${y - 10} L -80 ${y + 110} Z`, rgba('#FFFFFF', .85)); }
+    });
+    if (o.glint != null) { const g = o.glint, y = lerp(0, -1000, g); glow(c, lerp(-10, 60, g * g), y, 140, '#E8F0FF', .8 * Math.sin(g * Math.PI)); }
+  }
 }

@@ -593,3 +593,43 @@ function goldThrone(c, o = {}) {
     }
   }
 }
+
+// ---------- the Jatayu story: Panchavati and the pyre ----------
+// hut(c, x, y, k, o): a parnakuti, a forest hut of poles and thatch, its door glowing, at (x, y) (the ground), about
+//   420 wide at k 1. o: col (body), lit (the door's light, 0..1), t.
+function hut(c, x, y, k, o = {}) {
+  const col = o.col || '#1A1018', lit = o.lit ?? .6, t = o.t || 0;
+  c.save(); c.translate(x, y); c.scale(k, k);
+  fillPath(c, 'M -190 0 L -180 -170 L 180 -170 L 190 0 Z', col);
+  fillPath(c, 'M -250 -150 C -180 -260 -60 -330 0 -340 C 60 -330 180 -260 250 -150 C 200 -160 100 -170 0 -172 C -100 -170 -200 -160 -250 -150 Z', mixCol(col, '#000000', .2));
+  for (let i = 0; i < 18; i++) { const u = i / 17, xx = lerp(-240, 240, u); strokePath(c, `M ${xx * .1} -336 L ${xx} ${-150 - Math.abs(xx) * .02}`, rgba('#000', .25), 3); }
+  fillPath(c, 'M -40 0 L -40 -120 C -40 -140 40 -140 40 -120 L 40 0 Z', rgba('#FFB050', .25 + .5 * lit * (.9 + .1 * Math.sin(t * 7))));
+  c.restore();
+  if (lit) glow(c, x, y - 60 * k, 140 * k, '#FFA040', .35 * lit);
+}
+// forestTree(c, x, y, k, o): a great old tree with a thick trunk and a spreading crown, a long low branch reaching to
+//   screen right (a bird perches at about (x + 330 k, y - 980 k)), about 900 wide and 1200 tall at k 1. o: col, t.
+function forestTree(c, x, y, k, o = {}) {
+  const col = o.col || '#120A12', t = o.t || 0;
+  c.save(); c.translate(x, y); c.scale(k, k);
+  fillPath(c, 'M -90 0 C -70 -300 -60 -600 -40 -900 L 40 -900 C 50 -600 70 -300 110 0 Z', col);
+  for (const [a, b, w] of [[[-40, -780], [-300, -1000], 50], [[30, -820], [380, -980], 46], [[0, -880], [-120, -1200], 40], [[20, -880], [200, -1180], 40], [[-30, -600], [-260, -700], 34]]) limb(c, [a, [lerp(a[0], b[0], .5), lerp(a[1], b[1], .5) - 30], b], [w, w * .7, w * .4], col);
+  for (const [cx, cy, r] of [[-280, -1060, 200], [0, -1220, 240], [260, -1120, 210], [-120, -1000, 190], [150, -1000, 170], [420, -1020, 120]]) {
+    c.fillStyle = col; c.beginPath();
+    for (let i = 0; i <= 28; i++) { const a = i / 28 * TAU, rr = r * (1 + .12 * Math.sin(i * 3.7 + cx) + .03 * Math.sin(t * 1.3 + i)); c.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr * .7); }
+    c.closePath(); c.fill();
+  }
+  c.restore();
+}
+// pyre(c, x, y, w, t, k): a funeral pyre: crossed logs stacked w wide at (x, y), and its fire, k = 0..1+ how high.
+function pyre(c, x, y, w, t, k = 1) {
+  glow(c, x, y - w * .5 * k, w * 2.4 * Math.max(.4, k), '#FF7A26', .5);
+  for (let i = 0; i < 5; i++) { const yy = y - i * w * .07, ww = w * (1 - i * .08); for (const s of [-1, 1]) { c.save(); c.translate(x, yy); c.rotate(s * .06); fillPath(c, `M ${-ww / 2} -12 L ${ww / 2} -16 L ${ww / 2} 14 L ${-ww / 2} 12 Z`, i % 2 ? '#2A140C' : '#3A1C10'); strokePath(c, `M ${-ww / 2} -12 L ${ww / 2} -16`, rgba('#FF9A40', .6), 3); c.restore(); } }
+  c.save(); c.globalCompositeOperation = 'lighter';
+  const base = y - w * .32, N = 15;
+  for (const [layer, col, sc] of [[0, '#C8321A', 1.15], [1, '#FF7A22', .9], [2, '#FFC04A', .62], [3, '#FFF3C4', .32]]) for (let i = 0; i < N; i++) {
+    const u = (i + .5) / N - .5, bx = x + u * w * .9 * (1 - layer * .12), hh = w * k * sc * (.5 + .5 * Math.cos(u * Math.PI)) * (.75 + .25 * Math.sin(t * (6 + i) + i * 2.3 + layer)), lean = Math.sin(t * 2.6 + i) * w * .05, ww = w * .09;
+    c.fillStyle = rgba(col, .75); c.beginPath(); c.moveTo(bx - ww, base); c.quadraticCurveTo(bx - ww * 1.1, base - hh * .5, bx + lean, base - hh); c.quadraticCurveTo(bx + ww * 1.1, base - hh * .5, bx + ww, base); c.closePath(); c.fill();
+  }
+  c.restore();
+}
