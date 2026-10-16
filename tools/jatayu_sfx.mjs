@@ -15,9 +15,9 @@ import { existsSync } from 'node:fs';
 import { clamp, track, tone, noise, bell, mixb, whoosh, crackle, crunch, clang, plink, shimmer, env, note, seed, rnd, thunder, wind, drum, fire, om, conch, chime, chirp, roar, rockfall, heart, laughter, thud, slide, rumble, screech, wingbeat } from './sfx.mjs';
 
 const TL = { hook: 0, panch: 4.6, take: 9.4, mules: 11.6, cry: 13.4, wake: 15.4, snap: 15.75, rise: 18.2, spread: 19.0,
-  old: 20.5, live: 22.9, fight: 25.25, bow: 27.6, snapBow: 28.6, smashT: 30.0, smash: 30.9, crash: 32.6, land: 33.2,
-  arms: 35.0, tear: 35.3, grow: 37.5, tired: 39.9, sword: 42.4, swing: 44.8, cut: 45.2, sita: 48.2, away: 50.8,
-  back: 52.75, alone: 53.2, ram: 56.0, dies: 59.25, pyre: 61.0, anyway: 65.3, jai: 65.5, ask: 68.1, card: 71.0, end: 76.0 };
+  old: 20.5, live: 23.6, fight: 26.0, bow: 28.35, snapBow: 29.35, smashT: 30.75, smash: 31.65, crash: 33.35, land: 33.95,
+  arms: 35.75, tear: 36.05, grow: 38.25, tired: 40.65, sword: 43.7, swing: 45.55, cut: 45.95, sita: 48.95, away: 51.55,
+  back: 53.5, alone: 53.95, ram: 57.0, dies: 60.0, pyre: 61.75, anyway: 66.05, jai: 66.25, ask: 68.85, card: 72.0, end: 77.0 };
 const T = track(TL.end);
 seed(21);
 const pent = [0, 2, 4, 7, 9];
@@ -71,6 +71,7 @@ T.at(TL.old + 1.2, thunder(2, .6), .3, .4);
 
 // ---------- "while I live" (22.9–25.25) ----------
 T.at(TL.live, heart(1), .3); T.at(TL.live + .8, heart(1), .32); T.at(TL.live + 1.5, heart(1), .34);
+T.at(TL.old + 2.6, heart(1), .28);
 T.at(TL.live + 1.2, screech(.7, 2400, 1), .16);
 T.at(TL.fight - 1.0, whoosh(1.0, 200, 3000, 1), .4);
 
@@ -111,7 +112,7 @@ T.at(TL.grow + .6, laughter(1.8, 1), .32);
 T.at(TL.tired, wind(2.6, 17, .6), .2);
 T.at(TL.tired + .1, breath(2.4), .18);
 T.at(TL.tired + .5, wingbeat(.7, 1.4), .3); T.at(TL.tired + 1.6, wingbeat(.6, 1.5), .26);
-for (const h of [40.2, 41.1, 42.0]) T.at(h, heart(.8), .3);
+for (const d of [.3, 1.2, 2.1, 3.0]) T.at(TL.tired + d, heart(.8), .3);
 
 // ---------- the sword (42.4–45.2) ----------
 T.at(TL.sword + .2, shing(1), .45, .2);
@@ -138,7 +139,7 @@ T.at(TL.away + 1.6, plink(note(96), 1), .08, -.1); T.at(TL.away + 2.1, plink(not
 // ---------- night: alone, still breathing (53.2–56.0) ----------
 for (let i = 0; i < 5; i++) T.at(TL.alone + .2 + i * .9, cricket(.5, 4500 + i * 80), .02, rnd() - .5);
 T.at(TL.alone, wind(TL.ram - TL.alone + .4, 29, .8), .1);
-for (const h of [53.6, 54.8, 56.2, 57.8]) T.at(h, heart(.7), .22);
+for (const d of [.4, 1.6, 3.0, 4.6]) T.at(TL.alone + d, heart(.7), .22);
 
 // ---------- Ram cradles him; he dies (56.0–61.0) ----------
 T.at(TL.ram + .1, noise(.5, { hp: 300, lp: 2000, e: env.hann(), amp: 1 }), .1);   // he kneels
@@ -165,13 +166,20 @@ T.at(TL.card, chime(note(84), 1, 3), .2, -.2); T.at(TL.card + .25, chime(note(88
 T.write('assets/jatayu_sfx.wav');
 
 // ---------- the score under it, on a level curve: a little lower under the opening captions, full through the fight,
-// cut to a whisper from the sword's stroke until its own swell at 52.75 (Lyria played its hush late, at 49.5), then
-// full again; faded out under the card's chimes ----------
-const SCORE = 'assets/jatayu_score.mp3';   // Lyria take 4 of 6, used as it came (its hits: 15.75, 19.0, 25.25, 37.5; its hush 49.5–52.5; the choir at 65.5)
+// cut to a whisper from the sword's stroke until its own swell (TL.back; Lyria played its hush late), then full again;
+// faded out under the card's chimes ----------
+const SCORE = 'assets/jatayu_score.mp3';   // Lyria take 4 of 6 (its hits: 15.75, 19.0, 25.25, 37.5; its hush 49.5–52.5; the choir at 65.5)
+const S0 = 19.0, S1 = 25.25, K = 1.12;     // its defiant passage is stretched ×1.12 (+0.75 s) so a three-line caption gets its time
 if (existsSync(SCORE)) {
-  const lv = `if(lt(t,15.4),0.85,if(lt(t,45.2),1,if(lt(t,45.5),1-(t-45.2)/0.3*0.94,if(lt(t,52.6),0.06,if(lt(t,52.8),0.06+(t-52.6)/0.2*0.94,1)))))`;
+  const c0 = TL.cut, c1 = TL.back - .15;
+  const lv = `if(lt(t,15.4),0.85,if(lt(t,${c0}),1,if(lt(t,${c0 + .3}),1-(t-${c0})/0.3*0.94,if(lt(t,${c1}),0.06,if(lt(t,${c1 + .2}),0.06+(t-${c1})/0.2*0.94,1)))))`;
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', SCORE, '-i', 'assets/jatayu_sfx.wav', '-filter_complex', [
-    `[0:a]aresample=48000,atrim=0:${TL.end},asetpts=PTS-STARTPTS,volume='${lv}':eval=frame,volume=0.42,afade=t=out:st=72.4:d=2.4[m]`,
+    `[0:a]aresample=48000,asplit=3[a][b][c]`,
+    `[a]atrim=0:${S0 + .03},asetpts=PTS-STARTPTS[p0]`,
+    `[b]atrim=${S0 - .03}:${S1 + .03},asetpts=PTS-STARTPTS,atempo=${(1 / K).toFixed(4)}[p1]`,
+    `[c]atrim=${S1 - .03},asetpts=PTS-STARTPTS[p2]`,
+    '[p0][p1]acrossfade=d=0.06[q]', '[q][p2]acrossfade=d=0.06[sc]',
+    `[sc]atrim=0:${TL.end},asetpts=PTS-STARTPTS,volume='${lv}':eval=frame,volume=0.42,afade=t=out:st=${TL.card + .4}:d=2.4[m]`,
     '[1:a]volume=1.5[s]', '[m][s]amix=inputs=2:duration=longest:normalize=0,loudnorm=I=-15:TP=-1.5:LRA=14,aresample=48000[o]'].join(';'),
     '-map', '[o]', '-t', String(TL.end), '-ar', '48000', '-ac', '2', 'assets/jatayu_mix.wav'], { stdio: 'inherit' });
   console.log('wrote assets/jatayu_mix.wav');

@@ -1,4 +1,4 @@
-# "The FIRST to fight RAVANA for SITA wasn't Ram." Jatayu vs Ravana (Cinematic · Follow card · 76 s)
+# "The FIRST to fight RAVANA for SITA wasn't Ram." Jatayu vs Ravana (Cinematic · Follow card · 77 s)
 
 A captioned retelling in the **Cinematic** style ([CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md)) of Jatayu's fight with
 Ravana, as the Valmiki Ramayana tells it (Aranya Kanda). There is no voice. The captions tell it, synthesized SFX carry
@@ -48,30 +48,33 @@ the first battle in her defence. "In Ram's arms" stages 3.67's embrace and 3.68'
 
 | time | shot | palette | caption |
 |------|------|---------|---------|
-| 0.0–5.0 | **The hook.** Jatayu's old head in profile, the gold circlet, the silver ruff, the dusk sun behind the beak; push in. Frame 0 is finished, with the caption lit. | red dusk | The FIRST to fight / RAVANA for SITA / wasn't Ram. → It was a / 60,000-year-old / BIRD. |
-| 4.6–9.8 | Panchavati at dusk: the great tree with Jatayu perched, the hut's lit door, the river; Ram (raising his hand) and Sita in silhouette. | dusk violet | He was King / DASHARATHA's / friend. → He promised RAM / he would guard / SITA. |
+| 0.0–5.0 | **The hook.** Jatayu's old head in profile, the gold circlet, the silver ruff, the dusk sun behind the beak; push in. Frame 0 is finished, with the caption lit. | red dusk | The FIRST to fight / RAVANA for SITA / wasn't Ram. → A 60,000-year-old / BIRD. |
+| 4.6–9.8 | Panchavati at dusk: the great tree with Jatayu perched, the hut's lit door, the river; Ram (raising his hand) and Sita in silhouette. | dusk violet | He was King / DASHARATHA's friend. → He promised RAM / he would guard SITA. |
 | 9.4–11.9 | The gold chariot crosses the storm, Ravana holding Sita; lightning. | storm red | Then RAVANA / took her. |
-| 11.6–13.7 | Close on the two mules: donkey ears, fire for eyes, fanged grins. | storm red | His gold chariot / was pulled by / GHOST-FACED MULES. |
+| 11.6–13.7 | Close on the two mules: donkey ears, fire for eyes, fanged grins. | storm red | Pulled by / GHOST-FACED MULES. |
 | 13.4–15.7 | Sita reaching down, in tears; far below, a bird asleep on a tree. | storm red | "JATAYU! / Tell RAM!" |
-| 15.4–18.5 | The head, eyes shut; at 15.75 (the score's hit) the eye snaps open, a gold flash, a push. | violet | He was ASLEEP. / Her cry / woke him. |
+| 15.4–18.5 | The head, eyes shut; at 15.75 (the score's hit) the eye snaps open, a gold flash, a push. | violet | He was ASLEEP. / Her cry woke him. |
 | 18.2–20.8 | **The rise.** Jatayu front-on against the red sun; at 19.0 the wings sweep down across the whole frame. | red sun | "RAVANA! / Let her GO." |
-| 20.5–23.2 | Ravana laughing in the chariot, holding Sita. | storm | "I am OLD. / You are young, / armed, in a chariot." |
-| 22.9–25.45 | The face again, fierce, the beak opening; a hard push into 25.25. | red | "But you will NOT / take her / while I LIVE." |
-| 25.2–27.9 | **The fight** (the score's big hit at 25.25): a storm of arrows from the chariot; he dives through them. | storm | RAVANA shot / a STORM / of arrows. |
-| 27.6–30.3 | Close: the talons come down on the gem-set bow; it snaps at 28.6, pearls scattering. | storm | He SNAPPED / Ravana's bow. |
-| 30.0–32.9 | He strikes the rig at 30.9: the mules fall, the charioteer drops away, the chariot breaks up in gold debris. | storm | Killed the MULES, / the CHARIOTEER, / SMASHED the chariot. |
-| 32.6–35.3 | Ravana crashes down with Sita at 33.2 (dust, cracks, a shake). | storm | Ravana CRASHED / to the ground. |
-| 35.0–40.2 | Silhouettes against lightning: ten arms torn from his left side (35.3–36.4), each flying off; the score's stop; at 37.5 they grow back in a red flare, and he laughs. | storm | He tore off / TEN of Ravana's / ARMS. → They grew / BACK. |
-| 39.9–42.7 | Jatayu on the ground, wings drooping, chest heaving, feathers coming loose. | cold blue | But he was OLD. / And he was / TIRED. |
-| 42.4–45.25 | Ravana's sword, close; a glint runs up the blade; the swing at 44.8. | steel | RAVANA drew / his SWORD. |
-| 45.2–48.6 | **The cut** at 45.2: a white flash, the score cut to a whisper. He falls without wings through a pale sky; feathers drift. | pale | …and cut off / his WINGS. |
-| 48.2–51.2 | Moonlight: Sita kneels beside him and weeps. | night | SITA held him / and wept. |
-| 50.8–53.6 | Ravana flies off with her; her anklet falls, a spark; the score returns at 52.75. | night | Ravana seized her / and flew away. |
-| 53.2–56.4 | Alone on the rocks, still breathing; the moon crosses the sky. | night blue | Broken, bleeding, / he was still ALIVE / when RAM came. |
-| 56.0–61.4 | Ram kneels in silhouette and cradles him, his bow thrown down; at 59.25 the eye closes. | moon | "RAVANA took her. / SOUTH." → And he died / in RAM's arms. |
-| 61.0–65.7 | Dusk: the pyre, Ram before it with hands joined, embers rising. | fire | RAM lit his pyre / himself, → as for his own / FATHER. |
-| 65.3–71.5 | Dawn: his spirit, whole, in light, rising toward the sun; the choir sings "Jai Shri Ram" at 65.5. | dawn gold | He couldn't win. / He fought / ANYWAY. → Is there a JATAYU / temple near YOU? / Comment your city! |
-| 71.0–76.0 | The Follow card: RK logo, JAI SHRI RAM, a gold Jatayu, "Stories of Ram and the gods", Follow @therishikatha, rishikatha.com. Held, with no fade. | teal | |
+| 20.5–23.9 | Ravana laughing in the chariot, holding Sita. | storm | "I am OLD. / You are young, / armed, in a chariot." |
+| 23.6–26.2 | The face again, fierce, the beak opening; a hard push into 26.0. | red | "You will NOT take her / while I LIVE." |
+| 25.95–28.65 | **The fight** (the score's big hit at 26.0): a storm of arrows from the chariot; he dives through them. | storm | RAVANA shot / a STORM of arrows. |
+| 28.35–31.05 | Close: the talons come down on the gem-set bow; it snaps at 29.35, pearls scattering. | storm | He SNAPPED / Ravana's bow. |
+| 30.75–33.65 | He strikes the rig at 31.65: the mules fall, the charioteer drops away, the chariot breaks up in gold debris. | storm | Killed the MULES, / the CHARIOTEER, / SMASHED the chariot. |
+| 33.35–36.05 | Ravana crashes down with Sita at 33.95 (dust, cracks, a shake). | storm | Ravana CRASHED / to the ground. |
+| 35.75–40.95 | Silhouettes against lightning: ten arms torn from his left side (36.05–37.15), each flying off; the score's stop; at 38.25 they grow back in a red flare, and he laughs. | storm | He tore off TEN / of Ravana's ARMS. → They grew / BACK. |
+| 40.65–44.0 | Jatayu on the ground, wings drooping, chest heaving, feathers coming loose. | cold blue | But he was OLD. / And he was / TIRED. |
+| 43.7–46.0 | Ravana's sword, close; a glint runs up the blade; the swing at 45.55. | steel | RAVANA drew / his SWORD. |
+| 45.95–49.35 | **The cut** at 45.95: a white flash, the score cut to a whisper. He falls without wings through a pale sky; feathers drift. | pale | …and cut off / his WINGS. |
+| 48.95–51.95 | Moonlight: Sita kneels beside him and weeps. | night | SITA held him / and wept. |
+| 51.55–54.35 | Ravana flies off with her; her anklet falls, a spark; the score returns at 53.5. | night | Ravana seized her / and flew away. |
+| 53.95–57.4 | Alone on the rocks, still breathing; the moon crosses the sky. | night blue | Broken, bleeding, / he was still ALIVE / when RAM came. |
+| 57.0–62.15 | Ram kneels in silhouette and cradles him, his bow thrown down; at 60.0 the eye closes. | moon | "RAVANA took her. / SOUTH." → And he died / in RAM's arms. |
+| 61.75–66.45 | Dusk: the pyre, Ram before it with hands joined, embers rising. | fire | RAM lit his pyre / himself, → as for his own / FATHER. |
+| 66.05–72.5 | Dawn: his spirit, whole, in light, rising toward the sun; the choir sings "Jai Shri Ram" at 66.25. | dawn gold | He couldn't win. / He fought ANYWAY. → Is there a JATAYU / temple near YOU? / Comment your city! |
+| 72.0–77.0 | The Follow card: RK logo, JAI SHRI RAM, a gold Jatayu, "Stories of Ram and the gods", Follow @therishikatha, rishikatha.com. Held, with no fade. | teal | |
+
+Captions: every three-line caption is on screen at least 3.2 s and lit by 70% of its window (`say()` does it; the
+owner found the 2.3 s three-liners fast). Where the score's hits left no room, the line was cut to two lines.
 
 ## Files
 - Scene: `src/scenes/jatayu.js` (times in `TL`), props `src/scenes/jatayu_props.js` (the skies, Ravana's `rig` in the
@@ -82,8 +85,9 @@ the first battle in her defence. "In Ram's arms" stages 3.67's embrace and 3.68'
   `ramSil({ namaste })`, `ramKneel()`; `hut()`, `forestTree()`, `pyre()`; `deviHead({ pal, crown: false })`;
   `screech` and `wingbeat` in `tools/sfx.mjs`; sheet panels 49–61 and `docs/cine_cast_jatayu.jpg`.
 - Sound: `tools/jatayu_sfx.mjs` → `assets/jatayu_sfx.wav`, then the mix → `assets/jatayu_mix.wav`: the score at .42 on a
-  level curve (.85 under the opening captions, cut to .06 from the sword's stroke at 45.2 to the score's own swell at
-  52.75), faded out from 72.4; the SFX at 1.5 on top; loudnorm −15 LUFS.
+  level curve (.85 under the opening captions, cut to .06 from the sword's stroke at 45.95 to the score's own swell at
+  53.5), faded out from 72.4; its 19.0–25.25 passage stretched ×1.12 (atempo) so the three-line "I am OLD" caption gets
+  3.2 s and every later hit moves +0.75 s; the SFX at 1.5 on top; loudnorm −15 LUFS.
 - The score: `tools/jatayu_score.txt` → `assets/jatayu_score.mp3`, Lyria take 4 of 6 (all six in `out/lyria_jatayu/`),
   used as it came. The brief pinned "96 BPM in 4/4, exactly 30 bars, 75 seconds". Takes 1 and 4 came back at ~76 s,
   2, 3 and 6 stretched to 108–120 s, and 5 returned no audio. Take 4 hits at 15.75, 19.0, 25.25 and 37.5 (after a stop
