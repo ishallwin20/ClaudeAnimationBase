@@ -202,6 +202,16 @@ export const swarmHum = (dur, n = 24, rise = 0, amp = 1, f = 210) => {
 
 // ---------- the timeline ----------
 // track(dur) → { at, write, L, R }: a stereo timeline. Sounds past either end are clipped.
+// a raptor's cry (Jatayu): a harsh falling scream with a fast vibrato and a breathy edge; f0 the start pitch
+export const screech = (dur = .9, f0 = 2600, amp = 1) => mixb(
+  tone(dur, t => f0 * (1 - .38 * t / dur) + 140 * Math.sin(t * 70), { type: 'saw', e: env.swell(.015, dur * .5), amp: .35 * amp }),
+  tone(dur, t => f0 * 1.5 * (1 - .38 * t / dur), { e: env.swell(.015, dur * .5), amp: .22 * amp }),
+  noise(dur, { hp: 1600, lp: 6500, e: env.swell(.01, dur * .6), amp: .5 * amp }));
+// one beat of great wings: a low air-push with a soft thump; k scales it (bigger, slower wings)
+export const wingbeat = (amp = 1, k = 1) => mixb(
+  noise(.5 * k, { lp: t => 180 + 1100 * Math.sin(Math.PI * clamp(t / (.5 * k))), hp: 40, e: env.hann(), amp: amp }),
+  tone(.3 * k, t => 70 * Math.exp(-t * 4) + 38, { e: env.pluck(10 / k), amp: .5 * amp }));
+
 export function track(dur) {
   const N = Math.round(SR * dur), L = new Float32Array(N), R = new Float32Array(N);
   // place a sound: start time (s), gain, pan -1..1 (equal-power)

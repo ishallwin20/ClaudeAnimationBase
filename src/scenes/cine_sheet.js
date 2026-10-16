@@ -7,6 +7,9 @@
 //   38–40 the Durgama story (ad 19): devi({ durga }) with eight arms, deviHead({ tears }), arunasura standing (ash pal)
 //   41–48 the Angad story (ad 20): vanara() as Angad (stand, head, plant, strike), vanaraFoot(), Ravana seated on
 //         goldThrone(), crowns off and rvCrown(), ramSil() with vanaraKneel()
+//   49–61 the Jatayu story: jatayu() perched, its head's faces, spread, fallen, its talon and a feather, black
+//         silhouette checks; sita() carried, kneeling, close; Ravana's chariot and mules, carrying Sita; the sword,
+//         lostLeft and rvBlade(); ramKneel(); hut(), forestTree(), ramSil({ namaste }), pyre()
 //   23–27 Nandi (a zebu: hump, dewlap, black muzzle) and the Nandi story: the stone temple Nandi, rishi, boy, devotee, Nandanar, sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
@@ -15,6 +18,7 @@
 //   node render.mjs --page=cine.html --sheet=28.5,29.5,30.5,31.5 --cols=4 --w=300 --out=docs/cine_cast_bhramari.jpg
 //   node render.mjs --page=cine.html --sheet=32.5,33.5,34.5,35.5,36.5,37.5 --cols=6 --w=300 --out=docs/cine_cast_surya.jpg
 //   node render.mjs --page=cine.html --sheet=41.5,42.5,43.5,44.5,45.5,46.5,47.5,48.5 --cols=4 --w=300 --out=docs/cine_cast_angad.jpg
+//   node render.mjs --page=cine.html --sheet=49.5,50.9,51.5,52.3,53.2,54.5,55.3,56.5,57.5,58.5,59.9,60.5 --cols=6 --w=300 --out=docs/cine_cast_jatayu.jpg
 const panel = (i, label, draw) => SHOTS.push({ a: i, b: i + 1, draw(c, u, t) { draw(c, u + 2, t); const g = c.createLinearGradient(0, 1540, 0, 1760); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.8)'); c.fillStyle = g; c.fillRect(0, 1540, W, 400); text(c, label, 540, 1700, '700 42px Cinzel', '#F4C46A', { glow: ['rgba(0,0,0,.9)', 18], maxW: 980 }); } });
 const cam0 = { z: 1 };
 const nightSky = (c) => { sky(c, [[0, '#070B17'], [700, '#152039'], [1400, '#2F3B5B'], [1900, '#3E4A68']]); glow(c, 840, 420, 520, '#7F97CC', .42); ellipse(c, 840, 420, 44, 44, '#E6ECF6'); };
@@ -156,3 +160,49 @@ panel(47, "ravana({ crowns: false, front: 'grab' })  ·  rvCrown()", (c, t) => {
   figure(c, (f) => { for (const [x, y, r, k] of [[250, 600, -.5, 'crown'], [800, 520, .4, 'mukut']]) { f.save(); f.translate(x, y); f.rotate(r); f.scale(1.3, 1.3); rvCrown(f, { kind: k }); f.restore(); } }, courtLight); });
 panel(48, 'ramSil({ bless })  ·  vanaraKneel()', (c, t) => { dawnSky(c); fillPath(c, 'M -100 1560 L 1180 1560 L 1180 2100 L -100 2100 Z', '#1C111B');
   figure(c, (f) => { f.translate(800, 1560); f.scale(.95, .95); ramSil(f, { t, bless: 1 }); f.setTransform(c.getTransform()); f.translate(260, 1560); f.scale(.9, .9); vanaraKneel(f, { t, bow: .5 + .5 * Math.sin(t * 2) }); }, { ...LIGHTS.dawnBack, tint: ['#1A0C14', .85] }); });
+// ---------- the Jatayu story: the king of eagles fights Ravana for Sita ----------
+const duskSky = (c) => { sky(c, [[0, '#140A1E'], [700, '#3A1A36'], [1300, '#9A3A2E'], [1700, '#E07A3A']]); glow(c, 700, 1450, 700, '#FF9A4A', .4); };
+const birdLight = { tint: ['#1A0A10', .12], edge: { col: '#FFC890', w: 2.4, a: .6 }, rim: { col: '#FFE0B0', dx: 6, dy: -3, a: .85, blur: 1 } };
+panel(49, "jatayu({ pose: 'perch' })", (c, t) => { duskSky(c);
+  strokePath(c, 'M -40 1350 C 300 1330 700 1360 1120 1300', '#140A0C', 34);
+  figure(c, (f) => { f.translate(500, 1340); f.scale(1.25, 1.25); jatayu(f, { t, pose: 'perch', tuck: Math.max(0, Math.sin(t)), eyes: Math.sin(t) > .3 ? 0 : 1 }); }, birdLight); });
+panel(50, "jatayuHead({ expr })", (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(420, 860); f.scale(3.4, 3.4); jatayuHead(f, { t, expr: ['calm', 'fierce', 'pain'][Math.floor(t * 1.5) % 3] }); }, { ...birdLight, rim: { ...birdLight.rim, dx: 9, dy: -4, blur: 1.5 } }); });
+panel(51, "jatayu({ pose: 'spread', flap })", (c, t) => { redSky(c); ellipse(c, 540, 1300, 300, 300, '#FFB060');
+  figure(c, (f) => { f.translate(540, 960); f.scale(.62, .62); jatayu(f, { t, pose: 'spread', flap: .5 + .5 * Math.sin(t * 2), strike: .5 + .5 * Math.sin(t * 1.3), expr: 'fierce' }); }, birdLight); });
+panel(52, "jatayu({ pose: 'fallen', wings: 'stumps' })", (c, t) => { nightSky(c); fillPath(c, 'M -100 1300 L 1180 1300 L 1180 2100 L -100 2100 Z', '#0E1220');
+  figure(c, (f) => { f.translate(420, 1300); f.scale(.95, .95); jatayu(f, { t, pose: 'fallen', wings: Math.sin(t) > 0 ? 'stumps' : true, breath: 1 }); }, LIGHTS.moon); });
+panel(53, 'jatayuTalon({ grip })  ·  feather()', (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(500, 1100); f.scale(1.3, 1.3); jatayuTalon(f, { t, grip: .5 + .5 * Math.sin(t * 2) }); }, birdLight);
+  feather(c, 860, 600, 1.2, .5 + Math.sin(t) * .3); });
+panel(54, 'silhouette check (col)', (c, t) => { sky(c, [[0, '#E8E0D0'], [1900, '#C8C0B0']]);
+  c.save(); c.translate(540, 700); c.scale(.4, .4); jatayu(c, { t, pose: 'spread', col: '#000' }); c.restore();
+  c.save(); c.translate(300, 1500); c.scale(.6, .6); jatayu(c, { t, pose: 'perch', col: '#000' }); c.restore();
+  c.save(); c.translate(700, 1560); c.scale(.4, .4); jatayu(c, { t, pose: 'fallen', col: '#000', wings: true }); c.restore(); });
+const sitaLight = { tint: ['#2A0A10', .1], edge: { col: '#FFC890', w: 2.4, a: .6 }, rim: { col: '#FFE0B0', dx: 6, dy: -3, a: .8, blur: 1 } };
+panel(55, "sita({ pose: 'carried', reach })", (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(600, 1800); f.scale(1.25, 1.25); sita(f, { t, pose: 'carried', reach: .5 + .5 * Math.sin(t * 2), lean: -.1, wind: .8, tears: .6 }); }, sitaLight); });
+panel(56, "sita({ pose: 'kneel', tears })", (c, t) => { sky(c, [[0, '#060A18'], [1900, '#18233E']]); fillPath(c, 'M -100 1640 L 1180 1640 L 1180 2100 L -100 2100 Z', '#0E1220');
+  figure(c, (f) => { f.translate(440, 1640); f.scale(1.25, 1.25); sita(f, { t, pose: 'kneel', tears: 1 }); }, LIGHTS.moon); });
+panel(57, "sita() close  ·  silhouette", (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(540, 900); f.scale(4.2, 4.2); f.translate(0, 815); sita(f, { t, pose: 'carried', reach: 1, wind: .6, tears: .5, look: [-1, 0] }); }, { ...sitaLight, rim: { ...sitaLight.rim, dx: 9, blur: 1.5 } });
+  c.save(); c.translate(860, 1700); c.scale(.4, .4); sita(c, { t, pose: 'carried', col: '#000' }); c.restore(); });
+const stormLight = { tint: ['#2A0A10', .18], edge: { col: '#FF9A6A', w: 2.4, a: .7 }, rim: { col: '#FFB08A', dx: 0, dy: -5, a: .8, blur: 1 } };
+panel(58, "ravanaChariot()  ·  rvMule()  ·  ravana({ frontR: 'carry' })  ·  sita()", (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(330, 1250); f.scale(.42, .42);
+    for (const dx of [1250, 1080]) { f.save(); f.translate(dx, -60 + (dx - 1080) * .2); f.scale(.95, .95); rvMule(f, { t: t + dx }); f.restore(); }
+    ravanaChariot(f, { t, layer: 'back', driver: true, glow: 1 });
+    f.save(); f.translate(-40, -40); f.scale(.82, .82); ravana(f, { t, frontR: 'carry', frontL: 'bow', expr: 'laugh' });
+    f.save(); f.translate(330, 20); f.scale(.85, .85); sita(f, { t, pose: 'carried', reach: 1, wind: .8 }); f.restore();
+    rvCarryArm(f, { t, hold: [300, -470] }); f.restore();
+    ravanaChariot(f, { t, layer: 'front' }); }, stormLight); });
+panel(59, "ravana({ frontL: 'sword', swing, lostLeft })  ·  rvBlade()", (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(440, 1800); f.scale(.9, .9); ravana(f, { t, frontL: 'sword', swing: .5 + .5 * Math.sin(t * 2), lostLeft: clamp((t - 2) * 1.25), expr: 'grit' }); }, stormLight);
+  figure(c, (f) => { f.translate(900, 1500); f.rotate(.15); f.scale(.9, .9); rvBlade(f, { glint: frac(t * .6) }); }, stormLight); });
+panel(60, "ramKneel() with jatayu({ pose: 'fallen' })  ·  ramSil({ namaste })  ·  pyre()", (c, t) => { nightSky(c); fillPath(c, 'M -100 1500 L 1180 1500 L 1180 2100 L -100 2100 Z', '#0A0C16');
+  figure(c, (f) => { f.translate(160, 1500); f.scale(.55, .55); jatayu(f, { t, pose: 'fallen', wings: 'stumps', eyes: .3 }); }, LIGHTS.moon);
+  figure(c, (f) => { f.translate(660, 1500); f.scale(.8, .8); ramKneel(f, { t, hold: [-300, -110] }); }, LIGHTS.moonSilhouette); });
+panel(61, "hut()  ·  forestTree()  ·  ramSil({ namaste })  ·  pyre()", (c, t) => { duskSky(c); fillPath(c, 'M -100 1560 L 1180 1560 L 1180 2100 L -100 2100 Z', '#140A10');
+  forestTree(c, 300, 1560, .7, { t }); hut(c, 760, 1560, .7, { t });
+  pyre(c, 300, 1800, 380, t, 1);
+  figure(c, (f) => { f.translate(760, 1900); f.scale(.6, .6); ramSil(f, { t, namaste: 1 }); }, LIGHTS.fire); });

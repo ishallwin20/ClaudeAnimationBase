@@ -13,7 +13,8 @@
 //   the Ocean's lotus, Indra's vajra) and the raised hands holding Vishnu's chakra (spinning) and Varuna's conch
 //   tears (0..1): wet lids and tear tracks, drops running down the cheeks (Shatakshi weeping; ad 19)
 //   skin, sari: colour overrides; armFx: figure() options for each arm (its own edge light: costly, colour shots only)
-// deviHead(c, o): the head alone (neck, hair, crown, jewellery, face) at its rest position; same options.
+// deviHead(c, o): the head alone (neck, hair, crown, jewellery, face) at its rest position; same options, and pal
+//   (colours over DEVI's) and crown (false: no mukut; Sita in cine_sita.js uses it so).
 const DEVI = {
   skin: '#8C5538', skinSh: '#6A3B27', skinDk: '#4D291B', palm: '#A86E50', lip: '#7E1E26', lipLo: '#A02C34',
   hair: '#120C12', hairLt: '#2E2230', eyeW: '#EEE6DA', iris: '#24140E', kohl: '#0C0708', brow: '#140C0E',
@@ -26,7 +27,7 @@ const DEVI = {
 const DV_FACE = 'M 0 -749 C 8 -749 15 -751 21 -756 C 30 -763 37 -775 41 -789 C 44 -801 45.5 -813 45.5 -826 C 46 -846 43 -862 35 -872 C 26 -882 -26 -882 -35 -872 C -43 -862 -46 -846 -45.5 -826 C -45.5 -813 -44 -801 -41 -789 C -37 -775 -30 -763 -21 -756 C -15 -751 -8 -749 0 -749 Z';
 const DV_NECK = 'M -25 -700 C -23 -726 -25 -752 -29 -790 L 29 -790 C 25 -752 23 -726 25 -700 Z';
 function deviHead(c, o = {}) {
-  const t = o.t || 0, eyes = o.eyes ?? 1, L = o.light ?? 1, g = o.wind ?? 0, S = { ...DEVI, ...(o.skin ? { skin: o.skin } : {}) };
+  const t = o.t || 0, eyes = o.eyes ?? 1, L = o.light ?? 1, g = o.wind ?? 0, S = { ...DEVI, ...(o.pal || {}), ...(o.skin ? { skin: o.skin } : {}) };
   // neck, the jaw's shadow
   fillPath(c, DV_NECK, S.skin);
   inside(c, DV_NECK, () => {
@@ -120,7 +121,7 @@ function deviHead(c, o = {}) {
   strokePath(c, 'M 0 -872 L 0 -852', '#C8142A', 2.6);                    // sindoor in the parting
   // the maang tikka: a chain down the parting to a pendant on the forehead
   strokePath(c, 'M 0 -900 L 0 -872', S.gold, 1.6); ellipse(c, 0, -866, 4.4, 5.2, S.gold); ellipse(c, 0, -866, 2.2, 2.8, S.ruby);
-  deviCrown(c, t);
+  if (o.crown !== false) deviCrown(c, t);
 }
 // the mukut: a jewelled band and a tall tiered crown with a finial, flared wings at the sides
 function deviCrown(c, t) {
