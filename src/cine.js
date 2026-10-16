@@ -260,13 +260,16 @@ const strikes = (t, ts) => ts.reduce((s, t0) => { const u = t - t0; return u < 0
 // say(a, b, text, o): a caption chunk on screen from a to b. Words light up one by one as they're spoken: from o.at
 // (word start times, e.g. from TTS timestamps) or, without them, spread over [a + o.lead, b - o.tail] by length.
 // Words wrapped in *stars* are names and land in gold; a lone | breaks the line. o.y = centre line (screen px), o.size.
+// A caption of three lines or more needs at least 3.2 s on screen (the owner finds them fast otherwise).
 const CAPTIONS = [];
 const CAP = { font: 'Cinzel', weight: 700, size: 56, y: 960, x: 520, maxW: 820, lit: '#FFF3DC', gold: '#F4C46A', dim: .34 };
 function say(a, b, text, o = {}) {
   const words = []; text.split(/\s+/).filter(Boolean).forEach(w => w === '|' ? (words.length && (words[words.length - 1].br = true)) : words.push({ txt: w.replace(/\*/g, ''), gold: /\*/.test(w) }));
   let at = o.at;
   if (!at) {
-    const s0 = a + (o.lead ?? .05), s1 = b - (o.tail ?? .45), lens = words.map(w => w.txt.length + 2), tot = lens.reduce((x, y) => x + y, 0);
+    // three lines or more: finish lighting by 70% of the window, so the whole caption sits lit for the last ~1 s
+    const nl = words.filter(w => w.br).length + 1, tail = o.tail ?? (nl >= 3 ? Math.max(.45, (b - a) * .3) : .45);
+    const s0 = a + (o.lead ?? .05), s1 = b - tail, lens = words.map(w => w.txt.length + 2), tot = lens.reduce((x, y) => x + y, 0);
     let acc = 0; at = lens.map(l => { const v = s0 + (s1 - s0) * acc / tot; acc += l; return v; });
   }
   words.forEach((w, i) => w.t = at[i]);
