@@ -1,0 +1,18 @@
+A SHORT film-score cue for a 75-second reel: tempo 96 BPM in 4/4, exactly 30 bars, 75 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:15. Every section below is short; keep moving.
+Epic Indian mythological film score for the Ramayana: an ancient, noble king of eagles fights the demon king Ravana in
+the sky to save Sita, and falls. Taiko, dhol and nagada drums, low brass, cellos and full strings, a tanpura drone, a
+shehnai, a bansuri, a solo female voice (wordless), a male choir. Heroic, tragic and huge, like a war film's best scene.
+Instrumental, except the male choir singing "Jai Shri Ram" where asked.
+
+0:00-0:05  A huge drum and low brass HIT on the very first beat, then an ancient low drone and a lone, old bansuri.
+0:05-0:14  Tender and noble (bansuri, warm strings) for five seconds, then darkening: tremolo strings, a distant thunder drum at 0:09.5, rising dread.
+0:14-0:18  A wordless female vocal cry at 0:14, a racing heartbeat drum, then a huge awakening HIT at 0:16.6.
+0:18-0:26  Heroic and defiant: soaring horns, choir vowels, a rising drum roll; stop-time accents; a colossal HIT at 0:26.0.
+0:26-0:39  The battle in the sky: fast taiko and dhol, a driving low-brass ostinato, strings slashing; big hits at 0:29.2 and 0:33.3; a triumphant swell at 0:37.4.
+0:39-0:44  The hero tires: the tempo feels heavy, slow strings, labored drums, one dark low drum at 0:44.0.
+0:44-0:52  Near silence: one high sustained string note, then a mourning shehnai alone from 0:47.
+0:52-1:04  Grief turning devotional: a solo cello, a bansuri, the male choir humming softly, warm strings swelling at 1:00.
+1:04-1:15  A radiant golden rise: full strings and choir; at 1:05.5 the male choir sings "Jai Shri Ram" twice, majestic; then a warm held chord with soft bells, fading out completely by 1:15.
+
+Total length: 75 seconds, 30 bars at 96 BPM. End at 1:15.
