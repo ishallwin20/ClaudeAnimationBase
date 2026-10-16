@@ -118,8 +118,16 @@ prayed and failed" (it gave a 2.7 s pause).
 ```sh
 node tools/sarvam_tts.mjs --script=tools/ganga_vo.json
 node tools/ganga_sfx.mjs
-rm -rf out/frames && node render.mjs --frames --workers=4 && node render.mjs --encode --out=out/ganga.mp4
+rm -rf out/frames && node render.mjs --frames --workers=4 && node render.mjs --encode --out=out/ganga_out/ganga.mp4
+node render.mjs --page=cover.html --stills=0 --out=out/ganga_out && mv out/ganga_out/t0_00.png out/ganga_out/cover.png
 ```
+The deliverables sit together in `out/ganga_out/`: `ganga.mp4`, `cover.png`, `captions.txt` (the Instagram caption below,
+the pinned comment at the bottom).
+
+## Cover
+`cover.html` (studio.html + `src/scenes/ganga_cover.js`): Shiva, his locks spread wide, the river of heaven pouring
+into his jata in a storm; "GANGA FELL FROM HEAVEN." and "SHIVA CAUGHT HER / IN HIS HAIR", inside the 3:4 grid crop
+(y 240–1680).
 
 ## Instagram caption
 ```
