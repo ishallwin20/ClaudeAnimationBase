@@ -2,3 +2,7 @@ node_modules
 out/
 .DS_Store
 assets/[0-9]-*/
+.env
+assets/durga-maa-all-avatars/
+assets/vo/*/*.wav
+!assets/vo/*/*.raw.wav

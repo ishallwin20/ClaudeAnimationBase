@@ -18,7 +18,8 @@
 //   ears:   ear (0..1 flared out), earL / earR
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK. Plain 'normal' / 'look' eyes are his own
 //           round glossy ones with brows; every other kind is Clawd's.
-//   extras: emote + emoteK + emoteAge, armL(u, sw) / armR(u, sw) (hooks at the hand), crownTilt (tips the turban)
+//   extras: emote + emoteK + emoteAge, armL(u, sw) / armR(u, sw) (hooks at the hand), crownTilt (tips the turban),
+//           held(u, sw) (body space, sitting coordinates: drawn over the belly and under folded arms and the head, a hug)
 //   boil:   boilKey, noShadow
 const BAL = {
   skin: '#F4876A', skinDk: '#DC5E43', skinLt: '#FFB59C', earIn: '#EE6A45', ink: '#5A3520',
@@ -142,6 +143,7 @@ function balBappa(x, y, u, o = {}) {
     pop(); pop();
   };
   const cross = clamp(o.cross || 0);
+  if (o.held) { rs('held'); o.held(u, sw); }   // hugged things: over the belly, under folded arms and the head
   if (cross > .5) {   // folded arms: two fat ribbons across the belly, the right one on top
     rs('cross');
     paint(ribbon(P([[-2.7, -5.7], [-2, -4.3], [0, -3.9], [1.7, -4.2]]), 1.3 * u, 1.05 * u), { wash: col, fill: dk, fillOp: 50, tex: .5, ink: INK, sw: sw * .85 });
