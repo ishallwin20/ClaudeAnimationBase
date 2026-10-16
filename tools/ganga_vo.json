@@ -1,0 +1,24 @@
+{
+  "name": "ganga",
+  "defaults": { "speaker": "girish_en_devotional", "lang": "en-IN", "pace": 1.2 },
+  "lines": [
+    { "id": "hook1", "t": 0.1, "caps": ["*Ganga* fell | from heaven", "hard enough to | BREAK the earth."], "y": 1250 },
+    { "id": "hook2", "gap": 0.35, "caps": ["*Shiva's* answer?", "His HAIR."], "y": 1250, "size": 68 },
+    { "id": "sagara", "gap": 0.8, "caps": ["It began with | 60,000 princes,", "the sons of | King *Sagara*."], "tts": "It began with sixty thousand princes, the sons of King Sagara.", "y": 560 },
+    { "id": "dig", "gap": 0.3, "caps": ["Hunting a | stolen horse,", "they dug down | to the underworld."], "y": 560 },
+    { "id": "kapila", "gap": 0.6, "caps": ["They found it by | the sage *Kapila*", "and called him | a THIEF."], "y": 560 },
+    { "id": "ash", "gap": 0.5, "caps": ["One sound | from *Kapila*,", "and they were ASH."], "y": 560 },
+    { "id": "souls", "gap": 0.9, "caps": ["Only *Ganga*, | the river of heaven,", "could free | their souls."], "y": 1300 },
+    { "id": "kings", "gap": 0.6, "caps": ["Kings prayed | and failed.", "Then came | *Bhagiratha*."], "tts": "Kings prayed and failed, then came Bhagiratha.", "y": 560 },
+    { "id": "tapas", "gap": 0.4, "caps": ["For THOUSANDS | of years he prayed,", "and *Brahma* | said yes."], "y": 560 },
+    { "id": "warn", "gap": 0.4, "caps": ["But the earth could | not bear her fall.", "Only *Shiva* could."], "y": 560 },
+    { "id": "toe", "gap": 0.5, "caps": ["So *Bhagiratha* | stood on ONE TOE", "for a year, | praying to *Shiva*."], "tts": "So Bhagiratha stood on one toe for a year, praying to Shiva.", "y": 560 },
+    { "id": "pride", "gap": 0.8, "caps": ["\"I will sweep him | into the underworld.\""], "speaker": "aditi_en_stories", "pace": 0.9, "fx": "devi", "y": 1420, "size": 60 },
+    { "id": "catch", "gap": 2.6, "caps": ["*Shiva* caught her | in his hair.", "She was LOST in it | for years."], "y": 1420 },
+    { "id": "streams", "gap": 0.8, "caps": ["He let out | SEVEN streams.", "One followed | *Bhagiratha's* chariot."], "tts": "He let out seven streams. One, followed Bhagiratha's chariot.", "y": 560 },
+    { "id": "jahnu", "gap": 0.6, "caps": ["She flooded the | sage *Jahnu's* yagna,", "so he DRANK her | whole,", "then let her out | through his EAR."], "tts": "She flooded the sage Jaahnu's yagya, so he drank her whole, then let her out through his ear.", "y": 560 },
+    { "id": "free", "gap": 0.8, "caps": ["At last she | reached the ashes,", "and 60,000 souls | rose to heaven."], "tts": "At last she reached the ashes, and sixty thousand souls rose to heaven.", "y": 1300 },
+    { "id": "why", "gap": 0.8, "caps": ["That's why *Shiva* is | *GANGADHARA*,", "and *Ganga* is | *Bhagirathi* and *Jahnavi*."], "tts": "That's why Shiva is Gangadhara. And Ganga is Bhagirathi, and Jaahnavi.", "y": 1330 },
+    { "id": "ask", "gap": 0.7, "caps": ["Is your name | *GANGA* or *JAHNAVI*?", "Comment it!"], "tts": "Is your name Ganga, or Jahnvi? Comment it!", "y": 600, "size": 62, "hold": 1.2 }
+  ]
+}

@@ -1,0 +1,19 @@
+A SHORT film-score cue for an 80-second reel: tempo 90 BPM in 4/4, exactly 30 bars, 80 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:20. Every section below is short; keep moving.
+Epic Indian devotional film score for the descent of the river Ganga from heaven onto Lord Shiva's matted hair:
+vast, sacred, flowing like water. Taiko and pakhawaj drums, low strings and full strings, a tanpura drone, a bansuri,
+a santoor for the water, temple bells, a solo female voice (wordless), a male choir. Mysterious, then mighty, then
+radiant. Instrumental, except the male choir singing "Har Har Gange" where asked.
+
+0:00-0:05  A huge drum HIT on the very first beat, low string tremolo and a rushing rising swell, then a colossal HIT at 0:04.7, cut short.
+0:05-0:17  Storytelling at dusk: tanpura drone, a mysterious bansuri melody, soft pakhawaj; darker and tense from 0:13.
+0:17-0:20  A single sharp HIT at 0:17.3, then near silence: one low sustained note.
+0:20-0:33  Grief turning to devotion: slow warm strings and the bansuri over the tanpura, patient, building gently; a golden swell with bells at 0:31.6.
+0:33-0:41  Growing awe: a low drum pulse, the male choir humming, strings rising, wind.
+0:41-0:46  The mightiest build: the wordless female voice soaring, drums accelerating, choir and strings in a huge crescendo, ending on the biggest HIT of the cue at 0:46.4.
+0:46-0:51  Sudden hush: only a high sustained choir note and a soft drone, a few santoor drops.
+0:51-1:02  Joyful and flowing: santoor and bansuri, a light galloping pakhawaj rhythm, the river running free; playful at 0:59.
+1:02-1:12  Triumphant and devotional: full strings and choir rise; at 1:04.5 the male choir sings "Har Har Gange" twice, majestic.
+1:12-1:20  Calm resolution: tanpura, temple bells, a soft choir chord, fading out completely by 1:20.
+
+Total length: 80 seconds, 30 bars at 90 BPM. End at 1:20.
