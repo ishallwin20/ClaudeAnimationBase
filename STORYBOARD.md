@@ -115,3 +115,40 @@ mangoes slides in (Maa is back); 51.3 he grabs one, holds it up beside the sun, 
 - "Yug sahastra yojan par bhanu, leelyo tahi madhur phal janu" (Hanuman Chalisa, verse 18): he swallowed the sun,
   thousands of yojanas away, taking it for a sweet fruit. Popular tellings say a mango.
 - Look: Hanuman Chalisa verses 4–5 (golden colour, earrings, curly hair, the munja thread).
+
+## Cover
+`cover.html` (studio.html + `src/scenes/sun_cover.js`): the AAM moment, the baby flying at the sun with sparkle eyes and
+his mouth wide open, the sun gasping and sweating ("!?"); "BABY HANUMAN / ATE THE SUN." and "…and that's how he got
+his NAME", inside the 3:4 grid crop (y 240–1680).
+`node render.mjs --page=cover.html --stills=0 --out=out/sun_cover`
+
+## Instagram caption
+```
+Why is he called HANUMAN? 🐒 Because as a baby, he tried to EAT the sun! 🌞🥭
+
+Baby Hanuman woke up hungry. Maa Anjana had gone to pick fruit… and rising over the hills was a big, ripe "mango".
+Son of Vayu, the wind god, he flew straight up. Surya Dev didn't burn him, and he swallowed the sun! Even the Hanuman
+Chalisa says: "Yug sahastra yojan par Bhanu, leelyo tahi madhur phal janu."
+
+It was an eclipse day, so Rahu came for the sun, and baby went for HIM too. Then Indra arrived on Airavata, his white
+elephant: an even BIGGER fruit! Indra's vajra struck the baby's jaw (hanu). Papa Vayu got so angry that he stopped all
+the air in the world, until Brahma woke the baby and every god gave him a boon. And Indra said: since my vajra hit his
+hanu, he will be called HANUMAN. 🙏
+
+(Valmiki Ramayana, Kishkindha Kanda & Uttara Kanda)
+
+📚 More stories of our gods, for little ones: rishikatha.com (link in bio)
+
+Did you know this story? Comment JAI BAJRANGBALI 🙏 Save it for bedtime, and share it with the little Hanuman of your
+house who eats EVERYTHING 😄
+
+#hanuman #balhanuman #hanumanji #jaibajrangbali #hanumanchalisa #jaishreeram #ramayana #indianmythology
+#hindumythology #kidsstories #bedtimestories #sanatandharma #mythologystories #rishikatha #animation
+```
+
+## Pinned comment
+A name call-out (the comment lever that works), with names many viewers actually have:
+```
+Hanuman ji has 108 names: Maruti, Pavan Putra, Anjaneya, Bajrangbali, Kesari Nandan, Sankat Mochan… 🙏
+Is YOUR name (or your kid's) one of them? Pavan, Maruti, Bajrang, Hanumant, Anjaneya? Comment it 👇
+```
