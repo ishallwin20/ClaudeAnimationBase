@@ -1,6 +1,6 @@
 # Ganga fell from heaven hard enough to break the earth. Shiva's answer? His HAIR. (reel/ganga-jata)
 
-A Cinematic reel (see CINEMATIC_GUIDE.md), 81.3 s, 9:16, with a voiceover: the English narrator from the Bhramari reel
+A Cinematic reel (see CINEMATIC_GUIDE.md), 83.5 s, 9:16, with a voiceover: the English narrator from the Bhramari reel
 (Sarvam `girish_en_devotional`, pace 1.2), Ganga's one line in `aditi_en_stories`, a synthesized SFX track and a Lyria
 score ducked under the voice. It ends on a follow card with no offer. It's a "known yet unknown" explainer: everyone
 has seen Ganga in Shiva's hair; few know the 60,000 princes, the sage who burnt them, the king who stood on one toe,
@@ -14,12 +14,12 @@ Logline: King Sagara's 60,000 sons hunt their father's stolen horse, dig down to
          proud, means to sweep Shiva into the underworld; he catches her in his hair and she's lost in it for years.
          He lets out seven streams; one follows Bhagiratha's chariot. The sage Jahnu drinks her whole for flooding his
          yagna, then lets her out through his ear. She reaches the ashes and 60,000 souls rise to heaven. That's why
-         Shiva is Gangadhara, and Ganga is Bhagirathi and Jahnavi.
+         Shiva is Gangadhara, and Ganga is Bhagirathi and Jahnavi. Where did you take your first dip in Ganga?
 Why it should travel: the winning shape of ad 15 and Bhramari (an impossible force, then the god's teased "answer":
          ONE TOE, SIX LEGS, HIS HAIR); a famous image explained; three spectacles nobody has seen animated (a river
-         vanishing into hair, a king on one toe, a sage drinking a river); a NAME call-out with names many viewers have.
-Comment: "Is your name GANGA or JAHNAVI? Comment it!"
-Pinned:  "Where did YOU take your first dip in Ganga? Haridwar, Rishikesh, Kashi, Prayagraj? Comment your ghat 👇"
+         vanishing into hair, a king on one toe, a sage drinking a river); a PLACE call-out over a ghat at dusk.
+Comment: "Where did YOU take your first dip in GANGA? Comment your ghat!" (the owner swapped out the name call-out)
+Pinned:  "Haridwar, Rishikesh, Kashi, Prayagraj… or the Ganga near your home? Tell us your ghat 👇"
 ```
 
 ## Facts used (every plot beat, with its source)
@@ -67,9 +67,10 @@ Not claimed: Ganga's makara and her look (iconography only), and the score's "Ha
 | jahnu | narrator | She flooded the | sage *Jahnu's* yagna, → so he DRANK her | whole, → then let her out | through his EAR. |
 | free | narrator | At last she | reached the ashes, → and 60,000 souls | rose to heaven. |
 | why | narrator | That's why *Shiva* is | *GANGADHARA*, → and *Ganga* is | *Bhagirathi* and *Jahnavi*. |
-| ask | narrator | Is your name | *GANGA* or *JAHNAVI*? → Comment it! (hold) |
+| ask | narrator | Where did YOU take | your first dip | in *GANGA*? (held 3.2 s) |
+| ask2 | narrator | Comment your ghat! (after a 1.4 s pause) |
 
-Respelt for the voice (checked with Sarvam STT): "sixty thousand", "Jaahnu's yagya", "Jahnvi"; no comma in "Kings
+Respelt for the voice (checked with Sarvam STT): "sixty thousand", "Jaahnu's yagya", "Jaahnavi", "Comment, your ghaat!" (it came back "Come into your cart"); no comma in "Kings
 prayed and failed" (it gave a 2.7 s pause).
 
 ## Shots
@@ -138,7 +139,7 @@ why Shiva is GANGADHARA. 🙏
 
 (Valmiki Ramayana, Bala Kanda 38–44)
 
-Is your name GANGA or JAHNAVI? Comment it 👇 Save this, and share it with someone who has taken a dip in Ganga.
+Where did YOU take your first dip in Ganga? Comment your ghat 👇 Save this, and share it with someone you went with.
 
 More stories of Shiva and the gods: follow @therishikatha · rishikatha.com (link in bio)
 

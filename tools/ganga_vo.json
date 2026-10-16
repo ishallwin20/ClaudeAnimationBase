@@ -19,6 +19,7 @@
     { "id": "jahnu", "gap": 0.6, "caps": ["She flooded the | sage *Jahnu's* yagna,", "so he DRANK her | whole,", "then let her out | through his EAR."], "tts": "She flooded the sage Jaahnu's yagya, so he drank her whole, then let her out through his ear.", "y": 560 },
     { "id": "free", "gap": 0.8, "caps": ["At last she | reached the ashes,", "and 60,000 souls | rose to heaven."], "tts": "At last she reached the ashes, and sixty thousand souls rose to heaven.", "y": 1300 },
     { "id": "why", "gap": 0.8, "caps": ["That's why *Shiva* is | *GANGADHARA*,", "and *Ganga* is | *Bhagirathi* and *Jahnavi*."], "tts": "That's why Shiva is Gangadhara. And Ganga is Bhagirathi, and Jaahnavi.", "y": 1330 },
-    { "id": "ask", "gap": 0.7, "caps": ["Is your name | *GANGA* or *JAHNAVI*?", "Comment it!"], "tts": "Is your name Ganga, or Jahnvi? Comment it!", "y": 600, "size": 62, "hold": 1.2 }
+    { "id": "ask", "gap": 0.7, "caps": ["Where did YOU take | your first dip | in *GANGA*?"], "y": 600, "size": 60, "hold": 1.6 },
+    { "id": "ask2", "gap": 1.4, "caps": ["Comment your ghat!"], "tts": "Comment, your ghaat!", "pace": 0.95, "y": 600, "size": 64, "hold": 1.4 }
   ]
 }

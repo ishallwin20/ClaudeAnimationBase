@@ -2,4 +2,4 @@
 //   duration: the video's length in seconds (TL.end in src/scenes/ganga_tl.js).
 //   w, h:     canvas size in pixels. This project is a 9:16 Instagram reel, drawn with the cinematic engine (src/cine.js).
 //   audio:    the mix (Sarvam voice + SFX + Lyria score); tools/ganga_sfx.mjs writes it.
-const PROJECT = { duration: 81.3, w: 1080, h: 1920, fonts: ['700 56px Cinzel', '42px Marcellus', '700 54px Poppins', '500 36px Poppins'], audio: 'assets/ganga_mix.wav' };
+const PROJECT = { duration: 83.48, w: 1080, h: 1920, fonts: ['700 56px Cinzel', '42px Marcellus', '700 54px Poppins', '500 36px Poppins'], audio: 'assets/ganga_mix.wav' };

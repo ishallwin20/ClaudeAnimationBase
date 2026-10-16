@@ -27,7 +27,7 @@ const TL = (() => {
     jahnu: a('jahnu') - .3, drank: w('jahnu', 'drank'), ear: w('jahnu', 'then'),
     free: a('free') - .35, souls2: w('free', 'souls'),
     why: a('why') - .35, gangadhara: w('why', 'gangadhara'),
-    ask: a('ask') - .35, card: e('ask') + 1.2,
+    ask: a('ask') - .35, card: e('ask2') + 1.45,
   };
   T.end = +(T.card + 3.6).toFixed(2);
   return T;
