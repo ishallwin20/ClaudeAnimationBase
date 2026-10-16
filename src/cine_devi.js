@@ -121,11 +121,10 @@ function deviHead(c, o = {}) {
   strokePath(c, 'M 0 -872 L 0 -852', '#C8142A', 2.6);                    // sindoor in the parting
   // the maang tikka: a chain down the parting to a pendant on the forehead
   strokePath(c, 'M 0 -900 L 0 -872', S.gold, 1.6); ellipse(c, 0, -866, 4.4, 5.2, S.gold); ellipse(c, 0, -866, 2.2, 2.8, S.ruby);
-  if (o.crown !== false) deviCrown(c, t);
+  if (o.crown !== false) deviCrown(c, t, S);
 }
 // the mukut: a jewelled band and a tall tiered crown with a finial, flared wings at the sides
-function deviCrown(c, t) {
-  const S = DEVI;
+function deviCrown(c, t, S = DEVI) {
   // side wings, fanned
   for (const s of [-1, 1]) {
     fillPath(c, `M ${s * 36} -884 C ${s * 62} -896 ${s * 80} -918 ${s * 84} -948 C ${s * 70} -934 ${s * 56} -926 ${s * 42} -922 Z`, S.goldSh);

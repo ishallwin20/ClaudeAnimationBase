@@ -22,6 +22,7 @@ series.
 ![Durga, Shatakshi's tears, a demon standing](docs/cine_cast_durgama.jpg)
 ![Angad, Ravana's court, Ram](docs/cine_cast_angad.jpg)
 ![Jatayu, Sita, Ravana's chariot](docs/cine_cast_jatayu.jpg)
+![The Ganga torrent, Shiva's spread jata, Ganga, the horse, the chariot, Bhagiratha, Jahnu, the ghat](docs/cine_cast_ganga.jpg)
 
 ---
 
@@ -58,6 +59,7 @@ for rage, warm orange for fire and court, gold for joy and grace, deep violet fo
 | [src/cine_vanara.js](src/cine_vanara.js) | the vanaras, first drawn as Angad: a heroic body in golden-brown fur, a pale face mask and muzzle, amber eyes, a ruff, a curling tail, the yuvraj crown, a red tilak, a red uttariya, a saffron dhoti; `pose` stand, walk, plant (feet wide, arms folded, `press`), strike (a crouch, both fists on the ground), bow; `expr` calm, smirk, fierce, laugh, tears; `pal` recolours him (Sugriva, Vali, a colour Hanuman); `vanaraHead()`, `vanaraFoot()` (the foot close, long gripping toes, `press`, `lift`), `vanaraKneel()` (a silhouette bowing to the ground) |
 | [src/cine_jatayu.js](src/cine_jatayu.js) | Jatayu, the king of eagles, in colour: deep umber with fingered primaries, a silver ruff and crest, an ivory-gold hooked beak, an amber eye under a grey brow, a gold circlet; `pose` perch (side view on a branch, `tuck` asleep), spread (front view, wings spread, the head turned in profile; `flap`, `strike` the talons forward), fallen (lying, `wings: 'stumps'`); `expr` calm, fierce, pain; `loose`, `breath`, `col` (a silhouette, or the card's gold); `jatayuHead()` for close-ups, `jatayuTalon()` (`grip`), `feather()` |
 | [src/cine_sita.js](src/cine_sita.js) | Sita, front view in colour: the Devi's face (`deviHead({ pal, crown: false })`), a saffron sari with a red border and the pallu, loose hair, gold jewellery; `pose` stand, carried (one arm flung out, `reach`, the pallu flying), kneel (bent over what lies beside her); `tears`, `col`. Needs cine_devi.js |
+| [src/cine_ganga.js](src/cine_ganga.js) | the descent of the Ganga: `gangaFall()` (the torrent from heaven: streaks racing down, foam, `k` how far it has fallen, `splash`), `waterPath()` (a stream along any path), `gangaJet()` (the little jet from Shiva's jata: Gangadhara), `jataSpread()` (Shiva's locks fanned out wide, in his head's units, drawn behind `shiva()`/`shivaHead()`; `spread`, `wet` light running along them), `GANGA_PAL` (Ganga through `deviHead({ pal })`, the crown too), `horse()` (side view: standing, `gallop`, `decor` for the Ashvamedha horse), `chariot()` (two horses, a spoked wheel, a flag), `bhagiratha()` (a king's front-view silhouette: `arms` up/namaste/down, `toe` on one toe), `ghat()` (steps, shrines, lamps, floating diyas). The `rishi` also has `pose: 'drink'` (Jahnu, head tipped back, `tip`) |
 | [src/cine_sets.js](src/cine_sets.js) | scenery: `PALETTES`, Kailash (and `uprooted`, torn out with its underside), a cliff, cloud banks, the ring of fire, a fire-lit hall with pillars, embers, ground cracks, meteors, stars, shrines, falling `debris`, `shockRings`, burning `lanka`, rising Devanagari `stotram` lines; a `linga`, a `deepa` (oil lamp), the `sanctum` doorway, ploughed `furrows`, a night `river`, a `gopuram`; for the Bhramari story, flying bees (`flyBee`, `beeCloud`, `beeStream`), `swarm()` (thousands: a stream along a path, `form` into `shapePoints()` of any drawing, `engulf`), the macro `bee()` seen from above with six legs that light up one by one, the demon's `throne()` and Brahma's `lotusLight()`; for the sun story, `sunDisc()` (blazing, cracked, or dead black with a cold corona), `trishulProp()` (the trishul alone, thrown), `frost()` (ice creeping over the ground), `ganeshaLine()` (Ganesha's head drawn in lines of light); `goldThrone()` (Ravana's, in Lanka); and `rkCardCine()`, the end card (`hero` for a new book's launch: its cover big, the books already out in a row) |
 | [cine.html](cine.html) | the style's studio page; on `main` it shows [src/scenes/cine_sheet.js](src/scenes/cine_sheet.js), the cast and lighting sheet |
 | [tools/lyria.mjs](tools/lyria.mjs) | one Lyria 3 Pro score on OpenRouter from a timestamped brief (`--prompt=… --out=….mp3`) |
@@ -344,3 +346,20 @@ First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`.
   leave it out and let the shot before say who holds her.
 - A donkey reads from tall ears and a long head angled down. Don't run a bridle strap across the eye: on a dark face it
   becomes an X.
+
+## Lessons from the Ganga reel (reel/ganga-jata)
+
+- The voice tool's word timings used to drift when a take had more pauses than phrases (a pause after "Then", a phrase
+  run on without one): it merged the shortest pauses until the counts matched. It now maps the words onto the speech by
+  letter count and snaps each phrase boundary to the pause nearest its share (a DP), so a stray pause stays inside its
+  phrase. Lines it can't put on pauses are printed with `boundaries on pauses: yn…`.
+- Sarvam STT caught "Jahnu's" as "Jhansi" and "Jahnavi" as "Jahanni": respell them in `tts` ("Jaahnu's", "Jahnvi").
+  A comma ("Kings prayed, and failed.") gave a 2.7 s pause; drop it.
+- A bright falling torrent eats the caption band: keep the water above the captions and lay a near-black ridge plane
+  (depth ~1.15) under them. On a face shot, keep clouds or mist off the mouth while the character speaks.
+- Hair (or anything) that runs off the frame inside `figure()` gets its lit edge traced along the frame border: draw it
+  in its own `figure()` with `edge.a: 0`.
+- Lyria, a sixth time: the pinned form ("90 BPM in 4/4, exactly 30 bars, 80 seconds") brought two of three takes in
+  length (79.7 s, 81.8 s; one stretched to 90 s), and take 3 sang "Har Har Gange" at 64.0 s as asked. Its hits came
+  late or soft, so the SFX carry them and the mix makes the hush.
+

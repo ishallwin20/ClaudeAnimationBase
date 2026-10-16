@@ -211,6 +211,20 @@ export const screech = (dur = .9, f0 = 2600, amp = 1) => mixb(
 export const wingbeat = (amp = 1, k = 1) => mixb(
   noise(.5 * k, { lp: t => 180 + 1100 * Math.sin(Math.PI * clamp(t / (.5 * k))), hp: 40, e: env.hann(), amp: amp }),
   tone(.3 * k, t => 70 * Math.exp(-t * 4) + 38, { e: env.pluck(10 / k), amp: .5 * amp }));
+// a torrent (the Ganga falling): a deep roar, a rushing mid band and a hiss that flutters, swelling in over `rise` s
+export const torrent = (dur, amp = 1, rise = 1) => {
+  const o = mixb(
+    noise(dur, { brown: true, lp: t => 260 + 120 * Math.sin(t * 1.7), e: env.swell(rise, .6), amp: 1.4 * amp }),
+    noise(dur, { lp: t => 1400 + 500 * Math.sin(t * 2.3), hp: 300, e: env.swell(rise, .6), amp: .55 * amp }),
+    noise(dur, { lp: 7000, hp: 2200, e: env.swell(rise * 1.3, .6), amp: .22 * amp }));
+  for (let i = 0; i < o.length; i++) { const t = i / SR; o[i] *= .78 + .22 * Math.sin(t * 9.3) * Math.sin(t * 3.1 + 1); }
+  return o;
+};
+// water crashing onto something: a broad wet burst and a low thump
+export const splash = (amp = 1) => mixb(
+  noise(1.4, { lp: t => 6000 * Math.exp(-t * 1.5) + 600, hp: 200, e: env.pluck(2.2), amp: amp }),
+  noise(.9, { brown: true, lp: 300, e: env.pluck(3.5), amp: .9 * amp }),
+  tone(.6, t => 70 * Math.exp(-t * 5) + 34, { e: env.pluck(6), amp: .6 * amp }));
 
 export function track(dur) {
   const N = Math.round(SR * dur), L = new Float32Array(N), R = new Float32Array(N);

@@ -96,15 +96,36 @@ for (const L of S.lines) {
   const phrases = []; let cur = [];
   flat.forEach((x, i) => { cur.push(i); if (/[,.?!:;…]["'”’)]*$/.test(x.w.replace(/\*/g, '')) || x.last) { phrases.push(cur); cur = []; } });
   if (cur.length) phrases.push(cur);
-  // match the speech segments to phrases: merge the segments over the smallest pauses until the counts agree
-  let sg = segs.map(s => [...s]);
-  while (sg.length > phrases.length) { let k = 0, g = 1e9; for (let i = 0; i < sg.length - 1; i++) { const gap = sg[i + 1][0] - sg[i][1]; if (gap < g) { g = gap; k = i; } } sg.splice(k, 2, [sg[k][0], sg[k + 1][1]]); }
+  // match the phrases to the speech: map every word onto the speech time (the segments with the pauses cut out) by
+  // letter count, then snap each phrase boundary to the pause nearest its share of the letters (a DP, so a pause the
+  // voice takes inside a phrase, or a phrase it runs on without one, doesn't shift the rest)
   const wlen = i => plain(flat[i].w).replace(/[^\p{L}\p{N}]/gu, '').length + 1.5;
   const at = new Array(flat.length);
-  if (sg.length === phrases.length) phrases.forEach((p, pi) => { const [a, b] = sg[pi], tot = p.reduce((s, i) => s + wlen(i), 0); let acc = 0; for (const i of p) { at[i] = t + a + (b - a) * acc / tot; acc += wlen(i); } });
-  else { const tot = flat.reduce((s, _, i) => s + wlen(i), 0); let acc = 0; flat.forEach((_, i) => { at[i] = t + s0 + (s1 - s0) * acc / tot; acc += wlen(i); }); console.warn(`  ${L.id}: ${segs.length} speech segments for ${phrases.length} phrases, spread evenly`); }
+  const sg = segs.length ? segs.map(s => [...s]) : [[s0, s1]], S = sg.reduce((a, [x, y]) => a + y - x, 0);
+  const toAbs = (q) => { let r = q * S; for (const [x, y] of sg) { if (r <= y - x) return x + r; r -= y - x; } return sg.at(-1)[1]; };
+  const toSp = (tm) => { let acc = 0; for (const [x, y] of sg) { if (tm <= x) return acc / S; if (tm <= y) return (acc + tm - x) / S; acc += y - x; } return 1; };
+  const tot = flat.reduce((a, _, i) => a + wlen(i), 0), cum = []; { let acc = 0; flat.forEach((_, i) => { cum.push(acc / tot); acc += wlen(i); }); }
+  const fB = phrases.slice(0, -1).map(p => cum[p.at(-1)] + wlen(p.at(-1)) / tot);   // each boundary's share of the letters
+  const gP = sg.slice(0, -1).map(([, y]) => toSp(y));                                // each pause's share of the speech
+  const nb = fB.length, np = gP.length, MISS = .012, SKIP = .002, D = [...Array(nb + 1)].map(() => new Array(np + 1).fill(1e9)), B = D.map(r => r.map(() => 0));
+  D[0][0] = 0;
+  for (let i = 0; i <= nb; i++) for (let j = 0; j <= np; j++) {
+    if (i && D[i - 1][j] + MISS < D[i][j]) { D[i][j] = D[i - 1][j] + MISS; B[i][j] = 1; }
+    if (j && D[i][j - 1] + SKIP < D[i][j]) { D[i][j] = D[i][j - 1] + SKIP; B[i][j] = 2; }
+    if (i && j) { const c = D[i - 1][j - 1] + (fB[i - 1] - gP[j - 1]) ** 2; if (c < D[i][j]) { D[i][j] = c; B[i][j] = 3; } }
+  }
+  const match = new Array(nb).fill(-1); for (let i = nb, j = np; i || j;) { const b = B[i][j]; if (b === 3) { match[i - 1] = j - 1; i--; j--; } else if (b === 1) i--; else j--; }
+  // phrase k spans [start, end] in absolute time: a matched boundary sits on its pause, else on its letter share
+  const bStart = (k) => k === 0 ? s0 : match[k - 1] >= 0 ? sg[match[k - 1] + 1][0] : toAbs(fB[k - 1]);
+  const bEnd = (k) => k === phrases.length - 1 ? s1 : match[k] >= 0 ? sg[match[k]][1] : toAbs(fB[k]);
+  const pEnd = phrases.map((_, k) => t + bEnd(k));
+  phrases.forEach((p, k) => {
+    const a = toSp(bStart(k)), b = toSp(bEnd(k)), ptot = p.reduce((q, i) => q + wlen(i), 0); let acc = 0;
+    for (const i of p) { at[i] = t + toAbs(a + (b - a) * acc / ptot); acc += wlen(i); }
+  });
+  if (segs.length - 1 > nb || match.some(m => m < 0)) console.log(`  ${L.id}: ${segs.length} speech segments for ${phrases.length} phrases; boundaries on pauses: ${match.map(m => m >= 0 ? 'y' : 'n').join('')}`);
   // the end of each word = the next word's start, or its phrase's segment end
-  const wEnd = flat.map((_, i) => { const pi = phrases.findIndex(p => p.includes(i)), p = phrases[pi]; return i === p.at(-1) ? t + (sg[pi]?.[1] ?? s1) : at[i + 1]; });
+  const wEnd = flat.map((_, i) => { const pi = phrases.findIndex(p => p.includes(i)), p = phrases[pi]; return i === p.at(-1) ? pEnd[pi] : at[i + 1]; });
   L.caps.forEach((c, ci) => {
     const idx = flat.map((x, i) => x.ci === ci ? i : -1).filter(i => i >= 0);
     caps.push({ id: L.id, a: +(at[idx[0]] - .12).toFixed(3), end: +wEnd[idx.at(-1)].toFixed(3), text: c, at: idx.map(i => +at[i].toFixed(3)), y: L.y, size: L.size, hold: L.hold });

@@ -548,7 +548,7 @@ function ramKneel(c, o = {}) {
 // edge and rim. Adults stand about 900 tall, feet at (0, 0); the boy about 540.
 
 // A rishi: a long beard, a topknot, a dhoti and shawl, a staff. o: t, col, pose ('stand' with the staff | 'sit' in
-// meditation, hands joined | 'plough', leaning on a plough's handle, striding | 'point' the right arm out), staff.
+// meditation, hands joined | 'drink' seated, the head tipped back (tip 0..1), hands cupped at the mouth | 'plough', leaning on a plough's handle, striding | 'point' the right arm out), staff.
 function rishi(c, o = {}) {
   const col = o.col || '#120C10', t = o.t || 0, pose = o.pose || 'stand', br = Math.sin(t * 1.4) * 1.5;
   const head = (x, y, lean = 0) => {
@@ -559,13 +559,21 @@ function rishi(c, o = {}) {
     ellipse(c, 6, -54, 22, 18, col); ellipse(c, 10, -70, 14, 12, col);   // the topknot
     c.restore();
   };
-  if (pose === 'sit') {
+  if (pose === 'sit' || pose === 'drink') {
     fillPath(c, 'M -130 0 C -130 -56 -70 -86 0 -86 C 70 -86 120 -56 120 0 Z', col);   // crossed legs
     fillPath(c, `M -44 -70 C -50 -170 -56 -260 -46 ${-330 + br} L 50 ${-330 + br} C 60 -260 56 -170 48 -70 Z`, col);
     fillPath(c, `M -50 ${-330 + br} C -40 -350 40 -350 50 ${-330 + br} Z`, col);
+    fillPath(c, 'M -12 -350 L -10 -376 L 18 -376 L 16 -350 Z', col);
+    if (pose === 'drink') {
+      // the head tipped back, both hands cupped up at the mouth (Jahnu drinking the river; the mouth near (-40, -440),
+      // the ear at (8, -420))
+      head(4, -414, .34 * (o.tip ?? 1));
+      limb(c, [[-34, -312], [-80, -250], [-66, -400]], [34, 28, 22], col); limb(c, [[30, -312], [-20, -250], [-50, -392]], [34, 28, 22], col);
+      fillPath(c, 'M -92 -396 C -86 -420 -60 -428 -34 -412 C -50 -392 -76 -386 -92 -396 Z', col);
+      return;
+    }
     limb(c, [[-30, -310], [-56, -230], [-84, -270]], [34, 28, 22], col);   // forearm up to the joined hands
     fillPath(c, 'M -96 -262 C -100 -290 -92 -316 -84 -330 C -76 -316 -72 -290 -76 -262 Z', col);
-    fillPath(c, 'M -12 -350 L -10 -376 L 18 -376 L 16 -350 Z', col);
     head(0, -416);
     return;
   }
