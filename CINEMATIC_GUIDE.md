@@ -187,6 +187,9 @@ Pace: 3–6 s a shot, one beat per shot, every shot moving (a push or a drift at
 ## Captions (no voice)
 
 - **2.2–3 s per caption** (3 s for the comment ask), split into 3–7 word chunks. Two chunks to a shot is typical.
+- **Three lines need at least 3.2 s** (the owner found 2.3 s three-liners hard to follow). `say()` lights a three-line
+  caption's words by 70% of its window, so it sits fully lit for the last second. When the score's hits leave no room,
+  cut the caption to two lines rather than rushing it.
 - **Place them** in the shot's empty space, inside y 420–1500: above the subject on wide shots, under the chin on a
   face, over the chest on a medium shot (the dark glow behind the letters keeps them readable). 56 px, 62–72 px for
   a short line that should hit.
