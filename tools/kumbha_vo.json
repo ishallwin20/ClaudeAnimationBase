@@ -1,0 +1,252 @@
+{
+  "name": "kumbha",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook1",
+      "t": 0.1,
+      "caps": [
+        "The gods were TERRIFIED | of one giant's wish."
+      ],
+      "y": 560,
+      "size": 60
+    },
+    {
+      "id": "hook2",
+      "gap": 0.5,
+      "caps": [
+        "So a goddess | hijacked his TONGUE."
+      ],
+      "y": 560,
+      "size": 66,
+      "hold": 0.8
+    },
+    {
+      "id": "name",
+      "gap": 0.7,
+      "caps": [
+        "*Kumbhakarna*, | *Ravana's* brother."
+      ],
+      "y": 560,
+      "size": 64,
+      "hold": 0.8
+    },
+    {
+      "id": "born",
+      "gap": 0.4,
+      "caps": [
+        "As a newborn, | he ate THOUSANDS | of creatures."
+      ],
+      "y": 560,
+      "hold": 0.8
+    },
+    {
+      "id": "ate",
+      "gap": 0.7,
+      "caps": [
+        "In heaven's garden, | he ate seven *apsaras*",
+        "and ten of | *Indra's* followers."
+      ],
+      "y": 560
+    },
+    {
+      "id": "indra",
+      "gap": 0.5,
+      "caps": [
+        "*Indra* struck him | with the vajra."
+      ],
+      "y": 560,
+      "hold": 0.6
+    },
+    {
+      "id": "tusk",
+      "gap": 0.3,
+      "caps": [
+        "He ripped a tusk | off *Airavat*"
+      ],
+      "tts": "He ripped a tusk off Airaavat,",
+      "y": 560
+    },
+    {
+      "id": "tusk2",
+      "gap": 0.35,
+      "caps": [
+        "and stabbed *Indra* | with it."
+      ],
+      "y": 560,
+      "hold": 0.8
+    },
+    {
+      "id": "tapas",
+      "gap": 0.7,
+      "caps": [
+        "Then he did tapas | for 10,000 years:",
+        "in fire all summer, | in water all winter."
+      ],
+      "tts": "Then he did tapas for ten thousand years: in fire all summer, in water all winter.",
+      "y": 560
+    },
+    {
+      "id": "brahma",
+      "gap": 0.6,
+      "caps": [
+        "When *Brahma* came | to grant his wish, | the gods begged:"
+      ],
+      "y": 560
+    },
+    {
+      "id": "gods",
+      "gap": 0.3,
+      "caps": [
+        "\"Not HIM. | Give him delusion | instead.\""
+      ],
+      "y": 560,
+      "hold": 0.9
+    },
+    {
+      "id": "sara",
+      "gap": 0.8,
+      "caps": [
+        "So *Brahma* sent | *Saraswati*,"
+      ],
+      "y": 560
+    },
+    {
+      "id": "sara2",
+      "gap": 0.4,
+      "caps": [
+        "goddess of speech, | into his MOUTH."
+      ],
+      "y": 560
+    },
+    {
+      "id": "wish",
+      "gap": 0.6,
+      "caps": [
+        "\"I wish to SLEEP | for many years!\""
+      ],
+      "speaker": "rustom_en_suspense",
+      "pace": 1.0,
+      "fx": "asura",
+      "y": 560,
+      "size": 64,
+      "hold": 0.8
+    },
+    {
+      "id": "sobe",
+      "gap": 0.5,
+      "caps": [
+        "And *Brahma* said: | \"So be it.\""
+      ],
+      "y": 560,
+      "hold": 0.8
+    },
+    {
+      "id": "left",
+      "gap": 0.6,
+      "caps": [
+        "Then she left him, | and he froze:"
+      ],
+      "y": 560,
+      "hold": 0.6
+    },
+    {
+      "id": "what",
+      "gap": 0.3,
+      "caps": [
+        "\"What came out | of my MOUTH?!\""
+      ],
+      "speaker": "rustom_en_suspense",
+      "pace": 1.0,
+      "fx": "asura",
+      "y": 560,
+      "size": 64,
+      "hold": 0.8
+    },
+    {
+      "id": "eased",
+      "gap": 0.7,
+      "caps": [
+        "Later, *Brahma* | eased it:"
+      ],
+      "y": 560
+    },
+    {
+      "id": "eased2",
+      "gap": 0.4,
+      "caps": [
+        "six months asleep, | ONE day awake."
+      ],
+      "y": 560
+    },
+    {
+      "id": "war",
+      "gap": 0.8,
+      "caps": [
+        "So in the war, | to wake him,"
+      ],
+      "y": 560
+    },
+    {
+      "id": "war2",
+      "gap": 0.3,
+      "caps": [
+        "they piled a | mountain of meat,"
+      ],
+      "y": 560
+    },
+    {
+      "id": "noise",
+      "gap": 0.5,
+      "caps": [
+        "blew conches so loud | birds fell from the sky,"
+      ],
+      "y": 560,
+      "hold": 0.6
+    },
+    {
+      "id": "eleph",
+      "gap": 0.2,
+      "caps": [
+        "and ran a THOUSAND | elephants over him."
+      ],
+      "y": 560,
+      "hold": 0.6
+    },
+    {
+      "id": "yawn",
+      "gap": 0.8,
+      "caps": [
+        "He woke up | yawning, | and HUNGRY."
+      ],
+      "y": 560,
+      "size": 64,
+      "hold": 1.2
+    },
+    {
+      "id": "ask",
+      "gap": 1.4,
+      "caps": [
+        "Who's the | *Kumbhakarna* | in YOUR house?"
+      ],
+      "y": 600,
+      "size": 60,
+      "hold": 1.6
+    },
+    {
+      "id": "ask2",
+      "gap": 1.5,
+      "caps": [
+        "Tag them all!"
+      ],
+      "y": 600,
+      "size": 68,
+      "hold": 1.6,
+      "tts": "Tag them all!"
+    }
+  ]
+}

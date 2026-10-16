@@ -1,0 +1,20 @@
+A SHORT film-score cue for an 82-second reel: tempo 90 BPM in 4/4, exactly 31 bars, 82 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:22. Every section below is short; keep moving.
+Epic Indian mythological film score for Kumbhakarna, the giant brother of Ravana, whose wish was twisted by the
+goddess Saraswati into a wish for endless sleep: dark and mighty, then mystical, then a sly lullaby, then thunderous
+chaos, ending playful. Taiko and pakhawaj drums, low growling strings, war conches and horns, a tanpura drone, a
+saraswati veena, a bansuri, temple bells, a male choir. Instrumental, no lyrics, no singing words.
+
+0:00-0:07  A huge drum HIT on the very first beat, a dark low drone and heavy breathing-like swells; a sharp HIT at 0:06.
+0:07-0:18  Menacing and hungry: slow heavy drums, growling low strings, a giant's march.
+0:18-0:24  Battle: a thunderous HIT at 0:19.8, fast aggressive drums, another big HIT at 0:23.
+0:24-0:31  Austerity: tanpura drone, a low male choir hum, crackling fire percussion, solemn and endless.
+0:31-0:37  Divine arrival and fear: shimmering strings, temple bells, rising tension.
+0:37-0:43  Magical: a saraswati veena melody with a harp-like shimmer, mysterious and enchanting.
+0:43-0:53  The music stops dead at 0:43.6; near silence with one low held note; a single bell at 0:47.3; a sharp stinger at 0:50.5.
+0:53-0:59  A slow sly lullaby on the veena, soft and sleepy, like a music box.
+0:59-1:09  Chaos building: huge drums, blaring conches and war horns, rising and rising to the biggest HIT of the cue at 1:08.
+1:09-1:12  A huge low brass-like swell like a giant's yawn, then a punchy HIT at 1:10.9.
+1:12-1:22  Playful and warm: a light tabla groove with the veena and bansuri, fading out completely by 1:22.
+
+Total length: 82 seconds, 31 bars at 90 BPM. End at 1:22.
