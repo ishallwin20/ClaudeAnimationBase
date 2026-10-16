@@ -53,6 +53,9 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   `out/frames` first: the frame cache is resumable and will reuse the previous reel's frames.
 - With a finished reel, also write the Instagram caption: the keyword question in the first ~125 characters, the
   explanation, the book offer with rishikatha.com (link in bio), a save/share/comment prompt, and 12–15 hashtags.
+- **Deliver each reel in one folder, `out/<name>_out/`** (owner, Oct 2026): the MP4 (`<name>.mp4`), the cover
+  (`cover.png`, from the reel's `cover.html`, the title inside the 3:4 grid crop y 240–1680) and `captions.txt` (the
+  Instagram caption, then the pinned comment at the bottom). Every reel gets a cover.
 
 ## Brand assets
 - `assets/rk/book1.jpg … book9.jpg` (Navadurga order: Shailputri, Brahmacharini, Chandraghanta, Kushmanda, Skandamata,
