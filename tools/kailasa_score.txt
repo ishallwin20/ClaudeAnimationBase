@@ -1,0 +1,20 @@
+A SHORT film-score cue for an 80-second reel: tempo 90 BPM in 4/4, exactly 30 bars, 80 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:20. Every section below is short; keep moving.
+Epic Indian documentary film score for the Kailasa temple at Ellora, a whole temple carved top-down out of one
+mountain of rock 1,200 years ago: monumental, ancient, stone and awe. Deep taiko and pakhawaj drums, metallic
+chisel-like percussion (small anvils, ghatam), low strings and full strings, a tanpura drone, a rudra veena, a
+bansuri, temple bells, a male choir. Mysterious, then driving and laborious, then majestic, then full of wonder.
+Instrumental, except the male choir singing "Om Namah Shivaya" where asked.
+
+0:00-0:04  A huge drum HIT on the very first beat, then a low drone; a sharp metallic HIT at 0:02.6.
+0:04-0:13  Ancient and mysterious: tanpura drone, rudra veena, a slow bansuri phrase, wind; three soft drum taps at 0:09, 0:10, 0:11.
+0:13-0:21  A working rhythm begins: low pakhawaj and ghatam, metallic taps like chisels on stone, building steadily.
+0:21-0:33  Driving and laborious: the rhythm grows, strings ostinato, heavier drums, chisel percussion on every beat, rising.
+0:33-0:37  The rhythm stops dead at 0:33; tense near silence; one single heavy HIT at 0:36.
+0:37-0:47  Majestic reveal: full strings and choir swell, big slow drums, temple bells, grand and golden.
+0:47-0:51  Darker and mighty: low brass-like strings, a heavy drum pattern.
+0:51-0:59  Mysterious and ancient: drone, rudra veena, a soft choir hum, building wonder.
+0:59-1:09  Radiant wonder: the male choir sings "Om Namah Shivaya" at 1:00, strings soaring, rising to the biggest HIT of the cue at 1:08.8.
+1:09-1:20  Calm resolution: tanpura, temple bells, a soft choir chord, fading out completely by 1:20.
+
+Total length: 80 seconds, 30 bars at 90 BPM. End at 1:20.
