@@ -18,7 +18,7 @@ SHOTS.length = 0;
     balHanuman(700, TY + 162, 8, { boilKey: 'chanu', pose: 'sit', eyes: 'sparkle', mouth: 'grin', lookX: -.6, lookY: -.4 });
     lion(250, 1730, 11, { boilKey: 'csher', hat: lionBand(), eyes: 'happy', mouth: 'grin', pawR: [2.6, -15], pawShapeR: 'pad' });
     balBappa(520, 1760, 11, { boilKey: 'cbappa', stand: 1, eyes: 'happy', mouth: 'smile', trunk: 'up', aL: .9, aR: .9, blush: .5 });
-    shivaLie(830, 1790, 8.5, { boilKey: 'cshiva', eyes: 'normal', mouth: 'smile', thumb: 1 });
+    shiva(840, 1790, 7.5, { boilKey: 'cshiva', ...feel('serene', 0), eyes: 'happy', mouth: 'smile' });
     nandi(20, 1730, 10, { boilKey: 'cnandi', eyes: 'happy' });
     camEnd();
     letter('WE HIT', 520, 330, 84, PAL.cream, { screen: true, stroke: PAL.ink, sw: .22, ink: false, maxW: 900, rot: -.025 });

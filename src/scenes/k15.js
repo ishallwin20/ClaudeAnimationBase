@@ -1,21 +1,21 @@
 // k15.js: "We hit 15,000. So the cast threw a PARTY.", the 15K thank-you reel (~61 s, captions, SFX, no voiceover).
-// The cast of the hit reels throws a party and each one wrecks it with a callback: Sher carries the cake (Vahana
-// Union), Kali licks the frosting and steps on Shiva (ad 12), Bal Hanuman eats the lamp (the sun reel), Shumbha proposes
+// Every caption holds at least 3 s (the owner asked for longer text). The cast of the hit reels throws a party and each one wrecks it with a callback: Sher carries the cake (Vahana
+// Union), Maa Kali cuts the cake with ONE swing of her khadga, Bal Hanuman eats the lamp (the sun reel), Shumbha proposes
 // in the dark and gets ONE LOOK (ad 14), a goat poses as Nandi (the "looks like a goat" comment), Ravana lifts the whole
 // table and Shiva answers with ONE TOE (ad 15). The wreck, the thank-you, the group photo, the gift, the 15K Family
 // Deal card. STORYBOARD.md has the plan; the sets and props are in k15_props.js.
 // All times are video time (t); the SFX (tools/k15_sfx.mjs) uses the same constants.
 (() => {
   // ---- time constants (keep in sync with STORYBOARD.md and tools/k15_sfx.mjs)
-  const UP = 2.2, B0 = 3.2, SET = 4.7, PHEW = 5.6, C0 = 7.6;
-  const SEE = 8.0, LICK = 9.0, BACK = 10.4, STEP = 10.8, BITE = 11.2, THUMB = 12.0, D0 = 13.8;
-  const EYE = 14.1, DROOL = 14.8, WIG = 16.0, LEAP = 16.5, GULP = 17.1, DARK = 17.25, E0 = 20.6;
-  const RING = 21.0, KNEEL = 21.4, LOOK = 23.6, EYE3 = 23.9, FLEE = 24.7, F0 = 26.6;
-  const GOAT = 26.7, NANDI = 29.2, BUTT = 30.0, G0 = 31.8;
-  const MINE = 32.2, GRAB = 34.2, LIFT = 34.6, TOE = 37.0, SPLAT = 37.6, MILLION = 39.0, H0 = 40.8;
-  const TOPPER = 41.0, HOST = 43.8, TIMER = 45.6, FLASH = 46.8, I0 = 49.8;
-  const GIFT = 50.0, OPEN = 51.2, FLY = 52.0, CARD = 53.6;
-  const CAP_T = 53.7, COVERS = 54.0, PRICE = 54.8, STRIKE = 55.3, DEAD = 55.8, PILL = 56.3, SUB = 56.8, FOLLOW = 57.3;
+  const UP = 2.6, B0 = 3.6, SET = 5.3, PHEW = 6.3, B2 = 6.6, C0 = 9.6;
+  const RAISE = 10.5, SWING = 11.6, BEAT = 11.8, SPLIT = 12.5, WINK = 13.8, D0 = 16.4;
+  const EYE = 16.7, DROOL = 17.4, WIG = 18.8, LEAP = 19.3, GULP = 19.9, DARK = 20.05, E0 = 24.2;
+  const RING = 24.6, KNEEL = 25.0, LOOK = 27.6, EYE3 = 27.9, FLEE = 28.8, F0 = 31.4;
+  const GOAT = 31.5, NANDI = 34.0, BUTT = 34.8, LISTEN = 34.9, G0 = 38.0;
+  const MINE = 38.4, GRAB = 41.0, LIFT = 41.4, TOE = 44.4, SPLAT = 45.0, MILLION = 46.0, H0 = 48.4;
+  const TOPPER = 48.6, HOST = 51.8, TIMER = 53.8, FLASH = 55.2, I0 = 60.0;
+  const GIFT = 60.2, OPEN = 61.4, FLY = 62.2, CARD = 64.4;
+  const CAP_T = 64.5, COVERS = 64.8, PRICE = 65.6, STRIKE = 66.1, DEAD = 66.6, PILL = 67.1, SUB = 67.6, FOLLOW = 68.1;
   const CARDC = { cap: CAP_T, covers: COVERS, price: PRICE, strike: STRIKE, dead: DEAD, pill: PILL, sub: SUB, follow: FOLLOW, logo: CAP_T - .1 };
 
   const GOLDC = '#F5C542';
@@ -27,16 +27,16 @@
   // ---- every caption: [text, y, t0, life, size, colour]
   const CAPS = [
     ['We just hit', 470, -1, B0 + 1 - .1, 70], ['15,000', 610, -1, B0 + 1 - .1, 200, GOLDC], ['followers!', 750, -1, B0 + 1 - .1, 70],
-    ['So the whole cast', 480, B0, 5.5 - B0 - .1, 64], ['threw a PARTY.', 580, B0 + .35, 5.5 - B0 - .45, 92, GOLDC],
-    ['SHER carried the cake.', 480, 5.5, C0 - 5.5 - .1, 64, GOLDC], ['(He does ALL the work.)', 570, 5.9, C0 - 5.9 - .1, 56],
-    ['Maa KALI came', 480, C0, 10.6 - C0 - .1, 66], ['for the FROSTING.', 575, C0 + .4, 10.6 - C0 - .5, 76, GOLDC],
-    ['…and stepped on SHIVA.', 480, 10.6, D0 - 10.6 - .1, 64], ['AGAIN.', 590, 11.3, D0 - 11.3 - .1, 110, GOLDC],
-    ['Bal HANUMAN saw the lamp…', 455, D0, DARK - D0 + .05, 54], ['…and thought it was a MANGO.', 535, D0 + 1.3, DARK - D0 - 1.25, 54, GOLDC],
+    ['So the whole cast', 480, B0, B2 - B0 - .1, 64], ['threw a PARTY.', 580, B0 + .35, B2 - B0 - .45, 92, GOLDC],
+    ['SHER carried the cake.', 480, B2, C0 - B2 - .1, 64, GOLDC], ['(He does ALL the work.)', 570, B2 + .4, C0 - B2 - .5, 56],
+    ['Maa KALI was asked', 480, C0, SPLIT + .1 - C0, 66], ['to cut the cake.', 575, C0 + .4, SPLIT + .1 - C0 - .4, 80, GOLDC],
+    ['ONE swing.', 500, SPLIT + .2, D0 - SPLIT - .3, 120, GOLDC], ['Perfect slices.', 625, SPLIT + .7, D0 - SPLIT - .8, 66],
+    ['Bal HANUMAN saw the lamp…', 455, D0, DARK - D0 + .05, 54], ['…and thought it was a MANGO.', 535, D0 + 1.2, DARK - D0 - 1.15, 54, GOLDC],
     ['NOT AGAIN,', 500, DARK + .1, E0 - DARK - .2, 80], ['HANUMAN!', 610, DARK + .35, E0 - DARK - .45, 118, GOLDC],
     ['In the dark, SHUMBHA', 480, E0, LOOK - E0 - .1, 60], ['proposed to DURGA. AGAIN.', 565, E0 + .4, LOOK - E0 - .5, 58, GOLDC],
     ['Her answer?', 490, LOOK, F0 - LOOK - .1, 70], ['ONE LOOK.', 605, LOOK + .5, F0 - LOOK - .6, 120, GOLDC],
-    ['You said our NANDI', 480, F0, 29.6 - F0 - .1, 62], ['looked like a GOAT…', 570, F0 + .4, 29.6 - F0 - .5, 66, GOLDC],
-    ['We LISTENED.', 520, 29.6, G0 - 29.6 - .1, 104, GOLDC],
+    ['You said our NANDI', 480, F0, LISTEN - F0 - .1, 62], ['looked like a GOAT…', 570, F0 + .4, LISTEN - F0 - .5, 66, GOLDC],
+    ['We LISTENED.', 520, LISTEN, G0 - LISTEN - .1, 104, GOLDC],
     ['RAVANA wanted', 480, G0, GRAB + .2 - G0 - .1, 66], ['the WHOLE cake.', 575, G0 + .35, GRAB + .2 - G0 - .45, 80, GOLDC],
     ['So he lifted', 1330, GRAB + .2, TOE - GRAB - .3, 66], ['the WHOLE TABLE.', 1425, GRAB + .55, TOE - GRAB - .65, 80, GOLDC],
     ["Shiva's answer?", 1310, TOE, H0 - TOE - .1, 66], ['ONE TOE.', 1420, TOE + .55, H0 - TOE - .65, 124, GOLDC],
@@ -74,34 +74,27 @@
     if (t > C0 - .3) { flushLetters(); whipH(seg(t, C0 - .3, C0) * 1.3, 1, t, [KP.wall, KP.marigold]); }
   }
 
-  // ================= C · Kali licks the frosting, steps on Shiva =================
-  const KX = 820, KY = 1545, KU = 14, SHX = 1040, SHY = 1640, SHU = 10;
+  // ================= C · Maa Kali cuts the cake: ONE swing =================
+  const KX = 640, KY = 1400, KU = 20;
   function shotKali(t, lt) {
-    camK(t, [[C0, [620, 1200, 1.6]], [LICK + .8, [630, 1200, 1.62]], [BACK + .2, [880, 1320, 1.65]], [D0, [890, 1320, 1.68]]]);
+    camK(t, [[C0, [520, 1090, 1.45]], [SWING, [500, 1080, 1.5]], [SPLIT + .3, [480, 1070, 1.6]], [WINK, [520, 1060, 1.56]], [D0, [520, 1060, 1.58]]]);
     hallSet(t);
+    // Kali behind the table: smiles at the cake, raises her khadga, ONE swing (eyes calmly shut), the beat, the slices; a wink
+    const up = ease(seg(t, RAISE - .4, RAISE)), sw = easeIn(seg(t, SWING - .12, SWING + .03)), back = ease(seg(t, SPLIT + .6, WINK));
+    const raised = [6.5, -31], low = [-7.5, -14], rest = [5.6, -26];
+    const hand = t < SWING - .12 ? [lerp(rest[0], raised[0], up), lerp(rest[1], raised[1], up)] : t < SPLIT + .6 ? [lerp(raised[0], low[0], sw), lerp(raised[1], low[1], sw)] : [lerp(low[0], rest[0], back), lerp(low[1], rest[1], back)];
+    const ko = { boilKey: 'kali', backR: hand, khadgaA: t < SWING - .12 ? -.2 * up : t < SPLIT + .6 ? lerp(-.2, -2.3, sw) : lerp(-2.3, 0, back), hx: -.4 };
+    if (t < RAISE - .4) Object.assign(ko, { eyes: 'happy', lookX: -.8, lookY: .5 });
+    else if (t < SWING - .12) Object.assign(ko, { eyes: 'determined', lookX: -.8, lookY: .5 });
+    else if (t < WINK) Object.assign(ko, { eyes: 'closed', hx: -.2 });
+    else Object.assign(ko, { eyes: 'wink', hx: 0, emote: 'spark', emoteK: 1, emoteAge: t - WINK });
+    kali(KX, KY, KU, ko);
     table(TX, TY, TW);
-    const lick = seg(t, LICK, LICK + .8);
-    const ctop = cake(CX, TY - 8, CS, t, { key: 'cake', lick: lick });
-    // Shiva napping on the floor (since the start of the shot)
-    const chest = shivaLieChest(SHX, SHY, SHU);
-    const stepK = ease(seg(t, BACK, STEP));
-    shivaLie(SHX, SHY, SHU, { boilKey: 'shivalie', eyes: t > THUMB - .3 ? ['closed', 'normal'] : 'closed', mouth: t > STEP && t < THUMB ? 'O' : 'smile', thumb: ease(seg(t, THUMB, THUMB + .3)), breathe: Math.sin(t * 2) * .1, sq: t > STEP ? spring(t, STEP, 10, 16) * .1 : 0 });
-    // Kali: sees it, the tongue sweeps the top tier, she steps back onto Shiva
-    const kx = lerp(KX, chest[0] + 10, stepK), ky = lerp(KY, chest[1] + 12, stepK) - Math.sin(stepK * Math.PI) * 50;
-    const lk = inW(t, LICK - .2, LICK + 1.1);
-    const ko = { boilKey: 'kali', hx: t < BACK ? -.5 : 0, tongueOff: lk };
-    if (t < SEE) Object.assign(ko, { eyes: 'normal', lookX: -.8 });
-    else if (t < LICK - .2) Object.assign(ko, { eyes: 'heart', lookX: -.8, emote: 'hearts', emoteK: 1, emoteAge: t - SEE, tongueLen: 3 + .5 * Math.sin(t * 8), tongueWag: Math.sin(t * 6) });
-    else if (t < BACK) Object.assign(ko, { eyes: 'happy', mouth: 'smile', tongueWag: Math.sin(t * 5) * .6 });
-    else if (t < BITE) Object.assign(ko, { eyes: 'wide', lookY: 1, lookX: .4 });
-    else Object.assign(ko, { eyes: 'wide', lookY: 1, lookX: .4, bite: ease(seg(t, BITE, BITE + .25)), blush: ease(seg(t, BITE, BITE + .4)), emote: 'sweat', emoteK: 1, emoteAge: t - BITE });
-    kali(kx, ky, KU, ko);
-    if (lk) {   // the tongue: out of her mouth, up over the table and along the top tier
-      const M = kaliMouth(kx, ky, KU, ko), a = seg(t, LICK - .2, LICK), b = 1 - seg(t, LICK + .8, LICK + 1.1), r = 53 * CS;
-      const tip = [lerp(CX + r + 20, CX - r * .7, lick), ctop + 14];
-      const reach = Math.min(a, b), T2 = [lerp(M[0], tip[0], reach), lerp(M[1], tip[1], reach)];
-      kaliTongue([M, [lerp(M[0], T2[0], .35), M[1] - 90 * reach], [lerp(M[0], T2[0], .75), T2[1] - 50 * reach], T2], 30, { key: 'licktongue' });
-    }
+    const cut = t < SPLIT ? 0 : .001 + ease(seg(t, SPLIT, SPLIT + .4));
+    cake(CX, TY - 8, CS, t, { key: 'cake', cut });
+    // the gleam: one diagonal arc through the cake
+    slashGleam([[KX + 120, 820], [CX + 110, 960], [CX, 1110], [CX - 140, 1270]], seg(t, SWING - .12, SWING + .03), t - SWING - .03, 'kslash');
+    if (t > SPLIT) sparkleBurst(CX, TY - 120, 120, t - SPLIT, 'splitburst', 8);
     camEnd();
     if (lt < .3) whipH(1 - lt / .3, 1, t, [KP.wall, KP.marigold]);
     caps(t);
@@ -114,7 +107,7 @@
     camK(t, [[D0, [400, 1080, 1.6]], [LEAP, [420, 1060, 1.55]], [DARK + .6, [330, 1150, 1.75]], [E0, [330, 1160, 1.8]]]);
     hallSet(t, { dark: t > DARK });
     table(TX, TY, TW);
-    const ctop = cake(CX, TY - 8, CS, t, { key: 'cake', lick: 1 });
+    const ctop = cake(CX, TY - 8, CS, t, { key: 'cake', cut: 1 });
     // the lamp: hangs, shines, shrinks into his mouth at the gulp
     const fly = seg(t, LEAP, GULP), gone = t > GULP + .05;
     const ho = { boilKey: 'hanu' };
@@ -156,7 +149,7 @@
     camK(t, [[E0, [545, 1160, 1.55]], [LOOK, [560, 1155, 1.6]], [EYE3 + .2, [620, 1140, 1.7]], [F0, [580, 1150, 1.6]]], sh);
     hallSet(t, { dark: true });
     table(TX, TY, TW);
-    const ctop = cake(CX, TY - 8, CS, t, { key: 'cake', lick: 1 });
+    const ctop = cake(CX, TY - 8, CS, t, { key: 'cake', cut: 1 });
     boilSeed('cordend'); inkLine([[LP[0], -200], [LP[0], LP[1] - LR]], 2, KP.ink, 'ink', 0);
     // Durga: smiles politely, then one look; the third eye opens
     const e3 = ease(seg(t, EYE3, EYE3 + .25));
@@ -199,7 +192,7 @@
     camK(t, [[F0, [180, 1330, 1.6]], [NANDI, [160, 1330, 1.6]], [BUTT - .2, [150, 1360, 1.75]], [G0, [150, 1370, 1.8]]]);
     hallSet(t);
     table(TX, TY, TW);
-    cake(CX, TY - 8, CS, t, { key: 'cake', lick: 1 });
+    cake(CX, TY - 8, CS, t, { key: 'cake', cut: 1 });
     lantern(LP[0], LP[1], LR, t, { on: 1 });   // he spat it back out (a little sheepish lamp)
     // the goat: trots in from the door, poses, chin up; butted out of frame on an arc
     const GU = 16, gy = 1600;
@@ -253,7 +246,7 @@
     ro.between = () => {   // the table and cake: over the heads, under the front arms
       table(TX, ty, TW, { rot: trot, legs: lifted, h: lifted ? 60 : undefined, key: 'rtable' });
       push(); translate(TX, ty); rotate(trot); translate(-TX, -ty);
-      ctop = cake(CX, ty - 8, CS, t, { key: 'cake', lick: 1, splat: t > SPLAT ? 1 : 0, topper: t < SPLAT, candles: t < SPLAT });
+      ctop = cake(CX, ty - 8, CS, t, { key: 'cake', cut: 1, splat: t > SPLAT ? 1 : 0, topper: t < SPLAT, candles: t < SPLAT });
       pop();
     };
     if (t > GRAB && t < SPLAT) ro.arm = (a, s, k, d) => {   // the upper five pairs grip the table's underside
@@ -311,11 +304,11 @@
     splat(...kaliMouth(790, 1560, 10, KO).map((v, i) => v - i * 80), 18, 'hk', KP.icing);
     // Hanuman on the table's end
     balHanuman(700, TY + 162, 8, { boilKey: 'hhanu', pose: 'sit', eyes: photo ? 'happy' : 'normal', mouth: photo ? 'grin' : 'smile', blush: .3 });
-    // the front row: Nandi peeking in, Sher, Bal Bappa, Shiva lying
+    // the front row: Nandi peeking in, Sher, Bal Bappa, Shiva seated
     nandi(20, 1730, 10, { boilKey: 'hnandi', eyes: photo ? 'happy' : 'normal', lookX: .5 });
     lion(250, 1730, 11, { boilKey: 'hsher', hat: lionBand(), eyes: photo ? 'happy' : 'tired', mouth: photo ? 'grin' : 'flat', slump: photo ? 0 : .5 });
     splat(250, 1730 - 15.5 * 11, 22, 'hs', KP.pink);
-    shivaLie(830, 1790, 8.5, { boilKey: 'hshiva', eyes: photo ? 'normal' : 'closed', mouth: 'smile', thumb: photo ? 1 : 0 });
+    shiva(840, 1790, 7.5, { boilKey: 'hshiva', ...feel('serene', t), eyes: photo ? 'happy' : 'closed', mouth: 'smile' });
     // Bal Bappa, the host: thank-you, arms folded, a little bow
     const bowK = ease(seg(t, HOST, HOST + .5)) * (1 - ease(seg(t, TIMER - .3, TIMER)));
     balBappa(520, 1760, 11, { boilKey: 'hbappa', stand: 1, eyes: t > HOST ? 'happy' : 'normal', mouth: 'smile', cross: ease(seg(t, HOST, HOST + .4)) * (photo ? 0 : 1), aL: photo ? .9 : undefined, aR: photo ? .9 : undefined, dy: bowK * .6, htilt: bowK * .15, trunk: photo ? 'up' : 'curl', blush: t > HOST ? .6 : 0, emote: inW(t, HOST + .3, TIMER) ? 'hearts' : null, emoteK: 1, emoteAge: t - HOST - .3 });

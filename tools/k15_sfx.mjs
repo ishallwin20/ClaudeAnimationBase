@@ -6,16 +6,15 @@
 // and the shutter, the gift's pop and the books' whooshes, the card's chimes.
 import { track, tone, noise, bell, mixb, env, whoosh, rumble, plink, clang, click, thud, crunch, crinkle, shimmer, slide, gurgle, squeak, chirp, laughter, chime, splash, note, seed, rnd, clamp, lerp, SR } from './sfx.mjs';
 
-const UP = 2.2, B0 = 3.2, SET = 4.7, PHEW = 5.6, C0 = 7.6;
-const SEE = 8.0, LICK = 9.0, BACK = 10.4, STEP = 10.8, BITE = 11.2, THUMB = 12.0, D0 = 13.8;
-const EYE = 14.1, DROOL = 14.8, WIG = 16.0, LEAP = 16.5, GULP = 17.1, DARK = 17.25, E0 = 20.6;
-const RING = 21.0, KNEEL = 21.4, LOOK = 23.6, EYE3 = 23.9, FLEE = 24.7, F0 = 26.6;
-const GOAT = 26.7, NANDI = 29.2, BUTT = 30.0, G0 = 31.8;
-const MINE = 32.2, GRAB = 34.2, LIFT = 34.6, TOE = 37.0, SPLAT = 37.6, MILLION = 39.0, H0 = 40.8;
-const TOPPER = 41.0, HOST = 43.8, TIMER = 45.6, FLASH = 46.8, I0 = 49.8;
-const GIFT = 50.0, OPEN = 51.2, FLY = 52.0, CARD = 53.6;
-const CAP_T = 53.7, COVERS = 54.0, PRICE = 54.8, STRIKE = 55.3, DEAD = 55.8, PILL = 56.3, SUB = 56.8, FOLLOW = 57.3, END = 61.0;
-
+const UP = 2.6, B0 = 3.6, SET = 5.3, PHEW = 6.3, B2 = 6.6, C0 = 9.6;
+const RAISE = 10.5, SWING = 11.6, BEAT = 11.8, SPLIT = 12.5, WINK = 13.8, D0 = 16.4;
+const EYE = 16.7, DROOL = 17.4, WIG = 18.8, LEAP = 19.3, GULP = 19.9, DARK = 20.05, E0 = 24.2;
+const RING = 24.6, KNEEL = 25.0, LOOK = 27.6, EYE3 = 27.9, FLEE = 28.8, F0 = 31.4;
+const GOAT = 31.5, NANDI = 34.0, BUTT = 34.8, LISTEN = 34.9, G0 = 38.0;
+const MINE = 38.4, GRAB = 41.0, LIFT = 41.4, TOE = 44.4, SPLAT = 45.0, MILLION = 46.0, H0 = 48.4;
+const TOPPER = 48.6, HOST = 51.8, TIMER = 53.8, FLASH = 55.2, I0 = 60.0;
+const GIFT = 60.2, OPEN = 61.4, FLY = 62.2, CARD = 64.4;
+const CAP_T = 64.5, COVERS = 64.8, PRICE = 65.6, STRIKE = 66.1, DEAD = 66.6, PILL = 67.1, SUB = 67.6, FOLLOW = 68.1, END = 72.0;
 const T = track(END);
 seed(15);
 const lp = (b, fc) => { let l = 0; const a = 1 - Math.exp(-2 * Math.PI * fc / SR); for (let i = 0; i < b.length; i++) { l += a * (b[i] - l); b[i] = l; } return b; };
@@ -59,20 +58,19 @@ T.at(UP, whoosh(.9, 300, 1800), .25);
 T.at(B0, shimmer(.6, [note(76), note(79), note(84)], .8), .22);
 T.at(SET - .55, slide(.45, 300, 600, .5), .15);
 T.at(SET, thud(1), .55, .1); T.at(SET + .02, clang(note(91), .5), .08, .1);
+T.at(B2, chirp(1), .08);
 T.at(PHEW, noise(.9, { hp: 300, lp: 2200, e: env.swell(.05, .6), amp: 1 }), .25, -.2);
 [0, .35, .7, 1.05].forEach(d => T.at(PHEW + .9 + d, noise(.18, { hp: 400, lp: 2600, e: env.hann(), amp: .7 }), .14, -.2));   // pant
-// ---- C · Kali: the whip, the hearts, the slurp, the step on Shiva
+// ---- C · Kali: the whip, the raised khadga, ONE swing, the silent beat, the slices, the wink
 T.at(C0 - .3, whoosh(.45, 500, 4000), .35, .4);
-T.at(SEE, shimmer(.5, [note(81), note(85), note(88)], .7), .2, .3);
-T.at(SEE + .1, boing(.6, 1.4), .16, .3);
-T.at(LICK - .15, slide(.2, 300, 900, .5), .18, .2);
-T.at(LICK, slurp(.85, 1), .5, -.1);
-T.at(LICK + .95, pop(1, .8), .4, .2);   // the smack
-T.at(BACK, whoosh(.35, 400, 2400), .2, .3);
-T.at(STEP, squish(1), .55, .4);
-T.at(STEP + .05, lp(voice([[0, .32, 1.1, .5]], 150, { amp: 1, fall: .4 }), 1600), .4, .5);   // Shiva: "oof"
-T.at(BITE, slide(.6, 700, 350, .6), .2, .3);   // the embarrassed slide
-T.at(THUMB, ting(88, .9), .3, .5);
+T.at(RAISE - .4, slide(.4, 400, 1200, .5), .14, .3);
+T.at(RAISE, bell(note(96), .8, { partials: [[1, 1], [2.4, .5], [4.1, .3]], k: 3, amp: 1 }), .22, .3);   // the blade glints
+T.at(SWING - .14, whoosh(.2, 1500, 9000), .55, -.2);   // SHWING
+T.at(SWING + .02, mixb(noise(.08, { hp: 4000, lp: 12000, e: env.pluck(40), amp: 1 }), bell(note(100), .6, { amp: .6 })), .3, -.2);
+T.at(SPLIT, mixb(...[0, 1, 2, 3].map(i => tone(.08, 900 - i * 120, { e: env.pluck(50), amp: .6 }))), .3);   // the slices settle
+T.at(SPLIT + .03, shimmer(.6, [note(84), note(88), note(91), note(96)], .8, .05), .3);
+T.at(SPLIT + .4, laughter(.9, 1), .1);   // the room: "ooooh"
+T.at(WINK, ting(91, .9), .3, .3);
 // ---- D · Hanuman: the lamp, the drool, the wiggle, AAM, the dark
 T.at(D0 - .3, whoosh(.4, 4000, 500), .3);
 T.at(EYE, shimmer(.6, [note(84), note(88), note(91), note(96)], .7), .2, -.3);

@@ -8,8 +8,8 @@
 //   veil(k, col, key)                        a full-frame wash (the dark; the red glare), world space under a camera
 //   lantern(x, y, r, t, o)                   the big round paper lamp (o.on 0..1, o.s scale, o.cord)
 //   table(x, y, w, o)                        the long party table, top centre at (x, y); o.rot, o.h (cloth drop)
-//   cake(x, y, s, t, o)                      the three-tier cake on its tray; o.lick 0..1 (the stripe), o.splat 0..1,
-//                                            o.topper, o.candles, o.dark (candles brighter)
+//   cake(x, y, s, t, o)                      the three-tier cake on its tray; o.cut 0..1 (sliced), o.splat 0..1,
+//                                            o.topper, o.candles, o.cut 0..1 (sliced)
 //   topper15K(x, y, s, rot, key)             the gold "15K" cake topper, painted strokes (bottom centre at (x, y))
 //   splat(x, y, r, key, col)                 a frosting splat with drips
 //   goat(x, y, u, o)                         a goat (the donkey rig in white, with horns and a goatee) in Nandi's cloth
@@ -212,7 +212,7 @@ function splat(x, y, r, key = 'splat', col = KP.pink, k = 1) {
 }
 
 // the three-tier cake: (x, y) the bottom centre (on the tray), s scale (s 1: the bottom tier is 240 px wide, the cake
-// 230 px tall); o.lick 0..1 (a stripe of frosting licked off the top tier, from screen-right), o.splat 0..1 (flattened),
+// 230 px tall); o.cut 0..1 (Kali's one swing: clean cuts through every tier, the slices ease apart), o.splat 0..1 (flattened),
 // o.topper (default true), o.candles (default true), o.candleGlow 0..1, o.noTray
 function cake(x, y, s, t, o = {}) {
   const sp = clamp(o.splat || 0), key = o.key || 'cake';
@@ -230,9 +230,12 @@ function cake(x, y, s, t, o = {}) {
     paint(P, { wash: drip, ink: KP.ink, sw: .8, curv: .5 });
     // little piped dots along the base
     for (let k = 0; k < 7; k++) paint(ellPts(x - W2 + (k + .5) / 7 * 2 * W2, y0 - 6 * s, 7 * s, 6 * s, 8), { wash: KP.tag, ink: KP.ink, sw: .4 });
-    if (i === 2 && o.lick > 0) {   // the licked stripe: sponge shows through, from the right edge inward
-      const L = clamp(o.lick), x1 = x + W2, x0 = lerp(x1, x - W2 * .7, L);
-      paint([[x0, y0 - Hh - 6 * s], [x1 + 2, y0 - Hh - 6 * s], [x1 + 2, y0 - Hh * .45], [x0 + 10, y0 - Hh * .4]], { wash: KP.sponge, fill: KP.spongeDk, fillOp: 70, tex: .5, ink: KP.ink, sw: .7, curv: .3 });
+    if (o.cut > 0 && sp < .5) {   // the cuts: thin sponge-coloured gaps that open as the slices ease apart
+      const g = 1 + 3 * clamp(o.cut) * s;
+      for (const cx of [-.55, -.18, .2, .58]) {
+        const xx = x + cx * W2;
+        paint([[xx - g, y0], [xx + g, y0], [xx + g * .6, y0 - Hh - 4 * s], [xx - g * .6, y0 - Hh - 4 * s]], { wash: KP.sponge, ink: KP.spongeDk, sw: .5 });
+      }
     }
     top = y0 - Hh;
   });
@@ -425,4 +428,15 @@ function candleFlames(x, top, s, t, k = 1) {
     paint([[cx, top - ch - 18 * s - fl], [cx + 5 * s, top - ch - 6 * s], [cx, top - ch - 1 * s], [cx - 5 * s, top - ch - 6 * s]], { wash: KP.flame, ink: null, curv: .6 });
     paint([[cx, top - ch - 12 * s - fl], [cx + 2.5 * s, top - ch - 5 * s], [cx, top - ch - 2 * s], [cx - 2.5 * s, top - ch - 5 * s]], { wash: KP.flameLt, ink: null, curv: .6 });
   }
+}
+// the khadga's gleam: a bright crescent swept along an arc through P (a point list, world), k 0..1 its progress; it
+// fades over age (s since the swing ended)
+function slashGleam(P, k, age, key = 'slash') {
+  if (k <= 0 || age > .45) return;
+  const a = age > 0 ? 1 - age / .45 : 1, n = P.length, j = Math.max(2, Math.round(clamp(k) * n));
+  const Q = through(P.slice(0, j));
+  glow(Q[Q.length - 1][0], Q[Q.length - 1][1], 120, '#FFF6D6', .8 * a);
+  boilSeed(key);
+  paint(ribbon(Q, 3, 26), { wash: '#FFF6D6', washOp: 240 * a, ink: null });
+  paint(ribbon(Q, 1, 10), { wash: '#FFFFFF', washOp: 255 * a, ink: null });
 }
