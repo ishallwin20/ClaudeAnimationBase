@@ -65,7 +65,7 @@ function parvati(x, y, u, o = {}) {
     const bs = Math.sin(T * 1.6) * .25 + hs * .5;
     const braid = [[-1.4, -18.5], [-2.9, -16.4], [-3.4 + bs * .4, -13.5], [-3.5 + bs, -10.6]];
     paint(ribbon(P(braid), 1.2 * u, .7 * u), { wash: C.hair, ink: INK, sw: sw * .7 });
-    const C = through(P(braid)); for (let k = 2; k < C.length - 1; k += 2) { const [bx, by] = C[k]; inkLine([[bx - .45 * u, by - .2 * u], [bx + .2 * u, by + .3 * u]], sw * .5, C.hairLt, 'inkfine', .4); }
+    const BC = through(P(braid)); for (let k = 2; k < BC.length - 1; k += 2) { const [bx, by] = BC[k]; inkLine([[bx - .45 * u, by - .2 * u], [bx + .2 * u, by + .3 * u]], sw * .5, C.hairLt, 'inkfine', .4); }
     paint(ellPts((-3.5 + bs) * u, -10.1 * u, .45 * u, .6 * u, 10), { wash: C.gold, ink: INK, sw: sw * .5 });   // tassel
     pop();
     rs('pallback');
