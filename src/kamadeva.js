@@ -274,54 +274,69 @@ function kamadeva(x, y, u, o = {}) {
 // (x, y) is the middle of its body; s is its size unit (the body is 8.4s long; with s ≈ 1.6u it carries Kama).
 // o: flip, flap (-1..1: the wings, + up), squawk 0..1 (the beak opens), eyes 'normal' | 'wide' | 'closed',
 //    look (-1..1), fly (true: feet tucked), tail (-1..1: the tail swishes), rot, only ('body' | 'wing': draw the
-//    near wing separately, over a rider), boilKey
+//    near wing separately, over a rider), boilKey; pal (overrides parrot / parrotDk / parrotLt / tail / tailDk / beak /
+//    beakDk / claw / wing / wingDk / head / headDk: another bird on the rig, e.g. GARUDA_PAL), brow (a fierce brow), ring (false: no neck ring), hat(s, sw) (a hook at the
+//    head centre: Garuda's crown, garudaCrown)
 function parrotSeat(x, y, s, o = {}) { return [x + (o.flip ? 1 : -1) * .5 * s, y - 2.25 * s]; }
 function kamaParrot(x, y, s, o = {}) {
-  const id = o.boilKey ?? 'pt' + (++CLAWD_N), rs = p => boilSeed(`parrot ${id} ${p}`), P = pts => U(pts, s), sw = clamp(s / 20, .4, 2), INK = KMD.ink;
+  const C = o.pal ? { ...KMD, ...o.pal } : KMD;
+  const id = o.boilKey ?? 'pt' + (++CLAWD_N), rs = p => boilSeed(`parrot ${id} ${p}`), P = pts => U(pts, s), sw = clamp(s / 20, .4, 2), INK = C.ink;
   const fl = clamp(o.flap ?? 0, -1.2, 1.2), only = o.only, tl = (o.tail || 0) + Math.sin(T * 2.2) * .08;
   push(); translate(x, y); if (o.rot) rotate(o.rot); scale(o.flip ? -1 : 1, 1);
   const wing = (dark, key) => {
     rs(key);
     push(); translate(.4 * s, -1.1 * s); rotate(-.35 - fl * .9);
-    const c = dark ? KMD.parrotDk : KMD.parrot;
-    paint(P([[.6, -.2], [-1.6, -1.1], [-4.2, -1.2], [-6.4, -.6], [-5.4, 0], [-6.1, .5], [-4.6, .7], [-5.1, 1.2], [-3.2, 1.1], [-1.2, .9], [.5, .6]]), { wash: c, fill: KMD.parrotDk, fillOp: 70, tex: .5, ink: INK, sw: sw * .7, curv: .3 });
-    for (const k of [-3.6, -4.8]) inkLine(P([[k + 1.2, -.6], [k, .5]]), sw * .45, KMD.tailDk, 'inkfine', .4);
-    paint(ribbon(P([[-3.8, .55], [-5.4, .55]]), .5 * s, .2 * s), { wash: dark ? KMD.tailDk : KMD.tail, ink: null });   // blue flight feathers
+    const c = dark ? C.wingDk || C.parrotDk : C.wing || C.parrot;
+    paint(P([[.6, -.2], [-1.6, -1.1], [-4.2, -1.2], [-6.4, -.6], [-5.4, 0], [-6.1, .5], [-4.6, .7], [-5.1, 1.2], [-3.2, 1.1], [-1.2, .9], [.5, .6]]), { wash: c, fill: C.parrotDk, fillOp: 70, tex: .5, ink: INK, sw: sw * .7, curv: .3 });
+    for (const k of [-3.6, -4.8]) inkLine(P([[k + 1.2, -.6], [k, .5]]), sw * .45, C.tailDk, 'inkfine', .4);
+    paint(ribbon(P([[-3.8, .55], [-5.4, .55]]), .5 * s, .2 * s), { wash: dark ? C.tailDk : C.tail, ink: null });   // blue flight feathers
     pop();
   };
   if (only !== 'wing') {
     rs('tail');
-    for (const [k, c] of [[0, KMD.tailDk], [1, KMD.tail]]) paint(ribbon(P([[-3.4, .4 + k * .3], [-6.5, 1.2 + tl + k * .5], [-10.2, 1.8 + tl * 2 + k * .9]]), 1.2 * s, .2 * s), { wash: c, fill: KMD.tailDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .6 });
+    for (const [k, c] of [[0, C.tailDk], [1, C.tail]]) paint(ribbon(P([[-3.4, .4 + k * .3], [-6.5, 1.2 + tl + k * .5], [-10.2, 1.8 + tl * 2 + k * .9]]), 1.2 * s, .2 * s), { wash: c, fill: C.tailDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .6 });
     if (fl > -.2) wing(true, 'farwing');
     if (!o.fly) {
       rs('feet');
-      for (const k of [-.5, .5]) { inkLine(P([[k, 2.2], [k + .1, 3.1]]), sw * 1.4, KMD.claw, 'ink', 0); inkLine(P([[k - .5, 3.2], [k + .7, 3.2]]), sw * 1.4, KMD.claw, 'ink', 0); }
+      for (const k of [-.5, .5]) { inkLine(P([[k, 2.2], [k + .1, 3.1]]), sw * 1.4, C.claw, 'ink', 0); inkLine(P([[k - .5, 3.2], [k + .7, 3.2]]), sw * 1.4, C.claw, 'ink', 0); }
     }
     rs('body');
     const body = P([[-3.8, .6], [-3, -1.6], [-.8, -2.6], [1.8, -2.5], [3.4, -1.5], [4, .2], [3.2, 1.8], [.8, 2.5], [-1.8, 2]]);
-    paint(body, { wash: KMD.parrot, fill: KMD.parrotDk, fillOp: 60, bleed: .06, tex: .6, border: .5, ink: INK, sw: sw * .9, curv: .5 });
-    paint(ellPts(1.6 * s, .9 * s, 2 * s, 1.3 * s, 16, 0, -.3), { fill: KMD.parrotLt, fillOp: 140, bleed: .2, tex: .6, border: .6, ink: null });   // belly
+    paint(body, { wash: C.parrot, fill: C.parrotDk, fillOp: 60, bleed: .06, tex: .6, border: .5, ink: INK, sw: sw * .9, curv: .5 });
+    paint(ellPts(1.6 * s, .9 * s, 2 * s, 1.3 * s, 16, 0, -.3), { fill: C.parrotLt, fillOp: 140, bleed: .2, tex: .6, border: .6, ink: null });   // belly
     rs('head');
     const hy = -2.2, hx = 3.5;
-    paint(ellPts(hx * s, hy * s, 1.95 * s, 1.85 * s, 22), { wash: KMD.parrot, fill: KMD.parrotDk, fillOp: 40, tex: .5, ink: INK, sw: sw * .85 });
-    inkLine(P([[hx - 1.7, hy + 1], [hx - .4, hy + 1.85], [hx + 1.1, hy + 1.6]]), sw * 1.8, KMD.ringDk, 'ink', .5);   // the neck ring
-    inkLine(P([[hx - 1.8, hy + .7], [hx - .6, hy + 1.5], [hx + .9, hy + 1.3]]), sw * 1.5, KMD.ring, 'ink', .5);
+    paint(ellPts(hx * s, hy * s, 1.95 * s, 1.85 * s, 22), { wash: C.head || C.parrot, fill: C.headDk || C.parrotDk, fillOp: 40, tex: .5, ink: INK, sw: sw * .85 });
+    if (o.brow) inkLine(P([[hx - .5, hy - 1.15], [hx + .4, hy - .95], [hx + 1.1, hy - .55]]), sw * 1.3, INK, 'ink', .3);   // a fierce brow
+    if (o.ring !== false) {
+    inkLine(P([[hx - 1.7, hy + 1], [hx - .4, hy + 1.85], [hx + 1.1, hy + 1.6]]), sw * 1.8, C.ringDk, 'ink', .5);   // the neck ring
+    inkLine(P([[hx - 1.8, hy + .7], [hx - .6, hy + 1.5], [hx + .9, hy + 1.3]]), sw * 1.5, C.ring, 'ink', .5);
+    }
     const sqk = clamp(o.squawk || 0), bx = hx + 1.6, by = hy + .1;
-    paint(P([[bx - .3, by + .5], [bx + .6, by + .9 + sqk * .7], [bx + 1.2, by + 1.1 + sqk * .9], [bx + .4, by + 1.3 + sqk * .5]]), { wash: KMD.beakDk, ink: INK, sw: sw * .6, curv: .4 });   // lower
-    paint(P([[bx - .4, by - .9], [bx + .7, by - .9], [bx + 1.6, by], [bx + 1.5, by + 1.3], [bx + .9, by + .5], [bx - .3, by + .55]]), { wash: KMD.beak, fill: KMD.beakDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .7, curv: .5 });
+    paint(P([[bx - .3, by + .5], [bx + .6, by + .9 + sqk * .7], [bx + 1.2, by + 1.1 + sqk * .9], [bx + .4, by + 1.3 + sqk * .5]]), { wash: C.beakDk, ink: INK, sw: sw * .6, curv: .4 });   // lower
+    paint(P([[bx - .4, by - .9], [bx + .7, by - .9], [bx + 1.6, by], [bx + 1.5, by + 1.3], [bx + .9, by + .5], [bx - .3, by + .55]]), { wash: C.beak, fill: C.beakDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .7, curv: .5 });
     rs('eye');
     const ek = o.eyes || 'normal', ex = hx + .3, ey = hy - .45, lk = (o.look || 0) * .15;
     if (ek === 'closed') inkLine(P([[ex - .45, ey], [ex, ey + .25], [ex + .45, ey]]), sw * .9, INK, 'ink', .5);
     else {
       const r = ek === 'wide' ? .62 : .48;
-      paint(ellPts(ex * s, ey * s, r * s, r * s, 12), { wash: KMD.white, ink: INK, sw: sw * .6 });
+      paint(ellPts(ex * s, ey * s, r * s, r * s, 12), { wash: C.white, ink: INK, sw: sw * .6 });
       paint(ellPts((ex + lk + .08) * s, ey * s, r * .5 * s, r * .55 * s, 10), { wash: PAL.ink, ink: null });
-      paint(ellPts((ex + lk) * s, (ey - .12) * s, .1 * s, .1 * s, 6), { wash: KMD.white, ink: null });
+      paint(ellPts((ex + lk) * s, (ey - .12) * s, .1 * s, .1 * s, 6), { wash: C.white, ink: null });
     }
+    if (o.hat) { rs('hat'); push(); translate(hx * s, hy * s); o.hat(s, sw); pop(); }
   }
   if (only !== 'body') wing(false, 'nearwing');
   pop();
   boilSeed(`parrot ${id} after`);
+}
+
+// Garuda, Vishnu's eagle, on the parrot rig: gold body, flame-red wings and tail, a yellow beak and a little gold crown
+const GARUDA_PAL = { parrot: '#EDB23E', parrotDk: '#C0782A', parrotLt: '#FFE09A', wing: '#D9502E', wingDk: '#A53620', head: '#FFF1DA', headDk: '#E2C9A4',
+  tail: '#D9502E', tailDk: '#A53620', beak: '#F7D25A', beakDk: '#C99A22', claw: '#C99A22' };
+function garudaCrown(s, sw) {
+  paint(U([[-1.2, -1.2], [-1.3, -2.3], [-.7, -1.9], [-.2, -3], [.35, -1.9], [.95, -2.4], [.9, -1.2]], s), { wash: KMD.gold, fill: KMD.goldDk, fillOp: 50, ink: KMD.ink, sw: sw * .6, curv: .1 });
+  paint(ellPts(-.15 * s, -1.75 * s, .22 * s, .26 * s, 8), { wash: '#3FB6A8', ink: KMD.ink, sw: sw * .35 });
 }
 
 // Model sheet: studio.html?loop=kamadeva, or node render.mjs --loop=kamadeva --sheet=0.5 --cols=1 --w=1080

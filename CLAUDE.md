@@ -8,7 +8,7 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
 ## Branches
 - `main` holds the engine and the shared characters (Clawd, Bappa, Bal Bappa, Mooshak, Vayu, Shiva, Kartikeya, Parvati,
   Nandi, Shailputri, Brahmacharini, Chandraghanta, Menavati, Kalaratri and her donkey, Kamadeva and his parrot, a modern boy in a mustard tee, Aarav, the turquoise-tee kid of the book-doorway reels, Sher, Durga's lion, who also draws Chandraghanta's tigress and runs and leaps in side view, Maa Durga with her ten
-  arms and the gods' gifts, Mahishasura, the buffalo demon, with his buffalo form, the other asuras on his rig (Shumbha and Nishumbha, Chanda and Munda, Dhumralochana, a messenger), Raktabija, the blood-seed demon whose clones sprout from the ground, Maa Kali with her tongue out, Shiva lying down, Ravana with his ten heads (each a personality) and twenty arms, Bal Hanuman, baby Hanuman with golden fur, a curly tuft and a long tail, who sits, stands and flies, and Indra on Airavata, his four-tusked white elephant, with the vajra) and opens the demo. It also holds the Cinematic
+  arms and the gods' gifts, Mahishasura, the buffalo demon, with his buffalo form, the other asuras on his rig (Shumbha and Nishumbha, Chanda and Munda, Dhumralochana, a messenger), Raktabija, the blood-seed demon whose clones sprout from the ground, Maa Kali with her tongue out, Shiva lying down, Ravana with his ten heads (each a personality) and twenty arms, Bal Hanuman, baby Hanuman with golden fur, a curly tuft and a long tail, who sits, stands and flies, Indra on Airavata, his four-tusked white elephant, with the vajra, Shani Dev with his crow (eyes on his feet, the cursed violet gaze, the limp), Vishnu seated with four arms, riding Garuda (the parrot rig recoloured), and baby Ganesha with the human face he was born with) and opens the demo. It also holds the Cinematic
   style: its engine (`src/cine.js`), `cine.html` with the cast and lighting sheet, and its cast (`src/cine_shiva.js`: Shiva in
   colour with the third eye, and the Nataraja; `src/cine_cast.js`: Sati, who becomes Shailputri with a trishul and lotus,
   Daksha, crowds, the Rudra Tandava, Shiva seated, Nandi (a zebu bull) lying and standing, white or as the black stone temple Nandi, the Sudarshan chakra, the yagna fire, the
@@ -48,6 +48,8 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   offer: **Books 1–3, set of 3 for ₹500** (as of Oct 2026; Book 7 is "coming soon").
 - In the Cinematic style, captions are karaoke chunks (`say()`, 2.2–3 s each, names in gold) and the card is
   `rkCardCine()`; the same safe band, frame-0 and card rules apply.
+- **Caption font (Painted):** set `PROJECT.letterFont: 'Bangers'` in a new reel's config (owner, Oct 2026: a viewer found
+  Permanent Marker hard to read). Bangers is all caps, so emphasis is gold and size, not CAPS.
 - No voiceover by default (when the owner asks for one, see the Cinematic guide's Voice section): captions carry the explanation, a synthesized SFX track sits under it (`tools/sfx.mjs`), and
   music is added on Instagram. Render one final MP4, the SFX version (no `--audio=none` copy; owner, Oct 2026). Clear
   `out/frames` first: the frame cache is resumable and will reuse the previous reel's frames.

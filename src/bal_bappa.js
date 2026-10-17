@@ -20,12 +20,15 @@
 //           round glossy ones with brows; every other kind is Clawd's.
 //   extras: emote + emoteK + emoteAge, armL(u, sw) / armR(u, sw) (hooks at the hand), crownTilt (tips the turban),
 //           held(u, sw) (body space, sitting coordinates: drawn over the belly and under folded arms and the head, a hug)
+//   human:  human 1 draws the human-faced baby Ganesha was born as in the Brahma Vaivarta Purana (no trunk, tusks or fan
+//           ears; little ears, black curls, a button nose); part 'head' draws only the head and turban (a head that
+//           flies off), part 'body' everything but (the shawl, the belly and the arms)
 //   boil:   boilKey, noShadow
 const BAL = {
   skin: '#F4876A', skinDk: '#DC5E43', skinLt: '#FFB59C', earIn: '#EE6A45', ink: '#5A3520',
   blue: '#6E9CCB', blueDk: '#43709F', blueLt: '#A9CBEA', shawl: '#A9CDEB', shawlDk: '#7AA6D2',
   orange: '#F29250', orangeDk: '#CF6630', cream: '#FCE6C8', tusk: '#FBEBD3', tilak: '#86BFE8', drop: '#D2452F',
-  eye: '#2A1A12', brow: '#B5502E',
+  eye: '#2A1A12', brow: '#B5502E', hair: '#2A1E2A',
 };
 // his own resting trunk, short and fat; bappa()'s poses are moved onto his trunk root
 const BAL_REST = [[0, -8.7], [.1, -7.7], [.4, -6.7], [1, -5.9], [1.9, -5.5], [2.8, -5.55], [3.5, -5.95], [3.8, -6.6]];
@@ -40,10 +43,11 @@ function balBappa(x, y, u, o = {}) {
   const dy = (o.dy || 0) * u, sq = (o.sq || 0) + (o.take || 0), sw = clamp(u / 20, .4, 2) * (o.swMul || 1), J = u * .05;
   const { col, dk, lt } = tintCols({ ...o, col: o.col || BAL.skin, dk: o.dk || BAL.skinDk, lt: o.lt || BAL.skinLt });
   const P = pts => U(pts, u), INK = BAL.ink;
+  const HEAD = o.part !== 'body', BODY = o.part !== 'head', HUM = (o.human || 0) > .5;
 
   rs('shadow');
   const st = (o.stand || 0) > .5, HY = st ? 2.6 : 0, wk = o.walk;
-  if (!o.noShadow) { const f = 1 - Math.min(.5, Math.abs(o.dy || 0) * .05); paint(ellPts(x, y + u * .1, u * (st ? 4.4 : 6.6) * f, u * .9 * f, 24), { fill: PAL.ink, fillOp: 80, bleed: .25, tex: .3, border: .1, ink: null }); }
+  if (!o.noShadow && BODY) { const f = 1 - Math.min(.5, Math.abs(o.dy || 0) * .05); paint(ellPts(x, y + u * .1, u * (st ? 4.4 : 6.6) * f, u * .9 * f, 24), { fill: PAL.ink, fillOp: 80, bleed: .25, tex: .3, border: .1, ink: null }); }
 
   push();
   translate(x, y + dy);
@@ -55,6 +59,7 @@ function balBappa(x, y, u, o = {}) {
 
   // ---- shawl: hangs from behind the shoulders, pooling on the ground either side when he sits
   rs('shawl');
+  if (BODY) {
   if (st) ground(() => {   // standing, it hangs to his calves; walking swings the hem
     const sway = wk == null ? 0 : Math.sin(wk * TAU) * .35;
     const side = s => [[s * 2.3, -9.5], [s * 3.5, -8.7], [s * 4.1, -7], [s * 4.4 + sway * .3, -5], [s * 4.7 + sway * .7, -3.2], [s * 4.9 + sway, -2.2], [s * 4.3 + sway, -1.75], [s * 3.5 + sway * .8, -2], [s * 2.8, -2.6]];
@@ -70,8 +75,10 @@ function balBappa(x, y, u, o = {}) {
   }
   }
 
+  }
+
   // ---- ears (behind the head): big droopy fans hinged at the temples; flare swings them out and up
-  for (const s of [-1, 1]) {
+  if (HEAD && !HUM) for (const s of [-1, 1]) {
     rs('ear' + s);
     const fl = clamp((o.ear || 0) + (s < 0 ? o.earL || 0 : o.earR || 0), -.3, 1.4);
     push(); translate((s * 3 + hx * .6) * u, -10 * u); rotate(s * (-.08 - fl * 1.1));
@@ -81,6 +88,8 @@ function balBappa(x, y, u, o = {}) {
     pop();
   }
 
+  let drawFront = () => {};
+  if (BODY) {
   // ---- belly, then the lap (or shorts and legs) over its bottom, then the feet
   rs('belly');
   const belly = ellPts(0, -4.3 * u, 2.95 * u, 2.3 * u, 28, J);
@@ -151,7 +160,11 @@ function balBappa(x, y, u, o = {}) {
     if (o.armR) { push(); translate(-2 * u, -5.2 * u); o.armR(u, sw); pop(); }
   } else for (const s of [-1, 1]) if (!front(s)) drawArm(s);
 
+  drawFront = () => { if (cross <= .5) for (const s of [-1, 1]) if (front(s)) drawArm(s); };
+  }
+
   // ---- head
+  if (HEAD) {
   push(); translate(hx * .5 * u, 0);
   if (o.htilt) { translate(0, -7 * u); rotate(o.htilt); translate(0, 7 * u); }
   rs('head');
@@ -160,6 +173,13 @@ function balBappa(x, y, u, o = {}) {
   paint(ellPts((-1.2 + hx) * u, -10.3 * u, 1.8 * u, 1 * u, 16, J * 2, -.2), { fill: lt, fillOp: 130, bleed: .2, tex: .85, border: .8, ink: null });
   paint(ellPts(0, -7 * u, 2.6 * u, .9 * u, 16, J), { fill: dk, fillOp: 60, bleed: .1, tex: .6, border: .5, ink: null });
   paint(head, { ink: INK, sw });
+  if (HUM) {   // the baby born first (Brahma Vaivarta Purana): a human face, little ears and black curls under the turban
+    rs('human');
+    for (const s of [-1, 1]) {
+      paint(ellPts(s * 3.15 * u, -9.1 * u, .55 * u, .75 * u, 12, J), { wash: col, fill: dk, fillOp: 50, tex: .5, ink: INK, sw: sw * .7 });
+      for (const [cx, cy, r] of [[2.75, -10.7, .62], [3.2, -10], [2.3, -11.3, .55]].map(([a, b, r]) => [a, b, r || .5])) paint(ellPts(s * cx * u, cy * u, r * u, r * .9 * u, 10, J), { wash: BAL.hair, ink: INK, sw: sw * .5 });
+    }
+  }
   push(); translate(hx * .9 * u, 0);
   rs('tilak');   // two blue curls and a red drop
   for (const s of [-1, 1]) inkLine(P([[s * .75, -10.85], [s * .62, -10.45], [s * .3, -10.35], [s * .08, -10.55]]), sw * .9, BAL.tilak, 'ink', .5);
@@ -180,6 +200,10 @@ function balBappa(x, y, u, o = {}) {
     }
   } else { push(); translate(0, -9.2 * u); scale(.62); translate(0, 6 * u); eyes(u, o, sw / .62 * .85, [-1, 1], 0); pop(); }
   rs('mouth');
+  if (HUM) {
+    inkLine(P([[-.15, -8.35], [.12, -8.05], [-.1, -7.9]]), sw * .55, BAL.skinDk, 'inkfine', .5);   // a button nose
+    push(); translate(0, -7.3 * u); scale(.48); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .48 * .8); pop();
+  } else {
   push(); translate(-.75 * u, -6.6 * u); scale(.5); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .5 * .8); pop();
   rs('tusk');   // two stubby tusks either side of the trunk root
   for (const s of [-1, 1]) paint(ellPts(s * 1.45 * u, -7.3 * u, .42 * u, .55 * u, 14, 0, s * -.35), { wash: BAL.tusk, fill: BAL.cream, fillOp: 90, tex: .4, ink: INK, sw: sw * .6 });
@@ -197,6 +221,7 @@ function balBappa(x, y, u, o = {}) {
     const i = Math.min(n - 2, Math.floor(k * (n - 1))), f = k * (n - 1) - i, [ax, ay] = TP[i], [bx, by] = TP[i + 1];
     const cx = lerp(ax, bx, f), cy = lerp(ay, by, f), d = Math.hypot(bx - ax, by - ay) || 1, nx = -(by - ay) / d, ny = (bx - ax) / d, w = lerp(2.4, 1.2, k) * u * .3;
     inkLine([[cx - nx * w, cy - ny * w], [cx + nx * w, cy + ny * w]], sw * .45, BAL.skinDk, 'inkfine', 0);
+  }
   }
   pop();
 
@@ -221,7 +246,9 @@ function balBappa(x, y, u, o = {}) {
   pop();
   pop();
 
-  if (cross <= .5) for (const s of [-1, 1]) if (front(s)) drawArm(s);
+  }
+
+  drawFront();
   pop();
 
   rs('emote');
@@ -262,4 +289,13 @@ function balBappa(x, y, u, o = {}) {
     });
   };
   LOOPS.balstand.len = 4;
+
+  // the human-faced baby of the Brahma Vaivarta Purana, and his head on its own: studio.html?loop=balhuman
+  LOOPS.balhuman = t => {
+    paint(rectPts(-40, -40, W + 80, H + 80), { wash: PAL.paper, ink: null });
+    balBappa(300, 800, 26, { ...feel('happy', t), human: 1 });
+    balBappa(800, 800, 26, { ...feel('surprised', t), human: 1, part: 'body' });
+    balBappa(540, 1500, 30, { ...feel('starstruck', t), human: 1, part: 'head', dy: -2 });
+  };
+  LOOPS.balhuman.len = 4;
 })();

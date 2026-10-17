@@ -14,6 +14,8 @@
 //   arms:   handL / handR = [x, y] in u (default hanging relaxed), bendL / bendR, armL(u, sw) / armR(u, sw) (upright hooks)
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK. 'normal' / 'look' / 'wide' are her own almond
 //           eyes with lashes, 'closed' and 'wink' her own lids; every other kind is Clawd's.
+//   colour: pal = { saree, sareeDk, sareeLt, blouse, blouseDk, gold, goldDk, goldLt, hair, hairLt, sindoor, lip, bangle, skin… }
+//           overrides PRV, to draw another woman on her rig (Shani's wife, a Gandharva princess, in the Shani reels)
 //   extras: emote + emoteK + emoteAge, boilKey, noShadow
 const PRV = {
   skin: '#F2BE98', skinDk: '#D69470', skinLt: '#FFE0C8', ink: '#4A2530',
@@ -39,11 +41,12 @@ function parvatiHand(x, y, u, o, s) {
 }
 
 function parvati(x, y, u, o = {}) {
+  const C = o.pal ? { ...PRV, ...o.pal } : PRV;   // pal recolours her (another woman on the same rig)
   const id = o.boilKey ?? 'p' + (++CLAWD_N), rs = p => boilSeed(`parvati ${id} ${p}`);
   x += (o.dx || 0) * u;
   const dy = (o.dy || 0) * u, sq = (o.sq || 0) + (o.take || 0), sw = clamp(u / 20, .4, 2) * (o.swMul || 1), J = u * .04;
-  const { col, dk, lt } = tintCols({ ...o, col: o.col || PRV.skin, dk: o.dk || PRV.skinDk, lt: o.lt || PRV.skinLt });
-  const P = pts => U(pts, u), INK = PRV.ink, wk = o.walk, hx = clamp(o.hx || 0, -1, 1), lean = o.lean || 0;
+  const { col, dk, lt } = tintCols({ ...o, col: o.col || C.skin, dk: o.dk || C.skinDk, lt: o.lt || C.skinLt });
+  const P = pts => U(pts, u), INK = C.ink, wk = o.walk, hx = clamp(o.hx || 0, -1, 1), lean = o.lean || 0;
   const hs = wk == null ? 0 : Math.sin(wk * TAU) * .35;   // hem swing
 
   if (!o.noShadow) { rs('shadow'); paint(ellPts(x, y + u * .1, u * 5 * (1 - Math.min(.5, Math.abs(o.dy || 0) * .05)), u * .95, 22), { fill: PAL.ink, fillOp: 80, bleed: .25, tex: .3, border: .1, ink: null }); }
@@ -58,16 +61,16 @@ function parvati(x, y, u, o = {}) {
   upper(() => {
     rs('backhair');
     push(); translate(hx * .4 * u, 0); headScale();
-    paint(ellPts(0, -20.1 * u, 3.25 * u, 3.1 * u, 26, J), { wash: PRV.hair, ink: INK, sw: sw * .8 });
+    paint(ellPts(0, -20.1 * u, 3.25 * u, 3.1 * u, 26, J), { wash: C.hair, ink: INK, sw: sw * .8 });
     const bs = Math.sin(T * 1.6) * .25 + hs * .5;
     const braid = [[-1.4, -18.5], [-2.9, -16.4], [-3.4 + bs * .4, -13.5], [-3.5 + bs, -10.6]];
-    paint(ribbon(P(braid), 1.2 * u, .7 * u), { wash: PRV.hair, ink: INK, sw: sw * .7 });
-    const C = through(P(braid)); for (let k = 2; k < C.length - 1; k += 2) { const [bx, by] = C[k]; inkLine([[bx - .45 * u, by - .2 * u], [bx + .2 * u, by + .3 * u]], sw * .5, PRV.hairLt, 'inkfine', .4); }
-    paint(ellPts((-3.5 + bs) * u, -10.1 * u, .45 * u, .6 * u, 10), { wash: PRV.gold, ink: INK, sw: sw * .5 });   // tassel
+    paint(ribbon(P(braid), 1.2 * u, .7 * u), { wash: C.hair, ink: INK, sw: sw * .7 });
+    const C = through(P(braid)); for (let k = 2; k < C.length - 1; k += 2) { const [bx, by] = C[k]; inkLine([[bx - .45 * u, by - .2 * u], [bx + .2 * u, by + .3 * u]], sw * .5, C.hairLt, 'inkfine', .4); }
+    paint(ellPts((-3.5 + bs) * u, -10.1 * u, .45 * u, .6 * u, 10), { wash: C.gold, ink: INK, sw: sw * .5 });   // tassel
     pop();
     rs('pallback');
-    paint(ribbon(P([[-2.6, -16.4], [-3.5, -14], [-3.9 + hs * .3, -11], [-4.2 + hs * .6, -8.2]]), 2 * u, 1.9 * u), { wash: PRV.saree, fill: PRV.sareeDk, fillOp: 90, tex: .6, ink: INK, sw: sw * .75 });
-    inkLine(P([[-3.3, -16], [-4.3, -13.5], [-4.8 + hs * .3, -11], [-5.1 + hs * .6, -8.4]]), sw * 1.6, PRV.gold, 'ink', .5);
+    paint(ribbon(P([[-2.6, -16.4], [-3.5, -14], [-3.9 + hs * .3, -11], [-4.2 + hs * .6, -8.2]]), 2 * u, 1.9 * u), { wash: C.saree, fill: C.sareeDk, fillOp: 90, tex: .6, ink: INK, sw: sw * .75 });
+    inkLine(P([[-3.3, -16], [-4.3, -13.5], [-4.8 + hs * .3, -11], [-5.1 + hs * .6, -8.4]]), sw * 1.6, C.gold, 'ink', .5);
   });
 
   // ---- feet under the hem, the skirt with its pleats and border
@@ -75,29 +78,29 @@ function parvati(x, y, u, o = {}) {
   for (const s of [-1, 1]) {
     const l = wk == null ? 0 : Math.max(0, Math.sin((wk + (s < 0 ? 0 : .5)) * TAU)) * .5;
     paint(ellPts((s * 1.1 + (wk == null ? 0 : s * l * .3)) * u, (-.25 - l) * u, .95 * u, .45 * u, 14, J), { wash: col, fill: dk, fillOp: 50, tex: .5, ink: INK, sw: sw * .7 });
-    inkLine(P([[s * 1.1 - .6, -.45 - l], [s * 1.1 + .6, -.45 - l]]), sw * .9, PRV.gold, 'ink', 0);   // anklet
+    inkLine(P([[s * 1.1 - .6, -.45 - l], [s * 1.1 + .6, -.45 - l]]), sw * .9, C.gold, 'ink', 0);   // anklet
   }
   rs('skirt');
   const skirt = P([[-2.2, -11.9], [2.2, -11.9], [2.9, -8.5], [3.7, -4.6], [4.3 + hs * .4, -1.5], [4.6 + hs, -.5], [2.6 + hs * .5, -.35], [0, -.3], [-2.6 + hs * .5, -.35], [-4.6 + hs, -.5], [-4.3 + hs * .4, -1.5], [-3.7, -4.6], [-2.9, -8.5]]);
-  paint(skirt, { wash: PRV.saree, fill: PRV.sareeDk, fillOp: 90, bleed: .06, tex: .7, border: .5, ink: INK, sw: sw * .9, curv: .3 });
-  paint(ribbon(P([[-4.5 + hs, -1.05], [-2.2 + hs * .5, -.9], [0, -.85], [2.2 + hs * .5, -.9], [4.5 + hs, -1.05]]), .75 * u, .75 * u), { wash: PRV.gold, fill: PRV.goldDk, fillOp: 50, tex: .5, ink: null });
-  for (const k of [-.5, .1, .6]) inkLine(P([[k * .6, -10.5], [k * 1.2 + hs * .3, -5.5], [k * 1.8 + hs * .5, -1.5]]), sw * .5, PRV.sareeDk, 'inkfine', .5);   // pleats
-  for (let k = 0; k < 6; k++) { const bx = lerp(-3.4, 3.6, (k + .5) / 6) + hs * .5; paint(ellPts(bx * u, -2.3 * u, .22 * u, .22 * u, 8), { wash: PRV.gold, ink: null }); }   // butis
+  paint(skirt, { wash: C.saree, fill: C.sareeDk, fillOp: 90, bleed: .06, tex: .7, border: .5, ink: INK, sw: sw * .9, curv: .3 });
+  paint(ribbon(P([[-4.5 + hs, -1.05], [-2.2 + hs * .5, -.9], [0, -.85], [2.2 + hs * .5, -.9], [4.5 + hs, -1.05]]), .75 * u, .75 * u), { wash: C.gold, fill: C.goldDk, fillOp: 50, tex: .5, ink: null });
+  for (const k of [-.5, .1, .6]) inkLine(P([[k * .6, -10.5], [k * 1.2 + hs * .3, -5.5], [k * 1.8 + hs * .5, -1.5]]), sw * .5, C.sareeDk, 'inkfine', .5);   // pleats
+  for (let k = 0; k < 6; k++) { const bx = lerp(-3.4, 3.6, (k + .5) / 6) + hs * .5; paint(ellPts(bx * u, -2.3 * u, .22 * u, .22 * u, 8), { wash: C.gold, ink: null }); }   // butis
 
   upper(() => {
     // ---- torso: midriff, blouse, the pallu across the chest, necklace
     rs('torso');
     paint(P([[-2.3, -16.6], [2.3, -16.6], [2.4, -14], [2.1, -11.6], [-2.1, -11.6], [-2.4, -14]]), { wash: col, ink: INK, sw: sw * .8, curv: .3 });
-    paint(P([[-2.6, -16.8], [2.6, -16.8], [2.55, -14.6], [1.9, -13.7], [-1.9, -13.7], [-2.55, -14.6]]), { wash: PRV.blouse, fill: PRV.blouseDk, fillOp: 70, tex: .6, ink: INK, sw: sw * .8, curv: .3 });
+    paint(P([[-2.6, -16.8], [2.6, -16.8], [2.55, -14.6], [1.9, -13.7], [-1.9, -13.7], [-2.55, -14.6]]), { wash: C.blouse, fill: C.blouseDk, fillOp: 70, tex: .6, ink: INK, sw: sw * .8, curv: .3 });
     inkLine(P([[-.4, -12.6], [0, -12.4], [.4, -12.6]]), sw * .45, INK, 'inkfine', .5);   // navel
     rs('pallu');
-    paint(ribbon(P([[2.3, -11.2], [1.4, -12.8], [-.2, -14.6], [-1.8, -16.3], [-2.7, -16.9]]), 2.2 * u, 1.6 * u), { wash: PRV.saree, fill: PRV.sareeDk, fillOp: 60, tex: .6, ink: INK, sw: sw * .8 });
-    inkLine(P([[3, -11.7], [2.1, -13.3], [.5, -15.2], [-1, -16.8], [-1.8, -17.4]]), sw * 1.5, PRV.gold, 'ink', .5);
-    for (const [bx, by] of [[1.4, -12.7], [0, -14.4], [-1.5, -16]]) paint(ellPts(bx * u, by * u, .2 * u, .2 * u, 8), { wash: PRV.gold, ink: null });
+    paint(ribbon(P([[2.3, -11.2], [1.4, -12.8], [-.2, -14.6], [-1.8, -16.3], [-2.7, -16.9]]), 2.2 * u, 1.6 * u), { wash: C.saree, fill: C.sareeDk, fillOp: 60, tex: .6, ink: INK, sw: sw * .8 });
+    inkLine(P([[3, -11.7], [2.1, -13.3], [.5, -15.2], [-1, -16.8], [-1.8, -17.4]]), sw * 1.5, C.gold, 'ink', .5);
+    for (const [bx, by] of [[1.4, -12.7], [0, -14.4], [-1.5, -16]]) paint(ellPts(bx * u, by * u, .2 * u, .2 * u, 8), { wash: C.gold, ink: null });
     rs('neck');
     paint(P([[-.75, -17.9], [.75, -17.9], [.8, -16.7], [-.8, -16.7]]), { wash: col, fill: dk, fillOp: 50, tex: .5, ink: INK, sw: sw * .6 });
-    inkLine(P([[-1.5, -17], [-.7, -16.1], [0, -15.85], [.7, -16.1], [1.5, -17]]), sw * 1.6, PRV.gold, 'ink', .6);
-    paint(P([[0, -15.95], [.35, -15.6], [0, -15.05], [-.35, -15.6]]), { wash: PRV.saree, ink: INK, sw: sw * .4 });
+    inkLine(P([[-1.5, -17], [-.7, -16.1], [0, -15.85], [.7, -16.1], [1.5, -17]]), sw * 1.6, C.gold, 'ink', .6);
+    paint(P([[0, -15.95], [.35, -15.6], [0, -15.05], [-.35, -15.6]]), { wash: C.saree, ink: INK, sw: sw * .4 });
 
     // ---- head
     push(); translate(hx * .45 * u, 0); headScale();
@@ -111,25 +114,25 @@ function parvati(x, y, u, o = {}) {
     rs('jhumka');
     for (const s of [-1, 1]) {
       push(); translate(s * 2.75 * u, -19 * u); rotate(Math.sin(T * 2.4 + s) * .12);
-      inkLine([[0, 0], [0, .5 * u]], sw * .5, PRV.goldDk, 'inkfine', 0);
-      paint(U([[-.45, 1.2], [0, .45], [.45, 1.2]], u), { wash: PRV.gold, fill: PRV.goldDk, fillOp: 50, ink: INK, sw: sw * .45, curv: .5 });
-      for (const k of [-.3, 0, .3]) paint(ellPts(k * u, 1.35 * u, .1 * u, .1 * u, 6), { wash: PRV.goldLt, ink: null });
+      inkLine([[0, 0], [0, .5 * u]], sw * .5, C.goldDk, 'inkfine', 0);
+      paint(U([[-.45, 1.2], [0, .45], [.45, 1.2]], u), { wash: C.gold, fill: C.goldDk, fillOp: 50, ink: INK, sw: sw * .45, curv: .5 });
+      for (const k of [-.3, 0, .3]) paint(ellPts(k * u, 1.35 * u, .1 * u, .1 * u, 6), { wash: C.goldLt, ink: null });
       pop();
     }
     rs('hairfront');
     paint(P([[-2.85, -19.2], [-3, -21], [-2.2, -22.3], [-.6, -22.75], [0, -22.3], [.6, -22.75], [2.2, -22.3], [3, -21], [2.85, -19.2], [2.35, -20.6], [1.3, -21.55], [.15, -21.55], [0, -21.9], [-.15, -21.55], [-1.3, -21.55], [-2.35, -20.6]]),
-      { wash: PRV.hair, ink: INK, sw: sw * .85, curv: .4 });
-    inkLine(P([[-2.2, -21.6], [-1.2, -22.3], [-.3, -22.4]]), sw * .45, PRV.hairLt, 'inkfine', .5);
-    inkLine(P([[0, -22.4], [0, -21.7]]), sw * 1.1, PRV.sindoor, 'ink', 0);   // sindoor in the parting
+      { wash: C.hair, ink: INK, sw: sw * .85, curv: .4 });
+    inkLine(P([[-2.2, -21.6], [-1.2, -22.3], [-.3, -22.4]]), sw * .45, C.hairLt, 'inkfine', .5);
+    inkLine(P([[0, -22.4], [0, -21.7]]), sw * 1.1, C.sindoor, 'ink', 0);   // sindoor in the parting
     rs('mukut');
-    paint(P([[-1.7, -22.5], [1.7, -22.5], [1.3, -23.4], [.7, -23.3], [0, -24.2], [-.7, -23.3], [-1.3, -23.4]]), { wash: PRV.gold, fill: PRV.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6, curv: .15 });
-    paint(ellPts(0, -23.1 * u, .25 * u, .3 * u, 8), { wash: PRV.saree, ink: INK, sw: sw * .35 });
-    inkLine(P([[0, -22], [0, -21.25]]), sw * .6, PRV.goldDk, 'inkfine', 0);   // maang tikka
-    paint(ellPts(0, -21.05 * u, .2 * u, .24 * u, 8), { wash: PRV.gold, ink: INK, sw: sw * .35 });
+    paint(P([[-1.7, -22.5], [1.7, -22.5], [1.3, -23.4], [.7, -23.3], [0, -24.2], [-.7, -23.3], [-1.3, -23.4]]), { wash: C.gold, fill: C.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6, curv: .15 });
+    paint(ellPts(0, -23.1 * u, .25 * u, .3 * u, 8), { wash: C.saree, ink: INK, sw: sw * .35 });
+    inkLine(P([[0, -22], [0, -21.25]]), sw * .6, C.goldDk, 'inkfine', 0);   // maang tikka
+    paint(ellPts(0, -21.05 * u, .2 * u, .24 * u, 8), { wash: C.gold, ink: INK, sw: sw * .35 });
 
     push(); translate(hx * .8 * u, 0);
     rs('bindi');
-    paint(ellPts(0, -20.55 * u, .17 * u, .17 * u, 8), { wash: PRV.sindoor, ink: null });
+    paint(ellPts(0, -20.55 * u, .17 * u, .17 * u, 8), { wash: C.sindoor, ink: null });
     if (o.blush) for (const s of [-1, 1]) paint(ellPts(s * 1.75 * u, -18.7 * u, .65 * u, .35 * u, 14), { fill: PAL.rose, fillOp: 150 * clamp(o.blush), bleed: .2, tex: .4, ink: null });
     rs('eyes');
     const kinds = Array.isArray(o.eyes) ? o.eyes : o.eyes === 'wink' ? ['normal', 'closed'] : [o.eyes || 'normal', o.eyes || 'normal'];
@@ -139,7 +142,7 @@ function parvati(x, y, u, o = {}) {
       const blink = ((T * .9 + (o.seed || 0) * 1.7 + 1.6) % 3.3) < .12;
       [-1, 1].forEach((s, i) => {
         const k = (o.squint || 0) > .5 ? 'closed' : kinds[i], ex = s * 1.1 * u, ey = -19.7 * u, wide = k === 'wide';
-        inkLine(P([[s * .6, -20.55 - (wide ? .3 : 0)], [s * 1.1, -20.75 - (wide ? .3 : 0)], [s * 1.65, -20.55 - (wide ? .25 : 0)]]), sw * .55, PRV.hair, 'inkfine', .5);   // brow
+        inkLine(P([[s * .6, -20.55 - (wide ? .3 : 0)], [s * 1.1, -20.75 - (wide ? .3 : 0)], [s * 1.65, -20.55 - (wide ? .25 : 0)]]), sw * .55, C.hair, 'inkfine', .5);   // brow
         if (k === 'closed' || k === 'happy' || blink) {
           const c = k === 'happy' ? -.25 : .2;
           inkLine([[ex - .55 * u, ey], [ex, ey + c * u], [ex + .55 * u, ey]], sw * 1.1, INK, 'ink', .5);
@@ -147,18 +150,18 @@ function parvati(x, y, u, o = {}) {
           return;
         }
         const rx = (wide ? .62 : .55) * u, ry = (wide ? .58 : .4) * u;
-        paint(ellPts(ex, ey, rx, ry, 16), { wash: PRV.white, ink: null });
-        paint(ellPts(ex + lx, ey + ly, .3 * u, .36 * u, 12), { wash: PRV.eye, ink: null });
-        paint(ellPts(ex + lx - .1 * u, ey + ly - .12 * u, .1 * u, .11 * u, 8), { wash: PRV.white, ink: null });
+        paint(ellPts(ex, ey, rx, ry, 16), { wash: C.white, ink: null });
+        paint(ellPts(ex + lx, ey + ly, .3 * u, .36 * u, 12), { wash: C.eye, ink: null });
+        paint(ellPts(ex + lx - .1 * u, ey + ly - .12 * u, .1 * u, .11 * u, 8), { wash: C.white, ink: null });
         inkLine([[ex - rx * 1.05, ey + ry * .1], [ex - rx * .3, ey - ry * 1.05], [ex + rx * .5, ey - ry * 1], [ex + rx * 1.15, ey - ry * .3], [ex + s * rx * 1.4, ey - ry * .8]].map(([a, b]) => [s < 0 ? 2 * ex - a : a, b]), sw * 1.2, INK, 'ink', .5);   // lid with a flick outward
       });
     } else { push(); translate(0, -19.7 * u); scale(.44); translate(0, 6 * u); eyes(u, o, sw / .44 * .85, [-1, 1], 0); pop(); }
     rs('nose');
-    inkLine(P([[.02, -19.2], [-.08, -18.85], [.12, -18.75]]), sw * .5, PRV.skinDk, 'inkfine', .5);
-    inkLine(ellPts(.3 * u, -18.7 * u, .22 * u, .22 * u, 10).concat([[.52 * u, -18.7 * u]]), sw * .45, PRV.gold, 'inkfine', .5);   // nath
+    inkLine(P([[.02, -19.2], [-.08, -18.85], [.12, -18.75]]), sw * .5, C.skinDk, 'inkfine', .5);
+    inkLine(ellPts(.3 * u, -18.7 * u, .22 * u, .22 * u, 10).concat([[.52 * u, -18.7 * u]]), sw * .45, C.gold, 'inkfine', .5);   // nath
     rs('mouth');
     if (!o.mouth || o.mouth === 'smile') {   // her own small smile, with a touch of colour
-      paint(P([[-.5, -18.3], [0, -18.05], [.5, -18.3], [0, -18.18]]), { wash: PRV.lip, ink: null, curv: .5 });
+      paint(P([[-.5, -18.3], [0, -18.05], [.5, -18.3], [0, -18.18]]), { wash: C.lip, ink: null, curv: .5 });
       inkLine(P([[-.55, -18.32], [0, -18.02], [.55, -18.32]]), sw * .6, INK, 'inkfine', .6);
     } else { push(); translate(0, -18.3 * u); scale(.36); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .36 * .8); pop(); }
     pop();
@@ -170,7 +173,7 @@ function parvati(x, y, u, o = {}) {
       const [sh, el, ha] = parvatiArm({ ...o, lean: 0 }, s), hook = s < 0 ? o.armL : o.armR;
       paint(ribbon(P([sh, el, ha]), 1.05 * u, .75 * u), { wash: col, fill: dk, fillOp: 40, tex: .5, ink: INK, sw: sw * .8 });
       const d = Math.hypot(ha[0] - el[0], ha[1] - el[1]) || 1, nx = -(ha[1] - el[1]) / d * .45, ny = (ha[0] - el[0]) / d * .45;
-      for (const [k, c] of [[.66, PRV.bangle], [.74, PRV.gold], [.82, PRV.bangle]]) { const bx = lerp(el[0], ha[0], k), by = lerp(el[1], ha[1], k); inkLine(P([[bx - nx, by - ny], [bx + nx, by + ny]]), sw * 1.1, c, 'ink', 0); }
+      for (const [k, c] of [[.66, C.bangle], [.74, C.gold], [.82, C.bangle]]) { const bx = lerp(el[0], ha[0], k), by = lerp(el[1], ha[1], k); inkLine(P([[bx - nx, by - ny], [bx + nx, by + ny]]), sw * 1.1, c, 'ink', 0); }
       push(); translate(ha[0] * u, ha[1] * u);
       paint(ellPts(0, 0, .6 * u, .55 * u, 14, J), { wash: col, ink: INK, sw: sw * .7 });
       if (hook) hook(u, sw);

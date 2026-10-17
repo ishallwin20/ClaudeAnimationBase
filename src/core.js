@@ -206,6 +206,9 @@ function inkLine(pts, sw = 1, col = PAL.ink, br = 'ink', curv = .5) {
 }
 
 // ---------- lettering (drawn on the 2D compositor, under the paper grain) ----------
+// The lettering face: PROJECT.letterFont (a CSS font family, loaded in studio.html) or Permanent Marker. Bangers reads
+// better on phones (the Shani reels on); Permanent Marker stays the default so older reels re-render unchanged.
+const LETTER_FONT = (typeof PROJECT !== 'undefined' && PROJECT.letterFont) || '"Permanent Marker", "Comic Sans MS", cursive';
 // Use sparingly: see "No text" in ANIMATION_GUIDE.md. Clawd's emotes are painted and never need these.
 function letter(txt, x, y, size, color, o = {}) {
   if (CAM && !o.screen) { [x, y] = toScreen(x, y); size *= CAM.zoom; o = { ...o, rot: (o.rot || 0) + CAM.rot }; if (o.font) o.font = o.font.replace(/(\d+(\.\d+)?)px/, (m, v) => (v * CAM.zoom) + 'px'); }
@@ -246,7 +249,7 @@ function drawLetters(c) {
     }
     const k = L.pop != null ? backOut(L.pop) : 1; if (k <= .01) continue;
     c.save(); c.translate(L.x, L.y); c.rotate(L.rot || 0); c.scale(k, k); c.globalAlpha = L.alpha ?? 1;
-    c.font = L.font || `${L.size}px "Permanent Marker", "Comic Sans MS", cursive`;
+    c.font = L.font || `${L.size}px ${LETTER_FONT}`;
     c.textAlign = L.align || 'center'; c.textBaseline = 'middle';
     if (L.maxW) { const w = c.measureText(L.txt).width; if (w > L.maxW) c.scale(L.maxW / w, L.maxW / w); }
     if (L.stroke) { c.lineJoin = 'round'; c.lineWidth = L.size * (L.sw ?? .12); c.strokeStyle = L.stroke; c.strokeText(L.txt, 0, 0); }
@@ -307,7 +310,7 @@ async function setup() {
   brush.scaleBrushes(5); defineBrushes();
   paperG = makePaper(); grainC = makeGrain(); glowTex = makeGlowTex(); letG = createGraphics(W, H); letG.pixelDensity(1);
   outC = document.getElementById('out'); outC.width = W; outC.height = H; outC.style.aspectRatio = W + ' / ' + H; outX = outC.getContext('2d');
-  await document.fonts.load('100px "Permanent Marker"');
+  await document.fonts.load('100px ' + LETTER_FONT);
   await Promise.all((PROJECT.fonts || []).map(f => document.fonts.load(f)));
   await Promise.all(Object.values(PICS).map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));   // not decode(): it stalls in a background tab
   window.ready = true;
