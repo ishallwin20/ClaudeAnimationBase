@@ -5,7 +5,7 @@
 // crow's caw, a baby's coo and the party murmur, the second glance and pop, Parvati's faint (a slide and a thud),
 // Garuda's wingbeats and whooshes, the head's arrival shimmer and Bappa's trumpet, the red curse, the gods' plea, the
 // limp's twang, snow wind, the ask's plinks, the card's chimes.
-import { track, tone, noise, bell, mixb, env, whoosh, rumble, plink, clang, click, thud, crunch, shimmer, slide, squeak, chirp, laughter, chime, note, seed, rnd, clamp, lerp, SR, drone, thunder, wingbeat, wind, crackle, conch, screech } from './sfx.mjs';
+import { track, tone, noise, bell, mixb, env, whoosh, rumble, plink, clang, click, thud, crunch, shimmer, slide, squeak, chirp, laughter, chime, note, seed, rnd, clamp, lerp, SR, drone, thunder, wingbeat, wind, crackle, conch, screech, om } from './sfx.mjs';
 
 const GL0 = 1.3, GLINT = 2.1, B0 = 3.6, POP = 4.1, C0 = 7.4;
 const SHRUG = 8.2, POINT = 10.7, D0 = 14.2;
@@ -121,4 +121,80 @@ T.at(CAP_T, chime(note(79), .6, 2.5), .45);
 T.at(COVERS, plink(note(84)), .3, -.4); T.at(COVERS + .12, plink(note(88)), .3, .4); T.at(COVERS + .24, plink(note(91)), .3);
 T.at(STRIKE, squeak(900, 400, .15, .6), .3); T.at(STRIKE + .1, chime(note(84), .6, 2), .4);
 T.at(PILL, ting(91, .7), .4);
+
+// ==== the beds and fills (owner, 17 Oct: "at parts there are no SFX, it feels too silent", e.g. 16–20 s, 33–40 s).
+// Every shot now sits on its own ambience, and the long holds get foley tied to what's on screen.
+const flute = (m, dur, amp = 1) => mixb(
+  tone(dur, t => note(m) * (1 + .006 * Math.sin(t * 2 * Math.PI * 5.2) * clamp(t / .3)), { e: env.swell(.08, .18), amp }),
+  tone(dur, note(m) * 2, { e: env.swell(.1, .18), amp: amp * .12 }),
+  noise(dur, { hp: note(m) * .8, lp: note(m) * 3, e: env.swell(.05, .15), amp: amp * .18 }));
+const murmur = (dur, amp = 1) => { const b = noise(dur, { hp: 220, lp: 1100, e: env.swell(.6, .6), amp }); for (let i = 0; i < b.length; i++) { const t = i / SR; b[i] *= .45 + .55 * Math.abs(Math.sin(t * 2 * Math.PI * (2.3 + .7 * Math.sin(t * .9))) * Math.sin(t * 2 * Math.PI * (3.1 + Math.sin(t * .6)))); } return b; };
+const room = (dur, amp = 1) => noise(dur, { brown: true, lp: 500, e: env.swell(.3, .3), amp });
+const cricket = (amp = 1) => { const o = new Float32Array(Math.round(.32 * SR)); for (let k = 0; k < 3; k++) add(o, tone(.045, 4300 + rnd() * 400, { e: env.hann(), amp }), k * .07); return o; };
+const drip = (amp = 1) => tone(.12, t => 900 + 1400 * t / .12, { e: env.pluck(30), amp });
+const gulp = (amp = 1) => mixb(tone(.18, t => 260 - 600 * t, { e: env.hann(), amp }), click(amp * .3));
+const tick = (amp = 1, f = 2400) => mixb(click(amp * .6), tone(.04, f, { e: env.pluck(120), amp: amp * .5 }));
+const heart = (amp = 1) => { const o = new Float32Array(Math.round(.6 * SR)); add(o, thud(amp), 0); add(o, thud(amp * .7), .2); return o; };
+const tweet = (amp = 1) => tone(.16, t => 2800 + 900 * Math.sin(t * 2 * Math.PI * 14), { e: env.hann(), amp });
+const creak = (amp = 1) => tone(.3, t => 330 - 60 * t + 30 * Math.sin(t * 2 * Math.PI * 23), { type: 'tri', e: env.hann(), amp });
+const tabla = (f, amp = 1) => mixb(tone(.22, t => f * (1 + .25 * Math.exp(-t * 30)), { e: env.pluck(14), amp }), noise(.04, { hp: 1500, lp: 5000, e: env.pluck(80), amp: amp * .3 }));
+// A · a heartbeat under the hook's drone
+T.at(.2, heart(.5), .25); T.at(1.1, heart(.5), .25); T.at(2.0, heart(.55), .3); T.at(2.8, heart(.6), .3);
+// B · the pavilion's murmur; the cradle creaks; after the POP the head's whistle falls away, twinkles, a gasp
+T.at(B0, murmur(POP - B0 + .2, .6), .18); T.at(B0 + .1, creak(.5), .15, .1);
+T.at(POP + 1.4, slide(1.2, 1600, 700, .4), .18, .3);
+for (let i = 0; i < 9; i++) T.at(POP + 1.6 + i * .19, plink(note(96 - i * 2), .5), .14, .4 - i * .08);
+T.at(POP + .4, noise(.6, { hp: 500, lp: 2500, e: env.swell(.05, .4), amp: .7 }), .22);   // the baby's gasp
+T.at(POP + 2.4, gulp(.7), .22);
+// C · the paper studio: room tone, a "hmm" clock, Shiva drums his fingers; the sweat drips, a gulp, a nervous heart
+T.at(C0, room(D0 - C0, .9), .05);
+for (let i = 0; i < 10; i++) T.at(SHRUG + .9 + i * .5, tick(.5, i % 2 ? 2000 : 2400), .14, -.2);
+for (let i = 0; i < 4; i++) T.at(SHRUG + 1.2 + i * .12, tabla(240 + i * 15, .5), .12, -.4);
+T.at(POINT + 1.1, drip(.7), .25, .4); T.at(POINT + 1.9, drip(.6), .22, .45); T.at(POINT + 2.7, drip(.7), .22, .4);
+T.at(POINT + 1.5, gulp(.8), .3, .4);
+for (let i = 0; i < 4; i++) T.at(POINT + 1.8 + i * .5, heart(.6), .22, .3);
+// D · the ashram at dusk: crickets, a breeze, Krishna's flute in his prayer until the curse; after it, a dark drone
+T.at(D0, wind(E0 - D0, .7, 1), .05);
+seed(77); for (let i = 0; i < 26; i++) T.at(D0 + .3 + i * .43 + rnd() * .2, cricket(.5), .07, rnd() * 1.6 - .8);
+{ const mel = [[74, .7], [76, .45], [78, .9], [81, .6], [78, .45], [76, .9], [74, .6], [71, .45], [74, 1.1], [76, .5]]; let ft = D0 + .5;
+  for (const [m, d] of mel) { if (ft > CURSE - .2) break; T.at(ft, flute(m, Math.min(d + .08, CURSE - ft), .7), .16, -.5); ft += d; } }
+T.at(ARRIVE, plink(note(83), .6), .14, .5); T.at(ARRIVE + .08, plink(note(86), .5), .12, .5);   // her bangles
+for (let i = 0; i < 4; i++) T.at(WAVE + .1 + i * .22, plink(note(88 + (i % 2) * 3), .4), .1, .4);
+T.at(OPEN + 1.2, drone(E0 - OPEN - 1.2, note(36), .5), .3);
+// E · the forest: birds and leaves; after the crow, it flaps and caws again
+T.at(E0, wind(F0 - E0, 2, .8), .2);
+seed(31); for (let i = 0; i < 9; i++) T.at(E0 + .2 + i * .55 + rnd() * .2, tweet(.6), .12, rnd() * 1.6 - .8);
+T.at(BONK + .4, tweet(.8), .15, .2); T.at(BONK + .6, tweet(.8), .15, .3); T.at(BONK + .8, tweet(.7), .14, .2);
+T.at(CROW + 1.3, wingbeat(.5), .22, .1); T.at(CROW + 1.9, caw(.7), .25, .1);
+// F · the party: a murmur all through, temple bells, the cradle creaks; Shani's sweat, gulp and heart under the ask
+T.at(F0, murmur(G0 - F0, .6), .8);
+for (let t = F0 + .5; t < G0 - .5; t += 1.43) T.at(t, creak(.4), .1, .1);
+for (const b of [F0 + 2.4, SHANI_IN + 2.6, EXPLAIN + 2.6]) T.at(b, chime(note(81), .5, 2), .14, .5);
+T.at(ASK + .2, plink(note(91), .8), .25, .5);   // the "?"
+T.at(ASK + 1, gulp(.8), .3, -.6);
+for (let i = 0; i < 5; i++) T.at(ASK + 1.2 + i * .55, drip(.6), .2, -.6);
+for (let i = 0; i < 4; i++) T.at(ASK + 1.6 + i * .5, heart(.6 + i * .08), .24, -.4);
+T.at(EXPLAIN + 2.5, rise(1.1, .5), .14, .2);   // "just one look": the tension rises into G
+for (let i = 0; i < 4; i++) T.at(G0 - 1 + i * .24, heart(.7), .28);
+// G · the faint: dizzy birds round her head, the room gasps
+T.at(FAINT + .9, noise(.6, { hp: 400, lp: 2200, e: env.swell(.05, .4), amp: .8 }), .2);
+for (let i = 0; i < 8; i++) T.at(FAINT + .9 + i * .23, tweet(.6), .12, -.5 + .15 * Math.sin(i * 1.5));
+// H · the wind up in the sky; the head's glow hums on the way back; a cheer after the toot
+T.at(H0, wind(HC - H0, 1.3, .6), .25);
+T.at(BACK + .3, drone(HC - BACK - .3, note(57), .4), .18);
+T.at(TOOT + .9, murmur(I0 - TOOT - .5, .7), .25); T.at(TOOT + 1.2, chime(note(84), .5, 2), .2);
+// I · the murmur goes tense; a low drone under the curse; the gods' plea is a murmur
+T.at(I0, murmur(PLEAD - I0, .5), .14);
+T.at(I0 + .2, drone(CURSE2 - I0, note(38), .5), .3); T.at(I0 + .4, heart(.6), .25); T.at(I0 + 1.1, heart(.7), .28);
+T.at(PLEAD + .4, murmur(I2 - PLEAD - .2, .8), .7);
+T.at(LIMP + 1.6, murmur(J0 - LIMP - 1.6, .5), .3); T.at(LIMP + 1.4, drone(J0 - LIMP - 1, note(43), .5), .15);
+// J · more wind
+T.at(J0 - .4, wind(K0 - J0 + .6, 3, .5), .2);
+// K · Bappa waves: a little tabla pattern; Shani peeks
+for (let i = 0; i < 12; i++) T.at(K0 + .3 + i * .3, tabla(i % 4 === 2 ? 180 : 300, i % 2 ? .4 : .6), .16, .1 * Math.sin(i));
+T.at(K0 + .7, squeak(600, 900, .14, .5), .2, .6);
+// L · the card: a warm pad, chimes on the sub and the follow line
+T.at(CAP_T, om(END - CAP_T, 147, .5), .12);
+T.at(SUB, plink(note(86)), .25, -.3); T.at(FOLLOW, chime(note(84), .6, 2.5), .35); T.at(FOLLOW + .15, chime(note(91), .4, 2.5), .25);
+T.at(FOLLOW + 2, shimmer(1.4, [79, 83, 86, 91].map(note), .4), .18);
 T.write('assets/shani1_sfx.wav');
