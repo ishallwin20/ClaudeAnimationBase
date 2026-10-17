@@ -6,15 +6,15 @@
 // and the shutter, the gift's pop and the books' whooshes, the card's chimes.
 import { track, tone, noise, bell, mixb, env, whoosh, rumble, plink, clang, click, thud, crunch, crinkle, shimmer, slide, gurgle, squeak, chirp, laughter, chime, splash, note, seed, rnd, clamp, lerp, SR } from './sfx.mjs';
 
-const UP = 2.6, B0 = 3.6, SET = 5.3, PHEW = 6.3, B2 = 6.6, C0 = 9.6;
-const RAISE = 10.5, SWING = 11.6, BEAT = 11.8, SPLIT = 12.5, WINK = 13.8, D0 = 16.4;
-const EYE = 16.7, DROOL = 17.4, WIG = 18.8, LEAP = 19.3, GULP = 19.9, DARK = 20.05, E0 = 24.2;
-const RING = 24.6, KNEEL = 25.0, LOOK = 27.6, EYE3 = 27.9, FLEE = 28.8, F0 = 31.4;
-const GOAT = 31.5, NANDI = 34.0, BUTT = 34.8, LISTEN = 34.9, G0 = 38.0;
-const MINE = 38.4, GRAB = 41.0, LIFT = 41.4, TOE = 44.4, SPLAT = 45.0, MILLION = 46.0, H0 = 48.4;
-const TOPPER = 48.6, HOST = 51.8, TIMER = 53.8, FLASH = 55.2, I0 = 60.0;
-const GIFT = 60.2, OPEN = 61.4, FLY = 62.2, CARD = 64.4;
-const CAP_T = 64.5, COVERS = 64.8, PRICE = 65.6, STRIKE = 66.1, DEAD = 66.6, PILL = 67.1, SUB = 67.6, FOLLOW = 68.1, END = 72.0;
+const UP = 0.6, B0 = 2, SET = 3.7, PHEW = 4.7, B2 = 5, C0 = 8;
+const RAISE = 8.9, SWING = 10, BEAT = 10.2, SPLIT = 10.9, WINK = 12.2, D0 = 14.8;
+const EYE = 15.1, DROOL = 15.8, WIG = 17.2, LEAP = 17.7, GULP = 18.3, DARK = 18.45, E0 = 22.6;
+const RING = 23, KNEEL = 23.4, LOOK = 26, EYE3 = 26.3, FLEE = 27.2, F0 = 29.8;
+const GOAT = 29.9, NANDI = 32.4, BUTT = 33.2, LISTEN = 33.3, G0 = 36.4;
+const MINE = 36.8, GRAB = 39.4, LIFT = 39.8, TOE = 42.8, SPLAT = 43.4, MILLION = 44.4, H0 = 46.8;
+const TOPPER = 47, HOST = 50.2, TIMER = 52.2, FLASH = 53.6, I0 = 58.4;
+const GIFT = 58.6, OPEN = 59.8, FLY = 60.6, CARD = 62.8;
+const CAP_T = 62.9, COVERS = 63.2, PRICE = 64, STRIKE = 64.5, DEAD = 65, PILL = 65.5, SUB = 66, FOLLOW = 66.5, END = 70.4;
 const T = track(END);
 seed(15);
 const lp = (b, fc) => { let l = 0; const a = 1 - Math.exp(-2 * Math.PI * fc / SR); for (let i = 0; i < b.length; i++) { l += a * (b[i] - l); b[i] = l; } return b; };
