@@ -1,6 +1,10 @@
 // book.mjs: lays out a picture book from its art and its words, and writes the print PDFs and a fixed-layout EPUB.
 //
 //   node tools/book.mjs --book=books/surya [--pages=6,7] [--render] [--out=out/books/surya_out]
+//   node tools/book.mjs --book=books/surya --pages=10,11 --page=book_cine.html --art=out/book_surya/art_cine --variant=cine --panels
+//     (another art style: --page renders the art from another studio page into --art; --variant merges
+//     BOOK.variants[name].pages over the pages, e.g. bubbles placed for that art; --panels sets the story text on soft
+//     cream panels, as picture books over busy art do)
 //
 // The art is the book's spreads, painted in the reel engine (studio.html on the book's branch: one slot per spread,
 // rendered at t = slot + .5 into out/book_<slug>/art/t<slot>_50.png; --render renders any that are missing, --render=all
@@ -24,8 +28,9 @@ import { pathToFileURL } from 'node:url';
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 if (!args.book) { console.error('usage: node tools/book.mjs --book=books/<slug> [--pages=6,7] [--render]'); process.exit(1); }
 const BOOK = runInNewContext(readFileSync(join(args.book, 'book.js'), 'utf8') + '\n;BOOK');
+if (args.variant) for (const [k, v] of Object.entries(BOOK.variants?.[args.variant]?.pages || {})) BOOK.pages[k] = { ...BOOK.pages[k], ...v };
 const S = BOOK.slug, TW = BOOK.trim.w, TH = BOOK.trim.h, BL = BOOK.bleed, OUT = args.out || `out/books/${S}_out`;
-const ART = `out/book_${S}/art`, TMP = `out/book_${S}/tmp`;
+const ART = args.art || `out/book_${S}/art`, TMP = `out/book_${S}/tmp`;
 mkdirSync(OUT, { recursive: true }); mkdirSync(TMP, { recursive: true });
 
 // ---- which art a page uses: [slot, 'L' | 'R']
@@ -42,7 +47,7 @@ const artOf = slot => `${ART}/t${slot}_50.png`;
 const todo = needed.filter(s => args.render === 'all' || !existsSync(artOf(s)));
 if (todo.length) {
   if (!args.render) { console.error(`missing art for slots ${todo.join(', ')} (pass --render)`); process.exit(1); }
-  const r = spawnSync('node', ['render.mjs', `--stills=${todo.map(s => s + .5).join(',')}`, `--out=${ART}`], { stdio: 'inherit' });
+  const r = spawnSync('node', ['render.mjs', `--stills=${todo.map(s => s + .5).join(',')}`, `--out=${ART}`, ...(args.page ? [`--page=${args.page}`] : [])], { stdio: 'inherit' });
   if (r.status) process.exit(r.status);
 }
 
@@ -105,7 +110,8 @@ function pageInner(k, U, ox, oy, heights, src = p => url(p)) {
   }
   for (const b of P.text || []) {
     const f = FONTS[b.font || 'story'], sz = b.size || BOOK.size;
-    h += `<div class="tx" style="left:${n(ox + b.x)};top:${n(oy + b.y)};width:${n(b.w)};font-family:${f};font-size:${pt(sz)};text-align:${b.align || 'left'};color:${b.color || BOOK.ink}">`
+    const pan = args.panels && (b.font || 'story') === 'story' && !b.size;
+    h += `<div class="tx${pan ? ' pan' : ''}" style="left:${n(ox + b.x)};top:${n(oy + b.y)};width:${n(b.w)};font-family:${f};font-size:${pt(sz)};text-align:${b.align || 'left'};color:${pan ? BOOK.ink : b.color || BOOK.ink}${pan ? `;padding:${n(3)} ${n(4)};border-radius:${n(6)};box-shadow:0 0 ${n(4)} ${n(2.5)} rgba(255,250,240,.86)` : ''}">`
       + b.lines.map(l => `<p style="margin:0 0 ${pt(sz * .45)}">${esc(l)}</p>`).join('') + '</div>';
   }
   (P.bubbles || []).forEach((b, i) => {
@@ -123,6 +129,7 @@ const baseCSS = `* { box-sizing: border-box; } html, body { margin: 0; padding: 
 .pg { position: relative; overflow: hidden; break-after: page; }
 .pg > img:not(.im) { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
 .tx { position: absolute; line-height: 1.32; }
+.pan { background: rgba(255,250,240,.86); }
 .bb { position: absolute; background: #FFF8EC; border-style: solid; border-color: ${BOOK.ink}; color: ${BOOK.ink}; font-family: Andika; line-height: 1.25; text-align: center; }
 .tl { position: absolute; overflow: visible; }
 .im { position: absolute; height: auto; }
