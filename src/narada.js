@@ -27,6 +27,8 @@
 //           seed, tint + tintK; monkey 0..1 (> .5: the monkey face, same eyes and mouths)
 //   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), emote + emoteK + emoteAge, boilKey,
 //           noShadow, swMul
+//   others: pal (overrides NRD: skin, dhoti, border, shawl, hair, …) + beard (a colour: a full sage's beard and moustache)
+//           draw other rishis on his rig (Kashyapa, Agastya in the Surya book; NRD_SAGE is a white-haired elder)
 // Helpers: naradaHand(x, y, u, o, s), naradaHead(x, y, u, o), naradaEye(x, y, u, o, s), naradaMouth(x, y, u, o),
 //          naradaTop(x, y, u, o) (the top of the topknot), naradaLocal(x, y, u, o, px, py) → world [x, y] (upper body).
 const NRD = {
@@ -91,7 +93,13 @@ function naradaKartal(u, sw, clap = 9, INK = NRD.ink) {
   }
 }
 
+// an elder rishi: white hair and beard, a deeper saffron, a rudraksha-brown border
+const NRD_SAGE = { hair: '#EDE6DC', hairLt: '#FFFFFF', dhoti: '#E8862E', dhotiDk: '#B85E18', border: '#7A3A1E', skin: '#E8B48A', skinDk: '#C68A60', skinLt: '#FAD2AE' };
 function narada(x, y, u, o = {}) {
+  if (o.pal) {   // draw on the same rig in other colours: swap NRD for the call (the eye and mouth helpers read it too)
+    const keep = { ...NRD }; Object.assign(NRD, o.pal);
+    try { return narada(x, y, u, { ...o, pal: null }); } finally { Object.assign(NRD, keep); }
+  }
   const id = o.boilKey ?? 'nr' + (++CLAWD_N), rs = p => boilSeed(`narada ${id} ${p}`);
   x += (o.dx || 0) * u;
   const dy = (o.dy || 0) * u, sq = (o.sq || 0) + (o.take || 0), sw = clamp(u / 20, .4, 2) * (o.swMul || 1), J = u * .04;
@@ -203,8 +211,16 @@ function narada(x, y, u, o = {}) {
       naradaEyes(u, o, sw, col, [-1.2, -20.5], .62, .48, NRD.hair);
       rs('nose');
       inkLine(P([[.02, -19.9], [-.12, -19.35], [.15, -19.25]]), sw * .55, NRD.skinDk, 'inkfine', .5);
+      if (o.beard) {   // a sage's beard from the cheeks to the chest, and a moustache over the mouth
+        rs('beard');
+        const bc = o.beard, bd = mixCol(bc, NRD.ink, .25);
+        paint(P([[-3.1, -20.2], [-2.9, -18.6], [-2.3, -16.9], [-1.4, -15.4], [0, -14.4], [1.4, -15.4], [2.3, -16.9], [2.9, -18.6], [3.1, -20.2], [2.2, -18.9], [1, -18.1], [0, -17.9], [-1, -18.1], [-2.2, -18.9]]),
+          { wash: bc, fill: bd, fillOp: 50, tex: .6, ink: INK, sw: sw * .8, curv: .45 });
+        for (const k of [-1.3, 0, 1.3]) inkLine(P([[k * .9, -17.4], [k, -16.2], [k * .7, -15.2]]), sw * .45, bd, 'inkfine', .5);
+        for (const s2 of [-1, 1]) paint(ribbon(P([[s2 * .1, -18.95], [s2 * .7, -19], [s2 * 1.3, -18.6], [s2 * 1.6, -18.1]]), .45 * u, .15 * u), { wash: bc, ink: INK, sw: sw * .4 });
+      }
       rs('mouth');
-      naradaMouth_(u, o, sw, -18.45, 1);
+      naradaMouth_(u, o, sw, o.beard ? -18.25 : -18.45, o.beard ? .8 : 1);
     }
     if (o.sweat) { rs('sweat'); paint(P([[2.6, -23], [3, -22.1], [2.6, -21.7], [2.25, -22.1]]), { wash: '#9ED0F0', ink: INK, sw: sw * .4, curv: .6 }); }
     pop();

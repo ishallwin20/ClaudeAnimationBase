@@ -91,10 +91,18 @@ function tailPath(b, h, U) {
   return `M${U(bx - hw)} ${U(by)} Q${U(mx)} ${U(my)} ${U(tx)} ${U(ty)} Q${U(mx + hw * .6)} ${U(my)} ${U(bx + hw)} ${U(by)} Z`;
 }
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
-// the inside of one page: text blocks and bubbles over the art. ox/oy: where the trim sits in the page box (the bleed)
-function pageInner(k, U, ox, oy, heights) {
+// the inside of one page: text blocks, boxes, pictures and bubbles over the art. ox/oy: where the trim sits in the page
+// box (the bleed). src maps a picture's path to its URL in the medium.
+const BOX = { fact: 'Did you know?', find: 'Can you find…?' };
+function pageInner(k, U, ox, oy, heights, src = p => url(p)) {
   const P = BOOK.pages[k] || {}, n = U.n, pt = v => U.pt(v);
   let h = '';
+  for (const im of P.images || []) h += `<img class="im" src="${src(im.src)}" alt="" style="left:${n(ox + im.x)};top:${n(oy + im.y)};width:${n(im.w)}"/>`;
+  for (const b of P.boxes || []) {
+    const sz = b.size || BOOK.size - 4;
+    h += `<div class="bx" style="left:${n(ox + b.x)};top:${n(oy + b.y)};width:${n(b.w)};font-size:${pt(sz)};padding:${n(2.2)} ${n(3)};border-width:${n(.45)};border-radius:${n(4)}">`
+      + `<p style="margin:0 0 ${pt(sz * .2)};font-weight:bold;color:${BOOK.accent || '#F15A24'}">${esc(b.title || BOX[b.kind])}</p><p style="margin:0">${esc(b.text)}</p></div>`;
+  }
   for (const b of P.text || []) {
     const f = FONTS[b.font || 'story'], sz = b.size || BOOK.size;
     h += `<div class="tx" style="left:${n(ox + b.x)};top:${n(oy + b.y)};width:${n(b.w)};font-family:${f};font-size:${pt(sz)};text-align:${b.align || 'left'};color:${b.color || BOOK.ink}">`
@@ -113,10 +121,12 @@ const MM = { n: v => `${+v.toFixed(3)}mm`, v: v => +v.toFixed(3), pt: v => `${v}
 const PX = { n: v => `${+(v * 10).toFixed(2)}px`, v: v => +(v * 10).toFixed(2), pt: v => `${+(v * 25.4 / 72 * 10).toFixed(2)}px` };
 const baseCSS = `* { box-sizing: border-box; } html, body { margin: 0; padding: 0; }
 .pg { position: relative; overflow: hidden; break-after: page; }
-.pg > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.pg > img:not(.im) { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
 .tx { position: absolute; line-height: 1.32; }
 .bb { position: absolute; background: #FFF8EC; border-style: solid; border-color: ${BOOK.ink}; color: ${BOOK.ink}; font-family: Andika; line-height: 1.25; text-align: center; }
-.tl { position: absolute; overflow: visible; }`;
+.tl { position: absolute; overflow: visible; }
+.im { position: absolute; height: auto; }
+.bx { position: absolute; background: #FFF8EC; border-style: solid; border-color: ${BOOK.ink}; color: ${BOOK.ink}; font-family: Andika; line-height: 1.28; }`;
 
 async function pdf(html, file, w, h) {
   const f = `${TMP}/${file}.html`; writeFileSync(f, html);
@@ -156,13 +166,14 @@ if (!sample) {
   for (const f of ['Andika-Regular.ttf', 'Andika-Bold.ttf', 'Marcellus-Regular.ttf']) copyFileSync(`assets/fonts/${f}`, `${E}/OEBPS/fonts/${f}`);
   writeFileSync(`${E}/OEBPS/book.css`, `${fontCSS('fonts/')}\n${baseCSS}\nbody { width: ${TW * 10}px; height: ${TH * 10}px; position: relative; overflow: hidden; }`);
   const order = sample ? pages : ['front', ...ALL, 'ibc', 'back'], VW = TW * 10, VH = TH * 10;
-  const name = k => `p_${k}`;
+  const name = k => `p_${k}`, PICS = new Map();
+  const epubSrc = p => { const f = 'pic_' + p.split('/').pop(); if (!PICS.has(f)) { copyFileSync(p, `${E}/OEBPS/img/${f}`); PICS.set(f, p); } return `img/${f}`; };
   for (const k of order) {
     copyFileSync(IMG[k].screen, `${E}/OEBPS/img/${name(k)}.jpg`);
     writeFileSync(`${E}/OEBPS/${name(k)}.xhtml`, `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="${BOOK.lang}" xml:lang="${BOOK.lang}"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=${VW}, height=${VH}"/><title>${esc(BOOK.title)} ${k}</title><link rel="stylesheet" href="book.css"/></head>
-<body><img src="img/${name(k)}.jpg" alt="" style="position:absolute;left:0;top:0;width:${VW}px;height:${VH}px"/>${pageInner(k, PX, 0, 0, HT)}</body></html>`);
+<body><img src="img/${name(k)}.jpg" alt="" style="position:absolute;left:0;top:0;width:${VW}px;height:${VH}px"/>${pageInner(k, PX, 0, 0, HT, epubSrc)}</body></html>`);
   }
   const spreadProp = (k, i) => k === 'front' || k === 'back' ? 'rendition:page-spread-center' : (typeof k === 'number' ? (k % 2 ? 'page-spread-right' : 'page-spread-left') : (k === 'ibc' ? 'page-spread-right' : 'page-spread-left'));
   const nav = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="${BOOK.lang}" xml:lang="${BOOK.lang}"><head><meta charset="utf-8"/><title>${esc(BOOK.title)}</title></head><body>
@@ -185,6 +196,7 @@ if (!sample) {
 ${['Andika-Regular', 'Andika-Bold', 'Marcellus-Regular'].map((f, i) => `<item id="f${i}" href="fonts/${f}.ttf" media-type="font/ttf"/>`).join('\n')}
 ${order.map(k => `<item id="${name(k)}" href="${name(k)}.xhtml" media-type="application/xhtml+xml"${BOOK.pages[k]?.bubbles?.length ? ' properties="svg"' : ''}/>
 <item id="${k === order[0] ? 'cover-img' : 'i_' + k}" href="img/${name(k)}.jpg" media-type="image/jpeg"${k === order[0] ? ' properties="cover-image"' : ''}/>`).join('\n')}
+${[...PICS.keys()].map((f, i) => `<item id="pic${i}" href="img/${f}" media-type="${f.endsWith('.png') ? 'image/png' : 'image/jpeg'}"/>`).join('\n')}
 </manifest>
 <spine>${order.map((k, i) => `<itemref idref="${name(k)}" properties="${spreadProp(k, i)}"/>`).join('')}</spine>
 </package>`;

@@ -11,7 +11,8 @@
 // Options (all optional):
 //   pose:   walk (phase: the hem swings and the feet peek), dx, dy (in u), sq, rot, flip, hx (-1..1 head turn), htilt,
 //           lean (u: the upper body leans sideways, e.g. to offer something)
-//   arms:   handL / handR = [x, y] in u (default hanging relaxed), bendL / bendR, armL(u, sw) / armR(u, sw) (upright hooks)
+//   arms:   handL / handR = [x, y] in u (default hanging relaxed), bendL / bendR, armL(u, sw) / armR(u, sw) (upright hooks),
+//           pray 0..1 (palms joined at the chest)
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK. 'normal' / 'look' / 'wide' are her own almond
 //           eyes with lashes, 'closed' and 'wink' her own lids; every other kind is Clawd's.
 //   colour: pal = { saree, sareeDk, sareeLt, blouse, blouseDk, gold, goldDk, goldLt, hair, hairLt, sindoor, lip, bangle, skin… }
@@ -27,7 +28,8 @@ const PRV_SKIN = { col: PRV.skin, dk: PRV.skinDk, lt: PRV.skinLt };
 
 function parvatiArm(o, s) {
   const sh = [s * 2.6, -16.2];
-  const ha = (s < 0 ? o.handL : o.handR) || [s * 3.3, -11.2];
+  let ha = (s < 0 ? o.handL : o.handR) || [s * 3.3, -11.2];
+  const pr = clamp(o.pray || 0); if (pr > 0) ha = [lerp(ha[0], s * .38, pr), lerp(ha[1], -14.1, pr)];
   const dx = ha[0] - sh[0], dy = ha[1] - sh[1], d = Math.hypot(dx, dy) || 1;
   let nx = -dy / d, ny = dx / d; if (nx * s < 0) { nx = -nx; ny = -ny; }
   const b = (s < 0 ? o.bendL : o.bendR) ?? 1;
@@ -174,6 +176,10 @@ function parvati(x, y, u, o = {}) {
       paint(ribbon(P([sh, el, ha]), 1.05 * u, .75 * u), { wash: col, fill: dk, fillOp: 40, tex: .5, ink: INK, sw: sw * .8 });
       const d = Math.hypot(ha[0] - el[0], ha[1] - el[1]) || 1, nx = -(ha[1] - el[1]) / d * .45, ny = (ha[0] - el[0]) / d * .45;
       for (const [k, c] of [[.66, C.bangle], [.74, C.gold], [.82, C.bangle]]) { const bx = lerp(el[0], ha[0], k), by = lerp(el[1], ha[1], k); inkLine(P([[bx - nx, by - ny], [bx + nx, by + ny]]), sw * 1.1, c, 'ink', 0); }
+      if ((o.pray || 0) > .5) {   // joined palms, fingers up
+        if (s > 0) { paint(P([[-.48, -13.5], [-.44, -14.8], [0, -15.8], [.44, -14.8], [.48, -13.5], [0, -13.2]]), { wash: col, ink: INK, sw: sw * .65, curv: .4 }); inkLine(P([[0, -15.6], [0, -13.4]]), sw * .45, INK, 'inkfine', 0); }
+        continue;
+      }
       push(); translate(ha[0] * u, ha[1] * u);
       paint(ellPts(0, 0, .6 * u, .55 * u, 14, J), { wash: col, ink: INK, sw: sw * .7 });
       if (hook) hook(u, sw);
