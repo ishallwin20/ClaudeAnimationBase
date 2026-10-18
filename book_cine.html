@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Surya book · daylight Cinematic</title>
+<!-- A book spread in the Cinematic engine's daylight look (src/cine_kids.js): one slot per spread, as studio.html on
+     book/1-surya, rendered at t = slot + .5 by tools/book.mjs --page=book_cine.html. -->
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 1400px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1400px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="3378" height="2668"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="10" step="0.5" value="5.5"><span id="tt">loading…</span></div>
+</main>
+<script>const PROJECT = { duration: 10, w: 3378, h: 2668, fonts: [] };</script>
+<script src="src/cine.js"></script>
+<script src="src/cine_surya.js"></script>
+<script src="src/cine_sets.js"></script>
+<script src="src/cine_kids.js"></script>
+<script src="src/scenes/surya_book_cine.js"></script>
+</body>
+</html>

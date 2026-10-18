@@ -84,5 +84,13 @@ const BOOK = {
                    { x: 14, y: 102, w: 112, lines: ['Ages 3–10 · rishikatha.com'], size: 12, align: 'center' }],
             images: [{ x: 58, y: 112, w: 24, src: LOGO }] },
   },
+  // the same words over other art: positions that differ (bubbles aimed at that art's speakers)
+  variants: {
+    cine: { pages: {
+      10: { bubbles: [{ x: 50, y: 60, w: 26, text: 'Yum!', tail: [88, 96] }] },
+      11: { text: [{ x: 10, y: 12, w: 64, lines: ['Indra’s vajra bumped his chin, and down he tumbled.', 'Then the gods gave him gifts. Surya gave him a part of his own shine.'] }],
+            bubbles: [{ x: 34, y: 72, w: 44, text: 'And when you are ready, I will be your teacher.', tail: [84, 72] }] },
+    } },
+  },
 };
 if (typeof module !== 'undefined') module.exports = BOOK;
