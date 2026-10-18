@@ -96,6 +96,27 @@ for all, in this first book of the Navagraha Series." Rishi Katha logo, rishikat
 | Surya holds two lotuses; his children include Yama, Yamuna and Shani | Vishnu Purana 3.2; iconography per Vishnudharmottara / Brihat Samhita |
 | Sunday is Ravivar, the day of Ravi (Surya) | the Hindu week (vāra) |
 
+
+### "Did you know?" boxes and p16 facts
+
+| Fact | Source |
+|---|---|
+| Aditi means "boundless / without limits"; mother of the twelve Adityas, Surya among them | Rigveda (Aditi hymns); Vishnu Purana 1.15 (the twelve Adityas) |
+| The Martand Sun Temple, Kashmir, built in the 8th century (Lalitaditya Muktapida) | Archaeological Survey of India |
+| The Konark Sun Temple, Odisha (13th century), is built as Surya's chariot: 24 carved wheels, 7 horses | ASI; UNESCO World Heritage listing |
+| Vishwakarma is the architect of the gods; Vishwakarma Puja honours tools and machines | Rigveda 10.81–82; the festival as observed |
+| "Hanu" = jaw; Hanuman is named for his struck jaw | Valmiki Ramayana, Uttara Kanda 36.11 |
+| Many recite the Aditya Hridayam facing the rising Sun | living practice |
+| Surya's gem is the ruby (manikya) | Navaratna tradition (Brihat Samhita / Garuda Purana) |
+| Surya Namaskar is a sequence of 12 postures | yoga tradition |
+| The Sun is a star; its light takes about 8 min 20 s to reach Earth | astronomy (1 AU / c) |
+| The Sun rises in the east, sets in the west, because the Earth turns | astronomy |
+
+### "Can you find…?" answer key
+5 eggshell pieces (p5), 7 horses (p6–7), 7 sparkly shavings (p8–9), 4 tusks on Airavata (p11), Ravana's 10 heads
+(p15). The other hunts (the owl, the lamp, the peeking deva, the rooster, the lotuses, the arghya, the hammer, the
+parrot, the palm-leaf book, the little vanara) are painted gags that claim no plot fact.
+
 Left out on purpose: Chhaya, the shadow Sanjna left in her place (too complex for ages 3–6; it belongs in the Shani
 book); Rahu at the sun in Uttara Kanda 35 (it belongs in the Rahu book).
 
