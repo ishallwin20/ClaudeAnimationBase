@@ -10,8 +10,13 @@
 // Options: handL / handR (front arms, 2-bone targets in seat u), joined 0..1 (front palms together at the chest),
 //          chakraSpin (radians), chakra 0..1 / shankh 0..1 (scale; 0 hides), lotus (default true, in the front left hand),
 //          eyes 'normal' | 'wide' | 'closed' | 'happy' | 'sad', lookX, brows (-1..1), mouth 'smile' | 'flat' | 'O' |
-//          'open' | 'frown' | 'sheepish', lean (radians), bow 0..1, flip, sweat, tint + tintK, boilKey
+//          'open' | 'frown' | 'sheepish', lean (radians), bow 0..1, flip, sweat, tint + tintK, boilKey,
+//          four (default true; false hides the back pair: the two-armed king form he takes at a swayamvar),
+//          garland 0..1 (a bride's jayamala of marigolds and roses round his neck), wink (true: his left eye shut)
 // Helpers: vishnuHand(x, y, u, o, s), vishnuChakra(x, y, u, o) → world [x, y].
+// shesha(x, y, u, o): Adishesha, the serpent Vishnu rests on: three coils under the seat (x, y) and a five-headed hood
+// behind him (draw it first, then vishnu() at the same (x, y, u)). o: sway (radians), eyes 'normal' | 'closed' | 'wide',
+// tongue 0..1, boilKey. In the Kshirasagara: shesha() + vishnu() with the milk ocean around the coils.
 const VSN = {
   ink: '#1E2A4A', skin: '#4F86D9', skinDk: '#3563AE', skinLt: '#8DB5EE', gold: '#F2C230', goldDk: '#B88A1C', goldLt: '#FFE69A',
   silk: '#F6C431', silkDk: '#D49A1A', hair: '#1E1A2A', white: '#FFF8EC', mouth: '#6E2A26', tilak: '#FFF6E6', red: '#D9302E',
@@ -32,7 +37,7 @@ function vishnu(x, y, u, o = {}) {
   const P = pts => U(pts, u);
   push(); translate(x, y); if (o.flip) scale(-1, 1); rotate((o.lean || 0) + (o.bow || 0) * .3);
   // ---- the back pair, behind everything: chakra on the right, shankh on the left
-  for (const s of [-1, 1]) {
+  if (o.four !== false) for (const s of [-1, 1]) {
     rs('back' + s);
     const sh = [s * 1.6, -3.2], el = [s * 2.8, -3.9], ha = [s * 3.3, -5.6];
     paint(P(ribbon([sh, el, ha], .85, .7)), { wash: dk, fill: dk, fillOp: 40, ink: INK, sw: sw * .6, curv: .3 });
@@ -54,6 +59,7 @@ function vishnu(x, y, u, o = {}) {
   const ML = [[-1.7, -3.2], [-1.9, -2], [-1.6, -.9], [-.8, -.3], [0, -.15], [.8, -.3], [1.6, -.9], [1.9, -2], [1.7, -3.2]];
   inkLine(P(ML), sw * 1.8, VSN.leafDk, 'ink', .5);
   through(P(ML)).forEach((p, i) => { if (i % 3 === 0) paint(ellPts(p[0], p[1], .2 * u, .2 * u, 8), { wash: i % 2 ? VSN.flower : VSN.flower2, ink: null }); });
+  if ((o.garland || 0) > .01) { rs('jayamala'); jayamala(u, sw, o.garland, INK); }
   // ---- the front arms
   const arms = [-1, 1].map(s => {
     const [sh, el, ha] = vishnuArm(o, s);
@@ -87,7 +93,7 @@ function vishnu(x, y, u, o = {}) {
   for (const s of [-1, 1]) {
     const ex = s * .78, ey = -5.45;
     inkLine(P([[s * .4, ey - .55 + Math.min(0, br) * -.2 - Math.max(0, br) * .2], [s * 1.2, ey - .62 - Math.max(0, br) * .25]]), sw * 1, VSN.hair, 'ink', 0);
-    if (ek === 'closed' || ek === 'happy') { inkLine(P(ek === 'happy' ? [[ex - .32, ey + .1], [ex, ey - .18], [ex + .32, ey + .1]] : [[ex - .32, ey], [ex, ey + .16], [ex + .32, ey]]), sw * 1.1, INK, 'ink', .6); continue; }
+    if (ek === 'closed' || ek === 'happy' || (o.wink && s < 0)) { inkLine(P(ek === 'happy' ? [[ex - .32, ey + .1], [ex, ey - .18], [ex + .32, ey + .1]] : [[ex - .32, ey], [ex, ey + .16], [ex + .32, ey]]), sw * 1.1, INK, 'ink', .6); continue; }
     const r = ek === 'wide' ? .4 : .33;
     paint(ellPts(ex * u, ey * u, (r + .04) * u, r * u, 12), { wash: VSN.white, ink: INK, sw: sw * .45 });
     paint(ellPts((ex + (o.lookX || 0) * .1) * u, (ey + .03) * u, (ek === 'wide' ? .14 : .18) * u, (ek === 'wide' ? .16 : .21) * u, 10), { wash: INK, ink: null });
@@ -118,6 +124,50 @@ function vishnu(x, y, u, o = {}) {
   boilSeed(`vishnu ${id} after`);
 }
 
+// a jayamala (the bride's garland) round a seated figure's neck, in seat u: k 0..1 drops it over the head onto the chest
+function jayamala(u, sw, k = 1, INK = VSN.ink) {
+  const d = (1 - easeOut(clamp(k))) * -4.5, G = [[-1.8, -3.3], [-2.1, -1.9], [-1.6, -.4], [-.7, .3], [0, .45], [.7, .3], [1.6, -.4], [2.1, -1.9], [1.8, -3.3]].map(([a, b]) => [a, b + d]);
+  through(U(G, u)).forEach((p, i) => paint(ellPts(p[0], p[1], .36 * u, .34 * u, 10), { wash: i % 3 === 1 ? VSN.flower : VSN.flower2, ink: INK, sw: sw * .35 }));
+  paint(ellPts(0, (.95 + d) * u, .45 * u, .55 * u, 10), { wash: VSN.flower, ink: INK, sw: sw * .4 });   // the tassel
+}
+const SHESHA = { skin: '#5FA79A', skinDk: '#3E7A70', skinLt: '#93CDBE', hood: '#F2E3B6', hoodDk: '#D8C08A', spot: '#3E7A70', ink: '#1E3A3A', eye: '#F2C230', tongue: '#D9302E' };
+function shesha(x, y, u, o = {}) {
+  const id = o.boilKey ?? 'ss' + (++CLAWD_N), rs = p => boilSeed(`shesha ${id} ${p}`), S = SHESHA, sw = clamp(u / 20, .4, 2), P = pts => U(pts, u);
+  push(); translate(x, y); if (o.flip) scale(-1, 1);
+  // the neck rising behind him, and the five hoods fanned over his head
+  rs('neck');
+  paint(ribbon(P([[1.2, 1.4], [3.4, -.8], [3.3, -4.5], [1.8, -7.6], [0, -9.5]]), 2.6 * u, 3.4 * u), { wash: S.skin, fill: S.skinDk, fillOp: 50, tex: .5, ink: S.ink, sw: sw * .8 });
+  push(); translate(0, -7.2 * u); rotate(o.sway ?? Math.sin(T * 1.3) * .03);
+  for (const i of [-2, 2, -1, 1, 0]) {
+    rs('hood' + i);
+    const a = i * .42, hx = Math.sin(a) * 4.6, hy = -Math.cos(a) * 4.4;
+    push(); translate(hx * u, hy * u); rotate(a); scale(1.35);
+    paint(P([[0, -2.6], [1.25, -1.9], [1.5, -.2], [.9, 1.8], [0, 2.4], [-.9, 1.8], [-1.5, -.2], [-1.25, -1.9]]), { wash: S.skin, fill: S.skinDk, fillOp: 50, tex: .5, ink: S.ink, sw: sw * .8, curv: .5 });
+    paint(P([[0, -1.3], [.75, -.7], [.85, .6], [0, 1.9], [-.85, .6], [-.75, -.7]]), { wash: S.hood, fill: S.hoodDk, fillOp: 50, tex: .4, ink: null, curv: .5 });
+    for (const [sx, sy] of [[0, -.2], [-.4, .7], [.4, .7], [0, 1.4]]) paint(ellPts(sx * u, sy * u, .16 * u, .16 * u, 8), { wash: S.spot, ink: null });
+    paint(ellPts(0, -2.7 * u, .75 * u, .62 * u, 12), { wash: S.skin, ink: S.ink, sw: sw * .6 });   // the head on top
+    const ek = o.eyes || 'normal';
+    for (const s of [-1, 1]) {
+      if (ek === 'closed') inkLine(P([[s * .4 - .15, -2.85], [s * .4 + .15, -2.8]]), sw * .6, S.ink, 'inkfine', 0);
+      else paint(ellPts(s * .38 * u, -2.85 * u, (ek === 'wide' ? .17 : .12) * u, (ek === 'wide' ? .17 : .12) * u, 8), { wash: S.eye, ink: S.ink, sw: sw * .3 });
+    }
+    if ((o.tongue ?? 0) > .05 && i === 0) inkLine(P([[0, -3.3], [0, -3.3 - o.tongue], [-.2, -3.55 - o.tongue], [0, -3.3 - o.tongue], [.2, -3.55 - o.tongue]]), sw * .5, S.tongue, 'inkfine', 0);
+    pop();
+  }
+  pop();
+  rs('tail');
+  paint(ribbon(P([[-4.6, 2.4], [-6.4, 1.6], [-6.8, -.2], [-5.8, -1.1]]), 1.1 * u, .2 * u), { wash: S.skin, fill: S.skinDk, fillOp: 50, tex: .5, ink: S.ink, sw: sw * .7 });
+  // three coils under the seat, the top one widest
+  for (const [cy, rx, ry] of [[2.6, 4.8, 1.25], [1.5, 5.4, 1.35], [.4, 5, 1.3]]) {
+    rs('coil' + cy);
+    paint(ellPts(0, cy * u, rx * u, ry * u, 26), { wash: S.skin, fill: S.skinDk, fillOp: 55, tex: .5, ink: S.ink, sw: sw * .8 });
+    inkLine(P([[-rx * .8, cy + ry * .3], [0, cy + ry * .75], [rx * .8, cy + ry * .3]]), sw * .9, S.hood, 'ink', .5);
+    for (let k = 0; k < 6; k++) paint(ellPts((-rx * .7 + k * rx * .28) * u, (cy - ry * .25) * u, .18 * u, .12 * u, 8), { wash: S.skinLt, ink: null });
+  }
+  pop();
+  boilSeed(`shesha ${id} after`);
+}
+
 // Model sheet: studio.html?loop=vishnu (riding Garuda), or node render.mjs --loop=vishnu --sheet=0.5 --cols=1 --w=1080
 (() => {
   LOOPS.vishnu = t => {
@@ -127,7 +177,8 @@ function vishnu(x, y, u, o = {}) {
     vishnu(...parrotSeat(540, 760, s, fly), 30, { lookX: .5 });
     kamaParrot(540, 760, s, { ...fly, only: 'wing' });
     vishnu(300, 1500, 42, { joined: 1, eyes: 'sad', mouth: 'flat', brows: 1 });
-    vishnu(780, 1500, 42, { eyes: 'happy', handR: [3, -6.5] });
+    vishnu(780, 1500, 42, { eyes: 'happy', handR: [3, -6.5], four: false, garland: 1, wink: true, mouth: 'sheepish' });
+    shesha(540, 1150, 26, {}); vishnu(540, 1150, 26, { eyes: 'closed' });
   };
   LOOPS.vishnu.len = 4;
 })();
