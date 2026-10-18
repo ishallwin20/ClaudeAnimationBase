@@ -59,6 +59,22 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   (`cover.png`, from the reel's `cover.html`, the title inside the 3:4 grid crop y 240–1680) and `captions.txt` (the
   Instagram caption, then the pinned comment at the bottom). Every reel gets a cover.
 
+## Books (Navagraha series, from Oct 2026)
+- Kids' picture books (ages 3–10), one per graha, drawn in the **Painted** style. Each book gets a branch `book/<n>-<graha>`
+  (Book 1: `book/1-surya`) holding `books/<slug>/STORY.md` (the text, art notes and "Facts used": the retelling rules
+  above apply), `books/<slug>/book.js` (the words and where they sit, in mm on the trim), `src/scenes/<slug>_book.js`
+  (the art) and the branch's `src/config.js` / `studio.html`.
+- Format (owner, Oct 2026): 14 × 22 cm portrait pages, spreads 28 × 22 cm, 16 interior pages (4 sheets of 22 × 28) plus a
+  separate 4-page cover. 7 story spreads with 2–4 short lines a page and a few speech bubbles, p1 the title page, p16
+  "Meet <graha>" (weekday, family, a real-planet fact, the moral), inside covers "This book belongs to" and the series.
+- Art: each spread is a 1-second slot of the scene (slot 0 inside front | p1, 1–7 the spreads, 8 p16 | inside back,
+  9 back | front cover), rendered at t = slot + .5 on a 3378 × 2668 canvas (300 dpi with 3 mm bleed; `vignette: false`).
+  Draw in the half-size design space under `camBegin(…, 2)`: the reel rigs' u ranges apply as they are. No words in the
+  art; leave each page's text zone quiet, faces 12 mm off the fold.
+- Layout: `node tools/book.mjs --book=books/<slug> [--pages=6,7] [--render]` writes `out/books/<slug>_out/`: the interior
+  PDF (single pages with bleed, live text, Andika 16 pt; titles Marcellus; fonts in `assets/fonts`), the cover PDF, a
+  spreads preview PDF and a fixed-layout EPUB 3 (check it with epubcheck: `java -jar epubcheck.jar <file>`).
+
 ## Brand assets
 - `assets/rk/book1.jpg … book9.jpg` (Navadurga order: Shailputri, Brahmacharini, Chandraghanta, Kushmanda, Skandamata,
   Katyayani, Kalaratri, Mahagauri, Siddhidatri) and `logo.png`, embedded as data URIs in `src/scenes/rk_images.js` by

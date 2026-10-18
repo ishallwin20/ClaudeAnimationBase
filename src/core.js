@@ -280,10 +280,11 @@ function flushLetters() {
 function lcg(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
 function makePaper() {
   const g = createGraphics(W, H); g.pixelDensity(1); const c = g.drawingContext, rnd = lcg(11);
+  const A = W * H / (1920 * 1080), K = Math.sqrt(A);   // tuned on 1920×1080; a bigger canvas (a print page) gets as dense a paper
   c.fillStyle = PAL.paper; c.fillRect(0, 0, W, H);
-  for (let i = 0; i < 70; i++) { const x = rnd() * W, y = rnd() * H, r = 120 + rnd() * 380, gr = c.createRadialGradient(x, y, 0, x, y, r), a = .045 * rnd(); gr.addColorStop(0, `rgba(160,125,80,${a})`); gr.addColorStop(1, 'rgba(160,125,80,0)'); c.fillStyle = gr; c.fillRect(x - r, y - r, 2 * r, 2 * r); }
-  c.lineWidth = 1;
-  for (let i = 0; i < 1400; i++) { const x = rnd() * W, y = rnd() * H, l = 6 + rnd() * 26, a = rnd() * TAU; c.strokeStyle = `rgba(110,88,60,${.035 + rnd() * .06})`; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + Math.cos(a + .6) * l * .5, y + Math.sin(a + .6) * l * .5, x + Math.cos(a) * l, y + Math.sin(a) * l); c.stroke(); }
+  for (let i = 0; i < Math.round(70 * A); i++) { const x = rnd() * W, y = rnd() * H, r = (120 + rnd() * 380) * K, gr = c.createRadialGradient(x, y, 0, x, y, r), a = .045 * rnd(); gr.addColorStop(0, `rgba(160,125,80,${a})`); gr.addColorStop(1, 'rgba(160,125,80,0)'); c.fillStyle = gr; c.fillRect(x - r, y - r, 2 * r, 2 * r); }
+  c.lineWidth = Math.max(1, K * .7);
+  for (let i = 0; i < Math.round(1400 * A); i++) { const x = rnd() * W, y = rnd() * H, l = (6 + rnd() * 26) * K, a = rnd() * TAU; c.strokeStyle = `rgba(110,88,60,${.035 + rnd() * .06})`; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + Math.cos(a + .6) * l * .5, y + Math.sin(a + .6) * l * .5, x + Math.cos(a) * l, y + Math.sin(a) * l); c.stroke(); }
   return g;
 }
 // Static grain + vignette, multiplied over the painted frame so pigment sits "in" the paper.
@@ -292,6 +293,7 @@ function makeGrain() {
   const id = c.createImageData(W, H), d = id.data;
   for (let i = 0; i < d.length; i += 4) { const v = 255 - (rnd() < .55 ? rnd() * rnd() * 34 : 0); d[i] = v; d[i + 1] = v - 1; d[i + 2] = v - 3; d[i + 3] = 255; }
   c.putImageData(id, 0, 0);
+  if (PROJECT.vignette === false) return cv;   // print pages: no darkened corners
   const g = c.createRadialGradient(W / 2, H / 2, H * .45, W / 2, H / 2, H * 1.05); g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(120,95,70,.35)');
   c.fillStyle = g; c.fillRect(0, 0, W, H);
   return cv;
