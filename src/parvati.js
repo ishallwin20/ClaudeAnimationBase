@@ -16,7 +16,10 @@
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK. 'normal' / 'look' / 'wide' are her own almond
 //           eyes with lashes, 'closed' and 'wink' her own lids; every other kind is Clawd's.
 //   colour: pal = { saree, sareeDk, sareeLt, blouse, blouseDk, gold, goldDk, goldLt, hair, hairLt, sindoor, lip, bangle, skin… }
-//           overrides PRV, to draw another woman on her rig (Shani's wife, a Gandharva princess, in the Shani reels)
+//           overrides PRV, to draw another woman on her rig (Shani's wife, a Gandharva princess, in the Shani reels;
+//           YSD_PAL is Yashoda, Krishna's mother: a rani-pink saree, a teal blouse, an orange odhni)
+//   mother: crown: false (no mukut: a woman of Gokul), veil 0..1 (an odhni over her head and shoulders, pal.veil /
+//           veilDk), eyeStars 0..1 (starlight in her eyes: what she saw in her son's mouth)
 //   extras: emote + emoteK + emoteAge, boilKey, noShadow
 const PRV = {
   skin: '#F2BE98', skinDk: '#D69470', skinLt: '#FFE0C8', ink: '#4A2530',
@@ -25,6 +28,9 @@ const PRV = {
   eye: '#2A1A1E', white: '#FFF8EC', bangle: '#3E9E5A', lip: '#C8505E',
 };
 const PRV_SKIN = { col: PRV.skin, dk: PRV.skinDk, lt: PRV.skinLt };
+const YSD_PAL = { skin: '#EDB48A', skinDk: '#CC8A5F', skinLt: '#FFD9B8', saree: '#D9467C', sareeDk: '#A82E5C', sareeLt: '#F28AB0',
+  blouse: '#2E8C8A', blouseDk: '#1F6664', bangle: '#C8324A', veil: '#F39A3A', veilDk: '#C8701E', lip: '#C0505E' };
+const YSD_SKIN = { col: YSD_PAL.skin, dk: YSD_PAL.skinDk, lt: YSD_PAL.skinLt };
 
 function parvatiArm(o, s) {
   const sh = [s * 2.6, -16.2];
@@ -69,6 +75,13 @@ function parvati(x, y, u, o = {}) {
     paint(ribbon(P(braid), 1.2 * u, .7 * u), { wash: C.hair, ink: INK, sw: sw * .7 });
     const BC = through(P(braid)); for (let k = 2; k < BC.length - 1; k += 2) { const [bx, by] = BC[k]; inkLine([[bx - .45 * u, by - .2 * u], [bx + .2 * u, by + .3 * u]], sw * .5, C.hairLt, 'inkfine', .4); }
     paint(ellPts((-3.5 + bs) * u, -10.1 * u, .45 * u, .6 * u, 10), { wash: C.gold, ink: INK, sw: sw * .5 });   // tassel
+    if (o.veil) {   // the odhni behind: over the head, falling behind the shoulders
+      rs('veilback');
+      const vs = Math.sin(T * 1.3) * .15 + hs * .3;
+      paint(P([[-3.3, -19.2], [-3.3, -21.6], [-2.2, -23.2], [0, -23.7], [2.2, -23.2], [3.3, -21.6], [3.3, -19.2], [3.9, -16.6], [4.4 + vs, -13.4], [3.4 + vs, -12.6], [2.6, -15.2], [-2.6, -15.2], [-3.4 - vs, -12.6], [-4.4 - vs, -13.4], [-3.9, -16.6]]),
+        { wash: C.veil || C.saree, fill: C.veilDk || C.sareeDk, fillOp: 70, tex: .6, ink: INK, sw: sw * .75, curv: .4 });
+      inkLine(P([[-3.4 - vs, -12.8], [-4.3 - vs, -13.5]]), sw * 1.4, C.gold, 'ink', 0); inkLine(P([[3.4 + vs, -12.8], [4.3 + vs, -13.5]]), sw * 1.4, C.gold, 'ink', 0);
+    }
     pop();
     rs('pallback');
     paint(ribbon(P([[-2.6, -16.4], [-3.5, -14], [-3.9 + hs * .3, -11], [-4.2 + hs * .6, -8.2]]), 2 * u, 1.9 * u), { wash: C.saree, fill: C.sareeDk, fillOp: 90, tex: .6, ink: INK, sw: sw * .75 });
@@ -126,9 +139,17 @@ function parvati(x, y, u, o = {}) {
       { wash: C.hair, ink: INK, sw: sw * .85, curv: .4 });
     inkLine(P([[-2.2, -21.6], [-1.2, -22.3], [-.3, -22.4]]), sw * .45, C.hairLt, 'inkfine', .5);
     inkLine(P([[0, -22.4], [0, -21.7]]), sw * 1.1, C.sindoor, 'ink', 0);   // sindoor in the parting
+    if (o.veil) {   // the odhni's front edge, over the crown of her head, with a gold border
+      rs('veilfront');
+      paint(ribbon(P([[-3.15, -18.8], [-3.05, -21.0], [-2.0, -22.6], [0, -23.15], [2.0, -22.6], [3.05, -21.0], [3.15, -18.8]]), 1.0 * u, .7 * u), { wash: C.veil || C.saree, fill: C.veilDk || C.sareeDk, fillOp: 50, tex: .6, ink: INK, sw: sw * .7 });
+      inkLine(P([[-2.75, -18.9], [-2.6, -20.8], [-1.7, -22.05], [0, -22.55], [1.7, -22.05], [2.6, -20.8], [2.75, -18.9]]), sw * 1.3, C.gold, 'ink', .5);
+      for (const [bx, by] of [[-2.7, -20.9], [-1.4, -22.6], [0, -23.0], [1.4, -22.6], [2.7, -20.9]]) paint(ellPts(bx * u, by * u, .16 * u, .16 * u, 7), { wash: C.gold, ink: null });
+    }
+    if (o.crown !== false && !o.veil) {
     rs('mukut');
     paint(P([[-1.7, -22.5], [1.7, -22.5], [1.3, -23.4], [.7, -23.3], [0, -24.2], [-.7, -23.3], [-1.3, -23.4]]), { wash: C.gold, fill: C.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6, curv: .15 });
     paint(ellPts(0, -23.1 * u, .25 * u, .3 * u, 8), { wash: C.saree, ink: INK, sw: sw * .35 });
+    }
     inkLine(P([[0, -22], [0, -21.25]]), sw * .6, C.goldDk, 'inkfine', 0);   // maang tikka
     paint(ellPts(0, -21.05 * u, .2 * u, .24 * u, 8), { wash: C.gold, ink: INK, sw: sw * .35 });
 
@@ -155,6 +176,8 @@ function parvati(x, y, u, o = {}) {
         paint(ellPts(ex, ey, rx, ry, 16), { wash: C.white, ink: null });
         paint(ellPts(ex + lx, ey + ly, .3 * u, .36 * u, 12), { wash: C.eye, ink: null });
         paint(ellPts(ex + lx - .1 * u, ey + ly - .12 * u, .1 * u, .11 * u, 8), { wash: C.white, ink: null });
+        const es = clamp(o.eyeStars || 0);
+        if (es > 0) for (let j = 0; j < 3; j++) { const tw = .7 + .3 * Math.sin(T * 9 + j * 2 + s); paint(starPts(ex + lx + (j - 1) * .14 * u, ey + ly + (j === 1 ? -.08 : .1) * u, (j === 1 ? .16 : .09) * u * tw * es, .35, 4), { wash: '#FFF4C8', ink: null }); }
         inkLine([[ex - rx * 1.05, ey + ry * .1], [ex - rx * .3, ey - ry * 1.05], [ex + rx * .5, ey - ry * 1], [ex + rx * 1.15, ey - ry * .3], [ex + s * rx * 1.4, ey - ry * .8]].map(([a, b]) => [s < 0 ? 2 * ex - a : a, b]), sw * 1.2, INK, 'ink', .5);   // lid with a flick outward
       });
     } else { push(); translate(0, -19.7 * u); scale(.44); translate(0, 6 * u); eyes(u, o, sw / .44 * .85, [-1, 1], 0); pop(); }
@@ -210,4 +233,18 @@ function parvati(x, y, u, o = {}) {
     });
   };
   LOOPS.parvati.len = 4;
+})();
+
+// Yashoda, Krishna's mother, on this rig: studio.html?loop=yashoda
+(() => {
+  LOOPS.yashoda = t => {
+    paint(rectPts(-40, -40, W + 80, H + 80), { wash: PAL.paper, ink: null });
+    const Y = { pal: YSD_PAL, ...YSD_SKIN, crown: false, veil: 1 };
+    parvati(270, 900, 26, { ...feel('angry', t, { seed: 1 }), ...Y, eyes: 'normal', mouth: 'frown', handR: [3.0, -12.2], handL: [-3.6, -18.5] });
+    parvati(800, 900, 26, { ...feel('surprised', t, { seed: 2 }), ...Y, eyes: 'wide', mouth: 'O', eyeStars: 1, pray: 1 });
+    parvati(270, 1750, 26, { ...feel('love', t, { seed: 3 }), ...Y, eyes: 'closed', handL: [-1.6, -12.8], handR: [1.6, -12.8], htilt: .12 });
+    kartikeya(800, 1750, 30, { ...feel('angry', t), pal: { skin: '#F7E3CF', skinDk: '#DDBFA2', skinLt: '#FFF4E8', teal: '#2E4F9C', tealDk: '#1E356E', tealLt: '#6E8ED0', sash: '#F2C230', sashDk: '#B88A1C' },
+      feather: false, spear: false, shield: false, eyes: 'normal', mouth: 'open', aR: .05, aL: -1.2 });
+  };
+  LOOPS.yashoda.len = 4;
 })();
