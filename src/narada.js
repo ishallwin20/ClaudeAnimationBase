@@ -25,7 +25,8 @@
 //           Clawd's: heart, swirl, …), lookX / lookY, brow (-1 stern .. 1 raised), mouth ('smile' / 'grin' / 'smug' /
 //           'flat' / 'frown' / 'O' / 'open' / 'scream' / 'sheepish' are his own, else Clawd's), squint, blush, sweat,
 //           seed, tint + tintK; monkey 0..1 (> .5: the monkey face, same eyes and mouths)
-//   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), emote + emoteK + emoteAge, boilKey,
+//   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), topknot (false: none, for a crown in
+//           hat: Krishna in krishna.js), emote + emoteK + emoteAge, boilKey,
 //           noShadow, swMul
 //   others: pal (overrides NRD: skin, dhoti, border, shawl, hair, …) + beard (a colour: a full sage's beard and moustache)
 //           draw other rishis on his rig (Kashyapa, Agastya in the Surya book; NRD_SAGE is a white-haired elder)
@@ -190,6 +191,7 @@ function narada(x, y, u, o = {}) {
     } else naradaMonkeyHead(u, sw, J, INK, hx, o);
     // ---- the topknot, its rudraksha band and a white flower
     rs('topknot');
+    if (o.topknot !== false) {
     const kb = Math.sin(T * 2.4) * .04;
     push(); translate(0, -23.6 * u); rotate(kb); translate(0, 23.6 * u);
     paint(P([[-1.3, -23.5], [-1.75, -24.7], [-1.6, -26.2], [-.8, -27.1], [0, -27.25], [.8, -27.1], [1.6, -26.2], [1.75, -24.7], [1.3, -23.5]]), { wash: NRD.hair, ink: INK, sw: sw * .8, curv: .5 });
@@ -198,6 +200,7 @@ function narada(x, y, u, o = {}) {
     for (let i = 0; i < 5; i++) { const a = i / 5 * TAU; paint(ellPts((1.55 + Math.cos(a) * .32) * u, (-25.6 + Math.sin(a) * .32) * u, .26 * u, .26 * u, 8), { wash: NRD.flower, ink: INK, sw: sw * .25 }); }
     paint(ellPts(1.55 * u, -25.6 * u, .16 * u, .16 * u, 8), { wash: NRD.gold, ink: null });
     pop();
+    }
     if (o.hat) { rs('hat'); o.hat(u, sw); }
 
     push(); translate(hx * .8 * u, 0);
