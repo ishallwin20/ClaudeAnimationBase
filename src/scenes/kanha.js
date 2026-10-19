@@ -56,7 +56,8 @@
   // Yashoda's hand on top of whatever was drawn after her
   const yHand = (x, y, u, o, s, key) => { const [hx, hy] = parvatiHand(x, y, u, o, s); boilSeed(key); paint(ellPts(hx, hy, .62 * u, .56 * u, 14, u * .03), { wash: YSD_PAL.skin, ink: '#4A2530', sw: clamp(u / 20, .4, 2) * .7 }); return [hx, hy]; };
   // a boy of Gokul (Kartikeya's rig recoloured): running right, then pointing back
-  const boy = (x, y, u, base, o, key) => kartikeya(x, y, u, { ...base, ...o, boilKey: key });
+  // their own skin always (emotions() hands over Clawd's colours mid-change); the mood's tint still applies on top
+  const boy = (x, y, u, base, o, key) => kartikeya(x, y, u, { ...base, ...o, col: base.pal.skin, dk: base.pal.skinDk, lt: base.pal.skinLt, boilKey: key });
 
   // ================= A + B · the mud, the name =================
   function shotMud(t, lt) {
