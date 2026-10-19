@@ -17,6 +17,10 @@
 //           eyes with brows; every other kind is Clawd's.
 //   head:   head(u, sw) (a hook in head space, drawn over the face: goggles, a headset, a bandage)
 //   extras: emote + emoteK + emoteAge, featherWob, boilKey, noShadow
+//   others: pal (overrides KAR: skin, skinDk, skinLt, hair, teal / tealDk / tealLt (the dhoti), sash, gold, gem, dot …)
+//           draws other children on his rig (Surya's children in the Shani reels); feather: false, topknot: false,
+//           tilak: false; crown: 1 (a little kirita with a gem instead of the topknot); girl: 1 (two plaits, a bindi and
+//           a flared lehenga); kick 0..1 (his left leg, screen right, swings up and out: a raised foot)
 const KAR = {
   skin: '#EDB48A', skinDk: '#CC8A5F', skinLt: '#FFD9B8', ink: '#4A2B1C',
   hair: '#2E2436', hairLt: '#524560', teal: '#2F9C94', tealDk: '#1E6F6C', tealLt: '#7FCDC3',
@@ -57,11 +61,12 @@ function kartiShield(u, sw, INK = KAR.ink) {   // round, held at (0, 0) in front
 }
 
 function kartikeya(x, y, u, o = {}) {
+  const C = o.pal ? { ...KAR, ...o.pal } : KAR;   // pal recolours him (another child on the same rig: Surya's children)
   const id = o.boilKey ?? 'k' + (++CLAWD_N), rs = p => boilSeed(`karti ${id} ${p}`);
   x += (o.dx || 0) * u;
   const dy = (o.dy || 0) * u, sq = (o.sq || 0) + (o.take || 0), sw = clamp(u / 20, .4, 2) * (o.swMul || 1), J = u * .05;
-  const { col, dk, lt } = tintCols({ ...o, col: o.col || KAR.skin, dk: o.dk || KAR.skinDk, lt: o.lt || KAR.skinLt });
-  const P = pts => U(pts, u), INK = KAR.ink, wk = o.walk, hx = clamp(o.hx || 0, -1, 1);
+  const { col, dk, lt } = tintCols({ ...o, col: o.col || C.skin, dk: o.dk || C.skinDk, lt: o.lt || C.skinLt });
+  const P = pts => U(pts, u), INK = C.ink, wk = o.walk, hx = clamp(o.hx || 0, -1, 1);
 
   if (!o.noShadow) { rs('shadow'); const f = 1 - Math.min(.5, Math.abs(o.dy || 0) * .05); paint(ellPts(x, y + u * .1, u * 4 * f, u * .85 * f, 22), { fill: PAL.ink, fillOp: 80, bleed: .25, tex: .3, border: .1, ink: null }); }
   push();
@@ -71,37 +76,56 @@ function kartikeya(x, y, u, o = {}) {
 
   // ---- the feather behind the head, then legs, dhoti, chest
   rs('feather');
+  if (o.feather !== false && !o.girl && !o.crown) {
   const fw = (o.featherWob || 0) + Math.sin(T * 2.2) * .06;
   push(); translate((hx * .5 + .2) * u, -16.6 * u); rotate(.25 + fw);
-  inkLine(P([[0, 0], [.1, -1.2], [.05, -2.4]]), sw * .6, KAR.ink, 'inkfine', .5);
-  paint(ellPts(0, -2.9 * u, .85 * u, 1.25 * u, 16, J), { wash: KAR.tealLt, fill: KAR.green, fillOp: 60, tex: .5, ink: INK, sw: sw * .5 });
-  paint(ellPts(0, -3 * u, .5 * u, .7 * u, 12), { wash: KAR.teal, ink: null });
-  paint(ellPts(0, -3 * u, .25 * u, .35 * u, 10), { wash: KAR.blue, ink: null });
-  for (const s of [-1, 1]) for (const k of [.6, 1.3, 2]) inkLine(P([[0, -k], [s * .45, -k - .35]]), sw * .35, KAR.green, 'inkfine', 0);   // barbs
+  inkLine(P([[0, 0], [.1, -1.2], [.05, -2.4]]), sw * .6, C.ink, 'inkfine', .5);
+  paint(ellPts(0, -2.9 * u, .85 * u, 1.25 * u, 16, J), { wash: C.tealLt, fill: C.green, fillOp: 60, tex: .5, ink: INK, sw: sw * .5 });
+  paint(ellPts(0, -3 * u, .5 * u, .7 * u, 12), { wash: C.teal, ink: null });
+  paint(ellPts(0, -3 * u, .25 * u, .35 * u, 10), { wash: C.blue, ink: null });
+  for (const s of [-1, 1]) for (const k of [.6, 1.3, 2]) inkLine(P([[0, -k], [s * .45, -k - .35]]), sw * .35, C.green, 'inkfine', 0);   // barbs
   pop();
+  }
+  if (o.girl) {   // two plaits hanging behind her ears, tied with red ribbons
+    rs('plaits');
+    for (const s of [-1, 1]) {
+      const sway = Math.sin(T * 2 + s) * .12;
+      paint(ribbon(P([[s * 2.4, -13.6], [s * 3.3 + sway, -11.4], [s * 3.4 + sway, -9.2], [s * 3.2 + sway * 2, -7.6]]), .95 * u, .5 * u), { wash: C.hair, ink: INK, sw: sw * .7 });
+      paint(ellPts((s * 3.2 + sway * 2) * u, -7.5 * u, .38 * u, .25 * u, 10), { wash: C.sash, ink: INK, sw: sw * .4 });
+    }
+  }
 
   rs('legs');
   for (const s of [-1, 1]) {
-    const l = wk == null ? 0 : Math.max(0, Math.sin((wk + (s < 0 ? 0 : .5)) * TAU)) * .7, cx = s * 1.3;
+    const l = wk == null ? 0 : Math.max(0, Math.sin((wk + (s < 0 ? 0 : .5)) * TAU)) * .7, cx = s * 1.3, kk = s > 0 ? clamp(o.kick || 0) : 0;
+    push(); if (kk > 0) { translate(cx * u, -2.9 * u); rotate(-kk * 1.95); scale(1, 1 + .45 * kk); translate(-cx * u, 2.9 * u); }   // kick: the leg swings up and out
     paint(P([[cx - .85, -2.9], [cx + .85, -2.9], [cx + .8, -.75 - l], [cx - .8, -.75 - l]]), { wash: col, fill: dk, fillOp: 50, tex: .5, ink: INK, sw: sw * .85 });
-    inkLine(P([[cx - .8, -1.55 - l], [cx + .8, -1.55 - l]]), sw * 1.1, KAR.gold, 'ink', 0);   // anklet
+    inkLine(P([[cx - .8, -1.55 - l], [cx + .8, -1.55 - l]]), sw * 1.1, C.gold, 'ink', 0);   // anklet
     paint(ellPts((cx + s * .1) * u, (-.5 - l) * u, 1.1 * u, .55 * u, 16, J), { wash: col, fill: dk, fillOp: 40, tex: .5, ink: INK, sw: sw * .8 });
+    pop();
   }
   rs('dhoti');
+  if (o.girl) {   // a flared lehenga to the ankles
+    const sk = P([[-2.4, -6.3], [2.4, -6.3], [3, -4.2], [3.6, -1.4], [1.8, -1.1], [0, -1.25], [-1.8, -1.1], [-3.6, -1.4], [-3, -4.2]]);
+    paint(sk, { wash: C.teal, fill: C.tealDk, fillOp: 80, bleed: .06, tex: .7, border: .5, ink: INK, sw: sw * .9, curv: .25 });
+    inkLine(P([[-3.5, -1.55], [-1.8, -1.3], [0, -1.45], [1.8, -1.3], [3.5, -1.55]]), sw * 1.6, C.gold, 'ink', .4);
+    for (const k of [-1.4, 0, 1.4]) inkLine(P([[k * .6, -5.8], [k, -1.6]]), sw * .45, C.tealDk, 'inkfine', .3);
+  } else {
   paint(P([[-2.4, -6.3], [2.4, -6.3], [2.8, -4.3], [3, -2.5], [.4, -2.3], [0, -3.3], [-.4, -2.3], [-3, -2.5], [-2.8, -4.3]]),
-    { wash: KAR.teal, fill: KAR.tealDk, fillOp: 80, bleed: .06, tex: .7, border: .5, ink: INK, sw: sw * .9, curv: .25 });
-  for (const s of [-1, 1]) inkLine(P([[s * .45, -2.55], [s * 1.7, -2.6], [s * 2.85, -2.75]]), sw * 1.3, KAR.gold, 'ink', .4);   // gold hem
-  inkLine(P([[0, -5.8], [-.2, -4.4], [0, -3.4]]), sw * .5, KAR.tealDk, 'inkfine', .5);   // pleat
-  inkLine(P([[-2.2, -4.2], [-1.2, -3.3]]), sw * .45, KAR.tealDk, 'inkfine', .4);
+    { wash: C.teal, fill: C.tealDk, fillOp: 80, bleed: .06, tex: .7, border: .5, ink: INK, sw: sw * .9, curv: .25 });
+  for (const s of [-1, 1]) inkLine(P([[s * .45, -2.55], [s * 1.7, -2.6], [s * 2.85, -2.75]]), sw * 1.3, C.gold, 'ink', .4);   // gold hem
+  inkLine(P([[0, -5.8], [-.2, -4.4], [0, -3.4]]), sw * .5, C.tealDk, 'inkfine', .5);   // pleat
+  inkLine(P([[-2.2, -4.2], [-1.2, -3.3]]), sw * .45, C.tealDk, 'inkfine', .4);
+  }
   rs('chest');
   const chest = ellPts(0, -7.7 * u, 2.55 * u, 2.1 * u, 26, J);
   paint(chest, { wash: col, ink: null });
   paint(ellPts(-.8 * u, -8.3 * u, 1.3 * u, .8 * u, 14, J * 2, -.3), { fill: lt, fillOp: 130, bleed: .2, tex: .8, border: .8, ink: null });
   paint(chest, { ink: INK, sw });
-  paint(rrPts(-2.5 * u, -6.65 * u, 5 * u, .75 * u, .3 * u, J), { wash: KAR.gold, fill: KAR.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7 });   // waistband
-  paint(ribbon(P([[-2.1, -9.4], [-.6, -8.3], [.9, -7.2], [2.3, -6.4]]), .75 * u, .65 * u), { wash: KAR.sash, fill: KAR.sashDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6 });
-  inkLine(P([[-1.6, -9.35], [0, -8.55], [1.6, -9.35]]), sw * 1.4, KAR.gold, 'ink', .6);   // necklace
-  paint(ellPts(0, -8.45 * u, .28 * u, .28 * u, 8), { wash: KAR.sash, ink: INK, sw: sw * .4 });
+  paint(rrPts(-2.5 * u, -6.65 * u, 5 * u, .75 * u, .3 * u, J), { wash: C.gold, fill: C.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7 });   // waistband
+  paint(ribbon(P([[-2.1, -9.4], [-.6, -8.3], [.9, -7.2], [2.3, -6.4]]), .75 * u, .65 * u), { wash: C.sash, fill: C.sashDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6 });
+  inkLine(P([[-1.6, -9.35], [0, -8.55], [1.6, -9.35]]), sw * 1.4, C.gold, 'ink', .6);   // necklace
+  paint(ellPts(0, -8.45 * u, .28 * u, .28 * u, 8), { wash: C.sash, ink: INK, sw: sw * .4 });
 
   // ---- arms (angles like Bal Bappa's), with the shield and the spear
   const cross = clamp(o.cross || 0), cover = clamp(o.cover || 0);
@@ -112,7 +136,7 @@ function kartikeya(x, y, u, o = {}) {
     const nx = -ey / L * .25 * u * s, ny = ex / L * .25 * u * s;
     if (s > 0 && o.spear !== false) { push(); translate(ex, ey); vel(u, sw, o.spearA || 0, INK); pop(); }
     paint(ribbon([[0, 0], [ex * .5 + nx, ey * .5 + ny], [ex, ey]], 1.15 * u, .9 * u), { wash: col, fill: dk, fillOp: 40, tex: .5, ink: INK, sw: sw * .85 });
-    inkLine([[ex * .3 - ny * 1.6, ey * .3 + nx * 1.6], [ex * .3 + ny * 1.6, ey * .3 - nx * 1.6]], sw * 1.3, KAR.gold, 'ink', 0);   // armlet
+    inkLine([[ex * .3 - ny * 1.6, ey * .3 + nx * 1.6], [ex * .3 + ny * 1.6, ey * .3 - nx * 1.6]], sw * 1.3, C.gold, 'ink', 0);   // armlet
     push(); translate(ex, ey);
     paint(ellPts(0, 0, .72 * u, .66 * u, 14, J), { wash: col, ink: INK, sw: sw * .8 });
     if (s < 0 && o.shield !== false) kartiShield(u, sw, INK);
@@ -134,11 +158,13 @@ function kartikeya(x, y, u, o = {}) {
   push(); translate(hx * .5 * u, 0);
   if (o.htilt) { translate(0, -10 * u); rotate(o.htilt); translate(0, 10 * u); }
   rs('ears');
-  for (const s of [-1, 1]) { paint(ellPts(s * 2.95 * u, -12.2 * u, .6 * u, .85 * u, 12, J), { wash: col, fill: dk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7 }); paint(ellPts(s * 3 * u, -11.4 * u, .22 * u, .22 * u, 8), { wash: KAR.gold, ink: INK, sw: sw * .4 }); }
+  for (const s of [-1, 1]) { paint(ellPts(s * 2.95 * u, -12.2 * u, .6 * u, .85 * u, 12, J), { wash: col, fill: dk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7 }); paint(ellPts(s * 3 * u, -11.4 * u, .22 * u, .22 * u, 8), { wash: C.gold, ink: INK, sw: sw * .4 }); }
   rs('topknot');
-  paint(ellPts(0, -16.1 * u, 1.2 * u, 1 * u, 16, J), { wash: KAR.hair, ink: INK, sw: sw * .8 });
-  inkLine(P([[-.7, -16.3], [0, -16.8], [.7, -16.2]]), sw * .45, KAR.hairLt, 'inkfine', .5);
-  paint(rrPts(-1.05 * u, -15.5 * u, 2.1 * u, .5 * u, .2 * u), { wash: KAR.gold, ink: INK, sw: sw * .5 });
+  if (!o.girl && !o.crown && o.topknot !== false) {
+  paint(ellPts(0, -16.1 * u, 1.2 * u, 1 * u, 16, J), { wash: C.hair, ink: INK, sw: sw * .8 });
+  inkLine(P([[-.7, -16.3], [0, -16.8], [.7, -16.2]]), sw * .45, C.hairLt, 'inkfine', .5);
+  paint(rrPts(-1.05 * u, -15.5 * u, 2.1 * u, .5 * u, .2 * u), { wash: C.gold, ink: INK, sw: sw * .5 });
+  }
   rs('head');
   const head = ellPts(0, -12.4 * u, 3 * u, 2.85 * u, 30, J);
   paint(head, { wash: col, ink: null });
@@ -147,15 +173,22 @@ function kartikeya(x, y, u, o = {}) {
   paint(head, { ink: INK, sw });
   rs('hair');
   paint(P([[-3.05, -11.8], [-3.25, -13.5], [-2.6, -14.9], [-1.1, -15.5], [0, -15.45], [1.1, -15.5], [2.6, -14.9], [3.25, -13.5], [3.05, -11.8], [2.65, -12.9], [1.9, -13.9], [.7, -14.2], [.1, -13.8], [-.7, -14.3], [-1.9, -14], [-2.65, -12.9]]),
-    { wash: KAR.hair, ink: INK, sw: sw * .85, curv: .4 });
-  inkLine(P([[-2.3, -14.5], [-1, -15], [.4, -14.9]]), sw * .45, KAR.hairLt, 'inkfine', .5);
-  paint(ribbon(P([[-2.9, -13.6], [-1.5, -14.55], [0, -14.75], [1.5, -14.55], [2.9, -13.6]]), .42 * u, .42 * u), { wash: KAR.gold, fill: KAR.goldDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .5 });   // band
-  paint(ellPts(0, -14.72 * u, .3 * u, .36 * u, 10), { wash: KAR.sash, ink: INK, sw: sw * .4 });
+    { wash: C.hair, ink: INK, sw: sw * .85, curv: .4 });
+  inkLine(P([[-2.3, -14.5], [-1, -15], [.4, -14.9]]), sw * .45, C.hairLt, 'inkfine', .5);
+  paint(ribbon(P([[-2.9, -13.6], [-1.5, -14.55], [0, -14.75], [1.5, -14.55], [2.9, -13.6]]), .42 * u, .42 * u), { wash: C.gold, fill: C.goldDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .5 });   // band
+  paint(ellPts(0, -14.72 * u, .3 * u, .36 * u, 10), { wash: C.sash, ink: INK, sw: sw * .4 });
+  if (o.crown) {   // a little prince's kirita on the band, with a gem
+    rs('crown');
+    paint(P([[-1.9, -14.5], [1.9, -14.5], [1.6, -16.3], [1, -16.9], [.5, -17.9], [0, -18.6], [-.5, -17.9], [-1, -16.9], [-1.6, -16.3]]), { wash: C.gold, fill: C.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7, curv: .2 });
+    inkLine(P([[-1.7, -15.4], [0, -15.6], [1.7, -15.4]]), sw * .7, C.goldDk, 'inkfine', .4);
+    paint(ellPts(0, -16.1 * u, .38 * u, .44 * u, 10), { wash: C.gem || C.sash, ink: INK, sw: sw * .4 });
+    paint(ellPts(0, -18.5 * u, .22 * u, .22 * u, 8), { wash: C.gem || C.sash, ink: INK, sw: sw * .3 });
+  }
 
   push(); translate(hx * .9 * u, 0);
   rs('tilak');
-  for (const yy of [-13.55, -13.25]) inkLine(P([[-.9, yy], [0, yy - .06], [.9, yy]]), sw * .8, KAR.ash, 'ink', .5);
-  paint(ellPts(0, -13.1 * u, .16 * u, .16 * u, 8), { wash: KAR.dot, ink: null });
+  if (!o.girl && o.tilak !== false) for (const yy of [-13.55, -13.25]) inkLine(P([[-.9, yy], [0, yy - .06], [.9, yy]]), sw * .8, C.ash, 'ink', .5);
+  if (o.tilak !== false) paint(ellPts(0, -13.1 * u, (o.girl ? .22 : .16) * u, (o.girl ? .22 : .16) * u, 8), { wash: C.dot, ink: null });
   if (o.blush) for (const s of [-1, 1]) paint(ellPts(s * 1.9 * u, -11.2 * u, .7 * u, .38 * u, 14), { fill: PAL.rose, fillOp: 150 * clamp(o.blush), bleed: .2, tex: .4, ink: null });
   rs('eyes');
   const kinds = Array.isArray(o.eyes) ? o.eyes : [o.eyes || 'normal', o.eyes || 'normal'];
@@ -164,16 +197,16 @@ function kartikeya(x, y, u, o = {}) {
     const blink = !wide && ((T * .9 + (o.seed || 0) * 1.7 + .8) % 3.3) < .12;
     for (const s of [-1, 1]) {
       const ex = s * 1.2 * u, ey = -12.2 * u;
-      inkLine(P([[s * .75, -13 - (wide ? .35 : 0)], [s * 1.2, -13.2 - (wide ? .35 : 0)], [s * 1.7, -13.05 - (wide ? .3 : 0)]]), sw * .7, KAR.brow, 'inkfine', .5);
-      if (blink) { inkLine([[ex - .4 * u, ey + .1 * u], [ex + .4 * u, ey + .1 * u]], sw * 1.1, KAR.eye, 'ink', .3); continue; }
+      inkLine(P([[s * .75, -13 - (wide ? .35 : 0)], [s * 1.2, -13.2 - (wide ? .35 : 0)], [s * 1.7, -13.05 - (wide ? .3 : 0)]]), sw * .7, C.brow, 'inkfine', .5);
+      if (blink) { inkLine([[ex - .4 * u, ey + .1 * u], [ex + .4 * u, ey + .1 * u]], sw * 1.1, C.eye, 'ink', .3); continue; }
       if (wide) paint(ellPts(ex, ey, .6 * u, .72 * u, 16), { wash: PAL.cream, ink: INK, sw: sw * .5 });
-      paint(ellPts(ex + lx, ey + ly, (wide ? .32 : .38) * u, (wide ? .4 : .5) * u, 16), { wash: KAR.eye, ink: null });
+      paint(ellPts(ex + lx, ey + ly, (wide ? .32 : .38) * u, (wide ? .4 : .5) * u, 16), { wash: C.eye, ink: null });
       paint(ellPts(ex + lx - .12 * u, ey + ly - .18 * u, .14 * u, .16 * u, 10), { wash: PAL.cream, washOp: 240, ink: null });
       paint(ellPts(ex + lx + .12 * u, ey + ly + .2 * u, .06 * u, .06 * u, 8), { wash: PAL.cream, washOp: 200, ink: null });
     }
   } else { push(); translate(0, -12.2 * u); scale(.52); translate(0, 6 * u); eyes(u, o, sw / .52 * .85, [-1, 1], 0); pop(); }
   rs('nose');
-  inkLine(P([[-.05, -11.55], [.12, -11.3], [-.05, -11.2]]), sw * .5, KAR.skinDk, 'inkfine', .5);
+  inkLine(P([[-.05, -11.55], [.12, -11.3], [-.05, -11.2]]), sw * .5, C.skinDk, 'inkfine', .5);
   rs('mouth');
   push(); translate(0, -10.75 * u); scale(.42); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .42 * .8); pop();
   if (o.head) { rs('headhook'); o.head(u, sw); }
