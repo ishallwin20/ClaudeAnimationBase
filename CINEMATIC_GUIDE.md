@@ -394,3 +394,18 @@ First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`.
 - Sarvam STT caught "Tag them!" as "bagged them" (a short line with a hard first consonant): "Tag them all!" came back
   right.
 
+## Lessons from the Markandeya reel (ad/25-books123-markandeya)
+
+- Lyria, a seventh time: the pinned form ("90 BPM in 4/4, exactly 24 bars, 64 seconds", eleven sections, a hush asked
+  for "stops dead at 0:35.5 into total SILENCE") brought all three takes back at 65–67 s, and take 2 put its hush and
+  drop within 0.2 s of the brief. Print its loudness every 0.25 s and lay TL on what it did.
+- A rig recoloured is a new god: Yama is Surya's rig (his father's) with a slate palette, fierce brows, a moustache, red
+  eyes and new hand props; the boy Markandeya is Surya's head with no crown, a knot and the tripundra. `withSur()` in
+  cine_yama.js swaps the palette for one draw.
+- A water buffalo reads from the horns swept back over the neck in a crescent, not from horns rising up (that reads as
+  an ibex); the head carried low and long; a deep barrel.
+- A gold crown under a title wipes it out even behind a dark band (bloom brings it back): put a cover's title on the dark
+  chest under the chin, the crown cut by the top of the frame.
+- An abstract picture of a choice works in the dark: two lamps, a dim one and a blazing one; the dim one is snuffed when
+  they choose. It claims nothing the text doesn't say.
+
