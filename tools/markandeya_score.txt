@@ -1,0 +1,21 @@
+A SHORT film-score cue for a 64-second reel: tempo 90 BPM in 4/4, exactly 24 bars, 64 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:04. Every section below is short; keep moving.
+Epic, dark Indian mythological film score, like the best scene of a blockbuster trailer: Death himself, Yamraj, comes
+for a 16-year-old boy who clings to the Shiva linga, and Lord Shiva bursts out and destroys Death. Taiko, dhol and
+nagada drums, a deep temple bell, low brass and braams, cellos and full strings, a tanpura drone, a damru, a shehnai,
+a bansuri, a solo female voice (wordless), a huge male choir. Menacing, then explosive and triumphant.
+Instrumental, except the male choir chanting "Har Har Mahadev" where asked.
+
+0:00-0:06  A colossal low brass BRAAM and drum HIT on the very first beat, then a dark drone and a slow ticking pulse like a clock counting down.
+0:06-0:16  Mysterious and ancient: a lone bansuri over the tanpura drone, soft choir pads, a temple bell at 0:06 and at 0:12; a hint of dread.
+0:16-0:21  Tender devotion: a gentle male choir humming, warm strings, the ticking pulse returns underneath, slowly faster.
+0:21-0:26  Threat: low string ostinato, a racing heartbeat drum, dissonant swells; the clock ticks faster.
+0:26-0:32  Death arrives: huge slow war drums, a deep temple bell tolling on every bar, menacing low brass and male choir in a minor key. Heavy and terrifying.
+0:32-0:36  Rising tension: string tremolo crescendo, a whoosh; it stops dead at 0:35.5 into total SILENCE.
+0:36-0:37  Silence, only a single high string note.
+0:37-0:46  The DROP at 0:37.0: the biggest hit of the cue, then explosive, fast taiko, dhol and damru, a fierce shehnai lead, the male choir chanting "Har Har Mahadev" at full power; a massive impact HIT at 0:42.0.
+0:46-0:52  Aftermath: the drums stop; a mournful low drone, a solo female voice crying, sustained low choir.
+0:52-0:58  Grace: a radiant rising major-key swell, warm strings and choir like a sunrise.
+0:58-1:04  Resolution: a soft tanpura, a bansuri phrase and one last temple bell; fading out completely by 1:04.
+
+Total length: 64 seconds, 24 bars at 90 BPM. End at 1:04.
