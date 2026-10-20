@@ -102,6 +102,8 @@ function inside(c, clip, draw) { c.save(); c.clip(typeof clip === 'string' ? new
 //   o.rim:   { col, dx, dy, a, blur } a light edge on the side facing the light, which sits at direction (dx, dy)
 //   o.alpha, o.op: how it's laid down.
 // Call figure() again inside draw for parts that overlap (an arm over the chest) so they get their own edges.
+// a shape running off the frame would get its edge and rim traced along the frame border: clear a band there
+function unborder(m, w) { const b = Math.ceil(w) + 2; m.globalCompositeOperation = 'source-over'; m.clearRect(0, 0, W, b); m.clearRect(0, H - b, W, b); m.clearRect(0, 0, b, H); m.clearRect(W - b, 0, b, H); }
 function figure(c, draw, o = {}) {
   const d = DEPTH; DEPTH += 3;
   const lc = scratch('f' + d); lc.setTransform(c.getTransform()); draw(lc); lc.setTransform(1, 0, 0, 1, 0, 0);
@@ -115,12 +117,14 @@ function figure(c, draw, o = {}) {
     for (let i = 0; i < 8; i++) { const a = i / 8 * TAU; e.drawImage(L, Math.cos(a) * w, Math.sin(a) * w); }
     m.drawImage(L, 0, 0); m.globalCompositeOperation = 'destination-out'; m.drawImage(e.canvas, 0, 0);
     m.globalCompositeOperation = 'source-in'; m.fillStyle = o.edge.col; m.fillRect(0, 0, W, H);
+    unborder(m, w);
     lc.globalAlpha = o.edge.a ?? .6; lc.drawImage(m.canvas, 0, 0); lc.globalAlpha = 1;
   }
   if (o.rim && (o.rim.a ?? 1) > 0) {
     const r = o.rim, m = scratch('fm' + d);
     m.drawImage(L, 0, 0); m.globalCompositeOperation = 'destination-out'; m.drawImage(L, -r.dx, -r.dy);
     m.globalCompositeOperation = 'source-in'; m.fillStyle = r.col; m.fillRect(0, 0, W, H);
+    unborder(m, Math.max(Math.abs(r.dx), Math.abs(r.dy)) + (r.blur || 0) * 2);
     if (r.blur) { const b = scratch('fe' + d); b.filter = `blur(${r.blur}px)`; b.drawImage(m.canvas, 0, 0); lc.globalAlpha = r.a ?? 1; lc.drawImage(b.canvas, 0, 0); }
     else { lc.globalAlpha = r.a ?? 1; lc.drawImage(m.canvas, 0, 0); }
     lc.globalAlpha = 1;

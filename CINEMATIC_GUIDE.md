@@ -361,8 +361,8 @@ First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`.
   A comma ("Kings prayed, and failed.") gave a 2.7 s pause; drop it.
 - A bright falling torrent eats the caption band: keep the water above the captions and lay a near-black ridge plane
   (depth ~1.15) under them. On a face shot, keep clouds or mist off the mouth while the character speaks.
-- Hair (or anything) that runs off the frame inside `figure()` gets its lit edge traced along the frame border: draw it
-  in its own `figure()` with `edge.a: 0`.
+- Hair (or anything) that ran off the frame inside `figure()` got its lit edge traced along the frame border. `figure()`
+  now clears the edge and rim in a thin band at the border (`unborder`), so a body cut by the frame needs no workaround.
 - Lyria, a sixth time: the pinned form ("90 BPM in 4/4, exactly 30 bars, 80 seconds") brought two of three takes in
   length (79.7 s, 81.8 s; one stretched to 90 s), and take 3 sang "Har Har Gange" at 64.0 s as asked. Its hits came
   late or soft, so the SFX carry them and the mix makes the hush.
