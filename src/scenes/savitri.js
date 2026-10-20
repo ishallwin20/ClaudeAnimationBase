@@ -139,11 +139,11 @@
     const sf = face(t, [[0, 'determined', { eyes: 'normal', mouth: 'flat' }], [HURT, 'dizzy', { eyes: 'squeeze', mouth: 'wobble', sweat: 1 }]], SATYA_SKIN, { take: .6 });
     const so = { ...sf, hx: .3, lookX: .4, lookY: .5, rot: sway, dy: (sf.dy || 0) * .3 + sink * 3, sq: (sf.sq || 0) * .3 };
     if (hurt > 0) { so.handL = [lerp(-3.4, -2.8, hurt), lerp(-10.8, -23.4, hurt)]; so.handR = [lerp(5.2, 2.8, hurt), lerp(-14, -23.6, hurt)]; so.bendL = 1.4; so.bendR = 1.4; }
-    else { so.handR = [lerp(5.4, 2.6, swing), lerp(-14.4, -27.4, swing)]; so.bendR = 1.2; so.armR = (u, sw) => axe(u * 1.2, sw, lerp(1.7, -.6, swing)); so.handL = [lerp(-3.4, 1.8, ch * .5), -13.2]; }
+    else { so.handR = [lerp(6.2, 2.6, swing), lerp(-9.0, -27.4, swing)]; so.bendR = lerp(.6, 1.2, swing); so.armR = (u, sw) => axe(u * 1.2, sw, lerp(2.4, -.6, swing)); so.handL = [lerp(-3.4, 1.8, ch * .5), -13.2]; }
     sat(640, G, 21, so);
     // wood chips on each chop; the axe dropping on the pain
     for (const [k, tc] of [[0, CHOP1], [1, CHOP2]]) if (t > tc && t < tc + .6) { boilSeed('chip' + k); for (let i = 0; i < 4; i++) { const q = (t - tc) / .6, a = -1.2 - i * .4; paint(rectPts(860 + Math.cos(a) * q * 160, G - 90 - Math.sin(-a) * q * 140 + q * q * 160, 14, 8), { wash: '#E2C08A', ink: SV.ink, sw: .5 }); } }
-    if (t > HURT) { boilSeed('axefall'); const q = easeIn(seg(t, HURT, HURT + .35)); push(); translate(lerp(640 + 5.2 * 21, 760, q), lerp(G - 14 * 21, G - 30, q)); axe(25, 1, lerp(1.7, 3.2, q)); pop(); }
+    if (t > HURT) { boilSeed('axefall'); const q = easeIn(seg(t, HURT, HURT + .35)); push(); translate(lerp(640 + 6.2 * 21, 760, q), lerp(G - 9 * 21, G - 30, q)); axe(25, 1, lerp(2.4, 4.4, q)); pop(); }
     camEnd();
     wipeIn(lt, GOLDW);
     if (t > C2 - .12) { flushLetters(); flash(seg(t, C2 - .12, C2), '#FFF1D6'); }

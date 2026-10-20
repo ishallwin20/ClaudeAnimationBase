@@ -140,12 +140,12 @@ function banyan(t, x = 560, G = 1480, wind = 1) {
 }
 
 // ---------------- props ----------------
-// an axe, in an upright hand space (the handle runs from the fist down/up along a)
+// an axe, in an upright hand space: the head points along a (0 = up, + turns clockwise), the blade on its clockwise side
 function axe(u, sw, a = 0, INK = SV.ink) {
   push(); rotate(a);
   paint(ribbon(U([[0, 2.2], [0, -5.4]], u), .42 * u, .36 * u), { wash: '#A8743E', ink: INK, sw: sw * .6 });
-  paint(U([[-.2, -4.6], [-2.4, -5.6], [-2.6, -3.4], [-.2, -3.9]], u), { wash: '#B8BCC8', ink: INK, sw: sw * .7, curv: .2 });
-  inkLine(U([[-2.3, -5.4], [-2.5, -3.6]], u), sw * .8, '#E8ECF4', 'inkfine', .3);
+  paint(U([[.2, -4.6], [2.4, -5.6], [2.6, -3.4], [.2, -3.9]], u), { wash: '#B8BCC8', ink: INK, sw: sw * .7, curv: .2 });   // the blade on the clockwise side: a = 0 faces right, a ~ 2.4 chops down
+  inkLine(U([[2.3, -5.4], [2.5, -3.6]], u), sw * .8, '#E8ECF4', 'inkfine', .3);
   pop();
 }
 // Savitri's lap: her saree spread on the ground as she sits (parvati() sunk into it)
