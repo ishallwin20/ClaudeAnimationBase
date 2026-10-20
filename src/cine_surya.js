@@ -8,7 +8,11 @@
 //
 // surya(c, o): o (all optional): t, light (1 | -1), eyes (0 closed .. 1 open; closed with a furrowed brow, he is
 //   falling unconscious), wind, look ([x, y]), armFx (figure() options per arm), lotus (false to leave the hands empty).
-// suryaHead(c, o): the head alone: t, light, eyes, look.
+// suryaHead(c, o): the head alone: t, light, eyes, look. Both take, for other faces on the rig (Yama, Markandeya in
+//   cine_yama.js): pain (0..1, default 1 - eyes: the inner brows rise, the mouth falls), fierce (0..1 the brows drawn
+//   down), smile (0..1), mouth (0..1 open: a cry or a roar), tilak ('tripundra' | false), kundala ('ring' | false),
+//   crown (false), bun (with crown false: the hair in a knot with rudraksha). SUR is read live, so a palette swap
+//   (Object.assign(SUR, …) for the length of a draw) recolours him.
 const SUR = {
   skin: '#D98A4A', skinSh: '#B0642F', skinDk: '#7A3E1C', palm: '#EDB07A', lip: '#7E3220', lipLo: '#A24A30',
   hair: '#1A0F0E', hairLt: '#3A2420', eyeW: '#F2E8D8', iris: '#2B1A10', brow: '#1A0F0C', tilak: '#C81E2A',
@@ -20,7 +24,7 @@ const SUR_NECK = 'M -31 -700 C -29 -728 -31 -756 -36 -792 L 36 -792 C 31 -756 29
 
 // ---------- head ----------
 function suryaHead(c, o = {}) {
-  const t = o.t || 0, eyes = o.eyes ?? 1, L = o.light ?? 1, S = SUR, pain = 1 - eyes;
+  const t = o.t || 0, eyes = o.eyes ?? 1, L = o.light ?? 1, S = SUR, pain = o.pain ?? 1 - eyes, sm = o.smile || 0;
   fillPath(c, SUR_NECK, S.skin);
   inside(c, SUR_NECK, () => {
     c.save(); c.scale(L, 1); fillPath(c, 'M -40 -800 L -20 -800 C -18 -760 -20 -730 -24 -700 L -40 -700 Z', rgba(S.skinSh, .9)); c.restore();
@@ -32,6 +36,8 @@ function suryaHead(c, o = {}) {
   for (const s of [-1, 1]) {
     fillPath(c, `M ${s * 45} -836 C ${s * 56} -840 ${s * 59} -824 ${s * 57} -811 C ${s * 56} -801 ${s * 51} -795 ${s * 45} -797 Z`, s === -L ? S.skinSh : S.skin);
     const sw = Math.sin(t * 1.3 + s) * .8, kx = s * 54 + sw, ky = -772;
+    if (o.kundala === 'ring') { strokePath(c, `M ${kx - 5} ${ky - 14} C ${kx - 12} ${ky + 4} ${kx + 12} ${ky + 4} ${kx + 5} ${ky - 14}`, S.gold, 3.4); continue; }
+    if (o.kundala === false) continue;
     for (let k = 0; k < 12; k++) { const a = k * TAU / 12; fillPath(c, `M ${kx + Math.cos(a - .18) * 11} ${ky + Math.sin(a - .18) * 11} L ${kx + Math.cos(a) * 19} ${ky + Math.sin(a) * 19} L ${kx + Math.cos(a + .18) * 11} ${ky + Math.sin(a + .18) * 11} Z`, S.gold); }
     ellipse(c, kx, ky, 12, 12, S.gold); ellipse(c, kx, ky, 7, 7, S.ruby); ellipse(c, kx - 2, ky - 2, 2.2, 2.2, '#FFB0A0');
   }
@@ -62,20 +68,34 @@ function suryaHead(c, o = {}) {
     }
     strokePath(c, `M ${ex - lw - 1} ${ey + 1.5} Q ${ex - 2 * s} ${ey + up * 1.25} ${ex + lw + 1} ${ey - .5}`, S.brow, 2.5);
     if (eyes < .3) for (let i = 0; i < 4; i++) { const u = (i + 1) / 5, x = lerp(ex - lw, ex + lw, u), y = ey + 1.5 + (up * 1.25 - 1) * 2 * u * (1 - u) * 1.2; strokePath(c, `M ${x} ${y} l ${(u - .5) * 2} 2.4`, S.brow, 1); }
-    const by = pain * 3, bi = pain * 4;   // in pain the inner ends of the brows rise
+    const fa = o.fierce || 0, by = pain * 3 - fa * 5, bi = pain * 4 - fa * 7;   // in pain the inner ends of the brows rise; fierce draws them down
     fillPath(c, `M ${s * 6} ${-830.5 - bi} C ${s * 14} ${-838 - bi * .6} ${s * 26} ${-839.5 + by * .3} ${s * 35} ${-834 + by} C ${s * 26} ${-835 + by * .3} ${s * 15} ${-833.5 - bi * .5} ${s * 7} ${-827 - bi} Z`, S.brow);
   }
   // nose tip, moustache (thin), mouth
   strokePath(c, 'M -7.5 -790 C -4.5 -786.5 4.5 -786.5 7.5 -790', S.skinDk, 1.9);
   for (const s of [-1, 1]) fillPath(c, `M 0 -777 C ${s * 8} -779 ${s * 16} -778 ${s * 20} -772 C ${s * 14} -775 ${s * 7} -775 0 -774 Z`, rgba(S.hair, .8));
-  const m = pain * 2.5;
-  fillPath(c, `M -12 ${-771 + m * .4} C -6.5 -774.5 -2 -772.8 0 -773.6 C 2 -772.8 6.5 -774.5 12 ${-771 + m * .4} C 6 -769.6 -6 -769.6 -12 ${-771 + m * .4} Z`, S.lip);
-  fillPath(c, `M -10 -770.6 C -5.5 ${-763.5 + m} 5.5 ${-763.5 + m} 10 -770.6 C 5 -769.6 -5 -769.6 -10 -770.6 Z`, S.lipLo);
-  // a red tilak
-  fillPath(c, 'M 0 -864 C 3 -856 3 -848 0 -842 C -3 -848 -3 -856 0 -864 Z', S.tilak);
+  const m = pain * 2.5 - sm * 3, cy = -771 + m * .4;
+  if (o.mouth) {   // open: a cry, a roar, a gasp (0..1)
+    const mo = o.mouth * 13, mw = 12 + o.mouth * 3;
+    fillPath(c, `M ${-mw} ${cy} C ${-mw * .5} -776 ${mw * .5} -776 ${mw} ${cy} C ${mw * .8} ${cy + mo * .9} ${-mw * .8} ${cy + mo * .9} ${-mw} ${cy} Z`, S.lip);
+    fillPath(c, `M ${-mw + 2.5} ${cy + .5} C ${-mw * .4} -773 ${mw * .4} -773 ${mw - 2.5} ${cy + .5} C ${mw * .7} ${cy + mo * .8} ${-mw * .7} ${cy + mo * .8} ${-mw + 2.5} ${cy + .5} Z`, '#1A0A0A');
+    fillPath(c, `M ${-mw * .6} ${cy - .4} L ${mw * .6} ${cy - .4} L ${mw * .5} ${cy + 2.6} L ${-mw * .5} ${cy + 2.6} Z`, rgba('#F2E8D8', .85));
+  } else {
+    fillPath(c, `M -12 ${cy} C -6.5 -774.5 -2 -772.8 0 -773.6 C 2 -772.8 6.5 -774.5 12 ${cy} C 6 -769.6 -6 -769.6 -12 ${cy} Z`, S.lip);
+    fillPath(c, `M -10 ${-770.6 - sm * 1.5} C -5.5 ${-763.5 + m} 5.5 ${-763.5 + m} 10 ${-770.6 - sm * 1.5} C 5 -769.6 -5 -769.6 -10 ${-770.6 - sm * 1.5} Z`, S.lipLo);
+    if (sm > .1) for (const s of [-1, 1]) strokePath(c, `M ${s * 12.5} ${cy - .5} q ${s * 2.5} -1 ${s * 3} -3.5`, rgba(S.skinDk, .6 * sm), 1.4);
+  }
+  // a red tilak, or Shaiva ash: the tripundra (three lines) with a red dot
+  if (o.tilak === 'tripundra') { for (let i = 0; i < 3; i++) strokePath(c, `M -30 ${-858 + i * 6.5} Q 0 ${-861 + i * 6.5} 30 ${-858 + i * 6.5}`, rgba(S.ash || '#EFE8DA', .92), 3.4); ellipse(c, 0, -850, 3.2, 3.2, S.tilak); }
+  else if (o.tilak !== false) fillPath(c, 'M 0 -864 C 3 -856 3 -848 0 -842 C -3 -848 -3 -856 0 -864 Z', S.tilak);
   // hair under the crown's band
   fillPath(c, 'M -51 -800 C -60 -846 -50 -885 0 -890 C 50 -885 60 -846 51 -800 C 51 -822 47 -846 39 -860 C 30 -870 -30 -870 -39 -860 C -47 -846 -51 -822 -51 -800 Z', S.hair);
-  suryaCrown(c, t, L);
+  if (o.crown !== false) suryaCrown(c, t, L);
+  else if (o.bun) {   // no crown: the hair drawn up into a knot on the crown (a young sage's shikha bun)
+    fillPath(c, 'M -50 -840 C -54 -870 -34 -892 0 -894 C 34 -892 54 -870 50 -840 C 40 -866 -40 -866 -50 -840 Z', S.hair);
+    ellipse(c, 0, -912, 30, 24, S.hair); ellipse(c, -6, -918, 14, 9, S.hairLt || S.hair, -.3);
+    for (let i = -1; i <= 1; i++) ellipse(c, i * 16, -896, 5, 5, S.bead || '#5E2F1B');   // rudraksha round the knot
+  }
 }
 // the kirita: a tall tiered gold crown, a jewelled band over the brow, a lotus-bud finial
 function suryaCrown(c, t, L) {

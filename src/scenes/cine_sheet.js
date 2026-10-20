@@ -10,6 +10,8 @@
 //   49–61 the Jatayu story: jatayu() perched, its head's faces, spread, fallen, its talon and a feather, black
 //         silhouette checks; sita() carried, kneeling, close; Ravana's chariot and mules, carrying Sita; the sword,
 //         lostLeft and rvBlade(); ramKneel(); hut(), forestTree(), ramSil({ namaste }), pyre()
+//   62–65 the Markandeya story (cine_yama.js): Yama on Surya's rig (standing, his head, the burning eyes, the noose
+//         in flight), his buffalo and Yama riding it, markHug() clinging to the linga, markHead(), shivaKick()
 //   23–27 Nandi (a zebu: hump, dewlap, black muzzle) and the Nandi story: the stone temple Nandi, rishi, boy, devotee, Nandanar, sets
 // Rebuild the docs images after changing a character:
 //   node render.mjs --page=cine.html --sheet=0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5 --cols=5 --w=300 --out=docs/cine_cast.jpg
@@ -206,3 +208,20 @@ panel(61, "hut()  ·  forestTree()  ·  ramSil({ namaste })  ·  pyre()", (c, t)
   forestTree(c, 300, 1560, .7, { t }); hut(c, 760, 1560, .7, { t });
   pyre(c, 300, 1800, 380, t, 1);
   figure(c, (f) => { f.translate(760, 1900); f.scale(.6, .6); ramSil(f, { t, namaste: 1 }); }, LIGHTS.fire); });
+// ---------- the Markandeya story (cine_yama.js) ----------
+//   node render.mjs --page=cine.html --sheet=62.5,63.5,64.5,65.5 --cols=4 --w=300 --out=docs/cine_cast_yama.jpg
+panel(62, 'yamaC()  ·  yamaHeadC()  ·  yamaEyeGlow()  ·  yamaRope()', (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(300, 1500); f.scale(1.1, 1.1); yamaC(f, { t, eyes: .8 }); }, { ...LIGHTS.fire, tint: ['#3A0A10', .2] });
+  figure(c, (f) => { f.translate(800, 620); f.scale(3, 3); f.translate(0, 815); yamaHeadC(f, { t, eyes: .75, mouth: .5 }); }, { ...LIGHTS.fire, tint: ['#3A0A10', .12], rim: { ...LIGHTS.fire.rim, dx: 8 } });
+  c.save(); c.translate(800, 620); c.scale(3, 3); c.translate(0, 815); yamaEyeGlow(c, .8); c.restore();
+  yamaRope(c, [[560, 1100], [800, 960], [980, 1180]], 1, { r: 80 }); });
+panel(63, 'buffaloSide()  ·  yamaRider()', (c, t) => { redSky(c); ridge(c, 1500, 40, 3, '#12040A');
+  figure(c, (f) => { f.translate(520, 1500); f.scale(1.05, 1.05); yamaRider(f, { t, walk: t * .6, eye: 1 }); }, { ...LIGHTS.fire, tint: ['#2A0A10', .25] });
+  figure(c, (f) => { f.translate(560, 900); f.scale(.6, .6); yamaRider(f, { t, walk: t * .6, eye: 1, col: '#0C060A' }); }, LIGHTS.storm); });
+panel(64, 'markHug()  ·  markHead()', (c, t) => { fireSky(c);
+  figure(c, (f) => { f.translate(560, 1560); f.scale(1.5, 1.5); markHug(f, { t, eyes: 0 }); }, LIGHTS.fire);
+  figure(c, (f) => { f.translate(860, 560); f.scale(2.2, 2.2); f.translate(0, 815); markHead(f, { t, eyes: 1, smile: 1 }); }, LIGHTS.fire);
+  figure(c, (f) => { f.translate(230, 900); f.scale(.6, .6); markHug(f, { t, col: '#120C10' }); }, LIGHTS.dawnBack); });
+panel(65, 'shivaKick()', (c, t) => { redSky(c);
+  figure(c, (f) => { f.translate(380, 1500); f.scale(1.1, 1.1); shivaKick(f, { t, k: 1 }); }, LIGHTS.storm);
+  figure(c, (f) => { f.translate(380, 800); f.scale(.4, .4); shivaKick(f, { t, k: .3 }); }, LIGHTS.storm); });
