@@ -32,7 +32,7 @@
 // eye (6.6, -7.5) · nose ring (8.9, -4.7) · horn tips (1.6, -11.6) · neck (where the asura emerges) (4.6, -8.6); the head
 // and horns are drawn 1.3× about the neck (4.4, -7.6)
 // Options: run (phase), stride 0..1, charge 0..1 (head down, horns forward, legs braced), rear 0..1 (front up),
-//          eyes ('angry' | 'wide' | 'swirl' | 'closed'), mouth ('flat' | 'open' | 'roar'), snort 0..1 (two steam puffs
+//          eyes ('angry' | 'wide' | 'swirl' | 'closed' | 'calm' (half-lidded, no glow)), mouth ('flat' | 'open' | 'roar'), snort 0..1 (two steam puffs
 //          out of the nostrils), tail (-1..1), dx, dy, sq, rot, flip, emote, boilKey, noShadow, swMul, pal
 // Helpers: buffaloHead / buffaloNeck / buffaloHorn / buffaloNose(x, y, u, o) → world [x, y].
 const MHS = {
@@ -321,7 +321,12 @@ function mahishBuffalo(x, y, u, o = {}) {
   rs('eye');
   const ek = o.eyes || 'angry', ep = HL(6.6, -7.5);
   if (ek === 'closed') inkLine(U([[ep[0] - .45, ep[1]], [ep[0], ep[1] + .25], [ep[0] + .45, ep[1]]], u), sw * 1.1, INK, 'ink', .5);
-  else {
+  else if (ek === 'calm') {   // a gentle half-lidded eye (Yama's buffalo)
+    paint(ellPts(ep[0] * u, ep[1] * u, .48 * u, .4 * u, 12), { wash: C.white, ink: INK, sw: sw * .5 });
+    paint(ellPts((ep[0] + .12) * u, (ep[1] + .05) * u, .26 * u, .3 * u, 10), { wash: C.bfEye, ink: null });
+    paint(U([[ep[0] - .55, ep[1] - .45], [ep[0] + .55, ep[1] - .45], [ep[0] + .55, ep[1] - .02], [ep[0] - .55, ep[1] - .02]], u), { wash: col, ink: null });
+    inkLine(U([[ep[0] - .5, ep[1] - .02], [ep[0], ep[1] + .06], [ep[0] + .5, ep[1] - .02]], u), sw * 1.1, INK, 'ink', .5);
+  } else {
     if (ek !== 'swirl') glow(ep[0] * u, ep[1] * u, u * 1.4, C.bfEye, .7);
     paint(ellPts(ep[0] * u, ep[1] * u, (ek === 'wide' ? .62 : .5) * u, (ek === 'wide' ? .62 : .42) * u, 12), { wash: ek === 'swirl' ? C.white : C.bfEye, ink: INK, sw: sw * .5 });
     if (ek === 'swirl') { const sp = []; for (let i = 0; i < 16; i++) { const a = i * .75 + T * 9, r = .04 + i * .028; sp.push([(ep[0] + Math.cos(a) * r) * u, (ep[1] + Math.sin(a) * r) * u]); } inkLine(sp, sw * .6, INK, 'inkfine', .5); }

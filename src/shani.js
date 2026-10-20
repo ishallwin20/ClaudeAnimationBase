@@ -23,6 +23,8 @@
 //           mouth ('smile' / 'flat' / 'frown' / 'O' / 'open' / 'sheepish' are his own, else Clawd's), squint, blush,
 //           sweat, seed, tint + tintK
 //   extras: emote + emoteK + emoteAge, boilKey, noShadow, swMul
+//   others: pal (overrides SHN for one drawing: another god on his rig, Yama in yama.js), stache ('thin' (default) |
+//           'curl' (a big handlebar) | 'none' | fn(u, sw) in head space)
 // Helpers: shaniHand(x, y, u, o, s), shaniEye(x, y, u, o, s) (s = -1 screen-left eye, 1 screen-right), shaniHead(x, y, u, o).
 const SHN = {
   skin: '#4E5A96', skinDk: '#353E70', skinLt: '#7C88C4', ink: '#1F1A2E',
@@ -62,6 +64,11 @@ function shaniHead(x, y, u, o = {}) { return shaniLocal(x, y, u, o, clamp(o.hx |
 function shaniEye(x, y, u, o = {}, s = 1) { const hx = clamp(o.hx || 0, -1, 1); return shaniLocal(x, y, u, o, hx * .5 + (hx * .8 + s * 1.25) * HS, _shnH(-20.4) + (o.bow || 0) * .5); }
 
 function shani(x, y, u, o = {}) {
+  if (o.pal) {   // another god on his rig (Yama in yama.js): swap the palette in for this one drawing
+    const keep = { ...SHN }; Object.assign(SHN, o.pal);
+    try { shani(x, y, u, { ...o, pal: null }); } finally { Object.assign(SHN, keep); }
+    return;
+  }
   const id = o.boilKey ?? 'sh' + (++CLAWD_N), rs = p => boilSeed(`shani ${id} ${p}`);
   x += (o.dx || 0) * u;
   const dy = (o.dy || 0) * u, sq = (o.sq || 0) + (o.take || 0), sw = clamp(u / 20, .4, 2) * (o.swMul || 1), J = u * .04;
@@ -190,7 +197,13 @@ function shani(x, y, u, o = {}) {
     rs('nose');
     inkLine(P([[.02, -19.9], [-.12, -19.35], [.15, -19.25]]), sw * .55, SHN.skinDk, 'inkfine', .5);
     rs('mouth');
-    for (const s of [-1, 1]) paint(ribbon(P([[s * .08, -18.95], [s * .65, -19.05], [s * 1.05, -18.8], [s * 1.12, -19.05]]), .3 * u, .07 * u), { wash: SHN.hair, ink: null });   // a thin moustache
+    const st = o.stache ?? 'thin';
+    if (st === 'thin') for (const s of [-1, 1]) paint(ribbon(P([[s * .08, -18.95], [s * .65, -19.05], [s * 1.05, -18.8], [s * 1.12, -19.05]]), .3 * u, .07 * u), { wash: SHN.hair, ink: null });   // a thin moustache
+    else if (st === 'curl') for (const s of [-1, 1]) {   // a big handlebar moustache, the tips curling up past the cheeks
+      const wv = Math.sin(T * 2.4 + s) * .05;
+      paint(ribbon(P([[s * .05, -19.0], [s * .8, -19.2], [s * 1.6, -18.95], [s * 2.25, -19.25 + wv], [s * 2.35, -19.85 + wv], [s * 2.0, -20.05 + wv]]), .62 * u, .1 * u), { wash: SHN.hair, ink: INK, sw: sw * .45, curv: .5 });
+      inkLine(P([[s * .5, -19.15], [s * 1.4, -19.1], [s * 2.05, -19.35]]), sw * .4, SHN.hairLt, 'inkfine', .5);
+    } else if (typeof st === 'function') st(u, sw);
     const m = o.mouth || 'flat', my = -18.45;
     if (m === 'smile') inkLine(P([[-.5, my], [0, my + .2], [.5, my]]), sw * .8, INK, 'ink', .6);
     else if (m === 'flat') inkLine(P([[-.42, my + .08], [.42, my + .08]]), sw * .8, INK, 'ink', 0);
