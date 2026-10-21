@@ -6,3 +6,6 @@ assets/[0-9]-*/
 assets/durga-maa-all-avatars/
 assets/vo/*/*.wav
 !assets/vo/*/*.raw.wav
+assets/matte/*_a.png
+assets/matte/plate_grey.png
+assets/matte/plate_gold.png
