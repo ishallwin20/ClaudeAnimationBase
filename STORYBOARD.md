@@ -7,8 +7,8 @@ runs from the feared forms to the loved ones. The descriptions were fact-checked
 (`tools/shani_forms_sfx.mjs`) → `assets/shani_forms_mix.wav`. Scene `src/scenes/shani_forms.js`. Ends on the 15K Family Deal card.
 
 Each painting floats over its own blurred colours, pushing in slowly on the face. A gold sheen crosses it, and a
-shadow sweeps it away (Chhaya's son: a shadow always follows). Its name sits above with "painting · @gaurav_boii" under
-it, and two captions sit below it, 3 s each.
+shadow sweeps it away (Chhaya's son: a shadow always follows). Its name sits above it, "painting · @gaurav_boii" sits right under its frame,
+and two captions sit below that, 3 s each. On the spread, "Paintings by @gaurav_boii" sits under the cards.
 
 | time | picture | captions |
 |---|---|---|

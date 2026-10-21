@@ -9,7 +9,7 @@ const TL = { HOOK: 0, ASK: 54, CARD: 60, END: 66 };
 const ORDER = ['danda', 'nyaya', 'chhaya', 'tapasvi', 'bal', 'yoddha', 'saumya', 'raj'];
 const F0 = 6, FD = 6, XF = .7;   // the first form at 6 s, one every 6 s, crossfaded over .7 s
 const fStart = i => F0 + i * FD;
-const BOX = [960, 880], BY = 990;   // a painting fitted in 960 × 880, centred at (540, 990): y 550–1430
+const BOX = [960, 760], BY = 890, ZM = .06;   // a painting fitted in 960 × 760, centred at (540, 890): y 510–1270, pushed in 6%
 LOOK.bloom = .2;
 
 // a form's shot: the painting over its own blurred colours, stars, dust; the title above
@@ -19,13 +19,16 @@ function formShot(c, key, u, t, o = {}) {
   blurBack(c, img, { a: .55 * (1 - dark * .6), drift: u / 7 });
   c.fillStyle = rgba('#05040B', .35 + .4 * dark); c.fillRect(0, 0, W, H);
   stars(c, 60, 11 + key.length, t, .5);
-  const z = o.z ?? 1 + .1 * easeIO(u / (FD + XF));
+  const z = o.z ?? 1 + ZM * easeIO(u / (FD + XF));
   painting(c, img, 540, BY, w, h, { z, f: F.f, glow: F.col, sheen: seg(o.su ?? u, .5, 2.1), dark });
   if (o.halo) {   // Dandadhikari's gold halo still burning while he is sunk in the dark (the hook)
     const [hx, hy] = o.halo, px = (F.f[0] - .5) * w, py = (F.f[1] - .5) * h;
     const sx = 540 + px + ((hx - .5) * w - px) * z, sy = BY + py + ((hy - .5) * h - py) * z;
     glow(c, sx, sy, 330, '#FFC860', .55 * dark); glow(c, sx, sy, 120, '#FFF0C0', .5 * dark);
   }
+  // the painter's credit, right under the painting's frame (it rides down with the push-in)
+  const py = (F.f[1] - .5) * h, foot = BY + py + (h / 2 - py) * z;
+  text(c, 'painting · @gaurav_boii', 540, foot + 34, '500 28px Poppins', '#FBE0CF', { alpha: .9 * (o.credit ?? 1), glow: ['rgba(0,0,0,.9)', 12] });
   motes(c, { n: 34, seed: 7 + key.length, box: [-50, 300, W + 50, 1700], r: 3, col: F.col, a: .55, vx: 8, vy: -22, t });
   // a dark band under the captions, over the painting's foot
   const g = c.createLinearGradient(0, 1300, 0, 1540); g.addColorStop(0, 'rgba(5,4,11,0)'); g.addColorStop(.5, 'rgba(5,4,11,.78)'); g.addColorStop(1, 'rgba(5,4,11,.55)');
@@ -33,14 +36,14 @@ function formShot(c, key, u, t, o = {}) {
   if (o.title !== false) {
     const tg = c.createLinearGradient(0, 400, 0, 560); tg.addColorStop(0, 'rgba(5,4,11,0)'); tg.addColorStop(.45, 'rgba(5,4,11,.7)'); tg.addColorStop(1, 'rgba(5,4,11,0)');
     c.fillStyle = tg; c.fillRect(0, 400, W, 160);
-    text(c, F.title, 520, 458, '700 66px Cinzel', '#F4C46A', { alpha: 1 - seg(o.su ?? u, FD - .6, FD - .15), pop: (o.su ?? u) - .4, glow: ['rgba(160,90,10,.9)', 26], spacing: 3, maxW: 860 });
+    text(c, F.title, 520, 452, '700 66px Cinzel', '#F4C46A', { alpha: 1 - seg(o.su ?? u, FD - .6, FD - .15), pop: (o.su ?? u) - .4, glow: ['rgba(160,90,10,.9)', 26], spacing: 3, maxW: 860 });
   }
 }
 
 // ---------- 0–12.7: the hook (Dandadhikari sunk in the dark, his halo burning) becomes the first form ----------
 const DARK0 = t => kf(t, [[0, 1], [2.7, 1], [3.7, .62], [5.5, .62], [6.4, 0]]);
 SHOTS.push({ a: 0, b: fStart(1) + XF, draw(c, u, t) {
-  formShot(c, 'danda', t, t, { dark: DARK0(t), halo: [.53, .15], title: t > F0, su: t - F0, z: 1 + .1 * easeIO(t / (F0 + FD + XF)) });
+  formShot(c, 'danda', t, t, { dark: DARK0(t), halo: [.53, .15], title: t > F0, su: t - F0, credit: seg(t, 6, 6.5), z: 1 + ZM * easeIO(t / (F0 + FD + XF)) });
 } });
 // ---------- 6–54: the other seven, one every 6 s ----------
 ORDER.slice(1).forEach((key, j) => {
@@ -77,8 +80,8 @@ function spread(c, u, t) {
 }
 SHOTS.push({ a: TL.ASK - .01, b: TL.CARD + .4, xf: XF, draw(c, u, t) {
   spread(c, u, t);
-  text(c, 'Paintings by @gaurav_boii', 520, 470, '700 44px Poppins', '#FBE0CF', { pop: u - .3, glow: ['rgba(0,0,0,.8)', 18], maxW: 860 });
-  text(c, 'ॐ शं शनैश्चराय नमः', 520, 1290, '50px "Tiro Devanagari Sanskrit"', '#FFE2A0', { alpha: ease(seg(u, 1, 2)), glow: ['rgba(255,170,60,.9)', 24], maxW: 860 });
+  text(c, 'Paintings by @gaurav_boii', 540, 1300, '700 40px Poppins', '#FBE0CF', { pop: u - .9, glow: ['rgba(0,0,0,.8)', 18], maxW: 900 });
+  text(c, 'ॐ शं शनैश्चराय नमः', 520, 470, '50px "Tiro Devanagari Sanskrit"', '#FFE2A0', { alpha: ease(seg(u, 1, 2)), glow: ['rgba(255,170,60,.9)', 24], maxW: 860 });
   const g = c.createLinearGradient(0, 1340, 0, 1520); g.addColorStop(0, 'rgba(5,4,11,0)'); g.addColorStop(.5, 'rgba(5,4,11,.75)'); g.addColorStop(1, 'rgba(5,4,11,0)');
   c.fillStyle = g; c.fillRect(0, 1340, W, 180);
 } });
@@ -86,11 +89,6 @@ SHOTS.push({ a: TL.ASK - .01, b: TL.CARD + .4, xf: XF, draw(c, u, t) {
 // ---------- 60–66: the card, held to the end ----------
 SHOTS.push({ a: TL.CARD, b: TL.END + 1, xf: .4, draw(c, u, t) { dealCardCine(c, u, t); } });
 
-// the painter's credit under each title, through the forms
-POST.push((c, t) => {
-  const a = Math.min(seg(t, 3, 3.6), 1 - seg(t, TL.ASK - .2, TL.ASK + .3));
-  if (a > 0) text(c, 'painting · @gaurav_boii', 520, 516, '500 28px Poppins', '#FBE0CF', { alpha: .85 * a, glow: ['rgba(0,0,0,.9)', 12] });
-});
 // the shadow that sweeps each painting away (Chhaya's son: a shadow follows), and a soft gold lift as the next appears
 POST.push((c, t) => {
   for (let i = 1; i <= ORDER.length; i++) {
