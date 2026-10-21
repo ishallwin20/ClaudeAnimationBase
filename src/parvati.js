@@ -18,6 +18,8 @@
 //   colour: pal = { saree, sareeDk, sareeLt, blouse, blouseDk, gold, goldDk, goldLt, hair, hairLt, sindoor, lip, bangle, skin… }
 //           overrides PRV, to draw another woman on her rig (Shani's wife, a Gandharva princess, in the Shani reels;
 //           YSD_PAL is Yashoda, Krishna's mother: a rani-pink saree, a teal blouse, an orange odhni)
+//   hooks:  behind(u, sw) (body space, drawn first: extra arms, a halo), crown(u, sw, C) (a function draws another
+//           crown in head space in place of the mukut: Lakshmi's kirita)
 //   mother: crown: false (no mukut: a woman of Gokul), veil 0..1 (an odhni over her head and shoulders, pal.veil /
 //           veilDk), eyeStars 0..1 (starlight in her eyes: what she saw in her son's mouth)
 //   extras: emote + emoteK + emoteAge, boilKey, noShadow
@@ -65,8 +67,9 @@ function parvati(x, y, u, o = {}) {
   const headScale = () => { translate(0, -17.6 * u); scale(1.18); translate(0, 17.6 * u); };   // a big chibi head, like the rest of the family
   const upper = f => { push(); translate(0, -11.8 * u); rotate(lean * .035); translate(lean * .6 * u, 11.8 * u); f(); pop(); };
 
-  // ---- behind: back hair and the braid, and the pallu falling behind her left shoulder
+  // ---- behind: the behind hook (extra arms, a halo), back hair and the braid, the pallu behind her left shoulder
   upper(() => {
+    if (o.behind) { rs('behind'); o.behind(u, sw); }
     rs('backhair');
     push(); translate(hx * .4 * u, 0); headScale();
     paint(ellPts(0, -20.1 * u, 3.25 * u, 3.1 * u, 26, J), { wash: C.hair, ink: INK, sw: sw * .8 });
@@ -145,7 +148,8 @@ function parvati(x, y, u, o = {}) {
       inkLine(P([[-2.75, -18.9], [-2.6, -20.8], [-1.7, -22.05], [0, -22.55], [1.7, -22.05], [2.6, -20.8], [2.75, -18.9]]), sw * 1.3, C.gold, 'ink', .5);
       for (const [bx, by] of [[-2.7, -20.9], [-1.4, -22.6], [0, -23.0], [1.4, -22.6], [2.7, -20.9]]) paint(ellPts(bx * u, by * u, .16 * u, .16 * u, 7), { wash: C.gold, ink: null });
     }
-    if (o.crown !== false && !o.veil) {
+    if (typeof o.crown === 'function' && !o.veil) { rs('mukut'); o.crown(u, sw, C); }   // another crown (Lakshmi's kirita)
+    else if (o.crown !== false && !o.veil) {
     rs('mukut');
     paint(P([[-1.7, -22.5], [1.7, -22.5], [1.3, -23.4], [.7, -23.3], [0, -24.2], [-.7, -23.3], [-1.3, -23.4]]), { wash: C.gold, fill: C.goldDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6, curv: .15 });
     paint(ellPts(0, -23.1 * u, .25 * u, .3 * u, 8), { wash: C.saree, ink: INK, sw: sw * .35 });
