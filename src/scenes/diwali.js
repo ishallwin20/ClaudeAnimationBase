@@ -158,9 +158,9 @@
       o.wingL = L2(o.wingL || [-3.05, -2.0], [-1.7, -10.9], k); o.wingShapeL = 'open';
       o.wingR = L2(o.wingR || [3.05, -2.0], [1.7, -10.9], k); o.wingShapeR = 'open';
     }
-    if (inW(t, OWL0 + .3, LAMPS - .2) && !pl[4]) {   // "I bring Maa LAKSHMI": a grand wing
-      const k = easeOut(seg(t, OWL0 + .3, OWL0 + .6)) * (1 - ease(seg(t, LAMPS - .5, LAMPS - .2)));
-      o.wingR = L2([3.05, -2.0], [5.0, -9.6 + .3 * Math.sin(t * 5)], k); o.wingShapeR = 'open';
+    if (inW(t, OWL0 + .3, LAMPS - .2) && !mp[4]) {   // "I bring Maa LAKSHMI": a grand wing, up on the open side (placard letters sit above all paint)
+      const k = easeOut(seg(t, OWL0 + .3, OWL0 + .6)) * (1 - ease(seg(t, LAMPS - .5, LAMPS - .2))), top = [-4.3, -11.6 + .3 * Math.sin(t * 5)];
+      o.wingL = k < .5 ? L2([-3.05, -2.0], [-2.4, -8.0], k * 2) : L2([-2.4, -8.0], top, (k - .5) * 2); o.wingShapeL = 'open';   // up close to his body first: clear of OVERTIME!
     }
     if (inW(t, BONUSQ + .4, COINS + .4)) {   // both wings up, eager
       const k = easeOut(seg(t, BONUSQ + .4, BONUSQ + .7)) * (1 - ease(seg(t, COINS + .1, COINS + .4)));
