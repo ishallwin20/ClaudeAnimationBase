@@ -1,0 +1,116 @@
+{
+  "name": "blue",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Why are so many | *HINDU GODS BLUE?*"
+      ],
+      "tts": "Why are so many Hindu gods blue?"
+    },
+    {
+      "id": "names",
+      "gap": 0.45,
+      "caps": [
+        "The answer is hiding | *IN THEIR NAMES.*"
+      ],
+      "tts": "The answer is hiding in their names."
+    },
+    {
+      "id": "krsna",
+      "gap": 0.6,
+      "caps": [
+        "Krishna literally | *MEANS DARK.*"
+      ],
+      "tts": "Krishna literally means... dark."
+    },
+    {
+      "id": "ghana",
+      "gap": 0.5,
+      "caps": [
+        "That's why he's | also called *GHANSHYAM:*",
+        "dark as a | *RAIN CLOUD.*"
+      ],
+      "tts": "That's why he's also called Ghanshyaam: dark as a rain cloud."
+    },
+    {
+      "id": "ram",
+      "gap": 0.7,
+      "caps": [
+        "Tulsidas sings | of *SHRI RAM*",
+        "as dark as a | *BLUE LOTUS.*"
+      ],
+      "tts": "Tulsidas sings of Shri Ram as dark as a blue lotus."
+    },
+    {
+      "id": "vish",
+      "gap": 0.7,
+      "caps": [
+        "And the Vishnu shloka | you hear at home?",
+        "*MEGHA VARNAM:* | the colour of a cloud."
+      ],
+      "tts": "And the Vishnu shloka you hear at home? Megha varnam: the colour of a cloud."
+    },
+    {
+      "id": "paint",
+      "gap": 0.6,
+      "caps": [
+        "Dark as a | monsoon sky.",
+        "So in paintings, | that dark became *BLUE.*"
+      ],
+      "tts": "Dark as a monsoon sky. So in paintings, that dark became blue."
+    },
+    {
+      "id": "twist",
+      "gap": 0.8,
+      "caps": [
+        "But here's | the twist.",
+        "Shiva is not | *BLUE AT ALL.*"
+      ],
+      "tts": "But here's the twist. Shiva isn't blue at all."
+    },
+    {
+      "id": "karp",
+      "gap": 0.6,
+      "caps": [
+        "*KARPUR GAURAM:* | white as camphor.",
+        "You sing it | after every aarti."
+      ],
+      "tts": "Karpoor Gauram: white as camphor. You sing it after every aarti."
+    },
+    {
+      "id": "throat",
+      "gap": 0.6,
+      "caps": [
+        "Only his | *THROAT* is blue,",
+        "from the poison | he held there",
+        "to save | the world."
+      ],
+      "tts": "Only his throat is blue, from the poison he held there, to save the world."
+    },
+    {
+      "id": "kid",
+      "gap": 0.8,
+      "caps": [
+        "Your child will ask you | this one day.",
+        "*NOW YOU KNOW.*"
+      ],
+      "tts": "Your child will ask you this one day. Now you know."
+    },
+    {
+      "id": "ask",
+      "gap": 0.7,
+      "caps": [
+        "Did you know | *SHIVA WAS WHITE?*",
+        "Comment | *YES OR NO!*"
+      ],
+      "tts": "Did you know Shiva was white? Comment yes, or no!"
+    }
+  ]
+}
