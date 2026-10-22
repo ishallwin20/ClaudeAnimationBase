@@ -25,13 +25,15 @@
 //   hair:   moonWob (radians), ganga 0..2 (the fountain; 1 = its idle trickle, 2 = a spurt)
 //   Vasuki: snakeUp 0..1 (rises off the shoulder), snakeEyes 'closed' | 'open' | 'angry' | 'happy', snakeTongue 0..1,
 //           snakeLook -1..1 (+ = toward screen right)
+//   skin:   col / dk / lt recolour all of him (SHV_WHITE: Karpura Gauram, white as camphor); throat 0..1 paints the
+//           blue throat, Neelkantha (Bhagavata 8.7.43)
 //   dress:  ash 0..1 (pale ash smeared on his chest, arms and jata), groom 0..1 (from .5: the jewelled groom, Chandrashekhara:
 //           a gold crown round the bun, a jewelled collar, a marigold-and-rose garland, gold armlets, a yellow silk shawl)
 //   lap:    noLap (no crossed legs and tiger-skin lap: shivaLie() draws its own legs)
 //   draw:   only = 'body' (everything but the arms) | 'arms' (just the arms): draw something between his body and his
 //           arms (a hug) by calling him twice with the same boilKey. emote + emoteK + emoteAge, boilKey, noShadow
 const SHV = {
-  skin: '#86AEDD', skinDk: '#5B84BC', skinLt: '#BCD6F2', ink: '#243052',
+  skin: '#86AEDD', skinDk: '#5B84BC', skinLt: '#BCD6F2', throat: '#3E68B8', throatDk: '#28488C', ink: '#243052',
   hair: '#3B2F52', hairDk: '#231B36', hairLt: '#5C4C79',
   tiger: '#EAA24A', tigerDk: '#C4762B', stripe: '#5A3320', ash: '#F7F0E4',
   moon: '#FFF0C0', moonDk: '#E6C874', ganga: '#A6DBF5', gangaDk: '#5FA6D6',
@@ -41,6 +43,7 @@ const SHV = {
   snake: '#6DB08F', snakeDk: '#437E66', snakeLt: '#C3E6CA', tongue: '#D2452F', sole: '#EB9CAB',
 };
 const SHV_SKIN = { col: SHV.skin, dk: SHV.skinDk, lt: SHV.skinLt };
+const SHV_WHITE = { col: '#F4F1EA', dk: '#CFCBD6', lt: '#FCFBF7' };   // karpura-gauram: white as camphor
 
 // Shoulder, elbow and hand of one arm (s = -1 his left, on screen left; 1 his right), in body-local u.
 function shivaArm(o, s) {
@@ -116,7 +119,12 @@ function shiva(x, y, u, o = {}) {
     paint(ellPts(-1.3 * u, -7.4 * u, 2 * u, 1.4 * u, 16, J * 2, -.3), { fill: lt, fillOp: 120, bleed: .2, tex: .8, border: .8, ink: null });
     paint(ellPts(.4 * u, -3.9 * u, 3.2 * u, 1 * u, 16, J), { fill: dk, fillOp: 80, bleed: .08, tex: .6, border: .5, ink: null });
     paint(torso, { ink: INK, sw, curv: .4 });
-    for (const s of [-1, 1]) inkLine(P([[s * .4, -7.2], [s * 1.6, -6.7], [s * 2.7, -7.1]]), sw * .45, SHV.skinDk, 'inkfine', .5);   // chest
+    for (const s of [-1, 1]) inkLine(P([[s * .4, -7.2], [s * 1.6, -6.7], [s * 2.7, -7.1]]), sw * .45, dk, 'inkfine', .5);   // chest
+    const thr = clamp(o.throat || 0);
+    if (thr > .01) {   // Neelkantha: the poison held in his throat (Bhagavata 8.7.43), a blue band under the chin
+      rs('throat');
+      paint(ellPts(0, -9.25 * u, 1.8 * u, .62 * u, 16, J), { wash: mixCol(col, SHV.throat, thr), fill: mixCol(dk, SHV.throatDk, thr), fillOp: 70, tex: .5, ink: null });
+    }
     inkLine(P([[-.22, -4.6], [0, -4.35], [.22, -4.6]]), sw * .55, INK, 'inkfine', .6);   // navel
     if (ash > .02) {   // smeared ash: broad pale strokes and a dusting
       rs('ash');
@@ -146,7 +154,7 @@ function shiva(x, y, u, o = {}) {
     rs('feet');
     for (const s of [-1, 1]) {
       paint(ellPts(s * 2.5 * u, -3.05 * u, 1.55 * u, .66 * u, 16, J, s * -.2), { wash: col, fill: dk, fillOp: 50, tex: .5, ink: INK, sw: sw * .8 });
-      paint(ellPts(s * 2.35 * u, -3.02 * u, 1 * u, .36 * u, 12, 0, s * -.2), { wash: mixCol(SHV.sole, col, .25), ink: null });
+      paint(ellPts(s * 2.35 * u, -3.02 * u, 1 * u, .36 * u, 12, 0, s * -.2), { wash: o.col ? mixCol(lt, col, .3) : mixCol(SHV.sole, col, .25), ink: null });
       for (const k of [0, 1, 2]) inkLine(P([[s * (3.55 + k * .02), -3.35 + k * .3], [s * (3.95 + k * .02), -3.4 + k * .3]]), sw * .4, INK, 'inkfine', 0);   // toes
     }
     }
@@ -283,7 +291,7 @@ function shivaFace3(u, o, sw, rs, INK) {
   const h3 = 1.55 * u * (1 + .15 * k3);
   if (k3 < .04) {
     if (g > .02) paint(lens(.14 * u * (1 + g), h3 * .9), { wash: ember, washOp: 255, ink: null });   // the red crack
-    paint(lens(.2 * u, h3), { wash: mixCol(SHV.skin, SHV.skinDk, .4), washOp: 120, ink: INK, sw: sw * .7 });
+    paint(lens(.2 * u, h3), { wash: mixCol(o.col || SHV.skin, o.dk || SHV.skinDk, .4), washOp: 120, ink: INK, sw: sw * .7 });
     inkLine([[0, -h3 / 2], [0, h3 / 2]], sw * .9, INK, 'ink', 0);
     for (const s of [-1, 1]) for (const k of [-.25, .05, .35]) inkLine([[s * .08 * u, k * h3], [s * .38 * u, k * h3 + .12 * u]], sw * .45, INK, 'inkfine', 0);
   } else {
@@ -335,7 +343,7 @@ function shivaFace3(u, o, sw, rs, INK) {
   const sn = clamp(o.sniff || 0);
   push(); translate(.05 * u, (-11.55 - .25 * sn) * u); scale(1 + .25 * sn);
   inkLine(P([[.02, -.65], [-.12, -.1], [.08, .15], [.35, .05]]), sw * .75, INK, 'inkfine', .5);
-  if (sn > .05) for (const s of [-1, 1]) paint(ellPts(s * .22 * u, .12 * u, .1 * u * (1 + sn), .07 * u, 8), { wash: SHV.skinDk, ink: null });
+  if (sn > .05) for (const s of [-1, 1]) paint(ellPts(s * .22 * u, .12 * u, .1 * u * (1 + sn), .07 * u, 8), { wash: o.dk || SHV.skinDk, ink: null });
   pop();
   rs('mouth');
   push(); translate(0, -10.35 * u); scale(.48); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .48 * .8); pop();
