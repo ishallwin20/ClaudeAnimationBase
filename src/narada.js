@@ -25,7 +25,9 @@
 //           Clawd's: heart, swirl, …), lookX / lookY, brow (-1 stern .. 1 raised), mouth ('smile' / 'grin' / 'smug' /
 //           'flat' / 'frown' / 'O' / 'open' / 'scream' / 'sheepish' are his own, else Clawd's), squint, blush, sweat,
 //           seed, tint + tintK; monkey 0..1 (> .5: the monkey face, same eyes and mouths)
-//   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), topknot (false: none, for a crown in
+//   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), behind(u, sw) (body space, drawn
+//           first: Hanuman's tail in hanuman.js, Ram's bow), chest(u, sw) (body space, over the torso
+//           and under the mala: a sacred thread), shawl (false: no uttariya), topknot (false: none, for a crown in
 //           hat: Krishna in krishna.js), emote + emoteK + emoteAge, boilKey,
 //           noShadow, swMul
 //   others: pal (overrides NRD: skin, dhoti, border, shawl, hair, …) + beard (a colour: a full sage's beard and moustache)
@@ -120,6 +122,7 @@ function narada(x, y, u, o = {}) {
   translate(x, y + dy);
   if (o.rot) rotate(o.rot);
   scale((o.flip ? -1 : 1) * (1 + sq * .6), 1 - sq);
+  if (o.behind) { rs('behind'); o.behind(u, sw); }   // body space, under everything: a tail, a bow on the back
   const upper = f => { push(); if (sit) translate(0, NRD_SIT * u); translate(0, -12 * u); rotate(lean * .035); translate(lean * .6 * u, 12 * u); f(); pop(); };
   const headT = () => { translate(hx * .5 * u, (bw * .5 - pf * .3) * u); translate(0, -18 * u); if (o.htilt) rotate(o.htilt); rotate(-pf * .06); scale(NRD_HS); translate(0, 18 * u); };
 
@@ -160,9 +163,12 @@ function narada(x, y, u, o = {}) {
     paint(chest, { ink: INK, sw: sw * .9, curv: .35 });
     inkLine(P([[-.35, -13], [0, -12.8], [.35, -13]]), sw * .45, INK, 'inkfine', .5);
     paint(rrPts(-2.95 * u, -12.7 * u, 5.9 * u, .75 * u, .3 * u, J), { wash: NRD.border, fill: '#7A2028', fillOp: 50, tex: .5, ink: INK, sw: sw * .7 });   // the waist knot
-    rs('shawl');   // the uttariya: over the left shoulder, across to the right hip, its end hanging
-    paint(ribbon(P([[-3.1, -17], [-1.4, -15.4], [.8, -13.7], [2.9, -12.4], [3.4, -10.6]]), 1.3 * u, 1 * u), { wash: NRD.shawl, fill: NRD.shawlDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .65 });
-    inkLine(P([[-2.6, -16.1], [-.6, -14.3], [1.6, -12.7]]), sw * .45, NRD.shawlDk, 'inkfine', .5);
+    if (o.shawl !== false) {
+      rs('shawl');   // the uttariya: over the left shoulder, across to the right hip, its end hanging
+      paint(ribbon(P([[-3.1, -17], [-1.4, -15.4], [.8, -13.7], [2.9, -12.4], [3.4, -10.6]]), 1.3 * u, 1 * u), { wash: NRD.shawl, fill: NRD.shawlDk, fillOp: 60, tex: .5, ink: INK, sw: sw * .65 });
+      inkLine(P([[-2.6, -16.1], [-.6, -14.3], [1.6, -12.7]]), sw * .45, NRD.shawlDk, 'inkfine', .5);
+    }
+    if (o.chest) { rs('chest'); o.chest(u, sw); }
     rs('neck');
     paint(P([[-.85, -18.4], [.85, -18.4], [.9, -16.8], [-.9, -16.8]]), { wash: col, fill: dk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6 });
     rs('mala');   // a long tulsi-and-rudraksha mala
