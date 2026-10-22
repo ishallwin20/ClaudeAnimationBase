@@ -1,0 +1,102 @@
+{
+  "name": "prad",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Why do Hindus | walk around a temple | *CLOCKWISE?*"
+      ],
+      "tts": "Why do Hindus walk around a temple clockwise?"
+    },
+    {
+      "id": "name",
+      "gap": 0.5,
+      "caps": [
+        "It's called *PRADAKSHINA.* | *DAKSHINA* means right."
+      ],
+      "tts": "It's called pradakshina. Dakshina means right."
+    },
+    {
+      "id": "right",
+      "gap": 0.5,
+      "caps": [
+        "You keep God | on your *RIGHT SIDE,* | all the way round."
+      ],
+      "tts": "You keep God on your right side, all the way round.",
+      "hold": 0.9
+    },
+    {
+      "id": "sun",
+      "gap": 0.6,
+      "caps": [
+        "East, then *SOUTH,* | then West:",
+        "the path the *SUN* | takes every day."
+      ],
+      "tts": "East, then south, then west: the path the sun takes every day."
+    },
+    {
+      "id": "twist",
+      "gap": 0.8,
+      "caps": [
+        "But in a *SHIVA* temple, | you *NEVER* | finish the circle."
+      ],
+      "tts": "But in a Shiva temple, you never finish the circle."
+    },
+    {
+      "id": "water",
+      "gap": 0.6,
+      "caps": [
+        "The water poured | on the *SHIVA LINGA*",
+        "flows out through | a channel to the north: | the *SOMASUTRA.*"
+      ],
+      "tts": "The water poured on the Shiva linga flows out through a channel to the north: the Soma sootra."
+    },
+    {
+      "id": "tirtha",
+      "gap": 0.6,
+      "caps": [
+        "That water is | *TIRTHA,* holy. | You never | *STEP OVER IT.*"
+      ],
+      "tts": "That water is teertha, holy. You never step over it."
+    },
+    {
+      "id": "back",
+      "gap": 0.5,
+      "caps": [
+        "You walk round | until you reach it, | then *TURN BACK* | and go the other way."
+      ],
+      "tts": "You walk round until you reach it, then turn back, and go the other way."
+    },
+    {
+      "id": "text",
+      "gap": 0.6,
+      "caps": [
+        "The *SHIVA RAHASYA* | says it plainly: | do not cross | the *SOMASUTRA.*"
+      ],
+      "tts": "The Shiva Rahasya says it plainly: do not cross the Soma sootra."
+    },
+    {
+      "id": "kid",
+      "gap": 0.8,
+      "caps": [
+        "Next temple visit, | *SHOW YOUR CHILD.*"
+      ],
+      "tts": "Next temple visit, show your child."
+    },
+    {
+      "id": "ask",
+      "gap": 0.6,
+      "caps": [
+        "Did you know | this *SHIVA* rule? | Comment | *YES OR NO!*"
+      ],
+      "tts": "Did you know this Shiva rule? Comment yes, or no!",
+      "hold": 1.0
+    }
+  ]
+}
