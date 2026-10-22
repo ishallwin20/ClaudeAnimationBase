@@ -1,7 +1,9 @@
 # Working in this repo
 
 Every reel is made in a named style ([STYLES.md](STYLES.md)): **Painted** ([ANIMATION_GUIDE.md](ANIMATION_GUIDE.md), the
-hand-painted p5.brush cartoon) or **Cinematic** ([CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md), the film-lit motion comic). The owner
+hand-painted p5.brush cartoon), **Cinematic** ([CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md), the film-lit motion comic) or **3D**
+([3D_GUIDE.md](3D_GUIDE.md), a three.js world under the Cinematic layer: `src/cine3d.js`, `cine3d.html`, the shrine set in
+`src/cine3d_temple.js`; trial reel `ad/31-books123-pradakshina`). The owner
 names the style; read that style's guide before drawing anything. This file adds what the guides don't say: how this
 project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishikatha), and what the owner has learned works.
 
