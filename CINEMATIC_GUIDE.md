@@ -228,10 +228,13 @@ for(let s=0;s*sr<n;s+=2){let q=0;for(let i=s*sr;i<Math.min(n,(s+2)*sr);i++){cons
 
 ## Voice (Sarvam TTS), when the owner asks for one
 
-First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`.
-- **Audition first.** `node tools/sarvam_tts.mjs --audition="<the hook line>" --speakers=a,b,c [--pace=] [--fx=devi|asura]`
+First used on `reel/bhramari-bees`. `SARVAM_API_KEY` is in `.env`. The same rules apply to a voiced Painted reel.
+- **The narrator is always `girish_en_devotional`** (en-IN, pace 1.2), in either style (owner, Oct 2026: the channel
+  keeps one voice; no point auditioning every time). Don't audition or ask for the narration voice.
+- **Audition only a new character voice** (a goddess, a demon) or a Hindi voiceover. `node tools/sarvam_tts.mjs --audition="<the line>" --speakers=a,b,c [--pace=] [--fx=devi|asura]`
   writes `out/vo_audition/<n>-<speaker>.wav`; concatenate them into one file with a second's gap so the owner can play
-  them straight through, and let the owner pick. A speaker with an underscore is a `bulbul:v4-flash` persona
+  them straight through, and let the owner pick. Picked so far: the Devi `aditi_en_stories` (`--fx=devi`), a demon
+  `rustom_en_suspense` (`--fx=asura`). A speaker with an underscore is a `bulbul:v4-flash` persona
   (`girish_en_devotional`, `rustom_en_suspense`, `aditi_en_stories`, …); a bare name is `bulbul:v3`. An invalid
   speaker's error lists every valid one.
 - **The script** is `tools/<name>_vo.json`: `{ name, defaults: { speaker, lang, pace }, lines: [{ id, t | gap, caps: [chunks], speaker, pace, fx, y, size, hold }] }`.
