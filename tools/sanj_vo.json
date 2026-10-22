@@ -1,0 +1,111 @@
+{
+  "name": "sanj",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Why did Hanuman bring | the *WHOLE MOUNTAIN?*"
+      ],
+      "tts": "Why did Hanuman bring the whole mountain?"
+    },
+    {
+      "id": "spear",
+      "gap": 0.5,
+      "caps": [
+        "In Valmiki's Ramayana, | *RAVANA* hurls a spear",
+        "made by Maya, | ringing with *EIGHT BELLS.*"
+      ],
+      "tts": "In Valmiki's Ramayana, Ravana hurls a spear made by Maya, ringing with eight bells."
+    },
+    {
+      "id": "fall",
+      "gap": 0.5,
+      "caps": [
+        "It strikes *LAKSHMAN* | in the chest. | He falls."
+      ],
+      "tts": "It strikes Lakshman in the chest. He falls.",
+      "hold": 1.0
+    },
+    {
+      "id": "ram",
+      "gap": 0.9,
+      "caps": [
+        "Ram pulls it out | and breaks it, | then weeps: | *WHAT WILL I TELL MOTHER SUMITRA?*"
+      ],
+      "tts": "Ram pulls it out and breaks it, then weeps: What will I tell mother Sumitra?"
+    },
+    {
+      "id": "sush",
+      "gap": 0.7,
+      "caps": [
+        "The vaidya *SUSHENA* looks closer: | his face hasn't darkened. | *HE'S ALIVE!*"
+      ],
+      "tts": "The vaidya Sushena looks closer: his face hasn't darkened. He's alive!"
+    },
+    {
+      "id": "herbs",
+      "gap": 0.5,
+      "caps": [
+        "Bring four herbs | from *MOUNT MAHODAYA.* | *GO, HANUMAN!*"
+      ],
+      "tts": "Bring four herbs from Mount Mahodaya. Go, Hanuman!"
+    },
+    {
+      "id": "same",
+      "gap": 0.7,
+      "caps": [
+        "But up there, | Hanuman can't tell | *ONE HERB FROM ANOTHER.*"
+      ],
+      "tts": "But up there, Hanuman can't tell one herb from another."
+    },
+    {
+      "id": "lift",
+      "gap": 0.5,
+      "caps": [
+        "So he shakes the peak | *THREE TIMES,* | and brings | *THE WHOLE THING!*"
+      ],
+      "tts": "So he shakes the peak three times, and brings the whole thing!"
+    },
+    {
+      "id": "wake",
+      "gap": 0.6,
+      "caps": [
+        "Sushena crushes the herbs. | Lakshman breathes them in, | *AND RISES!*"
+      ],
+      "tts": "Sushena crushes the herbs. Lakshman breathes them in, and rises!"
+    },
+    {
+      "id": "twist",
+      "gap": 0.8,
+      "caps": [
+        "And most people don't know: | this was his | *SECOND MOUNTAIN.*"
+      ],
+      "tts": "And most people don't know: this was his second mountain."
+    },
+    {
+      "id": "hid",
+      "gap": 0.6,
+      "caps": [
+        "The first time, | the herbs *HID* from him.",
+        "So he took that mountain too, | and later | *CARRIED IT BACK!*"
+      ],
+      "tts": "The first time, the herbs hid from him. So he took that mountain too, and later carried it back!"
+    },
+    {
+      "id": "ask",
+      "gap": 0.7,
+      "caps": [
+        "Did you know | Hanuman did it *TWICE?*",
+        "Comment | *YES OR NO!*"
+      ],
+      "tts": "Did you know Hanuman did it twice? Comment yes, or no!",
+      "hold": 1.0
+    }
+  ]
+}
