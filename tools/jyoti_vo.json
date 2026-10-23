@@ -1,0 +1,140 @@
+{
+  "name": "jyoti",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "*SHIVA* appeared as *LIGHT* | in *12 PLACES* in India."
+      ],
+      "tts": "Shiva appeared as light in twelve places in India."
+    },
+    {
+      "id": "you",
+      "gap": 0.5,
+      "caps": [
+        "How many have | *YOU* been to?"
+      ],
+      "tts": "How many have you been to?",
+      "hold": 0.3
+    },
+    {
+      "id": "argue",
+      "gap": 0.8,
+      "caps": [
+        "*BRAHMA* and *VISHNU* | once argued: | who is greater?"
+      ],
+      "tts": "Brahma and Vishnu once argued: who is greater?"
+    },
+    {
+      "id": "pillar",
+      "gap": 0.5,
+      "caps": [
+        "Between them rose | a pillar of *FIRE* | with no end."
+      ],
+      "tts": "Between them rose a pillar of fire, with no end.",
+      "hold": 0.3
+    },
+    {
+      "id": "search",
+      "gap": 0.6,
+      "caps": [
+        "Brahma flew *UP* | as a swan. | Vishnu dug *DOWN* | as a wild boar.",
+        "But neither | found its end."
+      ],
+      "tts": "Brahma flew up, as a swan. Vishnu dug down, as a wild boar. But neither found its end."
+    },
+    {
+      "id": "shiva",
+      "gap": 0.7,
+      "caps": [
+        "The pillar was *SHIVA:* | a linga of light, | a *JYOTIRLINGA.*"
+      ],
+      "tts": "The pillar was Shiva: a linga of light, a Jyotirlinga.",
+      "hold": 0.4
+    },
+    {
+      "id": "purana",
+      "gap": 0.7,
+      "caps": [
+        "The *SHIVA PURANA* | names twelve places | where he shines:"
+      ],
+      "tts": "The Shiva Purana names twelve places where he shines."
+    },
+    {
+      "id": "n1",
+      "gap": 0.5,
+      "caps": [
+        "*SOMNATH,* | *MALLIKARJUNA,* | *MAHAKAL,*"
+      ],
+      "tts": "Somnath. Mallikarjuna. Mahaakaal."
+    },
+    {
+      "id": "n2",
+      "gap": 0.35,
+      "caps": [
+        "*OMKARESHWAR,* | *KEDARNATH,* | *BHIMASHANKAR,*"
+      ],
+      "tts": "Omkareshwar. Kedarnath. Bheemashankar."
+    },
+    {
+      "id": "n3",
+      "gap": 0.35,
+      "caps": [
+        "*KASHI VISHWANATH,* | *TRIMBAKESHWAR,* | *VAIDYANATH,*"
+      ],
+      "tts": "Kaashi Vishwanath. Trimbakeshwar. Vaidyanath."
+    },
+    {
+      "id": "n4",
+      "gap": 0.35,
+      "caps": [
+        "*NAGESHWAR,* | *RAMESWARAM,* | *GRISHNESHWAR.*"
+      ],
+      "tts": "Nageshwar. Rameshwaram. Grishneshwar.",
+      "hold": 0.3
+    },
+    {
+      "id": "kedar",
+      "gap": 0.7,
+      "caps": [
+        "From *KEDARNATH,* | 3,583 metres up | in the Himalaya,"
+      ],
+      "tts": "From Kedarnath, three thousand five hundred and eighty-three metres up in the Himalaya,"
+    },
+    {
+      "id": "rames",
+      "gap": 0.3,
+      "caps": [
+        "to *RAMESWARAM* | by the sea, where *RAM* | worshipped Shiva | before the war."
+      ],
+      "tts": "to Rameshwaram by the sea, where Raam worshipped Shiva before the war.",
+      "hold": 0.3
+    },
+    {
+      "id": "debate",
+      "gap": 0.7,
+      "caps": [
+        "Two of them are | still argued over. | *VAIDYANATH:* | Deoghar vs Parli.",
+        "*NAGESHWAR:* Dwarka, | Aundha and Jageshwar | all claim it."
+      ],
+      "tts": "Two of them are still argued over. Vaidyanath: Deoghar, versus Parli. Nageshwar: Dwarka, Aundha and Jageshwar all claim it.",
+      "hold": 0.4
+    },
+    {
+      "id": "ask",
+      "gap": 0.8,
+      "caps": [
+        "Which *JYOTIRLINGA* | is closest to | *YOUR* city?",
+        "Comment it!"
+      ],
+      "tts": "Which Jyotirlinga is closest to your city? Comment it!",
+      "hold": 1.2
+    }
+  ]
+}
