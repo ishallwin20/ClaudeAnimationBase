@@ -62,10 +62,10 @@ function dash(c, a, b, col, k = 1, w = 4) {
 
 // ---------- the four rivers (x, z on the Kailash set; Tibet's four 'mouths': lion north, elephant west, peacock south, horse east) ----------
 const RIVERS = [
-  { name: 'INDUS', pts: [[14, -46], [8, -80], [-20, -130], [-60, -190], [-120, -260]], label: [-12, 0, -92], at: 'INDUS' },
-  { name: 'SUTLEJ', pts: [[-60, 112], [-90, 104], [-140, 86], [-200, 74], [-280, 62]], label: [-62, 0, 86], at: 'SUTLEJ' },
-  { name: 'BRAHMAPUTRA', pts: [[64, 150], [100, 160], [150, 150], [210, 130], [300, 136]], label: [58, 0, 178], at: 'BRAHMA' },
-  { name: 'KARNALI', pts: [[-8, 152], [-18, 190], [-12, 240], [6, 300], [20, 380]], label: [-34, 0, 200], at: 'KARNALI' },
+  { name: 'INDUS', pts: [[12, -44], [10, -70], [-6, -100], [-40, -140], [-100, -200], [-160, -250]], label: [-38, 0, -34], at: 'INDUS' },
+  { name: 'SUTLEJ', pts: [[-58, 112], [-78, 102], [-102, 94], [-140, 86], [-200, 80]], label: [-80, 0, 70], at: 'SUTLEJ' },
+  { name: 'BRAHMAPUTRA', pts: [[60, 148], [82, 156], [104, 150], [140, 140], [200, 136]], label: [70, 0, 174], at: 'BRAHMA' },
+  { name: 'KARNALI', pts: [[-6, 150], [-14, 182], [-26, 220], [-38, 270], [-48, 330]], label: [-64, 0, 172], at: 'KARNALI' },
 ];
 
 // ---------- the 15K Family Deal card (as ad 31) ----------

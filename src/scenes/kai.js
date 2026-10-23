@@ -22,8 +22,8 @@ const FLAGS = (() => {
   return flagFan(KS, top, [at(1.0, .2), at(1.5, .05), at(2.2, .2), at(2.8, .6), at(2.4, 1.8), at(1.4, 1.9)], .03);
 })();
 const HEAD = glow3(KS, [0, 0, 0], 9, '#FFE2A0', 1);
-const RIV = RIVERS.map(r => K3.river(r.pts, { r: 1.6 }));
-const reset = () => { RIB.set(0); RIBW.set(0); HEAD.visible = false; RIV.forEach(r => r.set(0, 0)); FLAGS.visible = false; CAM3.near = .05; };
+const RIV = RIVERS.map(r => K3.river(r.pts, { r: 2.2 }));
+const reset = () => { RIB.set(0); RIBW.set(0); HEAD.visible = false; RIV.forEach(r => r.set(0, 0)); FLAGS.visible = false; CAM3.near = .5; };
 
 // shake: a camera offset that dies away after t0
 const shake = (t, t0, amp) => { const u = t - t0; if (u < 0) return [0, 0, 0]; const a = amp * Math.exp(-u * 1.6); return [a * vnoise(t * 19, 1), a * vnoise(t * 23, 2) * .6, a * vnoise(t * 17, 3)]; };
@@ -34,7 +34,7 @@ function droneAt(s, o = {}) {
   const lx = q.dx * Math.cos(tn) + rx * Math.sin(tn), lz = q.dz * Math.cos(tn) + rz * Math.sin(tn), y = q.y + h;
   return cam3({ pos: [q.x - q.dx * (o.back ?? 0), y, q.z - q.dz * (o.back ?? 0)], at: [q.x + lx * 10, y + (o.look ?? .6), q.z + lz * 10], fov: o.fov ?? 60 });
 }
-const mapCam = (y, cz = 60, cx = 0) => cam3({ pos: [cx, y, cz + .001], at: [cx, 0, cz], up: [0, 0, -1], fov: 50 });
+const mapCam = (y, cz = 60, cx = 0) => (CAM3.near = y * .3, cam3({ pos: [cx, y, cz + .001], at: [cx, 0, cz], up: [0, 0, -1], fov: 50 }));
 
 // ================= A · the hook: Kailash's south face in the morning =================
 SHOTS.push({ a: 0, b: TL.B0 + .4, draw(c, u, t) {
@@ -83,9 +83,9 @@ SHOTS.push({ a: TL.E0, b: TL.F0 + .4, xf: .3, draw(c, u, t) {
 SHOTS.push({ a: TL.F0, b: TL.G0 + .4, xf: .4, draw(c, u, t) {
   reset(); const ex = K3.mood('map', { shadow: 280, at: [0, 0, 60] }); K3.set(t, { clouds: 0, plume: 0 });
   RIVERS.forEach((r, i) => RIV[i].set(t, easeOut(seg(t, TL[r.at] - .25, TL[r.at] + 1.4))));
-  render3(c, KS, mapCam(lerp(330, 300, easeIO(u / 6.5)), 55), { exposure: ex });
-  pin(c, 'KAILASH', [0, 22, 0], t, TL.F0 + .2, { size: 40, dy: -50, col: '#FFF3DC' });
-  pin(c, 'Manasarovar', [32, 0, 122], t, TL.F0 + .4, { font: 'italic 34px Marcellus', col: '#D8F0FF', spacing: 0 });
+  render3(c, KS, mapCam(lerp(450, 420, easeIO(u / 6.5)), 70), { exposure: ex });
+  pin(c, 'KAILASH', [0, 22, 0], t, TL.F0 + .2, { size: 40, dy: 70, col: '#FFF3DC' });
+  pin(c, 'Manasarovar', [34, 0, 92], t, TL.F0 + .4, { font: 'italic 34px Marcellus', col: '#D8F0FF', spacing: 0 });
   RIVERS.forEach(r => pin(c, r.name, r.label, t, TL[r.at] + .1, { size: 46, col: '#BFEFFF', maxW: 440 }));
 } });
 
@@ -121,6 +121,7 @@ SHOTS.push({ a: TL.J0, b: TL.K0 + .4, xf: .4, draw(c, u, t) {
   reset(); const ex = K3.mood('morning', { shadow: 120 }); K3.set(t, { clouds: .3 * (1 - seg(t, TL.WALK - 1, TL.WALK)), plume: .6 });
   const k = easeIO(seg(t, TL.J0, TL.WALK + .4)), on = easeIO(seg(t, TL.WALK - .1, TL.K0 + .3));
   RIB.set(on, 1); const q = K3.kora(on); HEAD.visible = on > 0 && on < 1; HEAD.position.set(q.x, q.y + 1, q.z);
+  CAM3.near = lerp(2, 40, k);
   render3(c, KS, cam3({ pos: [0, lerp(30, 175, k), lerp(105, 48, k)], at: [0, lerp(10, 0, k), lerp(0, 4, k)], fov: 50 }), { exposure: ex });
 } });
 

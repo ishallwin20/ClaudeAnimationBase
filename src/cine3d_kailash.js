@@ -94,8 +94,11 @@ function kailashH(x, z) {
   h = lerp(h, K.y + .015 * dv * dv + .25 * kFbm(x * .3, z * .3, 3), Math.exp(-dv * dv / (w * w)));
   h = smax(peak, h, 2.2);
   // the lakes
-  for (const L of KAI_LAKES) { const q = Math.hypot((x - L.x) / L.rx, (z - L.z) / L.rz) + .1 * kFbm(x * .05 + L.x, z * .05); h = lerp(h, Math.min(h, KAI.lake - 1.5 * (1 - q)), 1 - seg(q, .92, 1.2)); }
-  return h;
+  // the lakes: their beds dip well under the water at once (no thin film to flicker); everywhere else the ground stays
+  // clear of the water's level
+  let wet = 0;
+  for (const L of KAI_LAKES) { const q = Math.hypot((x - L.x) / L.rx, (z - L.z) / L.rz) + .1 * kFbm(x * .05 + L.x, z * .05), k = 1 - seg(q, .92, 1.08); wet = Math.max(wet, k); h = lerp(h, Math.min(h, KAI.lake - .6 - 1.5 * clamp(1 - q)), k); }
+  return wet > 0 ? h : Math.max(h, KAI.lake + .35);
 }
 const KAI_LAKES = [{ name: 'Manasarovar', x: 32, z: 122, rx: 34, rz: 30 }, { name: 'Rakshastal', x: -40, z: 118, rx: 22, rz: 32 }];
 
@@ -211,7 +214,9 @@ function kailash3(o = {}) {
   // the lakes: one water plane, a turquoise that deepens
   const envRT = new THREE.PMREMGenerator(GL3);
   const water = new THREE.MeshStandardMaterial({ color: '#1E5E86', roughness: .12, metalness: .35 });
-  const lake = mesh3(scene, new THREE.PlaneGeometry(400, 160), water, [0, KAI.lake, 120], { rot: [-Math.PI / 2, 0, 0], cast: false });
+  // one water surface per lake, a little wider than its shore (the shore's ground rises above it)
+  const lake = new THREE.Group(); scene.add(lake);
+  for (const L of KAI_LAKES) mesh3(lake, new THREE.CircleGeometry(1, 96), water, [L.x, KAI.lake, L.z], { rot: [-Math.PI / 2, 0, 0], scale: [L.rx * 1.25, L.rz * 1.25, 1], cast: false });
   const envs = {};
   // sun disc, moon, stars
   const sunDisc = glow3(scene, [0, 0, 0], 120, '#FFF2D8', 1), sunHalo = glow3(scene, [0, 0, 0], 600, '#FFC080', .5);
@@ -291,6 +296,8 @@ function kailash3(o = {}) {
     const tx = waterTex3().rep(P.length / 6, 1);
     const m = mesh3(scene, geo, new THREE.MeshBasicMaterial({ map: tx, color: ro.col || '#5EC8FF', transparent: true, opacity: .95, depthWrite: false, fog: false }), [0, 0, 0], { cast: false, receive: false });
     const halo = mesh3(scene, new THREE.TubeGeometry(curve, n, (ro.r ?? 1.2) * 2.6, 6, false), new THREE.MeshBasicMaterial({ color: ro.glow || '#2A9AF0', transparent: true, opacity: .3, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }), [0, 0, 0], { cast: false, receive: false });
+    // laid over the ground (it is a map mark): never cut by the ground's bumps
+    for (const x of [halo, m]) { x.material.depthTest = false; x.renderOrder = 2; } m.renderOrder = 3;
     m.set = (t, on = 1) => { m.visible = halo.visible = on > .001; tx.offset.x = -t * (ro.speed ?? 1.2); geo.setDrawRange(0, Math.floor(clamp(on) * n) * 6 * 6); halo.geometry.setDrawRange(0, Math.floor(clamp(on) * n) * 6 * 6); };
     m.curve = curve; m.set(0, 0); return m;
   };
