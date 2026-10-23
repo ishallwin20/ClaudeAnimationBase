@@ -177,7 +177,7 @@
     boilSeed('hgr'); paint(rectPts(-400, 1480, W + 800, 1200), { wash: '#5A2A2A', ink: null });
     demonHorde(t, 'hd', 40);
     const draw = ease(seg(t, FOURTEEN - .6, FOURTEEN));
-    ram(250, 1820, 24, { boilKey: 'hr', tint: '#2A1418', tintK: .8, eyes: 'angry', mouth: 'flat', kodanda: true, handL: [-7.6, -18], bendL: .3, handR: [lerp(-2.6, -.4, draw), lerp(-14.4, -18.6, draw)], bendR: .9, hx: .5, lookX: 1 });
+    ram(250, 1820, 24, { boilKey: 'hr', tint: '#2A1418', tintK: .8, eyes: 'angry', mouth: 'flat', kodanda: false, flip: true, handL: [-7.6, -18], bendL: .3, handR: [lerp(-2.6, -.4, draw), lerp(-14.4, -18.6, draw)], bendR: .9, armL: heldBow(draw), hx: -.5, lookX: -1 });   // flipped: the bow aims screen right, at the horde
     camEnd();
     caps(t);
     wipeIn(lt, DUSKC);
