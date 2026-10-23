@@ -8,7 +8,7 @@ SHOTS.length = 0;
     nightForest(.5, 'cv', .7);
     demonShadow(540, 1760, 800, 1, 'cvds');
     for (const ex of [-28, 28]) glow(540 + ex, 1760 - 800 * .75, 36, '#FF3030', .8);
-    goldenDeer(520, 1760, 420, { key: 'cvd', glow: 1, neck: .3 });
+    goldenDeer(520, 1760, 420, { key: 'cvd', glow: 1, neck: .3, cute: 1 });
     camEnd();
     boilSeed('cvpill'); paint(rrPts(540 - 230, 300, 460, 92, 46), { wash: RMY.maroon, ink: null });
     letter('RAMAYAN · PART 6', 540, 347, 50, RMY.gold, { screen: true, font: '700 50px Poppins', ink: false, maxW: 420 });
