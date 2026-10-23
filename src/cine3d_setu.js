@@ -160,22 +160,23 @@ function setu3(o = {}) {
           float cr = 0.;
           for (int i = 0; i < 6; i++) { vec4 m = uImp[i]; float a = uT - m.z; if (a > 0. && m.w > 0.) { float r = distance(w.xz, m.xy), fr = a * 26.;
             // a train of crests travelling out from the impact, tallest at its front, dying with time and distance
-            float env = exp(-pow((r - fr + 25.) / 45., 2.)) * smoothstep(fr + 8., fr - 8., r), A = m.w * exp(-a * .3) * 60. / (60. + r);
-            float wv = pow(.5 + .5 * cos((r - fr) * .16), 3.);
-            float hump = exp(-pow(r / 16., 2.)) * m.w * 1.6 * exp(-a * 2.2) * smoothstep(0., .2, a);
+            float env = exp(-pow((r - fr + 40.) / 70., 2.)) * smoothstep(fr + 14., fr - 14., r), A = m.w * exp(-a * .3) * 80. / (80. + r);
+            float wv = pow(.5 + .5 * cos((r - fr) * .09), 1.6);
+            float hump = exp(-pow(r / 30., 2.)) * m.w * 1.3 * exp(-a * 1.8) * smoothstep(0., .3, a);
             y += (A * env * wv + hump) * uWave; cr += (env * wv * smoothstep(.55, .9, wv) * A / max(m.w, .01) + hump / max(m.w, .01) * .5) * uWave; } }
-          transformed.y += y; vCrest = cr; }`)
+          transformed.z += y; vCrest = cr; }`)   // the sheet lies rotated: its local z is the world's up
       .replace('#include <project_vertex>', '#include <project_vertex>\nvWW = (modelMatrix * vec4(transformed, 1.)).xyz;');
     sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uWave, uClear; uniform sampler2D uDepth; varying vec3 vWW; varying float vCrest;')
       .replace('#include <color_fragment>', `#include <color_fragment>
         { float dm = texture2D(uDepth, (vWW.xz + vec2(2000., 1500.)) / vec2(4000., 3000.)).r * 64.;
           dm = mix(dm, 40., smoothstep(1700., 1990., abs(vWW.x)) + smoothstep(1250., 1490., abs(vWW.z)));
+          dm = max(dm, vCrest * 40.);   // a wave's body is deep water
           vec3 c = mix(vec3(.45, .90, .86), vec3(.08, .62, .72), smoothstep(1., 8., dm));
           c = mix(c, vec3(.04, .30, .52), smoothstep(8., 30., dm));
           diffuseColor.rgb = c; diffuseColor.a = mix(mix(.4, .78, smoothstep(.5, 6., dm)), .95, smoothstep(6., 30., dm)) * uClear + (1. - uClear) * .9; }`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
         if (uWave > .001) { vec3 fn = normalize(cross(dFdx(vWW), dFdy(vWW))); if (fn.y < 0.) fn = -fn; normal = normalize(mix(normal, (viewMatrix * vec4(fn, 0.)).xyz, .8)); }`)
-      .replace('#include <opaque_fragment>', `diffuseColor.a = mix(diffuseColor.a, 1., smoothstep(.1, .5, vCrest)); outgoingLight = mix(outgoingLight, vec3(.92, .96, 1.), smoothstep(.25, .8, vCrest) * .8);
+      .replace('#include <opaque_fragment>', `diffuseColor.a = mix(diffuseColor.a, 1., smoothstep(.05, .3, vCrest)); outgoingLight = mix(outgoingLight, vec3(.92, .96, 1.), smoothstep(.7, 1.2, vCrest) * .45);
         #include <opaque_fragment>`);
   };
   const sea = mesh3(scene, new THREE.PlaneGeometry(4000, 3000, 640, 480), water, [0, 0, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
@@ -263,23 +264,27 @@ function setu3(o = {}) {
   // ---- fire arrows: a bright head and a trail, flying from `from` to `to` ([x, y, z]) over .9 s from t0
   const arrows = [0, 1, 2, 3, 4].map(() => {
     const g = new THREE.Group(); scene.add(g);
-    const head = glow3(g, [0, 0, 0], 6, '#FFD080', 1), core = glow3(g, [0, 0, 0], 2, '#FFFFFF', 1);
-    const trail = mesh3(g, new THREE.CylinderGeometry(.05, .22, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: '#FF9A40', transparent: true, opacity: .8, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }), [0, 0, 0], { cast: false, receive: false });
-    return { g, head, core, trail };
+    const head = glow3(g, [0, 0, 0], 12, '#FFC060', 1), core = glow3(g, [0, 0, 0], 3.5, '#FFFFFF', 1);
+    const trail = mesh3(g, new THREE.CylinderGeometry(.15, .5, 1, 8, 1, true), new THREE.MeshBasicMaterial({ color: '#FF9A40', transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }), [0, 0, 0], { cast: false, receive: false });
+    const spray = new THREE.Sprite(new THREE.SpriteMaterial({ map: splashTex3(), transparent: true, depthWrite: false, opacity: 0, color: '#FFE8D8' })); spray.center.set(.5, .08); scene.add(spray);
+    const boom = glow3(scene, [0, 0, 0], 60, '#FFB060', 0);
+    return { g, head, core, trail, spray, boom };
   });
   const flash = glow3(scene, [0, 0, 0], 60, '#FFB060', 0);
   const arrowsAPI = {
     set(t, shots = []) {
-      arrows.forEach(a => a.g.visible = false); flash.visible = false;
+      arrows.forEach(a => { a.g.visible = false; a.spray.visible = a.boom.visible = false; }); flash.visible = false;
       shots.forEach(([t0, from, to], i) => {
         const a = arrows[i]; if (!a) return; const k = (t - t0) / .9;
         if (k > 0 && k < 1) {
           const p = V3(...from).lerp(V3(...to), k); p.y += Math.sin(k * Math.PI) * 6; a.g.visible = true; a.g.position.copy(p);
-          const back = V3(...from).lerp(V3(...to), Math.max(0, k - .12)); back.y += Math.sin(Math.max(0, k - .12) * Math.PI) * 6;
+          const back = V3(...from).lerp(V3(...to), Math.max(0, k - .25)); back.y += Math.sin(Math.max(0, k - .25) * Math.PI) * 6;
           const d = p.clone().sub(back), l = d.length(); a.trail.scale.set(1, l, 1); a.trail.position.copy(d.clone().multiplyScalar(-.5));
           a.trail.quaternion.setFromUnitVectors(V3(0, 1, 0), d.normalize());
         }
-        const f = t - t0 - .9; if (f > 0 && f < 1.2) { flash.visible = true; flash.position.set(to[0], 2, to[2]); flash.material.opacity = Math.exp(-f * 3); flash.scale.setScalar(40 + f * 80); }
+        const f = t - t0 - .9;
+        if (f > 0 && f < 2.4) { const sk = clamp(f / 2.4); a.spray.visible = a.boom.visible = true; a.spray.position.set(to[0], 0, to[2]); a.spray.scale.set(14 + 26 * sk, 46 * Math.sin(Math.min(1, sk * 2.2) * Math.PI * .5) * (1 - sk * .5), 1); a.spray.material.opacity = .95 * (1 - sk);
+          a.boom.position.set(to[0], 3, to[2]); a.boom.material.opacity = Math.exp(-f * 3); a.boom.scale.setScalar(50 + f * 90); }
       });
     },
   };

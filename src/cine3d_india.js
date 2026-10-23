@@ -202,7 +202,7 @@ const IND_MOODS = {
 // india3(o): the map. o.vex (height exaggeration, 11), o.step (grid step, 1 = every DEM cell), o.bbox [lon0, lat0,
 // lon1, lat1] (the part of the grid built)
 function india3(o = {}) {
-  const D = dem3('india'), vex = o.vex ?? 11, step = o.step ?? 1, [b0, b1, b2, b3] = o.bbox || [62, 3, 99, 38];
+  const D = dem3('india'), vex = o.vex ?? 11, step = o.step ?? 1, [b0, b1, b2, b3] = o.bbox || [62, .2, 99, 38];
   const scene = new THREE.Scene(), skies = {};
   for (const k in IND_MOODS) skies[k] = sky3(scene, IND_MOODS[k].sky, { r: 9000 });
   const hemi = new THREE.HemisphereLight('#FFFFFF', '#000000', 1); scene.add(hemi);
@@ -227,7 +227,7 @@ function india3(o = {}) {
   geo.computeVertexNormals();
   const mat = indiaMat3(), ground = mesh3(scene, geo, mat);
   // the sea beyond the grid
-  const far = mesh3(scene, new THREE.PlaneGeometry(40000, 40000), new THREE.MeshStandardMaterial({ color: '#306599', roughness: .32 }), [0, -.6, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
+  const far = mesh3(scene, new THREE.PlaneGeometry(40000, 40000), new THREE.MeshStandardMaterial({ color: '#1A4272', roughness: .32 }), [0, -.6, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
   // stars (space, night)
   const sg = new THREE.BufferGeometry(), sp = [], rs = lcg(23);
   for (let i = 0; i < 2400; i++) { const a = rs() * TAU, el = Math.asin(rs() * 2 - 1), R = 8500; sp.push(Math.cos(a) * Math.cos(el) * R, Math.sin(el) * R, Math.sin(a) * Math.cos(el) * R); }
@@ -255,7 +255,7 @@ function india3(o = {}) {
     sun.target.position.set(...c); sun.position.set(c[0] + d.x * 1500, c[1] + d.y * 1500, c[2] + d.z * 1500);
     Object.assign(sun.shadow.camera, { left: -ext, right: ext, top: ext, bottom: -ext, near: 100, far: 3500 }); sun.shadow.camera.updateProjectionMatrix();
     scene.fog.color.set(M.fog[0]); scene.fog.near = mo.fogNear ?? M.fog[1]; scene.fog.far = mo.fogFar ?? M.fog[2];
-    far.visible = name !== 'space';
+    far.visible = name !== 'space' || (mo.edge ?? 1) < .999;
     stars.visible = name === 'space' || name === 'night'; stars.material.opacity = mo.stars ?? .9;
     mat.userData.U.uFocus.value = mo.focus ?? 0; mat.userData.U.uEdge.value = mo.edge ?? (name === 'space' ? 1 : 0);
     return mo.exposure ?? M.exposure;
