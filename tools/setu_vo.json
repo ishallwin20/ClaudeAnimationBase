@@ -1,0 +1,169 @@
+{
+  "name": "setu",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "This bridge across the *SEA* | was built in *FIVE DAYS.*"
+      ],
+      "tts": "This bridge across the sea was built in five days."
+    },
+    {
+      "id": "name",
+      "gap": 0.6,
+      "caps": [
+        "It's *RAM SETU.* | And it wasn't *RAM* | who built it."
+      ],
+      "tts": "It's Raam Setu. And it wasn't Raam who built it.",
+      "hold": 0.3
+    },
+    {
+      "id": "reach",
+      "gap": 0.8,
+      "caps": [
+        "Ram's army of *VANARAS* | reached the sea.",
+        "*LANKA* lay | across it."
+      ],
+      "tts": "Raam's army of vaanaras reached the sea. Lanka lay across it."
+    },
+    {
+      "id": "nights",
+      "gap": 0.6,
+      "caps": [
+        "For three nights, | Ram prayed to the *OCEAN.*",
+        "It never came."
+      ],
+      "tts": "For three nights, Raam prayed to the ocean. It never came."
+    },
+    {
+      "id": "bow",
+      "gap": 0.6,
+      "caps": [
+        "So he raised his *BOW,* | and the waves rose | like *MOUNTAINS.*"
+      ],
+      "tts": "So he raised his bow, and the waves rose like mountains."
+    },
+    {
+      "id": "god",
+      "gap": 0.7,
+      "caps": [
+        "The *OCEAN GOD* rose: | “I cannot change | my nature.”"
+      ],
+      "tts": "The ocean god rose: I cannot change my nature."
+    },
+    {
+      "id": "nala",
+      "gap": 0.5,
+      "caps": [
+        "“But *NALA,* | son of *VISHWAKARMA,*",
+        "can build a bridge. | And I will hold it.”"
+      ],
+      "tts": "But Nala, son of Vishwakarma, can build a bridge. And I will hold it.",
+      "hold": 0.3
+    },
+    {
+      "id": "rocks",
+      "gap": 0.7,
+      "caps": [
+        "The vanaras hurled | *TREES* and *ROCKS*",
+        "as big as | *ELEPHANTS.*"
+      ],
+      "tts": "The vaanaras hurled trees and rocks as big as elephants."
+    },
+    {
+      "id": "d1",
+      "gap": 0.6,
+      "caps": [
+        "*DAY 1:* | 14 yojanas."
+      ],
+      "tts": "Day one: fourteen yojanas."
+    },
+    {
+      "id": "d2",
+      "gap": 0.35,
+      "caps": [
+        "*DAY 2:* 20."
+      ],
+      "tts": "Day two. Twenty."
+    },
+    {
+      "id": "d3",
+      "gap": 0.35,
+      "caps": [
+        "*DAY 3:* 21."
+      ],
+      "tts": "Day three. Twenty-one."
+    },
+    {
+      "id": "d4",
+      "gap": 0.35,
+      "caps": [
+        "*DAY 4:* 22."
+      ],
+      "tts": "Day four... Twenty-two."
+    },
+    {
+      "id": "d5",
+      "gap": 0.35,
+      "caps": [
+        "*DAY 5:* 23."
+      ],
+      "tts": "Day five. Twenty-three.",
+      "hold": 0.3
+    },
+    {
+      "id": "size",
+      "gap": 0.6,
+      "caps": [
+        "*100 YOJANAS* long. | *10* wide."
+      ],
+      "tts": "A hundred yojanas long. Ten wide.",
+      "hold": 0.3
+    },
+    {
+      "id": "milky",
+      "gap": 0.7,
+      "caps": [
+        "The gods watched from the sky. | It shone like the | *MILKY WAY* on the sea."
+      ],
+      "tts": "The gods watched from the sky. It shone like the Milky Way on the sea."
+    },
+    {
+      "id": "cross",
+      "gap": 0.7,
+      "caps": [
+        "*RAM* crossed on | *HANUMAN'S* shoulders,",
+        "*LAKSHMAN* | on *ANGAD'S.*"
+      ],
+      "tts": "Raam crossed on Hanuman's shoulders, Lakshman on Angad's.",
+      "hold": 0.3
+    },
+    {
+      "id": "today",
+      "gap": 0.8,
+      "caps": [
+        "Today, a *48 KM* chain | of shoals still runs",
+        "from India | to *SRI LANKA.*",
+        "Hindus call it | *RAM SETU.*"
+      ],
+      "tts": "Today, a forty-eight kilometre chain of shoals still runs from India to Sri Lanka. Hindus call it Raam Setu.",
+      "hold": 0.6
+    },
+    {
+      "id": "ask",
+      "gap": 0.8,
+      "caps": [
+        "Have you been to | *RAMESWARAM?*",
+        "Comment | your *CITY!*"
+      ],
+      "tts": "Have you been to Rameshwaram? Comment your city!",
+      "hold": 1.2
+    }
+  ]
+}
