@@ -21,6 +21,7 @@
 //   goldenDeer(x, y, s, o)       Maricha's golden deer (Aranya 42): side view facing screen right (o.flip), a gold coat
 //                                with silver spots, antlers tipped with gems; o.walk phase, o.leap 0..1 (mid-bound, legs
 //                                tucked), o.neck (radians), o.look ('back': the head turned over the shoulder), o.glow
+//                                o.cute (a big glossy eye with lashes and a blush), o.blink (the eye shut in a happy arc)
 //   surpanakha(x, y, u, o)       Ravana's sister on Parvati's rig: grey-green skin, a wild violet mane, little tusks, a
 //                                dark plum saree; o.hurt 0..1 (hands over her face: after Lakshman's sword)
 //   rkVerse(lines, x, y, size, age, o)   Devanagari in gold (Tiro Devanagari Sanskrit), line by line, glowing
@@ -284,7 +285,15 @@ function goldenDeer(x, y, s, o = {}) {
   paint(ellPts(s * .05, 0, s * .1, s * .065, 14), { wash: C.coat, ink: C.ink, sw: sw * .8 });
   paint(ellPts(s * .14, s * .02, s * .04, s * .03, 10), { wash: C.coatDk, ink: C.ink, sw: sw * .5 });   // the muzzle
   paint(ellPts(s * .19, s * .015, s * .012, s * .01, 6), { wash: C.ink, ink: null });
-  paint(ellPts(s * .04, -s * .015, s * .018, s * .02, 8), { wash: C.ink, ink: null }); paint(ellPts(s * .045, -s * .02, s * .006, s * .006, 6), { wash: '#FFFFFF', ink: null });
+  if (o.blink) inkLine([[s * .02, -s * .012], [s * .04, -s * .002], [s * .062, -s * .012]], sw * 1.6, C.ink, 'inkfine', 0);   // eye shut (a happy arc)
+  else if (o.cute) {   // big glossy eye, two highlights, lashes, a blush
+    paint(ellPts(s * .04, -s * .015, s * .03, s * .034, 10), { wash: C.ink, ink: null });
+    paint(ellPts(s * .05, -s * .028, s * .011, s * .011, 6), { wash: '#FFFFFF', ink: null }); paint(ellPts(s * .03, -s * .002, s * .005, s * .005, 6), { wash: '#FFFFFF', ink: null });
+  } else { paint(ellPts(s * .04, -s * .015, s * .018, s * .02, 8), { wash: C.ink, ink: null }); paint(ellPts(s * .045, -s * .02, s * .006, s * .006, 6), { wash: '#FFFFFF', ink: null }); }
+  if (o.cute) {
+    if (!o.blink) for (const a of [-.5, -.1, .3]) inkLine([[s * .04 + Math.sin(a) * s * .034, -s * .015 - Math.cos(a) * s * .034], [s * .04 + Math.sin(a) * s * .05, -s * .015 - Math.cos(a) * s * .05]], sw * .9, C.ink, 'inkfine', 0);
+    paint(ellPts(s * .085, s * .035, s * .028, s * .014, 8), { wash: '#FF8AA0', washOp: 150, ink: null });
+  }
   paint([[-s * .02, -s * .04], [-s * .1, -s * .1], [-s * .03, -s * .02]], { wash: C.coatDk, ink: C.ink, sw: sw * .5 });   // ear
   // antlers with gems on every tip
   for (const k of [-1, 1]) {
