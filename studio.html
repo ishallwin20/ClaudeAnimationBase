@@ -2,75 +2,38 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Clawd studio</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bangers&family=Marcellus&family=Poppins:wght@500;700&family=Tiro+Devanagari+Sanskrit&display=block">
+<title>Kailash · 3D studio</title>
+<!-- The 3D style's studio (see 3D_GUIDE.md): cine.js with a three.js world under it. On main it shows the shrine set
+     in its three moods; a 3D reel copies this page to studio.html, loads src/config.js instead of the inline PROJECT,
+     and swaps in its scene. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Marcellus&family=Poppins:wght@500;700&family=Tiro+Devanagari+Sanskrit&display=block">
 <style>
   html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
   main { padding: 12px; display: grid; gap: 8px; }
-  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #F3EBDC; }
-  .p5Canvas { display: none !important; }
+  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #000; }
   .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
   #scrub { flex: 1; }
   #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
 </style>
-<script src="node_modules/p5/lib/p5.min.js"></script>
-<script src="node_modules/p5.brush/dist/p5.brush.js"></script>
 </head>
 <body>
 <main>
-  <canvas id="out" width="1920" height="1080"></canvas>
-  <div class="bar"><input id="scrub" type="range" min="0" max="11" step="0.0417" value="0"><span id="tt">loading…</span></div>
+  <canvas id="out" width="1080" height="1920"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="41" step="0.0417" value="0"><span id="tt">loading…</span></div>
 </main>
-<!-- engine -->
 <script src="src/config.js"></script>
-<script src="src/core.js"></script>
-<script src="src/clawd.js"></script>
-<script src="src/timeline.js"></script>
-<script src="src/bappa.js"></script>   <!-- after timeline.js: it registers ?loop=bappa -->
-<script src="src/bal_bappa.js"></script>   <!-- after bappa.js: it reuses its trunk poses -->
-<script src="src/vayu.js"></script>   <!-- after bappa.js: it reuses U() -->
-<script src="src/shiva.js"></script>   <!-- after bappa.js: it reuses U() -->
-<script src="src/kartikeya.js"></script>   <!-- after bappa.js: it reuses U() -->
-<script src="src/parvati.js"></script>   <!-- after bappa.js: it reuses U() -->
-<script src="src/nandi.js"></script>   <!-- after bappa.js: it reuses U() -->
-<script src="src/shailputri.js"></script>   <!-- after shiva.js (EMO.serene) and bappa.js -->
-<script src="src/kamadeva.js"></script>   <!-- after bappa.js: it reuses U() -->
-<script src="src/brahmacharini.js"></script>   <!-- after parvati.js and shailputri.js: built on them -->
-<script src="src/menavati.js"></script>   <!-- after parvati.js and shailputri.js: built on them -->
-<script src="src/chandraghanta.js"></script>   <!-- after shailputri.js and brahmacharini.js: built on them -->
-<script src="src/boy.js"></script>   <!-- after timeline.js: it registers ?loop=boy -->
-<script src="src/donkey.js"></script>   <!-- after bappa.js: it reuses U() -->
-<script src="src/kalaratri.js"></script>   <!-- after shailputri.js and donkey.js (its model sheet rides him) -->
-<script src="src/aarav.js"></script>   <!-- after bappa.js (U()) and clawd.js: it registers ?loop=aarav -->
-<script src="src/lion.js"></script>   <!-- after bappa.js (U()) and clawd.js: it registers ?loop=lion -->
-<script src="src/owl.js"></script>   <!-- after bappa.js (U()) and clawd.js: it registers ?loop=owl -->
-<script src="src/durga.js"></script>   <!-- after shailputri.js, chandraghanta.js and kalaratri.js (EMO.fierce) -->
-<script src="src/mahishasura.js"></script>   <!-- after chandraghanta.js (khadga()) and lion.js (lionRunWorld()) -->
-<script src="src/asuras.js"></script>   <!-- after mahishasura.js: built on it -->
-<script src="src/raktabija.js"></script>   <!-- after bappa.js (U()) and clawd.js: it registers ?loop=raktabija -->
-<script src="src/kali.js"></script>   <!-- after kalaratri.js: built on it -->
-<script src="src/ravana.js"></script>   <!-- after bappa.js (U()) and clawd.js: it registers ?loop=ravana -->
-<script src="src/bal_hanuman.js"></script>   <!-- after bappa.js (U()), clawd.js and aarav.js (his hands) -->
-<script src="src/indra.js"></script>   <!-- after bappa.js (U()) and clawd.js -->
-<script src="src/shani.js"></script>   <!-- after shailputri.js (trishul()), bappa.js (U()) and clawd.js -->
-<script src="src/yama.js"></script>   <!-- after shani.js (his rig), mahishasura.js (the buffalo) and chandraghanta.js (gada()) -->
-<script src="src/vishnu.js"></script>   <!-- after indra.js (_ik()), shailputri.js (lotus()), durga.js (chakra(), shankh()) and kamadeva.js (Garuda) -->
-<script src="src/lakshmi.js"></script>   <!-- after parvati.js and shailputri.js (lotus()) -->
-<script src="src/narada.js"></script>   <!-- after bappa.js (U()) and clawd.js -->
-<script src="src/surya.js"></script>   <!-- after shailputri.js (lotus()), bappa.js (U()) and clawd.js -->
-<script src="src/bal_krishna.js"></script>   <!-- after bappa.js (U()), clawd.js and aarav.js (his hands) -->
-<script src="src/krishna.js"></script>   <!-- after narada.js and bal_krishna.js: built on them -->
-<script src="src/hanuman.js"></script>   <!-- after narada.js, bal_hanuman.js (BH) and chandraghanta.js (gada()) -->
-<script src="src/ram.js"></script>   <!-- after narada.js, vishnu.js (VSN), bal_krishna.js (BK) and parvati.js -->
-<script src="src/ramayan.js"></script>   <!-- after ram.js, kartikeya.js, chandraghanta.js: the Ramayan series kit -->
-<script src="src/ramayan_sets.js"></script>   <!-- after ramayan.js: the series' shared sets and props -->
-<!-- reference sheets (standalone loops) -->
-<script src="src/sheets.js"></script>
-<!-- your video: add a script per scene file, in order -->
-<script src="src/scenes/demo.js"></script>
-<script>
-  // Open studio.html?loop=emotions (or views) to scrub a standalone loop instead of the video.
-  const q = new URLSearchParams(location.search).get('loop'); if (q && LOOPS[q]) window.LOOP = LOOPS[q];
-</script>
+<!-- engine, sets -->
+<script src="src/cine.js"></script>
+<script src="src/vendor/three.min.js"></script>
+<script src="src/cine3d.js"></script>
+<script src="src/cine3d_temple.js"></script>
+<script src="src/cine3d_kailash.js"></script>
+<script src="src/cine_sets.js"></script>
+<script src="src/scenes/rk_images.js"></script>
+<!-- the scene -->
+<script src="src/scenes/kai_vo.js"></script>
+<script src="src/scenes/kai_tl.js"></script>
+<script src="src/scenes/kai_props.js"></script>
+<script src="src/scenes/kai.js"></script>
 </body>
 </html>

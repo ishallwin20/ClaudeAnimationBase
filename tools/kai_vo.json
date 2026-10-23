@@ -1,0 +1,123 @@
+{
+  "name": "kai",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "No human has *EVER* | climbed this *MOUNTAIN.*"
+      ],
+      "tts": "No human has ever climbed this mountain."
+    },
+    {
+      "id": "everest",
+      "gap": 0.6,
+      "caps": [
+        "*EVEREST* is | two km taller.",
+        "It's been climbed | over *13,000 TIMES.*"
+      ],
+      "tts": "Everest is two kilometres taller. It's been climbed over thirteen thousand times."
+    },
+    {
+      "id": "zero",
+      "gap": 0.5,
+      "caps": [
+        "This one? *ZERO.*"
+      ],
+      "tts": "This one? Zero.",
+      "hold": 0.8
+    },
+    {
+      "id": "name",
+      "gap": 0.7,
+      "caps": [
+        "This is *MOUNT KAILASH,* | the home of *SHIVA.*"
+      ],
+      "tts": "This is Mount Kailash, the home of Shiva."
+    },
+    {
+      "id": "ravana",
+      "gap": 0.5,
+      "caps": [
+        "The mountain *RAVANA* | once lifted."
+      ],
+      "tts": "The mountain Ravana once lifted."
+    },
+    {
+      "id": "rivers",
+      "gap": 0.7,
+      "caps": [
+        "Four great rivers | begin near it:",
+        "the *INDUS,* the *SUTLEJ,* | the *BRAHMAPUTRA* | and the *KARNALI.*"
+      ],
+      "tts": "Four great rivers begin near it: the Indus, the Sutlej, the Brahmaputra, and the Karnali."
+    },
+    {
+      "id": "messner",
+      "gap": 0.8,
+      "caps": [
+        "*REINHOLD MESSNER,* | the first man to climb | all 14 of the world's | highest peaks,",
+        "was offered the chance. | He *REFUSED.*"
+      ],
+      "tts": "Reinhold Messner, the first man to climb all fourteen of the world's highest peaks, was offered the chance. He refused."
+    },
+    {
+      "id": "quote",
+      "gap": 0.6,
+      "caps": [
+        "He said: | “If we conquer | this mountain,",
+        "we conquer something | in people's *SOULS.”*"
+      ],
+      "tts": "He said: if we conquer this mountain, we conquer something in people's souls."
+    },
+    {
+      "id": "ban",
+      "gap": 0.7,
+      "caps": [
+        "Today, climbing it | is *FORBIDDEN.*"
+      ],
+      "tts": "Today, climbing it is forbidden."
+    },
+    {
+      "id": "twist",
+      "gap": 0.8,
+      "caps": [
+        "So pilgrims | don't climb it. | They walk *AROUND* it."
+      ],
+      "tts": "So pilgrims don't climb it. They walk around it."
+    },
+    {
+      "id": "kora",
+      "gap": 0.6,
+      "caps": [
+        "Over *50 KM,* | across a pass | at *5,600 METRES,*",
+        "keeping *SHIVA* | on their right."
+      ],
+      "tts": "Over fifty kilometres, across a pass at five thousand six hundred metres, keeping Shiva on their right."
+    },
+    {
+      "id": "prad",
+      "gap": 0.6,
+      "caps": [
+        "It's *PRADAKSHINA,* | around Shiva's own home."
+      ],
+      "tts": "It's pradakshina, around Shiva's own home.",
+      "hold": 0.9
+    },
+    {
+      "id": "ask",
+      "gap": 0.8,
+      "caps": [
+        "Has anyone in | *YOUR FAMILY* done | the *KAILASH YATRA?*",
+        "Comment | your *CITY!*"
+      ],
+      "tts": "Has anyone in your family done the Kailash yatra? Comment your city!",
+      "hold": 1.2
+    }
+  ]
+}
