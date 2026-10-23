@@ -1,0 +1,136 @@
+{
+ "name": "rp2",
+ "defaults": {
+  "speaker": "girish_en_devotional",
+  "lang": "en-IN",
+  "pace": 1.2
+ },
+ "lines": [
+  {
+   "id": "hook",
+   "t": 0.15,
+   "caps": [
+    "Kaikeyi *LOVED* Ram. | So why did she | *SEND HIM AWAY?*"
+   ],
+   "tts": "Kaikeyi loved Ram. So why did she send him away?"
+  },
+  {
+   "id": "intro",
+   "gap": 0.5,
+   "caps": [
+    "Welcome to *PART 2* | of the *RAMAYAN* series."
+   ],
+   "tts": "Welcome to part two of the Ramayan series."
+  },
+  {
+   "id": "crown",
+   "gap": 0.6,
+   "caps": [
+    "King *DASHARATHA* decided: | tomorrow, *RAM* | will be crowned prince."
+   ],
+   "tts": "King Dasharatha decided: tomorrow, Ram will be crowned prince."
+  },
+  {
+   "id": "city",
+   "gap": 0.5,
+   "caps": [
+    "*AYODHYA* lit up. | But one maid, *MANTHARA,* | watched from the terrace."
+   ],
+   "tts": "Ayodhya lit up. But one maid, Manthara, watched from the terrace."
+  },
+  {
+   "id": "happy",
+   "gap": 0.6,
+   "caps": [
+    "She ran to queen *KAIKEYI.* | And Kaikeyi was *OVERJOYED!*",
+    "She gave Manthara | a *JEWEL.*"
+   ],
+   "tts": "She ran to queen Kaikeyi. And Kaikeyi was overjoyed! She gave Manthara a jewel."
+  },
+  {
+   "id": "same",
+   "gap": 0.4,
+   "caps": [
+    "I see no difference | between *RAM AND BHARAT!*"
+   ],
+   "tts": "I see no difference between Ram and Bharat!",
+   "hold": 0.6
+  },
+  {
+   "id": "throw",
+   "gap": 0.7,
+   "caps": [
+    "Manthara threw the jewel *AWAY.* | Wake up! Ram will *BANISH* | your Bharat, or worse."
+   ],
+   "tts": "Manthara threw the jewel away. Wake up! Ram will banish your Bharat, or worse."
+  },
+  {
+   "id": "boons",
+   "gap": 0.7,
+   "caps": [
+    "Remember the war? | You *SAVED THE KING'S LIFE,*",
+    "and he gave you | *TWO BOONS.* | Use them now."
+   ],
+   "tts": "Remember the war? You saved the king's life, and he gave you two boons. Use them now."
+  },
+  {
+   "id": "room",
+   "gap": 0.7,
+   "caps": [
+    "So Kaikeyi tore off her jewels, | and lay on the floor | of the *ROOM OF ANGER.*"
+   ],
+   "tts": "So Kaikeyi tore off her jewels, and lay on the floor of the room of anger."
+  },
+  {
+   "id": "swear",
+   "gap": 0.6,
+   "caps": [
+    "The king found her there, | and swore by *RAM* himself | to give her anything."
+   ],
+   "tts": "The king found her there, and swore by Ram himself to give her anything."
+  },
+  {
+   "id": "ask",
+   "gap": 0.7,
+   "caps": [
+    "*FIRST BOON:* | crown Bharat.",
+    "*SECOND:* send Ram | to the forest, | for *14 YEARS.*"
+   ],
+   "tts": "First boon: crown Bharat. Second: send Ram to the forest, for fourteen years."
+  },
+  {
+   "id": "fell",
+   "gap": 0.7,
+   "caps": [
+    "Dasharatha *FELL.* | He begged her all night. | She would not move."
+   ],
+   "tts": "Dasharatha fell. He begged her all night. She would not move."
+  },
+  {
+   "id": "dawn",
+   "gap": 0.8,
+   "caps": [
+    "At dawn, Ram heard it, | and his face | *DID NOT CHANGE.*",
+    "Let it be. | *I WILL GO.*"
+   ],
+   "tts": "At dawn, Ram heard it, and his face did not change. Let it be. I will go."
+  },
+  {
+   "id": "next",
+   "gap": 0.9,
+   "caps": [
+    "*PART 3:* the king remembers | a *CURSE* from his youth, | and it comes *TRUE.*"
+   ],
+   "tts": "Part three: the king remembers a curse from his youth, and it comes true."
+  },
+  {
+   "id": "follow",
+   "gap": 0.6,
+   "caps": [
+    "*FOLLOW* | so you don't miss it,",
+    "and comment | *JAI SHRI RAM!*"
+   ],
+   "tts": "Follow, so you don't miss it, and comment, Jai Shri Ram!"
+  }
+ ]
+}
