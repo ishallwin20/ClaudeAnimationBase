@@ -115,6 +115,7 @@ function chamber(t, lit = 1, key = 'ch') {
   paint(ellPts(540, 1300, 800, 700, 26), { fill: P1.nightLo, fillOp: 200, bleed: .3, tex: .4, ink: null });
   boilSeed(key + 'arch');
   for (const s of [-1, 1]) paint([[540 + s * 700, 200], [540 + s * 420, 200], [540 + s * 420, 1600], [540 + s * 700, 1600]], { wash: '#140F28', ink: null });
+  paint(rectPts(-300, 1600, W + 600, 900), { wash: '#140F28', ink: null });
   paint([[120, 1650], [960, 1650], [960, 2400], [120, 2400]], { wash: '#2A2044', ink: null });
 }
 // a gold throne behind a seated figure: its seat centred at (x, y), s wide
