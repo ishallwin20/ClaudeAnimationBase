@@ -1,0 +1,133 @@
+{
+ "name": "rp5",
+ "defaults": {
+  "speaker": "girish_en_devotional",
+  "lang": "en-IN",
+  "pace": 1.2
+ },
+ "lines": [
+  {
+   "id": "hook",
+   "t": 0.15,
+   "caps": [
+    "Ram fought | *14,000 DEMONS.* | *ALONE.*"
+   ],
+   "tts": "Ram fought fourteen thousand demons. Alone."
+  },
+  {
+   "id": "intro",
+   "gap": 0.5,
+   "caps": [
+    "Welcome to *PART 5* | of the *RAMAYAN* series."
+   ],
+   "tts": "Welcome to part five of the Ramayan series."
+  },
+  {
+   "id": "pan",
+   "gap": 0.6,
+   "caps": [
+    "In *PANCHAVATI,* | a demoness named *SURPANAKHA* | saw Ram,",
+    "and wanted him | for herself."
+   ],
+   "tts": "In Panchavati, a demoness named Shoorpanakha saw Ram, and wanted him for herself."
+  },
+  {
+   "id": "refuse",
+   "gap": 0.6,
+   "caps": [
+    "Ram said: | I am married. | Try my brother.",
+    "Lakshman | sent her *RIGHT BACK.*"
+   ],
+   "tts": "Ram said: I am married. Try my brother. Lakshman sent her right back."
+  },
+  {
+   "id": "attack",
+   "gap": 0.7,
+   "caps": [
+    "Furious, | she lunged at *SITA,*",
+    "and Lakshman cut off | her *NOSE AND EARS.*"
+   ],
+   "tts": "Furious, she lunged at Sita, and Lakshman cut off her nose and ears.",
+   "hold": 0.6
+  },
+  {
+   "id": "khara",
+   "gap": 0.7,
+   "caps": [
+    "She ran screaming to her brother *KHARA.* | He sent 14 demons. | Ram's arrows *FINISHED THEM.*"
+   ],
+   "tts": "She ran screaming to her brother Khara. He sent fourteen demons. Ram's arrows finished them."
+  },
+  {
+   "id": "army",
+   "gap": 0.7,
+   "caps": [
+    "Then Khara came himself, | with *14,000.*"
+   ],
+   "tts": "Then Khara came himself, with fourteen thousand.",
+   "hold": 0.6
+  },
+  {
+   "id": "cave",
+   "gap": 0.6,
+   "caps": [
+    "Ram sent Sita and Lakshman | into a cave, | and faced them *ALONE.*"
+   ],
+   "tts": "Ram sent Sita and Lakshman into a cave, and faced them alone.",
+   "hold": 0.6
+  },
+  {
+   "id": "fight",
+   "gap": 0.7,
+   "caps": [
+    "His arrows fell *LIKE RAIN.* | *DUSHANA* fell. *TRISHIRA* fell. | And at last, *KHARA.*"
+   ],
+   "tts": "His arrows fell like rain. Dooshana fell. Trishira fell. And at last, Khara."
+  },
+  {
+   "id": "time",
+   "gap": 0.8,
+   "caps": [
+    "Valmiki says it took | one and a half *MUHURTAS:*",
+    "about | *72 MINUTES.*"
+   ],
+   "tts": "Valmiki says it took one and a half muhurtas: about seventy two minutes.",
+   "hold": 0.6
+  },
+  {
+   "id": "hug",
+   "gap": 0.7,
+   "caps": [
+    "Sita ran out of the cave | and *HUGGED HIM.*"
+   ],
+   "tts": "Sita ran out of the cave, and hugged him.",
+   "hold": 0.6
+  },
+  {
+   "id": "twist",
+   "gap": 0.8,
+   "caps": [
+    "But one demon | *ESCAPED,* | and ran to *RAVANA.*"
+   ],
+   "tts": "But one demon escaped, and ran to Ravana.",
+   "hold": 0.6
+  },
+  {
+   "id": "next",
+   "gap": 0.9,
+   "caps": [
+    "*NEXT, PART 6:* | Ravana's plan, | and a *GOLDEN DEER.*"
+   ],
+   "tts": "Next, part six. Ravana's plan, and a golden deer."
+  },
+  {
+   "id": "follow",
+   "gap": 0.6,
+   "caps": [
+    "*FOLLOW* | so you don't miss it,",
+    "and comment | *JAI SHRI RAM!*"
+   ],
+   "tts": "Follow, so you don't miss it, and comment, Jai Shri Ram!"
+  }
+ ]
+}

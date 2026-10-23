@@ -315,6 +315,26 @@ function surpanakha(x, y, u, o = {}) {
   }
 }
 
+// ---------- a bow in the hand ----------
+// heldBow(draw, arrow): an armL hook for narada()'s rig (Ram, Lakshman, the young king): a tall bow upright at the hand,
+// its string pulled back by draw 0..1 toward the body (+x in arm space), an arrow nocked while arrow is true. Pair it with
+// handL out to the side ([-7.6, -18]) and handR at the chin; flip the figure to aim screen right.
+function heldBow(draw = 0, arrow = true, wood = '#8A5230') {
+  return (u, sw) => {
+    const k = u / 1.7, pull = clamp(draw);
+    push(); scale(1.7);
+    inkLine(U([[.6, -4.5], [.6 + pull * 2.6, 0], [.6, 4.5]], k), sw * .45, '#F0E2C0', 'inkfine', 0);
+    paint(ribbon(U([[.6, -4.6], [-.55, -2.8], [-.95, -.6], [-.95, .6], [-.55, 2.8], [.6, 4.6]], k), .24 * k, .24 * k), { wash: wood, ink: NRD.ink, sw: sw * .5 });
+    paint(U([[-1.15, -.6], [-.7, -.6], [-.7, .6], [-1.15, .6]], k), { wash: '#F2C230', ink: NRD.ink, sw: sw * .4 });
+    if (arrow && pull > .05) {
+      const ax = (.6 + pull * 2.6) * k;
+      inkLine([[ax, 0], [-3.4 * k, 0]], sw * 1.1, '#A0784A', 'ink', 0);
+      paint([[-3.4 * k, -.35 * k], [-4.4 * k, 0], [-3.4 * k, .35 * k]], { wash: '#C8CCD8', ink: NRD.ink, sw: sw * .4 });
+    }
+    pop();
+  };
+}
+
 // ---------- lettering ----------
 // Devanagari verse lines (gold, ink-stroked, a soft glow behind), popping in line by line; age = seconds since the first
 function rkVerse(lines, x, y, size, age, o = {}) {
