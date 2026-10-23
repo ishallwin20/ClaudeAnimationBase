@@ -1,6 +1,6 @@
 // config.js: project settings.
-//   duration: the video's length in seconds.
-//   bpm:      the rhythm that bounces, dances and pulse() follow. Clawd always moves to some beat; if the video has music,
-//             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
-//   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
-const PROJECT = { duration: 11, bpm: 120, offset: 0, w: 1080, h: 1920 };
+//   duration: one wallpaper loop, in seconds (WL in src/scenes/wall_kit.js).
+//   bpm:      80, so the 6 s loop is 8 beats (two bars): feel()'s beat-locked idles repeat exactly.
+//   w, h:     1290×2796, an iPhone Pro Max screen (19.5:9). The scenes draw in a 1080×2340 design space (wallBegin()).
+const PROJECT = { duration: 6, bpm: 80, offset: 0, w: 1290, h: 2796, letterFont: 'Bangers',
+  fonts: ['700 300px Poppins', '500 60px Poppins'] };
