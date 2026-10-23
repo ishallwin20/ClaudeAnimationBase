@@ -7,7 +7,7 @@
 // (x, y) is the ground point under him; u is narada()'s unit (the kirita tops out near -28.6). Every narada() option
 // works (walk, sit, bow, pray, lean, hx, handL / handR, eyes, mouth, emote, …) except the veena and the topknot.
 // His own options:
-//   kodanda   (default true) the bow on his back, upright behind his left side; false when he sits on a throne
+//   kodanda   (default true) the bow slung across his back, left shoulder to right hip; false when he sits on a throne
 //   crown     'kirita' (default) | 'small' (a low crown: Lakshman) | false
 //   pal       overrides RAM (his colours); LAKSHMAN_PAL is Lakshman
 // Helpers: as narada's (naradaHand, naradaHead, naradaMouth, …: same body).
@@ -57,11 +57,11 @@ function ramKirita(u, sw, o, C) {
 }
 // the Kodanda across his back, in body space: the top behind his left shoulder (screen left), the foot by his right hip
 function ramBow(u, sw, C) {
-  // upright on his left side, the string behind him, both tips on the same side (owner, 23 Oct 2026: the old diagonal
-  // showed its top on one side and its bottom on the other)
-  const P = pts => U(pts, u), INK = C.ink, A = [-4.5, -22.6], B = [-4.5, -4.8];
+  // slung across his back from the left shoulder to the right hip: a shallow, even arc, so the tip over the shoulder and the
+  // tip by the hip read as one bow (owner, 23 Oct 2026: a deep curve made the two tips look like they went two ways)
+  const P = pts => U(pts, u), INK = C.ink, A = [-5.2, -23.2], B = [5, -4.6];
   inkLine(P([A, B]), sw * .5, C.string, 'inkfine', 0);
-  paint(ribbon(P([A, [-5.6, -20.6], [-6.4, -17.2], [-6.7, -13.7], [-6.4, -10.2], [-5.6, -6.8], B]), .42 * u, .3 * u), { wash: C.wood, fill: C.woodDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .6 });
+  paint(ribbon(P([A, [-4.56, -19.44], [-3.54, -16.13], [-2.03, -12.84], [-.07, -9.8], [2.18, -7.17], B]), .38 * u, .38 * u), { wash: C.wood, fill: C.woodDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .6 });
   for (const p of [A, B]) paint(ellPts(p[0] * u, p[1] * u, .3 * u, .3 * u, 8), { wash: C.gold, ink: INK, sw: sw * .4 });
 }
 
