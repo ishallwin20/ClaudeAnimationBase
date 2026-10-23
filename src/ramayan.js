@@ -315,6 +315,26 @@ function surpanakha(x, y, u, o = {}) {
   }
 }
 
+// ---------- a bow in the hand ----------
+// heldBow(draw, arrow): an armL hook for narada()'s rig (Ram, Lakshman, the young king): a tall bow upright at the hand,
+// its string pulled back by draw 0..1 toward the body (+x in arm space), an arrow nocked while arrow is true. Pair it with
+// handL out to the side ([-7.6, -18]) and handR at the chin; flip the figure to aim screen right.
+function heldBow(draw = 0, arrow = true, wood = '#8A5230') {
+  return (u, sw) => {
+    const k = u / 1.7, pull = clamp(draw);
+    push(); scale(1.7);
+    inkLine(U([[.6, -4.5], [.6 + pull * 2.6, 0], [.6, 4.5]], k), sw * .45, '#F0E2C0', 'inkfine', 0);
+    paint(ribbon(U([[.6, -4.6], [-.55, -2.8], [-.95, -.6], [-.95, .6], [-.55, 2.8], [.6, 4.6]], k), .24 * k, .24 * k), { wash: wood, ink: NRD.ink, sw: sw * .5 });
+    paint(U([[-1.15, -.6], [-.7, -.6], [-.7, .6], [-1.15, .6]], k), { wash: '#F2C230', ink: NRD.ink, sw: sw * .4 });
+    if (arrow && pull > .05) {
+      const ax = (.6 + pull * 2.6) * k;
+      inkLine([[ax, 0], [-3.4 * k, 0]], sw * 1.1, '#A0784A', 'ink', 0);
+      paint([[-3.4 * k, -.35 * k], [-4.4 * k, 0], [-3.4 * k, .35 * k]], { wash: '#C8CCD8', ink: NRD.ink, sw: sw * .4 });
+    }
+    pop();
+  };
+}
+
 // ---------- lettering ----------
 // Devanagari verse lines (gold, ink-stroked, a soft glow behind), popping in line by line; age = seconds since the first
 function rkVerse(lines, x, y, size, age, o = {}) {
@@ -349,7 +369,7 @@ function ramayanIdent(t, lt, part, title) {
 }
 
 // ---------- the follow card ----------
-// C: { part (the NEXT part's number), title (its title), at: { head, title, pill, ask, books } (absolute times) }
+// C: { part (the NEXT part's number), title (its title), sale (the books line; default the Insta Family Sale), at: { head, title, pill, ask, books } (absolute times) }
 function followCard(t, lt, C) {
   boilSeed('fcbg');
   paint(rectPts(-60, -60, W + 120, H + 120), { wash: RMY.maroon, ink: null });
@@ -375,9 +395,10 @@ function followCard(t, lt, C) {
   if (t > A.ask) letter(C.ask || 'Comment JAI SHRI RAM 🙏', X, 1200, 56, RMY.gold, { screen: true, stroke: RMY.maroonDk, sw: .2, ink: false, pop: pk(A.ask), maxW: 820 });
   if (t > A.books) {
     const a = pk(A.books);
-    [['book1', -1], ['book2', 0], ['book3', 1]].forEach(([b, i], j) => picture(PICS[b], X - 260 + i * 70 + 70, 1360, 84, 84, { rot: i * .08, pop: Math.max(0, a - j * .5), r: 6, shadow: 10 }));
-    letter('Our picture books · Books 1–3 for ₹500', X + 90, 1340, 30, RMY.cream, { screen: true, font: '700 30px Poppins', ink: false, pop: a, maxW: 560 });
-    letter('rishikatha.com · link in bio', X + 90, 1385, 30, RMY.peach, { screen: true, font: '500 30px Poppins', ink: false, pop: a, maxW: 560 });
+    // the three covers in a row, the two lines under them (owner, 23 Oct 2026: the text sat on the covers; no price, the sale)
+    [['book1', -1], ['book2', 0], ['book3', 1]].forEach(([b, i], j) => picture(PICS[b], X + i * 96, 1300, 84, 84, { rot: i * .06, pop: Math.max(0, a - j * .5), r: 6, shadow: 10 }));
+    letter(C.sale || 'Insta Family Sale · till 25 Oct', X, 1398, 36, RMY.gold, { screen: true, font: '700 36px Poppins', ink: false, pop: a, maxW: 820 });
+    letter('Our picture books · rishikatha.com · link in bio', X, 1446, 28, RMY.cream, { screen: true, font: '500 28px Poppins', ink: false, pop: a, maxW: 820 });
   }
 }
 
