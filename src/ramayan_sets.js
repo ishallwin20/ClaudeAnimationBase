@@ -60,7 +60,9 @@ function ashram(t, key = 'as') {
   tree(1130, 1380, 600, key + 'b', Math.sin(t * .8 + 1) * .3);
   hut(860, 1380, 380, key + 'hut');
   boilSeed(key + 'ground');
-  paint([[-900, 1340], [300, 1310], [800, 1350], [1980, 1320], [1980, 2800], [-900, 2800]], { wash: P1.earth, fill: P1.earthDk, fillOp: 50, tex: .5, ink: P1.ink, sw: .8, curv: .5 });
+  paint(rectPts(-900, 1335, W + 1800, 1500), { wash: P1.earth, ink: null });
+  paint(ellPts(540, 1700, 1000, 300, 24), { fill: P1.earthDk, fillOp: 60, bleed: .3, tex: .5, ink: null });
+  inkLine([[-200, 1340], [300, 1310], [800, 1350], [1300, 1320]], .8, P1.ink, 'ink', .5);
   paint(ellPts(540, 1900, 900, 300, 24), { fill: P1.grass, fillOp: 120, bleed: .3, tex: .5, ink: null });
   bush(80, 1420, 110, key + 'b1'); bush(1040, 1440, 130, key + 'b2');
 }
