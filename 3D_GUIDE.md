@@ -14,6 +14,7 @@ section all work the same way here.
 | `src/vendor/three.min.js` | three.js r170 as a classic script (`window.THREE`), so `studio.html` still opens from `file://` (ES modules don't). Built with esbuild from `three` + `RoundedBoxGeometry` + `BufferGeometryUtils`; to rebuild, bundle an entry that re-exports them: `npx esbuild entry.js --bundle --format=iife --global-name=THREE --minify` |
 | `src/cine3d.js` | the bridge: one WebGL renderer (shadows, ACES, sRGB) and `render3()`, the camera, meshes, procedural textures (granite, water, glow, flame, footprints), lamps, water, footprints, skies and the moods (`world3()`) |
 | `src/cine3d_temple.js` | the shrine set: `shrine3(scene)` and the pradakshina path `path3(s)` |
+| `src/cine3d_kailash.js` | Mount Kailash and its plateau (1 unit = 100 m): `kailash3()` builds the ledged, snow-banded peak, the kora valley and the Dolma La, the lakes and far ranges, coloured per pixel by a terrain shader (`terrainMat3`); moods morning / day / golden / alpen / blue / map; `kora(s)`, `ribbon()`, `river()`, `flags()`, clouds and the summit's plume. Set `CAM3.far = 4500`. First used on `ad/41-books123-kailash` |
 | `cine3d.html`, `src/scenes/cine3d_sheet.js` | the studio page on main: the shrine in its three moods ([docs/cine3d_set.jpg](docs/cine3d_set.jpg)) |
 
 ## Start a reel in this style
