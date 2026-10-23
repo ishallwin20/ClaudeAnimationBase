@@ -1,4 +1,4 @@
-// rp3.js: Ramayan Part 3, "The King's Curse" (~74 s, Painted, an English voiceover with captions in Bangers, SFX). Told
+// rp3.js: Ramayan Part 3, "The King's Curse" (68.6 s, Painted, no voice: captions in Bangers, SFX, a soft tanpura). Told
 // from the Valmiki Ramayana, Ayodhya Kanda: Ram leaves with Sita and Lakshman, the city weeps and the king follows the
 // chariot (40); Sumantra comes back without them (57); that night Dasharatha tells Kausalya what he did as a prince
 // (63): he could shoot by sound; one rainy night at the Sarayu he heard what he took for an elephant drinking, shot,
@@ -7,21 +7,13 @@
 // your son (64); Dasharatha dies that night, crying for Ram (64). The twist: back then he had no son at all. The Part 4
 // tease (the crow and the blade of grass) and the follow card.
 // STORYBOARD.md has the plan and the sources; sets and cast in rp3_props.js, src/ramayan_sets.js and src/ramayan.js.
-// Every time comes from the voice (src/scenes/rp3_vo.js from tools/rp3_vo.json); tools/rp3_sfx.mjs recomputes them.
+// Every time comes from src/scenes/rp3_tl.js (TL), which tools/rp3_sfx.mjs reads too.
 (() => {
-  const LN = VO.lines, capOf = id => VO.caps.filter(c => c.id === id), Wd = (id, ci, wi) => capOf(id)[ci].at[wi];
-  const mid = (a, b) => (LN[a].end + LN[b].a) / 2;
-  const B0 = mid('hook', 'intro'), C0 = mid('intro', 'leave'), D0 = mid('leave', 'back'), E0 = mid('back', 'night'), F0 = mid('night', 'young'), F1 = mid('young', 'river');
-  const G0 = mid('ask', 'parents'), H0 = mid('curse', 'twist'), I0 = mid('twist', 'died'), J0 = mid('died', 'next'), K0 = mid('next', 'follow'), END = LN.follow.end + 2.5;
-  const KILLED = Wd('hook', 0, 2), HIM = Wd('hook', 0, 11), WEPT = Wd('leave', 1, 2), RAN = Wd('leave', 1, 7), ALONE = Wd('back', 0, 6);
-  const SECRET = Wd('night', 0, 7), SKILL = Wd('young', 0, 7), BYSOUND = Wd('young', 0, 11);
-  const SARAYU = Wd('river', 0, 5), SOUND = Wd('river', 0, 9), ELEPH = Wd('river', 0, 12), SHOT = Wd('shot', 0, 1), BOY = Wd('shot', 0, 4);
-  const ASCETIC = Wd('pot', 0, 2), BLIND = Wd('pot', 0, 8), TAKE = Wd('ask', 0, 0), DIED = Wd('ask', 0, 7);
-  const QUIET = Wd('parents', 0, 6), TRUTH = Wd('parents', 1, 7), CURSED = Wd('curse', 0, 2), GRIEV = Wd('curse', 0, 8);
-  const NOSON = Wd('twist', 0, 4), CRYING = Wd('died', 0, 1), VERY = Wd('died', 0, 7), CROW = Wd('next', 0, 7), GRASS = Wd('next', 1, 5);
-  const CARD = { head: K0 + .1, title: K0 + .5, pill: LN.follow.a + .2, ask: Wd('follow', 1, 1), books: Wd('follow', 1, 2) + .6 };
-  window.RP3_T = { B0, C0, D0, E0, F0, F1, G0, H0, I0, J0, K0, END, KILLED, HIM, WEPT, RAN, ALONE, SECRET, SKILL, BYSOUND, SARAYU, SOUND, ELEPH, SHOT, BOY, ASCETIC, BLIND, TAKE, DIED,
-    QUIET, TRUTH, CURSED, GRIEV, NOSON, CRYING, VERY, CROW, GRASS, CARD };
+  const { B0, C0, D0, E0, F0, F1, G0, H0, I0, J0, K0, END, KILLED, HIM, WEPT, RAN, ALONE, SECRET, SKILL, BYSOUND, SOUND, ELEPH, SHOT, BOY, ASCETIC, BLIND, TAKE, DIED,
+    QUIET, TRUTH, CURSED, GRIEV, NOSON, CRYING, VERY, CROW, GRASS, CARD } = TL;
+  window.RP3_T = TL;
+  // a mouth that flaps while a character speaks a caption's line (a..b), else the resting one
+  const talk = (t, a, b, rest, open = 'open') => t > a && t < b && Math.sin((t - a) * 15) > -.2 ? open : rest;
 
   const GOLDC = P3.gold;
   const wipeIn = (lt, cols) => { if (lt < .3) { flushLetters(); brushWipe(.5 + lt / .6, cols); } };
@@ -29,14 +21,13 @@
   const CARDC = [RMY.maroon, RMY.saffron], DAYC = [P3.dayHi, P3.road], DUSKC = [P3.duskHi, P3.duskLo], NIGHTC = [P1.nightHi, P1.nightLo], RAINC = [P3.nHi, P3.nLo], FORC = ['#2E5A34', '#5E9A5A'];
 
   function caps(t) {
-    for (const k of VO.caps) {
-      if (k.id === 'intro' || k.id === 'follow') continue;
-      const a = k.id === 'hook' ? -1 : k.a, b = k.b;
+    for (const [a, b, ...lines] of TL.CAPS) {
       if (t < a || t > b) continue;
-      const lines = k.text.split('|').map(s => s.trim()), y0 = 470;
+      let y = 480, prev = 0;
       lines.forEach((l, i) => {
-        const gold = l.includes('*');
-        caption(l.replace(/\*/g, '').toUpperCase(), y0 + i * 104, t - a - i * .12, { life: b - a - i * .12, size: gold ? 92 : 76, color: gold ? GOLDC : undefined });
+        const huge = l[0] === '^', gold = huge || l.includes('*'), size = huge ? 112 : gold ? 88 : 74, age = a < 0 ? t - a : t - a - i * .35;
+        if (i) y += (prev + size) * .56; prev = size;
+        caption(l.replace(/[*^]/g, '').toUpperCase(), y, age, { life: b - a - (a < 0 ? 0 : i * .35), size, color: gold ? GOLDC : undefined });
       });
     }
   }
@@ -111,7 +102,7 @@
   function shotNight(t, lt, dur) {
     camBegin(540, 1420, 1.05 + lt * .015);
     bedroom(t, 'e', 1);
-    lyingKing(720, 1555, 17, { boilKey: 'ek', eyes: 'normal', mouth: Math.sin(t * 8) > 0 ? 'open' : 'flat', brow: .8, lookY: -.5 });
+    lyingKing(720, 1555, 17, { boilKey: 'ek', eyes: 'normal', mouth: talk(t, E0 + .3, F0 - .4, 'flat'), brow: .8, lookY: -.5 });
     kausalya(880, 1780, 21, { boilKey: 'ekq', eyes: 'normal', mouth: 'O', brow: .6, lookX: -.8, hx: -.3, handL: [-4.6, -14], bendL: .4 });
     if (t > SECRET - .3) { const k = backOut(clamp((t - SECRET + .3) * 3)); boilSeed('ebub'); for (let i = 0; i < 3; i++) paint(ellPts(lerp(300, 420, i / 3), lerp(1330, 1150, i / 3), (10 + i * 6) * k, (10 + i * 6) * k, 10), { wash: '#C8D6EE', ink: P3.ink, sw: .8 }); paint(ellPts(520, 980, 220 * k, 170 * k, 22, 4), { wash: '#1E2A44', ink: P3.ink, sw: 1.2, curv: .8 }); if (k > .5) youngKing(520, 1120, 7 * k, { boilKey: 'eby', mouth: 'flat' }); }
     camEnd();
@@ -141,7 +132,7 @@
     // the boy among the reeds: hidden, then revealed, slumped with his pot; he speaks and dies
     if (t > BOY - .2) {
       const reveal = ease(seg(t, BOY + .3, ASCETIC)), died = ease(seg(t, DIED - .2, DIED + .4));
-      ascetic(bx - 40, 1760, 20, { boilKey: 'fb', rot: lerp(-.5, -1.4, died), dy: 1.5, eyes: t > DIED - .2 ? 'closed' : 'wide', mouth: t > DIED ? 'flat' : t > TAKE ? (Math.sin(t * 7) > 0 ? 'open' : 'O') : 'O', noShadow: true, aR: -.2 });
+      ascetic(bx - 40, 1760, 20, { boilKey: 'fb', rot: lerp(-.5, -1.4, died), dy: 1.5, eyes: t > DIED - .2 ? 'closed' : 'wide', mouth: t > DIED - .2 ? 'flat' : talk(t, TAKE, DIED - .3, 'O'), noShadow: true, aR: -.2 });
       arrowAt(bx - 10, 1600, .25 + lerp(-.5, -1.4, died), 140, 'fstuck');
       pot(bx + 140, 1740, 80, 1.3, 'fpot', t > BLIND ? 1 : 0);
       if (reveal < 1) { bush(bx + 20, 1780, 220 * (1 - reveal * .6), 'fbush', '#2A5038', '#1E3A2A'); }
@@ -162,14 +153,14 @@
     hut(330, 1560, 420, 'ghut');
     glow(330, 1440, 220, P3.lamp, .3);
     const rise = ease(seg(t, CURSED - .4, CURSED + .2)), point = ease(seg(t, GRIEV - .4, GRIEV));
-    blindFather(220, 1820, 20, { boilKey: 'gf', sit: rise > .5 ? 0 : 1, mouth: t > CURSED ? (Math.sin(t * 9) > -.2 ? 'open' : 'frown') : t > QUIET - .6 && t < QUIET + .3 ? 'open' : 'smile', brow: t > TRUTH ? .9 : 0, tint: t > CURSED ? 'flush' : null, tintK: .25,
+    blindFather(220, 1820, 20, { boilKey: 'gf', sit: rise > .5 ? 0 : 1, mouth: t > CURSED ? talk(t, CURSED, H0 - .4, 'frown') : talk(t, QUIET - .2, TRUTH - .3, 'smile'), brow: t > TRUTH ? .9 : 0, tint: t > CURSED ? 'flush' : null, tintK: .25,
       handR: point > 0 ? [lerp(3.4, 8.6, point), lerp(-11, -21, point)] : undefined, bendR: .3, hx: .4, emote: t > TRUTH && t < CURSED ? 'cloud' : undefined, emoteK: 1, emoteAge: t });
     blindMother(470, 1820, 18, { boilKey: 'gm', mouth: t > TRUTH ? 'wobble' : 'smile', hx: .3, handR: t > TRUTH ? [.4, -21.5] : undefined, bendR: 1.2 });
     if (t > TRUTH) { tears(...naradaEye(220, 1820, 20, { sit: rise > .5 ? 0 : 1, hx: .4 }, 1), t, 'gft', .8); }
     if (t > CURSED) glow(...naradaHand(220, 1820, 20, { handR: [8.6, -21], bendR: .3 }, 1), 200 * point, '#FF7050', .6 * point);
     // the prince comes with the pot, kneels, confesses
     const inK = easeOut(seg(t, G0, G0 + 1.4)), kn = t > QUIET;
-    youngKing(lerp(1300, 700, inK), 1820, 21, { boilKey: 'gy', flip: true, walk: inK < 1 ? t * 1.4 : undefined, sit: kn ? 1 : 0, bow: kn ? .5 : 0, pray: t > TRUTH ? 1 : 0, eyes: t > CURSED ? 'wide' : 'closed', mouth: t > TRUTH ? 'open' : 'frown', brow: .9, sweat: t > CURSED,
+    youngKing(lerp(1300, 700, inK), 1820, 21, { boilKey: 'gy', flip: true, walk: inK < 1 ? t * 1.4 : undefined, sit: kn ? 1 : 0, bow: kn ? .5 : 0, pray: t > TRUTH ? 1 : 0, eyes: t > CURSED ? 'wide' : 'closed', mouth: talk(t, TRUTH, CURSED - .3, 'frown'), brow: .9, sweat: t > CURSED,
       handL: !kn || t < TRUTH ? [-4.6, -13.4] : undefined, armL: !kn || t < TRUTH ? (u, sw) => pot(0, -.8 * u, 2.6 * u, 0, 'gpot') : undefined });
     camEnd();
     rain(t, 'grain', .7);
