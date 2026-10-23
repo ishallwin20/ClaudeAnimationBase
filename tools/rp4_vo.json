@@ -1,0 +1,125 @@
+{
+ "name": "rp4",
+ "defaults": {
+  "speaker": "girish_en_devotional",
+  "lang": "en-IN",
+  "pace": 1.2
+ },
+ "lines": [
+  {
+   "id": "hook",
+   "t": 0.15,
+   "caps": [
+    "Ram once fired | a *BRAHMASTRA* at a crow. | With a *BLADE OF GRASS.*"
+   ],
+   "tts": "Ram once fired a Brahmastra at a crow. With a blade of grass."
+  },
+  {
+   "id": "intro",
+   "gap": 0.5,
+   "caps": [
+    "Welcome to *PART 4* | of the *RAMAYAN* series."
+   ],
+   "tts": "Welcome to part four of the Ramayan series."
+  },
+  {
+   "id": "rest",
+   "gap": 0.6,
+   "caps": [
+    "In the forest of *CHITRAKOOT,* | Ram and Sita | rested by the water."
+   ],
+   "tts": "In the forest of Chitrakoot, Ram and Sita rested by the water."
+  },
+  {
+   "id": "peck",
+   "gap": 0.6,
+   "caps": [
+    "A crow kept | pecking at *SITA.* | She threw a clod of earth.",
+    "It came back, | and clawed her | until she *BLED.*"
+   ],
+   "tts": "A crow kept pecking at Sita. She threw a clod of earth. It came back, and clawed her until she bled."
+  },
+  {
+   "id": "wake",
+   "gap": 0.7,
+   "caps": [
+    "Ram woke | and saw the blood.",
+    "This was no ordinary crow. | It was *INDRA'S OWN SON.*"
+   ],
+   "tts": "Ram woke and saw the blood. This was no ordinary crow. It was Indra's own son.",
+   "hold": 0.6
+  },
+  {
+   "id": "grass",
+   "gap": 0.7,
+   "caps": [
+    "Ram picked up | a *BLADE OF GRASS,* | and turned it into a *BRAHMASTRA.*"
+   ],
+   "tts": "Ram picked up a blade of grass, and turned it into a Brahmastra.",
+   "hold": 0.6
+  },
+  {
+   "id": "flee",
+   "gap": 0.7,
+   "caps": [
+    "The crow fled, | through *ALL THREE WORLDS.*",
+    "His father Indra, the gods, | the sages: | *NO ONE* would shelter him."
+   ],
+   "tts": "The crow fled, through all three worlds. His father Indra, the gods, the sages: no one would shelter him."
+  },
+  {
+   "id": "back",
+   "gap": 0.7,
+   "caps": [
+    "So he came back, | and fell at | *RAM'S FEET.*"
+   ],
+   "tts": "So he came back, and fell at Ram's feet.",
+   "hold": 0.6
+  },
+  {
+   "id": "eye",
+   "gap": 0.7,
+   "caps": [
+    "A Brahmastra | can never be wasted.",
+    "So the crow gave up | his *RIGHT EYE,* | and Ram *SPARED* him."
+   ],
+   "tts": "A Brahmastra can never be wasted. So the crow gave up his right eye, and Ram spared him."
+  },
+  {
+   "id": "twist",
+   "gap": 0.9,
+   "caps": [
+    "Years later, in *LANKA,* | Sita told Hanuman this story,",
+    "a secret | *ONLY RAM* would know."
+   ],
+   "tts": "Years later, in Lanka, Sita told Hanuman this story, a secret only Ram would know."
+  },
+  {
+   "id": "why",
+   "gap": 0.6,
+   "caps": [
+    "And she asked: | for a crow, a Brahmastra.",
+    "Why not for | the demon *WHO TOOK ME?*"
+   ],
+   "tts": "And she asked: for a crow, a Brahmastra. Why not for the demon who took me?",
+   "hold": 0.8
+  },
+  {
+   "id": "next",
+   "gap": 0.9,
+   "caps": [
+    "*NEXT, PART 5:* | one man against | *FOURTEEN THOUSAND* demons."
+   ],
+   "tts": "Next, part five. One man, against fourteen thousand demons."
+  },
+  {
+   "id": "follow",
+   "gap": 0.6,
+   "caps": [
+    "*FOLLOW* | so you don't miss it,",
+    "and comment | *JAI SHRI RAM!*"
+   ],
+   "tts": "Follow, so you don't miss it, and comment, Jai Shri Ram!"
+  }
+ ]
+}
