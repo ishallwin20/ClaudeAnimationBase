@@ -7,7 +7,7 @@
 // (x, y) is the ground point under him; u is narada()'s unit (the kirita tops out near -28.6). Every narada() option
 // works (walk, sit, bow, pray, lean, hx, handL / handR, eyes, mouth, emote, …) except the veena and the topknot.
 // His own options:
-//   kodanda   (default true) the bow across his back, its top behind his left shoulder; false when he sits on a throne
+//   kodanda   (default true) the bow on his back, upright behind his left side; false when he sits on a throne
 //   crown     'kirita' (default) | 'small' (a low crown: Lakshman) | false
 //   pal       overrides RAM (his colours); LAKSHMAN_PAL is Lakshman
 // Helpers: as narada's (naradaHand, naradaHead, naradaMouth, …: same body).
@@ -57,9 +57,11 @@ function ramKirita(u, sw, o, C) {
 }
 // the Kodanda across his back, in body space: the top behind his left shoulder (screen left), the foot by his right hip
 function ramBow(u, sw, C) {
-  const P = pts => U(pts, u), INK = C.ink, A = [-4.4, -21.5], B = [4.2, -5.2];
+  // upright on his left side, the string behind him, both tips on the same side (owner, 23 Oct 2026: the old diagonal
+  // showed its top on one side and its bottom on the other)
+  const P = pts => U(pts, u), INK = C.ink, A = [-4.5, -22.6], B = [-4.5, -4.8];
   inkLine(P([A, B]), sw * .5, C.string, 'inkfine', 0);
-  paint(ribbon(P([A, [-4.9, -17.5], [-3.6, -13.4], [0, -11.4], [3.3, -9.6], [4.7, -7.2], B]), .42 * u, .3 * u), { wash: C.wood, fill: C.woodDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .6 });
+  paint(ribbon(P([A, [-5.6, -20.6], [-6.4, -17.2], [-6.7, -13.7], [-6.4, -10.2], [-5.6, -6.8], B]), .42 * u, .3 * u), { wash: C.wood, fill: C.woodDk, fillOp: 50, tex: .4, ink: INK, sw: sw * .6 });
   for (const p of [A, B]) paint(ellPts(p[0] * u, p[1] * u, .3 * u, .3 * u, 8), { wash: C.gold, ink: INK, sw: sw * .4 });
 }
 
