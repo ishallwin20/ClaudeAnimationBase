@@ -1,0 +1,32 @@
+{
+  "name": "rp1",
+  "defaults": { "speaker": "girish_en_devotional", "lang": "en-IN", "pace": 1.2 },
+  "lines": [
+    { "id": "hook", "t": 0.15, "caps": ["The world's *FIRST POEM* | was a *CURSE.*"], "tts": "The world's first poem, was a curse." },
+    { "id": "intro", "gap": 0.5, "caps": ["Welcome to *PART 1* | of the *RAMAYAN* series."], "tts": "Welcome to part one of the Ramayan series." },
+    { "id": "ask", "gap": 0.6, "caps": ["The sage *VALMIKI* | once asked *NARAD MUNI:*", "Is there anyone on earth | who is *TRULY PERFECT?*"],
+      "tts": "The sage Valmiki once asked Narad Muni: Is there anyone on earth who is truly perfect?" },
+    { "id": "narad", "gap": 0.6, "caps": ["Narad smiled. | There is. | His name is *RAM.*"], "tts": "Narad smiled. There is. His name is Ram.", "hold": 0.8 },
+    { "id": "river", "gap": 0.8, "caps": ["Later, by the | *TAMASA RIVER,*", "Valmiki watched | two *KRAUNCHA BIRDS,* | always together."],
+      "tts": "Later, by the Tamasa river, Valmiki watched two krauncha birds, always together." },
+    { "id": "arrow", "gap": 0.5, "caps": ["Then a hunter's arrow | killed the *MALE.*", "His mate | cried over him."],
+      "tts": "Then a hunter's arrow killed the male. His mate cried over him.", "hold": 0.8 },
+    { "id": "burst", "gap": 0.7, "caps": ["Valmiki's heart broke, | and words *BURST OUT:*"], "tts": "Valmiki's heart broke, and words burst out:" },
+    { "id": "shloka", "gap": 0.4, "caps": ["*MA NISHADA…*"], "tts": "Maa nishaada, pratishthaam tvam agamah, shaashvateeh samaah!", "hold": 0.6 },
+    { "id": "curse", "gap": 0.5, "caps": ["Hunter, may you never | find peace,", "for you killed a bird | *LOST IN LOVE!*"],
+      "tts": "Hunter, may you never find peace, for you killed a bird lost in love!", "hold": 0.6 },
+    { "id": "froze", "gap": 0.8, "caps": ["Then he *FROZE.*", "His grief had come out | in perfect rhythm, | fit to be *SUNG.*"],
+      "tts": "Then he froze. His grief had come out in perfect rhythm, fit to be sung." },
+    { "id": "shoka", "gap": 0.5, "caps": ["From *SHOKA,* grief, | came the first *SHLOKA.*"], "tts": "From shoka, grief, came the first shloka.", "hold": 0.8 },
+    { "id": "brahma", "gap": 0.8, "caps": ["Then *BRAHMA* himself appeared:", "That verse came | *BY MY WILL.*", "Now tell | *RAM'S WHOLE STORY* in it."],
+      "tts": "Then Brahma himself appeared: That verse came by my will. Now tell Ram's whole story in it." },
+    { "id": "promise", "gap": 0.6, "caps": ["As long as mountains stand | and rivers flow,", "the *RAMAYAN* | will be told."],
+      "tts": "As long as mountains stand and rivers flow, the Ramayan will be told.", "hold": 0.8 },
+    { "id": "twist", "gap": 0.8, "caps": ["And the first to sing it?", "Ram's own sons, | *LAV AND KUSH,*", "in front of | *RAM HIMSELF.*"],
+      "tts": "And the first to sing it? Ram's own sons, Lav and Kush, in front of Ram himself.", "hold": 0.8 },
+    { "id": "next", "gap": 0.9, "caps": ["*PART 2:* | the night before | Ram is crowned,", "a queen asks | for *TWO BOONS.*"],
+      "tts": "Part two: the night before Ram is crowned, a queen asks for two boons." },
+    { "id": "follow", "gap": 0.6, "caps": ["*FOLLOW* | so you don't miss it,", "and comment | *JAI SHRI RAM!*"],
+      "tts": "Follow, so you don't miss it, and comment, Jai Shri Ram!" }
+  ]
+}
