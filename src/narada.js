@@ -59,8 +59,8 @@ function naradaArm(o, s) {
   return [sh, [(sh[0] + ha[0]) / 2 + nx * b, (sh[1] + ha[1]) / 2 + ny * b], ha];
 }
 function naradaLocal(x, y, u, o, px, py) {
-  const sq = o.sq || 0, fx = o.flip ? -1 : 1, l = o.lean || 0, r = l * .035;
-  const qx = px + l * .6, qy = py + 12, hx = qx * Math.cos(r) - qy * Math.sin(r), hy = qx * Math.sin(r) + qy * Math.cos(r) - 12 + (o.sit ? NRD_SIT : 0);
+  const sq = o.sq || 0, fx = o.flip ? -1 : 1, l = o.lean || 0, r = l * .07;
+  const qx = px, qy = py + 12, hx = qx * Math.cos(r) - qy * Math.sin(r), hy = qx * Math.sin(r) + qy * Math.cos(r) - 12 + (o.sit ? NRD_SIT : 0);
   const R = o.rot || 0, X = fx * hx * (1 + sq * .6), Y = hy * (1 - sq);
   return [x + (o.dx || 0) * u + (X * Math.cos(R) - Y * Math.sin(R)) * u, y + (o.dy || 0) * u + (X * Math.sin(R) + Y * Math.cos(R)) * u];
 }
@@ -123,7 +123,7 @@ function narada(x, y, u, o = {}) {
   if (o.rot) rotate(o.rot);
   scale((o.flip ? -1 : 1) * (1 + sq * .6), 1 - sq);
   if (o.behind) { rs('behind'); o.behind(u, sw); }   // body space, under everything: a tail, a bow on the back
-  const upper = f => { push(); if (sit) translate(0, NRD_SIT * u); translate(0, -12 * u); rotate(lean * .035); translate(lean * .6 * u, 12 * u); f(); pop(); };
+  const upper = f => { push(); if (sit) translate(0, NRD_SIT * u); translate(0, -12 * u); rotate(lean * .07); translate(0, 12 * u); f(); pop(); };   // about the waist, no slide (a slide parted the torso from the dhoti)
   const headT = () => { translate(hx * .5 * u, (bw * .5 - pf * .3) * u); translate(0, -18 * u); if (o.htilt) rotate(o.htilt); rotate(-pf * .06); scale(NRD_HS); translate(0, 18 * u); };
 
   if (sit) {

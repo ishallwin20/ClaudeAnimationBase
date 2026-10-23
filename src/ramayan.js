@@ -18,6 +18,11 @@
 //                                (no crown: the jewels torn off), o.hairDown 0..1 (her hair loose over her shoulders)
 //   manthara(x, y, u, o)         Manthara, Kaikeyi's hunchbacked maid (Ayodhya 7.1): Parvati's rig, old, grey hair under
 //                                a brown odhni, a hump behind her shoulders, stooped; every parvati() option works
+//   goldenDeer(x, y, s, o)       Maricha's golden deer (Aranya 42): side view facing screen right (o.flip), a gold coat
+//                                with silver spots, antlers tipped with gems; o.walk phase, o.leap 0..1 (mid-bound, legs
+//                                tucked), o.neck (radians), o.look ('back': the head turned over the shoulder), o.glow
+//   surpanakha(x, y, u, o)       Ravana's sister on Parvati's rig: grey-green skin, a wild violet mane, little tusks, a
+//                                dark plum saree; o.hurt 0..1 (hands over her face: after Lakshman's sword)
 //   rkVerse(lines, x, y, size, age, o)   Devanagari in gold (Tiro Devanagari Sanskrit), line by line, glowing
 //   ramayanIdent(t, lt, part, title)     the series ident: RAMAYAN in gold over a saffron sunburst, Ram with his bow,
 //                                        the part pill and the episode title
@@ -248,6 +253,88 @@ function manthara(x, y, u, o = {}) {
   return parvati(x, y, u, q);
 }
 
+
+// ---------- the golden deer ----------
+const GDEER = { coat: '#E8B83A', coatDk: '#B8862A', coatLt: '#FFE07A', spot: '#F4F4FA', belly: '#FFF0C0', antler: '#C8A05A', gem: '#E2283A', gem2: '#3EB8E8', hoof: '#6A4A2A', ink: '#3A2418' };
+function goldenDeer(x, y, s, o = {}) {
+  const C = { ...GDEER, ...(o.col || {}) }, fx = o.flip ? -1 : 1, key = o.key || 'gd', sw = clamp(s / 150, .5, 1.5), leap = clamp(o.leap || 0), wk = o.walk;
+  if (o.glow) glow(x, y - s * .7, s * 1.3, '#FFE070', .5 * o.glow);
+  boilSeed(key + 'sh'); paint(ellPts(x, y, s * .5 * (1 - leap * .4), s * .07, 16), { fill: RMY.ink, fillOp: 60 * (1 - leap * .6), bleed: .2, tex: .3, ink: null });
+  push(); translate(x, y - leap * s * .35); scale(fx, 1); if (leap) rotate(-.12 * Math.sin(leap * Math.PI));
+  const L = s * .42, by = -L - s * .18;
+  boilSeed(key + 'legs');
+  const legs = [[-s * .3, 0], [-s * .22, .5], [s * .22, .25], [s * .3, .75]];
+  for (const [hx, ph] of legs) {
+    const w = wk == null ? 0 : Math.sin((wk + ph) * TAU) * .35, tuck = leap;
+    const hip = [hx, by + s * .06], knee = [hx + w * s * .12 + (hx < 0 ? -1 : 1) * tuck * s * .18, by + L * .5 - tuck * s * .15], foot = [hx + w * s * .25 + (hx < 0 ? -1 : 1) * tuck * s * .32, -tuck * s * .1];
+    paint(ribbon([hip, knee, foot], s * .07, s * .04), { wash: C.coatDk, ink: C.ink, sw: sw * .6 });
+    paint(ellPts(foot[0], foot[1], s * .035, s * .025, 8), { wash: C.hoof, ink: null });
+  }
+  boilSeed(key + 'body');
+  paint([[-s * .45, by], [-s * .32, by - s * .2], [s * .1, by - s * .22], [s * .38, by - s * .14], [s * .45, by + s * .05], [s * .25, by + s * .2], [-s * .3, by + s * .19]], { wash: C.coat, fill: C.coatDk, fillOp: 40, tex: .4, ink: C.ink, sw, curv: .55 });
+  paint(ellPts(0, by + s * .08, s * .3, s * .05, 14), { wash: C.belly, washOp: 200, ink: null });
+  for (let i = 0; i < 9; i++) paint(ellPts(-s * .3 + hash(i * 3.1) * s * .6, by - s * .1 + hash(i * 5.3) * s * .16, s * .025, s * .02, 8), { wash: C.spot, ink: null });   // silver spots
+  paint([[-s * .42, by - s * .04], [-s * .5, by - s * .14], [-s * .44, by + s * .02]], { wash: C.coatLt, ink: C.ink, sw: sw * .6 });   // the tail flick
+  // neck and head (look 'back' turns the head over the shoulder)
+  boilSeed(key + 'neck');
+  const back = o.look === 'back', na = (o.neck ?? .3) + (back ? -.9 : 0), n0 = [s * .3, by - s * .12], nl = s * .36;
+  const head = [n0[0] + Math.sin(na) * nl * (back ? -.4 : 1), n0[1] - Math.cos(na) * nl];
+  paint(ribbon([n0, [lerp(n0[0], head[0], .5), lerp(n0[1], head[1], .5)], head], s * .15, s * .09), { wash: C.coat, ink: C.ink, sw: sw * .8 });
+  push(); translate(head[0], head[1]); if (back) scale(-1, 1); rotate(.25); scale(1.5);
+  paint(ellPts(s * .05, 0, s * .1, s * .065, 14), { wash: C.coat, ink: C.ink, sw: sw * .8 });
+  paint(ellPts(s * .14, s * .02, s * .04, s * .03, 10), { wash: C.coatDk, ink: C.ink, sw: sw * .5 });   // the muzzle
+  paint(ellPts(s * .19, s * .015, s * .012, s * .01, 6), { wash: C.ink, ink: null });
+  paint(ellPts(s * .04, -s * .015, s * .018, s * .02, 8), { wash: C.ink, ink: null }); paint(ellPts(s * .045, -s * .02, s * .006, s * .006, 6), { wash: '#FFFFFF', ink: null });
+  paint([[-s * .02, -s * .04], [-s * .1, -s * .1], [-s * .03, -s * .02]], { wash: C.coatDk, ink: C.ink, sw: sw * .5 });   // ear
+  // antlers with gems on every tip
+  for (const k of [-1, 1]) {
+    const b = [s * .01 + k * s * .015, -s * .05], t1 = [b[0] - s * .06 + k * s * .02, b[1] - s * .2], br = [lerp(b[0], t1[0], .5) + s * .06, lerp(b[1], t1[1], .5) - s * .04];
+    paint(ribbon([b, t1], s * .025, s * .012), { wash: C.antler, ink: C.ink, sw: sw * .4 }); paint(ribbon([[lerp(b[0], t1[0], .45), lerp(b[1], t1[1], .45)], br], s * .02, s * .01), { wash: C.antler, ink: C.ink, sw: sw * .4 });
+    for (const [gx, gy, c] of [[...t1, C.gem], [...br, C.gem2]]) { glow(gx, gy, s * .06, '#FFFFFF', .35); paint(ellPts(gx, gy, s * .022, s * .022, 8), { wash: c, ink: C.ink, sw: sw * .3 }); }
+  }
+  pop();
+  pop();
+  boilSeed(key + 'after');
+}
+// ---------- Surpanakha ----------
+const SURP_PAL = { skin: '#8E9A7A', skinDk: '#6A7658', skinLt: '#B0BC98', saree: '#4A1E4A', sareeDk: '#2E1030', sareeLt: '#7A3A7A', blouse: '#8A2A2A', blouseDk: '#5E1A1A', hair: '#3A1E4A', hairLt: '#5A3A6E', gold: '#B8862E', goldDk: '#7A5A1E', goldLt: '#D8B060', lip: '#5A2A3A', sindoor: '#8A2A2A', bangle: '#B8862E' };
+function surpanakha(x, y, u, o = {}) {
+  const hurt = clamp(o.hurt || 0), beh = o.behind;
+  const q = { crown: false, eyes: 'angry', ...o, pal: { ...SURP_PAL, ...(o.pal || {}) }, col: SURP_PAL.skin, dk: SURP_PAL.skinDk, lt: SURP_PAL.skinLt };
+  q.behind = (uu, sw) => {   // the wild mane, spiking out behind her head
+    const P = pts => U(pts, uu), cx = 0, cy = -20;
+    const pts = []; for (let i = 0; i <= 14; i++) { const a = Math.PI * (1.05 + i / 14 * .9) + Math.sin(T * 3 + i) * .04, r = (i % 2 ? 4.2 : 5.6); pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r * 1.1]); }
+    pts.push([4.2, -14.5], [-4.2, -14.5]);
+    paint(P(pts), { wash: SURP_PAL.hair, fill: SURP_PAL.hairLt, fillOp: 40, ink: PRV.ink, sw: sw * .8, curv: .2 });
+    if (beh) beh(uu, sw); };
+  if (hurt > 0) { q.handL = [-1.2, -19.6]; q.handR = [1.2, -19.6]; q.bendL = 1; q.bendR = 1; q.eyes = 'closed'; q.mouth = 'wail'; }
+  delete q.hurt;
+  parvati(x, y, u, q);
+  if (hurt <= 0) {   // the little tusks over her lip
+    const [mx, my] = parvatiHand(x, y, u, { ...o, handR: [0, -18.3] }, 1);
+  }
+}
+
+// ---------- a bow in the hand ----------
+// heldBow(draw, arrow): an armL hook for narada()'s rig (Ram, Lakshman, the young king): a tall bow upright at the hand,
+// its string pulled back by draw 0..1 toward the body (+x in arm space), an arrow nocked while arrow is true. Pair it with
+// handL out to the side ([-7.6, -18]) and handR at the chin; flip the figure to aim screen right.
+function heldBow(draw = 0, arrow = true, wood = '#8A5230') {
+  return (u, sw) => {
+    const k = u / 1.7, pull = clamp(draw);
+    push(); scale(1.7);
+    inkLine(U([[.6, -4.5], [.6 + pull * 2.6, 0], [.6, 4.5]], k), sw * .45, '#F0E2C0', 'inkfine', 0);
+    paint(ribbon(U([[.6, -4.6], [-.55, -2.8], [-.95, -.6], [-.95, .6], [-.55, 2.8], [.6, 4.6]], k), .24 * k, .24 * k), { wash: wood, ink: NRD.ink, sw: sw * .5 });
+    paint(U([[-1.15, -.6], [-.7, -.6], [-.7, .6], [-1.15, .6]], k), { wash: '#F2C230', ink: NRD.ink, sw: sw * .4 });
+    if (arrow && pull > .05) {
+      const ax = (.6 + pull * 2.6) * k;
+      inkLine([[ax, 0], [-3.4 * k, 0]], sw * 1.1, '#A0784A', 'ink', 0);
+      paint([[-3.4 * k, -.35 * k], [-4.4 * k, 0], [-3.4 * k, .35 * k]], { wash: '#C8CCD8', ink: NRD.ink, sw: sw * .4 });
+    }
+    pop();
+  };
+}
+
 // ---------- lettering ----------
 // Devanagari verse lines (gold, ink-stroked, a soft glow behind), popping in line by line; age = seconds since the first
 function rkVerse(lines, x, y, size, age, o = {}) {
@@ -282,7 +369,7 @@ function ramayanIdent(t, lt, part, title) {
 }
 
 // ---------- the follow card ----------
-// C: { part (the NEXT part's number), title (its title), at: { head, title, pill, ask, books } (absolute times) }
+// C: { part (the NEXT part's number), title (its title), sale (the books line; default the Insta Family Sale), at: { head, title, pill, ask, books } (absolute times) }
 function followCard(t, lt, C) {
   boilSeed('fcbg');
   paint(rectPts(-60, -60, W + 120, H + 120), { wash: RMY.maroon, ink: null });
@@ -308,9 +395,10 @@ function followCard(t, lt, C) {
   if (t > A.ask) letter(C.ask || 'Comment JAI SHRI RAM 🙏', X, 1200, 56, RMY.gold, { screen: true, stroke: RMY.maroonDk, sw: .2, ink: false, pop: pk(A.ask), maxW: 820 });
   if (t > A.books) {
     const a = pk(A.books);
-    [['book1', -1], ['book2', 0], ['book3', 1]].forEach(([b, i], j) => picture(PICS[b], X - 260 + i * 70 + 70, 1360, 84, 84, { rot: i * .08, pop: Math.max(0, a - j * .5), r: 6, shadow: 10 }));
-    letter('Our picture books · Books 1–3 for ₹500', X + 90, 1340, 30, RMY.cream, { screen: true, font: '700 30px Poppins', ink: false, pop: a, maxW: 560 });
-    letter('rishikatha.com · link in bio', X + 90, 1385, 30, RMY.peach, { screen: true, font: '500 30px Poppins', ink: false, pop: a, maxW: 560 });
+    // the three covers in a row, the two lines under them (owner, 23 Oct 2026: the text sat on the covers; no price, the sale)
+    [['book1', -1], ['book2', 0], ['book3', 1]].forEach(([b, i], j) => picture(PICS[b], X + i * 96, 1300, 84, 84, { rot: i * .06, pop: Math.max(0, a - j * .5), r: 6, shadow: 10 }));
+    letter(C.sale || 'Insta Family Sale · till 25 Oct', X, 1398, 36, RMY.gold, { screen: true, font: '700 36px Poppins', ink: false, pop: a, maxW: 820 });
+    letter('Our picture books · rishikatha.com · link in bio', X, 1446, 28, RMY.cream, { screen: true, font: '500 28px Poppins', ink: false, pop: a, maxW: 820 });
   }
 }
 
@@ -336,6 +424,8 @@ LOOPS.ayodhya = t => {
   manthara(540, 1400, 18, { boilKey: 'sm', eyes: 'narrow', mouth: 'smirk' });
   manthara(880, 1400, 18, { boilKey: 'sm2', eyes: 'angry', mouth: 'open', handR: [4.6, -19], bendR: .4 });
   ram(540, 1880, 16, { boilKey: 'sr', mouth: 'smile' });
+  goldenDeer(200, 1880, 220, { key: 'sgd', walk: t, glow: 1 });
+  surpanakha(880, 1880, 16, { boilKey: 'ssp', mouth: 'grin' });
 };
 LOOPS.ayodhya.len = 2;
 LOOPS.ramayan.len = 2;

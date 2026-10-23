@@ -60,7 +60,9 @@ function ashram(t, key = 'as') {
   tree(1130, 1380, 600, key + 'b', Math.sin(t * .8 + 1) * .3);
   hut(860, 1380, 380, key + 'hut');
   boilSeed(key + 'ground');
-  paint([[-900, 1340], [300, 1310], [800, 1350], [1980, 1320], [1980, 2800], [-900, 2800]], { wash: P1.earth, fill: P1.earthDk, fillOp: 50, tex: .5, ink: P1.ink, sw: .8, curv: .5 });
+  paint(rectPts(-900, 1335, W + 1800, 1500), { wash: P1.earth, ink: null });
+  paint(ellPts(540, 1700, 1000, 300, 24), { fill: P1.earthDk, fillOp: 60, bleed: .3, tex: .5, ink: null });
+  inkLine([[-200, 1340], [300, 1310], [800, 1350], [1300, 1320]], .8, P1.ink, 'ink', .5);
   paint(ellPts(540, 1900, 900, 300, 24), { fill: P1.grass, fillOp: 120, bleed: .3, tex: .5, ink: null });
   bush(80, 1420, 110, key + 'b1'); bush(1040, 1440, 130, key + 'b2');
 }
@@ -115,6 +117,7 @@ function chamber(t, lit = 1, key = 'ch') {
   paint(ellPts(540, 1300, 800, 700, 26), { fill: P1.nightLo, fillOp: 200, bleed: .3, tex: .4, ink: null });
   boilSeed(key + 'arch');
   for (const s of [-1, 1]) paint([[540 + s * 700, 200], [540 + s * 420, 200], [540 + s * 420, 1600], [540 + s * 700, 1600]], { wash: '#140F28', ink: null });
+  paint(rectPts(-300, 1600, W + 600, 900), { wash: '#140F28', ink: null });
   paint([[120, 1650], [960, 1650], [960, 2400], [120, 2400]], { wash: '#2A2044', ink: null });
 }
 // a gold throne behind a seated figure: its seat centred at (x, y), s wide
