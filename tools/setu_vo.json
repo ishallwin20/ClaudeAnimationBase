@@ -10,7 +10,7 @@
       "id": "hook",
       "t": 0.15,
       "caps": [
-        "This bridge across the *SEA* | was built in *FIVE DAYS.*"
+        "This bridge | across the *SEA* | was built in *FIVE DAYS.*"
       ],
       "tts": "This bridge across the sea was built in five days."
     },
@@ -36,7 +36,7 @@
       "id": "nights",
       "gap": 0.6,
       "caps": [
-        "For three nights, | Ram prayed to the *OCEAN.*",
+        "For three nights, | Ram prayed | to the *OCEAN.*",
         "It never came."
       ],
       "tts": "For three nights, Raam prayed to the ocean. It never came."
@@ -130,7 +130,7 @@
       "id": "milky",
       "gap": 0.7,
       "caps": [
-        "The gods watched from the sky. | It shone like the | *MILKY WAY* on the sea."
+        "The gods watched | from the sky. | It shone like the | *MILKY WAY* on the sea."
       ],
       "tts": "The gods watched from the sky. It shone like the Milky Way on the sea."
     },
