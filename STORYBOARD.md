@@ -1,9 +1,12 @@
 # Ramayan · Part 4: "The Crow and the Grass" (ad 36 · the Ramayan series)
 
-Part 4 of the 11-part Ramayan series (format in ad 33's storyboard). Painted, English voiceover
-(`girish_en_devotional`, pace 1.2), Bangers captions timed to the voice, SFX. 70.1 s. The hook: Ram once fired a
-Brahmastra at a crow, with a blade of grass. The twist: Sita told it years later in Lanka, as a secret only Ram would
-know, and asked why he spared the demon who took her.
+Part 4 of the 12-part Ramayan series (format in ad 33's storyboard). Painted, **no voice** (owner, 23 Oct 2026, after
+Part 3: "People love great use of SFX. Gives retro vibes. Loud BGM kills it"): Bangers captions carry the story, the
+characters talk with moving mouths, and a retro cartoon SFX track sits under it in the manner of the Shumbha (ad 14) and
+Bal Hanuman sun reels. The only music is a soft tanpura under the Lanka scene, as mild as the Sindoor reel's beds. 64.1 s,
+levelled to about -17 LUFS. The voiced cut (70.1 s) is in git history and out/rp4_out. The hook: Ram once fired a Brahmastra at
+a crow, with a blade of grass. The twist: Sita told it years later in Lanka, as a secret only Ram would know, and asked
+why he spared the demon who took her.
 
 ## Facts used (Valmiki Ramayana, Sundara Kanda 38; valmikiramayan.net numbering)
 | claim in the reel | source |
@@ -26,19 +29,19 @@ drops on the grass). Performance only: the crown floating over the crow, the glo
 Airavata and a sage on clouds turning him away, the star on "no one", the bubble with the crow and Ravana's head.
 
 ## Shots
-| | time | shot |
-|---|---|---|
-| A | 0–4.2 | Ram holds up a blazing blade of grass on a warm plain ground (frame 0); a crow flaps past |
-| B | 4.2–7.2 | the ident: PART 4 · THE CROW AND THE GRASS |
-| C | 7.2–24.8 | Chitrakoot: Sita behind a grassy mound, Ram dozing beside her; the crow swoops and pecks; the clod; it comes back and claws her ("!!"); drops on the grass; Ram wakes, angry; a gold crown over the crow: Indra's son |
-| D | 24.8–30.0 | Ram lifts the blade; rings of light; it becomes the Brahmastra |
-| E | 30.0–37.3 | the three worlds: the crow flees through clouds, the glowing grass behind; Indra on Airavata shakes his head; a sage on a cloud; the sky turns gold |
-| F | 37.3–47.3 | Chitrakoot: the crow lands at Ram's feet and bows; the grass strikes his eye (a flash); he flies off, one eye shut; Ram smiles |
-| G | 47.3–58.6 | the Ashoka grove in Lanka at night: Sita tells Hanuman (a bubble: the crow and the grass); "why not for the demon who took me?" (Ravana's head in the bubble), her tears |
-| H | 58.6–63.4 | the tease: dusk, Ram alone with his bow against a horde of demons |
-| I | 63.4–70.1 | the follow card: NEXT · PART 5 · ONE MAN, 14,000 DEMONS |
+| | time | shot | sound |
+|---|---|---|---|
+| A | 0–3.8 | Ram holds up a blazing blade of grass on a warm plain ground (frame 0); a crow flaps past | the grass hums and fizzes; wings, a caw |
+| B | 3.8–6.6 | the ident: PART 4 · THE CROW AND THE GRASS | conch, pops |
+| C | 6.6–23.4 | Chitrakoot: Sita behind a grassy mound, Ram dozing beside her; the crow swoops and pecks; the clod; it comes back and claws her ("!!"); drops on the grass; Ram wakes, angry; a gold crown over the crow: Indra's son | stream, birds, Ram snoring; woodblock pecks on each bob; "eek", "shoo"; the clod's whoosh; a dive-bomb whistle; scratches and her cry; three plips; Ram's snort; DUN; a ta-da for the crown |
+| D | 23.4–28.3 | Ram lifts the blade; rings of light; it becomes the Brahmastra | a pluck, a power-up whine and hum, BOOM |
+| E | 28.3–35.4 | the three worlds: the crow flees through clouds, the glowing grass behind; Indra on Airavata shakes his head; a sage on a cloud; a star on "no one" | wind, wingbeats, whoosh-bys, panicky caws; Indra's "nuh-uh" and a little trumpet; the sage's "hmm-mm"; a sad trombone |
+| F | 35.4–44.6 | Chitrakoot: the crow lands at Ram's feet and bows; the grass strikes his eye (a flash); he flies off wobbling, one eye shut; Ram smiles | a flop, whimpers, the hum, a quickening heartbeat, ZING, a harp down |
+| G | 44.6–53.6 | the Ashoka grove in Lanka at night: Sita tells Hanuman (a bubble: the crow and the grass); "why not for the demon who took me?" (Ravana's head in the bubble), her tears | crickets, the tanpura and Sita's soft talk; Hanuman's "oh!"; the tanpura stops on "why not"; a boom and a villain's laugh; a sob |
+| H | 53.6–57.1 | the tease: dusk, Ram alone with his bow against a horde of demons | war drums, the horde's growl, the bow drawn, a boom |
+| I | 57.1–64.1 | the follow card: NEXT · PART 5 · ONE MAN, 14,000 DEMONS | conch, pops, a plink |
 
 ## Files
 `src/scenes/rp4.js`, `rp4_props.js` (Chitrakoot, the three worlds, the Ashoka grove, the horde, the mound, the clod,
-the drops, the glowing grass), `rp4_vo.js`, `rp4_cover.js`, `tools/rp4_vo.json`, `tools/rp4_sfx.mjs` →
-`assets/rp4_sfx.wav`, `assets/rp4_mix.wav`. The crow is `shaniCrow()` (src/shani.js).
+the drops, the glowing grass), `rp4_tl.js` (every time and the captions), `rp4_cover.js`, `tools/rp4_sfx.mjs` →
+`assets/rp4_sfx.wav`, levelled to `assets/rp4_mix.wav`. The crow is `shaniCrow()` (src/shani.js).

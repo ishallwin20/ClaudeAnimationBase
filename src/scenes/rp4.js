@@ -1,26 +1,20 @@
-// rp4.js: Ramayan Part 4, "The Crow and the Grass" (~70 s, Painted, an English voiceover with captions in Bangers,
-// SFX). Told from the Valmiki Ramayana, Sundara Kanda 38, where Sita tells it to Hanuman as a token only Ram would know:
-// at Chitrakoot, by the water, a crow (Indra's son) pecks at Sita; she throws a clod of earth; it comes back and claws
+// rp4.js: Ramayan Part 4, "The Crow and the Grass" (64.1 s, Painted, no voice: captions in Bangers, retro cartoon
+// SFX, a soft tanpura in Lanka). Told from the Valmiki Ramayana, Sundara Kanda 38, where Sita tells it to Hanuman as a
+// token only Ram would know: at Chitrakoot, by the water, a crow (Indra's son) pecks at Sita; she throws a clod of earth; it comes back and claws
 // her till she bleeds; Ram wakes, takes up a blade of kusha grass and charges it with the Brahma-astra; the crow flees
 // through the three worlds; his father, the gods and the sages give him no refuge; he falls at Ram's feet; the astra
 // cannot be in vain, so he gives up his right eye and is spared. Sita then asks: for a crow, a Brahmastra; why not for
 // the one who took me? The Part 5 tease (one man against fourteen thousand) and the follow card.
 // STORYBOARD.md has the plan and the sources; sets in rp4_props.js, src/ramayan_sets.js; the crow is shaniCrow().
-// Every time comes from the voice (src/scenes/rp4_vo.js from tools/rp4_vo.json); tools/rp4_sfx.mjs recomputes them.
+// Every time comes from src/scenes/rp4_tl.js (TL), which tools/rp4_sfx.mjs reads too.
 (() => {
-  const LN = VO.lines, capOf = id => VO.caps.filter(c => c.id === id), Wd = (id, ci, wi) => capOf(id)[ci].at[wi];
-  const mid = (a, b) => (LN[a].end + LN[b].a) / 2;
-  const B0 = mid('hook', 'intro'), C0 = mid('intro', 'rest'), D0 = mid('wake', 'grass'), E0 = mid('grass', 'flee'), F0 = mid('flee', 'back'), G0 = mid('eye', 'twist');
-  const H0 = mid('why', 'next'), K0 = mid('next', 'follow'), END = LN.follow.end + 2.5;
-  const CROWH = Wd('hook', 0, 7), PECK = Wd('peck', 0, 3), CLOD = Wd('peck', 0, 9), CAME = Wd('peck', 1, 1), CLAW = Wd('peck', 1, 4), BLED = Wd('peck', 1, 8);
-  const WOKE = Wd('wake', 0, 1), BLOOD = Wd('wake', 0, 5), INDRAS = Wd('wake', 1, 7);
-  const PICK = Wd('grass', 0, 1), BLADE = Wd('grass', 0, 4), BRAHM = Wd('grass', 0, 12), FLED = Wd('flee', 0, 2), WORLDS = Wd('flee', 0, 6);
-  const FATHER = Wd('flee', 1, 1), GODS = Wd('flee', 1, 4), SAGES = Wd('flee', 1, 6), NOONE = Wd('flee', 1, 7), FEET = Wd('back', 0, 7);
-  const WASTED = Wd('eye', 0, 5), RIGHT = Wd('eye', 1, 6), SPARED = Wd('eye', 1, 10), LANKA = Wd('twist', 0, 3), HANU = Wd('twist', 0, 6), ONLY = Wd('twist', 1, 2);
-  const ASKED = Wd('why', 0, 2), WHYNOT = Wd('why', 1, 0), TOOK = Wd('why', 1, 6), FOURTEEN = Wd('next', 0, 6);
-  const CARD = { head: K0 + .1, title: K0 + .5, pill: LN.follow.a + .2, ask: Wd('follow', 1, 1), books: Wd('follow', 1, 2) + .6 };
-  window.RP4_T = { B0, C0, D0, E0, F0, G0, H0, K0, END, CROWH, PECK, CLOD, CAME, CLAW, BLED, WOKE, BLOOD, INDRAS, PICK, BLADE, BRAHM, FLED, WORLDS, FATHER, GODS, SAGES, NOONE, FEET,
-    WASTED, RIGHT, SPARED, LANKA, HANU, ONLY, ASKED, WHYNOT, TOOK, FOURTEEN, CARD };
+  const { B0, C0, D0, E0, F0, G0, H0, K0, CROWH, PECK, CLOD, CAME, CLAW, BLED, WOKE, BLOOD, INDRAS, PICK, BLADE, BRAHM, FATHER, GODS, SAGES, NOONE, FEET,
+    HIT, SPARED, LANKA, ONLY, WHYNOT, TOOK, FOURTEEN, CARD } = TL;
+  window.RP4_T = TL;
+  // a mouth that flaps while a character speaks a caption's line (a..b), else the resting one
+  const talk = (t, a, b, rest, open = 'open') => t > a && t < b && Math.sin((t - a) * 15) > -.2 ? open : rest;
+  // Ram's snore (the SFX breathes on the same 1.6 s cycle): the mouth opens on the out-breath
+  const snoring = t => ((t - C0 - .3) / 1.6 % 1 + 1) % 1 > .55;
 
   const GOLDC = P4.gold;
   const wipeIn = (lt, cols) => { if (lt < .3) { flushLetters(); brushWipe(.5 + lt / .6, cols); } };
@@ -28,14 +22,13 @@
   const CARDC = [RMY.maroon, RMY.saffron], DAYC = [P4.skyHi, P4.grass], GOLDW = ['#FFE2A0', '#F5C542'], NIGHTC = [P4.grove, P4.groveLo], DUSKC = ['#E2865A', '#7A2236'];
 
   function caps(t) {
-    for (const k of VO.caps) {
-      if (k.id === 'intro' || k.id === 'follow') continue;
-      const a = k.id === 'hook' ? -1 : k.a, b = k.b;
+    for (const [a, b, ...lines] of TL.CAPS) {
       if (t < a || t > b) continue;
-      const lines = k.text.split('|').map(s => s.trim()), y0 = 470;
+      let y = 480, prev = 0;
       lines.forEach((l, i) => {
-        const gold = l.includes('*');
-        caption(l.replace(/\*/g, '').toUpperCase(), y0 + i * 104, t - a - i * .12, { life: b - a - i * .12, size: gold ? 92 : 76, color: gold ? GOLDC : undefined });
+        const huge = l[0] === '^', gold = huge || l.includes('*'), size = huge ? 112 : gold ? 88 : 74, age = a < 0 ? t - a : t - a - i * .35;
+        if (i) y += (prev + size) * .56; prev = size;
+        caption(l.replace(/[*^]/g, '').toUpperCase(), y, age, { life: b - a - (a < 0 ? 0 : i * .35), size, color: gold ? GOLDC : undefined });
       });
     }
   }
@@ -82,10 +75,10 @@
     drops(470, 1770, ease(seg(t, BLED - .2, BLED + .3)), 'cdr');
     // Ram dozes sitting beside her; wakes, sees the drops, turns angry
     const awake = t > WOKE - .1;
-    ram(700, 1800, 19, { boilKey: 'cr', sit: 1, kodanda: false, eyes: !awake ? 'closed' : t > BLOOD ? 'angry' : 'wide', brow: t > BLOOD ? -.8 : 0, mouth: awake ? (t > BLOOD ? 'flat' : 'O') : 'smile', htilt: awake ? 0 : -.25, hx: awake ? -.4 : -.2, lookX: t > BLOOD && t < INDRAS - .3 ? -.6 : .4, lookY: t > BLOOD && t < INDRAS - .3 ? .7 : -.6,
+    ram(700, 1800, 19, { boilKey: 'cr', sit: 1, kodanda: false, eyes: !awake ? 'closed' : t > BLOOD ? 'angry' : 'wide', brow: t > BLOOD ? -.8 : 0, mouth: awake ? (t > BLOOD ? 'flat' : 'O') : snoring(t) ? 'O' : 'smile', htilt: awake ? 0 : -.25, hx: awake ? -.4 : -.2, lookX: t > BLOOD && t < INDRAS - .3 ? -.6 : .4, lookY: t > BLOOD && t < INDRAS - .3 ? .7 : -.6,
       emote: !awake ? 'zzz' : t < BLOOD + .3 ? '!' : undefined, emoteK: 1, emoteAge: t });
     shaniCrow(cx, cy, 20, { boilKey: 'cc', flip: true, flap, fly, eyes: ceyes, caw: peckOn || back ? .5 + .5 * Math.sin(t * 9) : 0 });
-    crowCrown(cx + 14, cy - 95, 60, backOut(clamp((t - INDRAS + .2) * 3)));
+    crowCrown(cx + 14, cy - 95, 60, backOut(clamp((t - INDRAS - .5) * 3)));   // on "Indra's own son"
     camEnd();
     caps(t);
     wipeIn(lt, DAYC);
@@ -121,8 +114,8 @@
     grassStar(cx + 340 + Math.sin(t * 1.4 - .6) * 60, cy + 40, Math.PI + Math.cos(t * 1.4) * .2, 140, 'egs', 1);
     // Indra on Airavata on a cloud, shaking his head; then a sage on a cloud
     const iK = backOut(clamp((t - FATHER + .4) * 2)) * (1 - ease(seg(t, GODS + .6, GODS + 1.2))), sK = backOut(clamp((t - SAGES + .4) * 2));
-    if (iK > .02) { cloudPuff(800, 1700, 260 * iK, 'eic', 255); airavata(800, 1670, 19 * iK, { boilKey: 'ea', eyes: 'closed', trunk: 'curl', indra: { eyes: 'closed', mouth: 'frown', handR: [2.6, -3.4], vajra: 0, lean: Math.sin(t * 8) * .12 } }); }
-    if (sK > .02) { cloudPuff(260, 1760, 220 * sK, 'esc', 255); valmiki(260, 1740, 19 * sK, { boilKey: 'es', eyes: 'closed', mouth: 'frown', hx: Math.sin(t * 9) * .6, handR: [5.4, -19], bendR: .4 }); }
+    if (iK > .02) { cloudPuff(800, 1700, 260 * iK, 'eic', 255); airavata(800, 1670, 19 * iK, { boilKey: 'ea', eyes: 'closed', trunk: 'curl', indra: { eyes: 'closed', mouth: talk(t, FATHER, GODS + .4, 'frown', 'O'), handR: [2.6, -3.4], vajra: 0, lean: Math.sin(t * 8) * .12 } }); }
+    if (sK > .02) { cloudPuff(260, 1760, 220 * sK, 'esc', 255); valmiki(260, 1740, 19 * sK, { boilKey: 'es', eyes: 'closed', mouth: talk(t, SAGES, NOONE, 'frown', 'O'), hx: Math.sin(t * 9) * .6, handR: [5.4, -19], bendR: .4 }); }
     if (t > NOONE - .2) { boilSeed('eno'); const q = backOut(clamp((t - NOONE + .2) * 3)); paint(starPts(cx, cy - 120, 30 * q, .45, 6), { wash: '#FFF2C0', ink: P4.ink, sw: .8 }); }
     camEnd();
     caps(t);
@@ -132,17 +125,17 @@
 
   // ================= F · at Ram's feet; the astra takes his right eye; spared =================
   function shotFeet(t, lt, dur) {
-    const c = kf(t, [[F0, [540, 1450, 1.05]], [RIGHT - .3, [620, 1600, 1.4]], [SPARED, [560, 1450, 1.05]]], ease);
+    const c = kf(t, [[F0, [540, 1450, 1.05]], [HIT - .8, [620, 1600, 1.4]], [SPARED, [560, 1450, 1.05]]], ease);
     camBegin(c[0], c[1], c[2]);
     chitrakoot(t, 'f');
     sita(260, 1820, 20, { boilKey: 'fs', eyes: 'normal', mouth: 'O', lookX: .8, hx: .3 });
     ram(520, 1830, 23, { boilKey: 'fr', eyes: t > SPARED - .2 ? 'closed' : 'normal', mouth: t > SPARED - .2 ? 'smile' : 'flat', lookX: .7, lookY: .7, hx: .3, handR: t > SPARED - .2 ? [5.6, -17] : undefined, bendR: .5 });
     // the crow drops in at his feet, bows; the grass hovers, strikes his eye; he flies off
     const land = easeOut(seg(t, F0, FEET)), off = ease(seg(t, SPARED + .3, G0));
-    const cx = lerp(1250, 760, land) + off * 500, cy = lerp(900, 1790, land) - off * 900, hit = t > RIGHT;
-    shaniCrow(cx, cy, 20, { boilKey: 'fc', flip: true, flap: off > 0 || land < 1 ? Math.sin(t * 20) : -.6, fly: off > 0 || land < 1 ? 1 : 0, eyes: hit ? 'closed' : land >= 1 ? 'wide' : 'normal', rot: land >= 1 && off <= 0 ? .35 : 0, caw: hit && t < RIGHT + .6 ? 1 : 0 });
-    if (t > FEET - .2 && t < RIGHT + .1) { const q = ease(seg(t, RIGHT - .5, RIGHT)); grassStar(lerp(1000, cx + 70, q), lerp(1500, cy - 40, q) + Math.sin(t * 4) * 20, Math.PI * .9, 90, 'fgs', q); }
-    if (hit && t < RIGHT + .25) { boilSeed('fhit'); paint(starPts(cx + 70, cy - 40, 70 * backOut(seg(t, RIGHT, RIGHT + .1)), .45, 8), { wash: '#FFF2C0', ink: P4.ink, sw: 1 }); }
+    const cx = lerp(1250, 760, land) + off * 500 + off * Math.sin(t * 9) * 40, cy = lerp(900, 1790, land) - off * 900, hit = t > HIT;   // he flies off wobbling
+    shaniCrow(cx, cy, 20, { boilKey: 'fc', flip: true, flap: off > 0 || land < 1 ? Math.sin(t * 20) : -.6, fly: off > 0 || land < 1 ? 1 : 0, eyes: hit ? 'closed' : land >= 1 ? 'wide' : 'normal', rot: land >= 1 && off <= 0 ? .35 : 0, caw: hit && t < HIT + .6 ? 1 : land >= 1 && !hit ? .3 + .3 * Math.sin(t * 7) : 0 });   // whimpering at his feet
+    if (t > FEET - .2 && t < HIT + .1) { const q = ease(seg(t, HIT - .5, HIT)); grassStar(lerp(1000, cx + 70, q), lerp(1500, cy - 40, q) + Math.sin(t * 4) * 20, Math.PI * .9, 90, 'fgs', q); }
+    if (hit && t < HIT + .25) { boilSeed('fhit'); paint(starPts(cx + 70, cy - 40, 70 * backOut(seg(t, HIT, HIT + .1)), .45, 8), { wash: '#FFF2C0', ink: P4.ink, sw: 1 }); }
     camEnd();
     caps(t);
     wipeOut(lt, dur, NIGHTC);
@@ -153,7 +146,7 @@
     camBegin(540, 1400, 1.0 + lt * .01);
     ashokaGrove(t, 'g');
     const ask = t > WHYNOT - .3;
-    sita(380, 1830, 22, { boilKey: 'gs', eyes: ask ? 'closed' : 'normal', mouth: Math.sin(t * 7) > 0 ? 'open' : 'smile', lookX: .7, hx: .3, handR: ask ? [6.5, -15] : [4.6, -14], bendR: .5, handL: ask ? [-6, -15] : undefined });
+    sita(380, 1830, 22, { boilKey: 'gs', eyes: ask ? 'closed' : 'normal', mouth: talk(t, G0 + .3, H0 - .5, ask ? 'frown' : 'smile'), lookX: .7, hx: .3, handR: ask ? [6.5, -15] : [4.6, -14], bendR: .5, handL: ask ? [-6, -15] : undefined });
     if (ask) tears(...parvatiHand(380, 1830, 22, { handR: [6.5, -15] }, 1).map((v, i) => i ? v - 230 : v - 70), t, 'gst', .8);
     hanuman(760, 1830, 22, { boilKey: 'gh', sit: 1, pray: 1, eyes: t > ONLY ? 'wide' : 'normal', mouth: 'O', lookX: -.7, hx: -.3, tail: 'droop', gada: 0 });
     // her bubble: the crow and the glowing grass; then on "who took me", Ravana's crowned head in shadow
