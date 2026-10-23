@@ -1,5 +1,5 @@
 // rp7_cover.js: the Instagram cover for Ramayan Part 7 (cover.html = studio.html + this). The bundle of jewels falling
-// from Ravana's chariot toward a monkey's raised hands; the series badge and the title inside the 3:4 grid crop.
+// from Ravana's chariot toward a monkey's raised hands (the five found them: Kishkindha 6); the series badge and the title inside the 3:4 grid crop.
 //   node render.mjs --page=cover.html --stills=0 --out=out/rp7_cover
 SHOTS.length = 0;
 (() => {
@@ -15,6 +15,6 @@ SHOTS.length = 0;
     const L = (txt, y, size, col, rot = -.025) => letter(txt, 540, y, size, col, { screen: true, stroke: RMY.ink, sw: .22, ink: false, maxW: 960, rot });
     L("SITA'S JEWELS", 490, 120, RMY.gold);
     L('FELL FROM THE SKY', 620, 104, RMY.cream, -.02);
-    L('guess who caught them', 740, 70, RMY.cream, -.03);
+    L('guess who found them', 740, 70, RMY.cream, -.03);
   }]]);
 })();
