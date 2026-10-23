@@ -1,8 +1,10 @@
 # Ramayan · Part 2: "The Two Boons" (ad 34 · the Ramayan series)
 
-Part 2 of the 11-part Ramayan series (see ad 33's storyboard for the series format: hook → the ident → the story → the
-next part's tease → the follow card). Painted, English voiceover (`girish_en_devotional`, pace 1.2), Bangers captions
-timed to the voice, SFX. 73.6 s. The hook is the paradox Valmiki actually tells: Kaikeyi was overjoyed at first.
+Part 2 of the 12-part Ramayan series (see ad 33's storyboard for the series format: hook → the ident → the story → the
+next part's tease → the follow card). Painted, chibi, **no voice** (owner, 23 Oct 2026: the no-VO chibi reels do best;
+this part was first made with the girish voiceover, kept in git history): Bangers captions carry the story, the
+characters speak their lines (mouths, emotes), a Lyria score and SFX. 69.4 s. The hook is the paradox Valmiki actually
+tells: Kaikeyi was overjoyed at first.
 
 ## Facts used (Valmiki Ramayana, Ayodhya Kanda; valmikiramayan.net numbering)
 | claim in the reel | source |
@@ -27,25 +29,27 @@ shown driving the chariot out of the battle (Valmiki: she carried him away from 
 hearts, the sparkle, the necklace's arc, Bharat's little bubble, the sweat, the "!!", the crown and tree icons, the
 stars turning in the window, Ram's closed eyes and smile.
 
-## Voiceover (tools/rp2_vo.json)
-hook "Kaikeyi loved Ram. So why did she send him away?" · intro "Welcome to Part 2 of the Ramayan series." · crown ·
-city · happy · same · throw · boons · room · swear · ask · fell · dawn · next "Part 3: the king remembers a curse from
-his youth, and it comes true." · follow. STT came back right for Dasharath(a), Manthara ("Mantara"), Kaikeyi, Bharat.
+## Captions and sound
+Every time is in `src/scenes/rp2_tl.js` (`TL`, with the captions in `TL.CAPS`); the scene and the SFX read it. Each
+caption is up 2 s or more, 3.2 s or more with three lines; gold for names and the key words, a huge gold line for the
+punch ("SEND HIM AWAY?", "MANTHARA.", "TWO BOONS.", "ROOM OF ANGER.", "14 YEARS!", "I WILL GO.").
+Score: `tools/rp2_score.txt` (90 BPM, 26 bars, 69 s) → `node tools/lyria.mjs --prompt=tools/rp2_score.txt --out=assets/rp2_score.mp3`
+(take A of 2: 70.2 s; take B ran 121 s). `node tools/rp2_sfx.mjs` writes the SFX and the mix (score .55 under SFX, -14 LUFS).
 
 ## Shots
 | | time | shot |
 |---|---|---|
-| A | 0–3.0 | Kaikeyi, a heart over her (frame 0), turns cold and points away on "send him away" |
-| B | 3.0–6.5 | the ident: PART 2 · THE TWO BOONS |
-| C | 6.5–10.8 | the court: Dasharatha on his throne raises his hand; Ram bows; marigold petals fall |
-| D | 10.8–15.3 | Ayodhya lit at night, fireworks; push in on Manthara at the terrace rail, narrowing her eyes |
-| E–F | 15.3–29.4 | Kaikeyi's chamber: Manthara hurries in; Kaikeyi overjoyed, gives the necklace (it arcs over); hand on heart; Manthara flings it away; whispers; a bubble of little Bharat walking away; Kaikeyi's sweat |
-| G | 29.4–35.4 | sepia, the war: Kaikeyi drives the chariot, the wounded king slumped behind her, arrows raining; two golden boons rise |
-| H–K | 35.4–55.8 | the room of anger: she tears off her jewels and lies down; the king comes with a lamp, swears (a bubble of Ram); she sits up: a light becomes Bharat's crown, a second a forest tree; "14 years"; he falls, begs all night (stars wheel past the window); she turns away |
-| L | 55.8–62.0 | dawn through the window: Ram stands calm, eyes closed, smiling, hands joined: "I will go"; the king weeps |
-| M | 62.0–66.7 | the tease: night, a river, a young archer drawing his bow at a sound in the dark |
-| N | 66.7–73.6 | the follow card: NEXT · PART 3 · THE KING'S CURSE |
+| A | 0–3.6 | Kaikeyi, a heart over her (frame 0), turns cold and points away on "send him away" |
+| B | 3.6–6.4 | the ident: PART 2 · THE TWO BOONS |
+| C | 6.4–10.4 | the court: Dasharatha on his throne raises his hand; Ram bows; marigold petals fall |
+| D | 10.4–15.2 | Ayodhya lit at night, fireworks; push in on Manthara at the terrace rail, narrowing her eyes, fuming (steam) |
+| E–F | 15.2–28.0 | Kaikeyi's chamber: Manthara scurries in (dust, speed lines) shouting the news; Kaikeyi overjoyed, gives the necklace (it arcs over); hand on heart; Manthara flings it away; whispers; a bubble of little Bharat walking away; Kaikeyi's sweat |
+| G | 28.0–34.0 | sepia, the war: Kaikeyi drives the chariot, the wounded king slumped behind her, arrows raining; two golden boons rise |
+| H–K | 34.0–51.7 | the room of anger: she tears off her jewels and lies down, fuming (steam); the king comes with a lamp, swears (a bubble of Ram); she sits up: a light becomes Bharat's crown, a second a forest tree; "14 years"; he falls, begs all night (stars wheel past the window); she turns away |
+| L | 51.7–58.0 | dawn through the window: Ram stands calm, eyes closed, smiling, hands joined: "I will go"; the king weeps |
+| M | 58.0–62.4 | the tease: night, a river, a young archer drawing his bow at a sound in the dark |
+| N | 62.4–69.4 | the follow card: NEXT · PART 3 · THE KING'S CURSE |
 
 ## Files
-`src/scenes/rp2.js`, `rp2_props.js`, `rp2_vo.js`, `rp2_cover.js`, `tools/rp2_vo.json`, `tools/rp2_sfx.mjs` →
-`assets/rp2_sfx.wav`, `assets/rp2_mix.wav`; the series kit `src/ramayan.js`, `src/ramayan_sets.js`.
+`src/scenes/rp2.js`, `rp2_tl.js`, `rp2_props.js`, `rp2_cover.js`, `tools/rp2_score.txt` → `assets/rp2_score.mp3`,
+`tools/rp2_sfx.mjs` → `assets/rp2_sfx.wav`, `assets/rp2_mix.wav`; the series kit `src/ramayan.js`, `src/ramayan_sets.js`.

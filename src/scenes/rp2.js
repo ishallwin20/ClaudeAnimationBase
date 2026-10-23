@@ -1,4 +1,4 @@
-// rp2.js: Ramayan Part 2, "The Two Boons" (~74 s, Painted, an English voiceover with captions in Bangers, SFX). Told
+// rp2.js: Ramayan Part 2, "The Two Boons" (69.4 s, Painted, no voice: captions in Bangers, a Lyria score and SFX). Told
 // from the Valmiki Ramayana, Ayodhya Kanda: Dasharatha decides to crown Ram (1–4); the city is decked out, and the
 // hunchbacked maid Manthara sees it from the terrace (7); Kaikeyi rejoices, gives her a jewel and says she sees no
 // difference between Ram and Bharat (7); Manthara throws it away and warns her that Ram will banish Bharat or worse
@@ -7,24 +7,12 @@
 // asks: crown Bharat, and send Ram to the forest for fourteen years (11); he falls and begs her all night (12–14);
 // Ram hears it at dawn, unruffled: "Let it be. I will go" (19). The Part 3 tease (the king's curse) and the follow card.
 // STORYBOARD.md has the plan and the sources; sets in rp2_props.js and src/ramayan_sets.js, the cast in src/ramayan.js.
-// Every time comes from the voice (src/scenes/rp2_vo.js from tools/rp2_vo.json); tools/rp2_sfx.mjs recomputes them.
+// Every time comes from src/scenes/rp2_tl.js (TL), which tools/rp2_sfx.mjs reads too.
 (() => {
-  const LN = VO.lines, capOf = id => VO.caps.filter(c => c.id === id), Wd = (id, ci, wi) => capOf(id)[ci].at[wi];
-  const mid = (a, b) => (LN[a].end + LN[b].a) / 2;
-  const B0 = mid('hook', 'intro'), C0 = mid('intro', 'crown'), D0 = mid('crown', 'city'), E0 = mid('city', 'happy'), G0 = mid('throw', 'boons'), H0 = mid('boons', 'room');
-  const L0 = mid('fell', 'dawn'), M0 = mid('dawn', 'next'), K0 = mid('next', 'follow'), END = LN.follow.end + 2.5;
-  const SEND = Wd('hook', 0, 7), TOMORROW = Wd('crown', 0, 3), CROWNED = Wd('crown', 0, 7), LIT = Wd('city', 0, 1), MANTH = Wd('city', 0, 6), WATCH = Wd('city', 0, 7);
-  const RAN = Wd('happy', 0, 1), OVERJOY = Wd('happy', 0, 8), GAVE = Wd('happy', 1, 1), JEWEL = Wd('happy', 1, 4), NODIFF = Wd('same', 0, 3), BHARAT1 = Wd('same', 0, 7);
-  const THREW = Wd('throw', 0, 1), WAKE = Wd('throw', 0, 5), BANISH = Wd('throw', 0, 9), WORSE = Wd('throw', 0, 13);
-  const WAR = Wd('boons', 0, 2), SAVED = Wd('boons', 0, 4), TWO = Wd('boons', 1, 4), USE = Wd('boons', 1, 6);
-  const TORE = Wd('room', 0, 2), LAY = Wd('room', 0, 7), ANGER = Wd('room', 0, 13), FOUND = Wd('swear', 0, 2), SWORE = Wd('swear', 0, 6), RAMS = Wd('swear', 0, 8);
-  const FIRST = Wd('ask', 0, 0), CROWNB = Wd('ask', 0, 2), SECOND = Wd('ask', 1, 0), FOREST = Wd('ask', 1, 5), YEARS = Wd('ask', 1, 7);
-  const FELL = Wd('fell', 0, 1), BEGGED = Wd('fell', 0, 3), NIGHT = Wd('fell', 0, 6), MOVE = Wd('fell', 0, 10);
-  const DAWN = Wd('dawn', 0, 1), HEARD = Wd('dawn', 0, 3), FACE = Wd('dawn', 0, 7), LETBE = Wd('dawn', 1, 0), GO = Wd('dawn', 1, 5);
-  const CURSE = Wd('next', 0, 6), YOUTH = Wd('next', 0, 9), TRUE = Wd('next', 0, 13);
-  const CARD = { head: K0 + .1, title: K0 + .5, pill: LN.follow.a + .2, ask: Wd('follow', 1, 1), books: Wd('follow', 1, 2) + .6 };
-  window.RP2_T = { B0, C0, D0, E0, G0, H0, L0, M0, K0, END, SEND, TOMORROW, CROWNED, LIT, MANTH, WATCH, RAN, OVERJOY, GAVE, JEWEL, NODIFF, BHARAT1, THREW, WAKE, BANISH, WORSE,
-    WAR, SAVED, TWO, USE, TORE, LAY, ANGER, FOUND, SWORE, RAMS, FIRST, CROWNB, SECOND, FOREST, YEARS, FELL, BEGGED, NIGHT, MOVE, DAWN, HEARD, FACE, LETBE, GO, CURSE, YOUTH, TRUE, CARD };
+  const { B0, C0, D0, E0, G0, H0, L0, M0, K0, END, SEND, TOMORROW, CROWNED, LIT, MANTH, WATCH, RAN, OVERJOY, GAVE, JEWEL, NODIFF, THREW, WAKE, BANISH, WORSE,
+    WAR, SAVED, TWO, USE, TORE, LAY, ANGER, FOUND, SWORE, RAMS, FIRST, CROWNB, SECOND, FOREST, YEARS, FELL, BEGGED, NIGHT, MOVE, HEARD, FACE, LETBE, GO, CURSE, YOUTH, TRUE, CARD } = TL;
+  // a mouth that flaps while a character speaks a caption's line (a..b), else the resting one
+  const talk = (t, a, b, rest, open = 'open') => t > a && t < b && Math.sin((t - a) * 15) > -.2 ? open : rest;
 
   const GOLDC = P2.gold;
   const wipeIn = (lt, cols) => { if (lt < .3) { flushLetters(); brushWipe(.5 + lt / .6, cols); } };
@@ -32,14 +20,13 @@
   const CARDC = [RMY.maroon, RMY.saffron], HALLC = [P1.hall, P1.pillar], NIGHTC = [P2.nightHi, P2.nightLo], ROSEC = [P2.rose, P2.silk], SEPC = [P2.sepia, P2.sepiaDk], DARKC = ['#231C3A', '#3A2E58'];
 
   function caps(t) {
-    for (const k of VO.caps) {
-      if (k.id === 'intro' || k.id === 'follow') continue;
-      const a = k.id === 'hook' ? -1 : k.a, b = k.b;
+    for (const [a, b, ...lines] of TL.CAPS) {
       if (t < a || t > b) continue;
-      const lines = k.text.split('|').map(s => s.trim()), y0 = 470;
+      let y = 480, prev = 0;
       lines.forEach((l, i) => {
-        const gold = l.includes('*');
-        caption(l.replace(/\*/g, '').toUpperCase(), y0 + i * 104, t - a - i * .12, { life: b - a - i * .12, size: gold ? 92 : 76, color: gold ? GOLDC : undefined });
+        const huge = l[0] === '^', gold = huge || l.includes('*'), size = huge ? 112 : gold ? 88 : 74, age = a < 0 ? t - a : t - a - i * .35;
+        if (i) y += (prev + size) * .56; prev = size;
+        caption(l.replace(/[*^]/g, '').toUpperCase(), y, age, { life: b - a - (a < 0 ? 0 : i * .35), size, color: gold ? GOLDC : undefined });
       });
     }
   }
@@ -66,7 +53,7 @@
     court(t, 'c');
     throne(540, 1290, 300, 'cth');
     const up = ease(seg(t, TOMORROW - .3, TOMORROW + .2));
-    dasharatha(540, 1320, 17, { boilKey: 'cd', sit: 1, eyes: 'happy', mouth: 'grin', handR: [lerp(3.4, 6, up), lerp(-11, -19, up)], bendR: .5 });
+    dasharatha(540, 1320, 17, { boilKey: 'cd', sit: 1, eyes: 'happy', mouth: talk(t, C0 + .6, CROWNED + .4, 'grin'), handR: [lerp(3.4, 6, up), lerp(-11, -19, up)], bendR: .5 });
     const bow = ease(seg(t, CROWNED - .3, CROWNED + .3));
     ram(830, 1850, 20, { boilKey: 'cr', bow: bow * .45, pray: bow, eyes: bow > .5 ? 'closed' : 'normal', mouth: 'smile', lookY: -.6, lookX: -.6, hx: -.3 });
     if (t > CROWNED - .2) petals(t - CROWNED, 'cpet', 14);
@@ -82,7 +69,8 @@
     camBegin(lerp(540, 700, push2), lerp(1150, 1420, push2), lerp(.95, 1.45, push2));
     ayodhyaNight(t, 'd');
     if (t > LIT - .2) { boilSeed('dfw'); for (let i = 0; i < 3; i++) { const k = frac((t - LIT) * .5 + i / 3), fx = 200 + i * 300, fy = 700 - k * 150; for (let j = 0; j < 10; j++) { const a = j / 10 * TAU; inkLine([[fx + Math.cos(a) * 40 * k * 3, fy + Math.sin(a) * 40 * k * 3], [fx + Math.cos(a) * 60 * k * 3, fy + Math.sin(a) * 60 * k * 3]], 2.4, j % 2 ? '#FFD45A' : '#F39A2E', 'ink', 0); } } }
-    manthara(820, 1930, 26, { boilKey: 'dm', eyes: t > WATCH ? 'narrow' : 'normal', mouth: t > WATCH ? 'smirk' : 'flat', lookX: -.8, hx: -.4, handL: [-3.6, -13.6], handR: [3.4, -13.4] });
+    manthara(820, 1930, 26, { boilKey: 'dm', eyes: t > WATCH ? 'narrow' : 'normal', mouth: t > WATCH ? 'frown' : 'flat', lookX: -.8, hx: -.4, handL: [-3.6, -13.6], handR: [3.4, -13.4],
+      emote: t > WATCH + .4 ? 'steam' : undefined, emoteK: 1, emoteAge: t - WATCH - .4 });
     terrace(540, 1560, 1600, 'dterr');
     camEnd();
     caps(t);
@@ -98,13 +86,15 @@
     // Manthara hurries in from the right
     const inK = easeOut(seg(t, E0, RAN + .5)), mx = lerp(1250, 760, inK);
     const throwK = ease(seg(t, THREW - .25, THREW + .1)), whisper = t > WAKE - .2;
-    manthara(mx, 1800, 24, { boilKey: 'em', flip: true, walk: inK < 1 ? t * 2 : undefined, eyes: t > THREW - .3 ? 'angry' : 'narrow', mouth: whisper ? (Math.sin(t * 9) > 0 ? 'open' : 'smirk') : t > THREW - .3 ? 'frown' : 'flat',
+    manthara(mx, 1800, 24, { boilKey: 'em', flip: true, walk: inK < 1 ? t * 2 : undefined, eyes: t > THREW - .3 ? 'angry' : 'narrow', mouth: whisper ? (Math.sin(t * 9) > 0 ? 'open' : 'smirk') : t > THREW - .3 ? 'frown' : talk(t, RAN + .3, OVERJOY - .2, 'flat'),
       lean: whisper ? -2.2 : 0, handR: t > GAVE && t < THREW + .3 ? [lerp(4.4, 6.2, throwK), lerp(-15, -22, throwK)] : whisper ? [3.2, -20.5] : undefined, bendR: .5 });
+    if (inK < 1) { boilSeed('edust'); for (let i = 0; i < 4; i++) { const k = frac(t * 2.4 + i / 4), px = mx + 120 + k * 140; paint(ellPts(px, 1800 - k * 30, 26 + k * 34, 16 + k * 20, 10), { wash: '#F2E2CE', washOp: 200 * (1 - k), ink: null }); }
+      for (let i = 0; i < 3; i++) inkLine([[mx + 150 + i * 30, 1460 + i * 90], [mx + 260 + i * 30, 1460 + i * 90]], 2.2, P2.ink, 'inkfine', 0); }
     // Kaikeyi: overjoyed, gives the jewel, hand on her heart; then listens, her smile fading, sweat on "banish"
     const joy = t > OVERJOY - .2 && t < WAKE + .3, give = ease(seg(t, GAVE - .1, JEWEL)), heartH = t > NODIFF - .2 && t < THREW;
-    kaikeyi(330, 1800, 24, { boilKey: 'ek', eyes: t > BANISH ? 'wide' : joy ? 'happy' : 'normal', mouth: t > BANISH ? 'O' : joy ? 'grin' : t > WAKE ? 'flat' : 'smile', lookX: .7, hx: .3,
+    kaikeyi(330, 1800, 24, { boilKey: 'ek', eyes: t > BANISH ? 'wide' : joy ? 'happy' : 'normal', mouth: t > BANISH ? 'O' : joy ? talk(t, GAVE - .4, THREW - .5, 'grin') : t > WAKE ? 'flat' : 'smile', lookX: .7, hx: .3,
       handR: heartH ? [.8, -15.4] : give > 0 && t < NODIFF ? [lerp(3.3, 7.5, give), lerp(-11.2, -15, give)] : undefined, bendR: .5,
-      emote: heartH ? 'heart' : t > BANISH ? 'sweat' : joy ? 'spark' : undefined, emoteK: 1, emoteAge: t });
+      emote: heartH ? 'heart' : t > BANISH ? 'sweat' : joy ? 'hearts' : undefined, emoteK: 1, emoteAge: t });
     // the jewel: from her hand to Manthara's (GAVE..JEWEL), held, then flung away over her shoulder
     if (t > GAVE - .1) {
       const [kx, ky] = parvatiHand(330, 1800, 24, { handR: [7.5, -15], bendR: .5 }, 1), [hx, hy] = parvatiHand(mx, 1800, 24, { flip: true, handR: [6.2, -22], bendR: .5 }, 1);
@@ -157,15 +147,16 @@
     // Kaikeyi: tears off the crown and the necklace, flings them, lies down on the floor; sits up cold to ask
     const tear = ease(seg(t, TORE - .2, TORE + .4)), down = ease(seg(t, LAY - .1, LAY + .6)), up = ease(seg(t, FIRST - .7, FIRST - .2)), turn = t > MOVE - .4;
     const lying = down * (1 - up);
-    kaikeyi(260, 1820, 23, { boilKey: 'hk', plain: tear > .5, hairDown: tear, rot: lying * Math.PI / 2 * .92, dy: lying * 2, noShadow: lying > .3, eyes: lying > .5 ? 'closed' : t > FIRST - .2 ? 'angry' : 'normal', mouth: t > FIRST - .2 ? 'flat' : 'frown', brow: -.6,
-      flip: turn, lookX: .8, hx: turn ? -.4 : .3, handR: t > FIRST - .2 && t < FELL ? [lerp(3.6, 6, 1), -20.5 + (t > SECOND - .1 ? -.5 : 0)] : tear > 0 && tear < 1 ? [2.2, -22.5] : undefined, bendR: .4 });
-    if (tear > 0 && t < TORE + 1.3) { const k = ease(seg(t, TORE, TORE + 1.2)); boilSeed('hjw'); necklace(lerp(420, 120, k), lerp(1300, 1760, k) - Math.sin(k * Math.PI) * 120, 70, k * 8, 'hnk'); paint(starPts(lerp(380, 700, k), lerp(1240, 1780, k) - Math.sin(k * Math.PI) * 160, 22, .5, 5, k * 9), { wash: P2.gold, ink: P2.ink, sw: .6 }); }
-    if (t > TORE + 1.2) { necklace(120, 1760, 70, 1.2, 'hnk'); boilSeed('hcr'); paint(starPts(700, 1780, 22, .5, 5, .6), { wash: P2.gold, ink: P2.ink, sw: .6 }); }
+    kaikeyi(260, 1820, 23, { boilKey: 'hk', plain: tear > .5, hairDown: tear, rot: lying * Math.PI / 2 * .92, dy: lying * 2, noShadow: lying > .3, eyes: lying > .5 ? 'closed' : t > FIRST - .2 ? 'angry' : 'normal', mouth: t > FIRST - .2 ? talk(t, FIRST, FELL - .3, 'flat') : 'frown', brow: -.6,
+      flip: turn, lookX: .8, hx: turn ? -.4 : .3, emote: turn ? 'anger' : undefined, emoteK: 1, emoteAge: t - MOVE + .4, handR: t > FIRST - .2 && t < FELL ? [lerp(3.6, 6, 1), -20.5 + (t > SECOND - .1 ? -.5 : 0)] : tear > 0 && tear < 1 ? [2.2, -22.5] : undefined, bendR: .4 });
+    if (lying > .8 && t < FOUND + .4) { const r = lying * Math.PI / 2 * .92; emote('steam', 260 + 22 * 23 * Math.sin(r), 1820 + lying * 46 - 22 * 23 * Math.cos(r) - 7 * 23, 25, 1, t - LAY - .5); }   // fuming on the floor
+    if (tear > 0 && t < TORE + 1.3) { const k = ease(seg(t, TORE, TORE + 1.2)); boilSeed('hjw'); necklace(lerp(420, 120, k), lerp(1300, 1760, k) - Math.sin(k * Math.PI) * 120, 70, k * 8, 'hnk'); paint(starPts(lerp(380, 600, k), lerp(1240, 1990, k) - Math.sin(k * Math.PI) * 160, 22, .5, 5, k * 9), { wash: P2.gold, ink: P2.ink, sw: .6 }); }
+    if (t > TORE + 1.2) { necklace(120, 1760, 70, 1.2, 'hnk'); boilSeed('hcr'); paint(starPts(600, 1990, 22, .5, 5, .6), { wash: P2.gold, ink: P2.ink, sw: .6 }); }
     // the king comes in with a lamp, raises his hand to swear; a glow of Ram over him; then falls and begs
     if (t > FOUND - .6) {
       const inK = easeOut(seg(t, FOUND - .6, FOUND + .4)), dx = lerp(1300, 940, inK), fall = ease(seg(t, FELL - .2, FELL + .3)), beg = t > BEGGED - .2;
       const sw = ease(seg(t, SWORE - .3, SWORE + .1)) * (1 - ease(seg(t, FIRST - .4, FIRST)));
-      dasharatha(dx, 1830, 23, { boilKey: 'hd', flip: true, walk: inK < 1 ? t * 1.6 : undefined, eyes: t > FELL ? 'closed' : t > FIRST ? 'wide' : 'normal', mouth: t > FELL ? 'O' : t > FIRST ? 'O' : 'smile', brow: t > FIRST ? .9 : 0,
+      dasharatha(dx, 1830, 23, { boilKey: 'hd', flip: true, walk: inK < 1 ? t * 1.6 : undefined, eyes: t > FELL ? 'closed' : t > FIRST ? 'wide' : 'normal', mouth: t > FELL ? 'O' : t > FIRST ? 'O' : talk(t, FOUND + .4, FIRST - .4, 'smile'), brow: t > FIRST ? .9 : 0,
         sit: beg ? 1 : 0, rot: fall * (beg ? 0 : .6), pray: beg ? 1 : 0, bow: beg ? .5 + .15 * Math.sin(t * 4) : 0, lookX: -.6,
         handR: !beg && sw > 0 ? [lerp(3.4, 4.4, sw), lerp(-11, -21.5, sw)] : !beg ? [3.4, -13.4] : undefined, bendR: .5, sweat: t > FIRST + .3,
         emote: t > FIRST && t < FELL ? '!!' : undefined, emoteK: 1, emoteAge: t - FIRST });
@@ -191,7 +182,7 @@
     tears(...naradaEye(800, 1840, 20, { flip: true, sit: 1, bow: .6 }, 1), t, 'ldt', .8);
     kaikeyi(200, 1820, 20, { boilKey: 'lk', plain: 1, hairDown: 1, eyes: 'normal', mouth: 'flat', lookX: .6, hx: .2 });
     const pray = ease(seg(t, LETBE - .3, LETBE + .2)), turn = t > GO + .5;
-    ram(500, 1830, 25, { boilKey: 'lr', eyes: t > FACE - .1 ? 'closed' : 'normal', mouth: 'smile', pray: turn ? 0 : pray, bow: pray * .25, hx: turn ? .5 : 0, glowK: 1 });
+    ram(500, 1830, 25, { boilKey: 'lr', eyes: t > FACE - .1 ? 'closed' : 'normal', mouth: talk(t, LETBE, GO + .9, 'smile'), pray: turn ? 0 : pray, bow: pray * .25, hx: turn ? .5 : 0, glowK: 1 });
     glow(500, 1350, 260, '#FFE6B0', .35 + .1 * Math.sin(t * 2));
     camEnd();
     caps(t);
