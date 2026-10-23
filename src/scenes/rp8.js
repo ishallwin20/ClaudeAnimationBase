@@ -116,8 +116,10 @@
     else vanaraKing(bx, 1840, 19, { boilKey: 'fs', flip: sw >= 0, eyes: 'angry', mouth: 'teeth', handR: [8, -16 + Math.cos(t * 9) * 2], bendR: .3, lean: 1.2, garland: g ? 1 : 0 });
     if (t > GARL - .1 && t < GARL + .5) { const q = seg(t, GARL - .1, GARL + .5); boilSeed('fgsp'); for (let i = 0; i < 6; i++) { const a = i / 6 * TAU; paint(starPts(bx + Math.cos(a) * 120 * q, 1500 + Math.sin(a) * 80 * q, 14 * (1 - q), .4, 4), { wash: '#FFF6DA', ink: null }); } }
     // Ram behind a tree on the left, bow drawn, unsure; "?" ; then the garland pops on
-    ram(175, 1860, 20, { boilKey: 'fr', eyes: t > ALIKE && !g ? 'wide' : 'angry', mouth: 'flat', kodanda: true, hx: -.5, lookX: -1, ...bowPose(.7), emote: t > ALIKE && t < GARL ? '?' : undefined, emoteK: 1, emoteAge: t - ALIKE });
-    bigTree(390, 1880, 900, 'ft', t);
+    // he draws as they fight, eases off when he can't tell them apart, and draws again once the garland is on
+    const fdraw = t < ALIKE ? ease(seg(t, F0 + .2, F0 + 1.2)) : t < GARL + .2 ? lerp(1, .35, ease(seg(t, ALIKE, ALIKE + .5))) : lerp(.35, 1, ease(seg(t, GARL + .2, GARL + 1)));
+    ram(150, 1860, 20, { boilKey: 'fr', eyes: t > ALIKE && !g ? 'wide' : 'angry', mouth: 'flat', kodanda: true, hx: -.5, lookX: -1, ...bowPose(fdraw), emote: t > ALIKE && t < GARL ? '?' : undefined, emoteK: 1, emoteAge: t - ALIKE });
+    bigTree(430, 1880, 900, 'ft', t);
     camEnd();
     caps(t);
     wipeOut(lt, dur, ROCKC);
@@ -141,17 +143,20 @@
   }
 
   // ================= H · "is that dharma?"; Ram's answer; Vali accepts and entrusts Angad =================
+  const VL = [330, 1800, 575, 1785];   // Vali lying in H: his feet x, y; the arrow in his chest x, y
   function shotDharma(t, lt, dur) {
-    const c = kf(t, [[H0, [540, 1500, 1.15]], [TOOK - .3, [540, 1500, 1.15]], [BHARAT, [460, 1440, 1.08]], [ACCEPT, [560, 1500, 1.12]]], ease);
+    const c = kf(t, [[H0, [520, 1500, 1.0]], [TOOK - .3, [520, 1500, 1.0]], [BHARAT, [480, 1470, .98]], [ACCEPT, [540, 1500, 1.0]]], ease);
     camBegin(c[0], c[1], c[2]);
     kishkindha(t, 'h');
     const acc = t > ACCEPT - .2;
-    vanaraKing(720, 1800, 19, { boilKey: 'hv', rot: -Math.PI / 2 * .95, noShadow: true, eyes: acc ? 'happy' : 'angry', mouth: t < TOOK ? talk(t, H0 + .3, TOOK - .2, 'frown') : acc ? talk(t, ACCEPT, ANGAD + .4, 'smile') : 'flat', brow: acc ? .4 : -.6 });
-    arrowAt(640, 1700, -1.2, 120, 'hstuck');
-    ram(330, 1840, 22, { boilKey: 'hr', eyes: 'normal', mouth: talk(t, TOOK, ACCEPT - .3, 'flat'), lookX: .8, lookY: .5, hx: .3, kodanda: true, handR: t > BHARAT - .3 && t < ACCEPT ? [7.5, -17] : undefined, bendR: .4 });
-    if (t > BHARAT - .3 && t < ACCEPT) { const q = backOut(clamp((t - BHARAT + .3) * 3)), bx = 360, by = 1080; boilSeed('hbub'); paint(ellPts(bx, by, 170 * q, 130 * q, 22, 3), { wash: '#F6ECDA', ink: P8.ink, sw: 1, curv: .8 }); if (q > .5) ram(bx, by + 110, 6.5 * q, { boilKey: 'hbh', pal: { skin: '#E8B48A', skinDk: '#C68A60', skinLt: '#FAD2AE' }, kodanda: false, mouth: 'smile' }); }
-    if (t > ANGAD - .5) angad(900, 1840, 15, { boilKey: 'ha', eyes: 'cry', mouth: 'wobble', lookX: -.8, flip: true, walk: t < ANGAD ? t * 2 : undefined });
-    if (t > ANGAD) tears(...naradaEye(900, 1840, 15, { flip: true }, 1), t, 'hat', .6);
+    // Ram stands on the left; Vali lies in front of him on the ground, feet towards Ram, head to the right, looking up at him
+    ram(170, 1840, 22, { boilKey: 'hr', eyes: 'normal', mouth: talk(t, TOOK, ACCEPT - .3, 'flat'), lookX: .8, lookY: .5, hx: .3, kodanda: true, handR: t > BHARAT - .3 && t < ACCEPT ? [7.5, -17] : undefined, bendR: .4 });
+    vanaraKing(VL[0], VL[1], 16, { boilKey: 'hv', rot: Math.PI / 2 * .95, noShadow: true, lookY: .8, eyes: acc ? 'happy' : 'angry', mouth: t < TOOK ? talk(t, H0 + .3, TOOK - .2, 'frown') : acc ? talk(t, ACCEPT, ANGAD + .4, 'smile') : 'flat', brow: acc ? .4 : -.6 });
+    arrowAt(VL[2], VL[3], 1.3, 150, 'hstuck');
+    if (t > BHARAT - .3 && t < ACCEPT) { const q = backOut(clamp((t - BHARAT + .3) * 3)), bx = 440, by = 1330; boilSeed('hbub'); paint(ellPts(bx, by, 170 * q, 130 * q, 22, 3), { wash: '#F6ECDA', ink: P8.ink, sw: 1, curv: .8 }); if (q > .5) ram(bx, by + 110, 6.5 * q, { boilKey: 'hbh', pal: { skin: '#E8B48A', skinDk: '#C68A60', skinLt: '#FAD2AE' }, kodanda: false, mouth: 'smile' }); }
+    const ax = lerp(1180, 960, ease(seg(t, ANGAD - .6, ANGAD)));
+    if (t > ANGAD - .6) angad(ax, 1840, 15, { boilKey: 'ha', eyes: 'cry', mouth: 'wobble', lookX: -.8, flip: true, walk: t < ANGAD ? t * 2 : undefined });
+    if (t > ANGAD) tears(...naradaEye(ax, 1840, 15, { flip: true }, 1), t, 'hat', .6);
     camEnd();
     caps(t);
     wipeOut(lt, dur, [P8.cream, '#E8B84A']);
