@@ -378,7 +378,7 @@ function ramayanIdent(t, lt, part, title) {
 }
 
 // ---------- the follow card ----------
-// C: { part (the NEXT part's number), title (its title), sale (the books line; default the Insta Family Sale), at: { head, title, pill, ask, books } (absolute times) }
+// C: { part (the NEXT part's number), title (its title), sale (an offer line over the books line; none by default: owner, 24 Oct 2026, after the Insta Family Sale), at: { head, title, pill, ask, books } (absolute times) }
 function followCard(t, lt, C) {
   boilSeed('fcbg');
   paint(rectPts(-60, -60, W + 120, H + 120), { wash: RMY.maroon, ink: null });
@@ -406,8 +406,13 @@ function followCard(t, lt, C) {
     const a = pk(A.books);
     // the three covers in a row, the two lines under them (owner, 23 Oct 2026: the text sat on the covers; no price, the sale)
     [['book1', -1], ['book2', 0], ['book3', 1]].forEach(([b, i], j) => picture(PICS[b], X + i * 96, 1300, 84, 84, { rot: i * .06, pop: Math.max(0, a - j * .5), r: 6, shadow: 10 }));
-    letter(C.sale || 'Insta Family Sale · till 25 Oct', X, 1398, 36, RMY.gold, { screen: true, font: '700 36px Poppins', ink: false, pop: a, maxW: 820 });
-    letter('Our picture books · rishikatha.com · link in bio', X, 1446, 28, RMY.cream, { screen: true, font: '500 28px Poppins', ink: false, pop: a, maxW: 820 });
+    if (C.sale) {
+      letter(C.sale, X, 1398, 36, RMY.gold, { screen: true, font: '700 36px Poppins', ink: false, pop: a, maxW: 820 });
+      letter('Our picture books · rishikatha.com · link in bio', X, 1446, 28, RMY.cream, { screen: true, font: '500 28px Poppins', ink: false, pop: a, maxW: 820 });
+    } else {
+      letter('Our picture books', X, 1398, 36, RMY.gold, { screen: true, font: '700 36px Poppins', ink: false, pop: a, maxW: 820 });
+      letter('rishikatha.com · link in bio', X, 1446, 28, RMY.cream, { screen: true, font: '500 28px Poppins', ink: false, pop: a, maxW: 820 });
+    }
   }
 }
 
