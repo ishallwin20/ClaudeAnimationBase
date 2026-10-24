@@ -1,0 +1,121 @@
+{
+  "name": "swaha",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Every time you say *SWAHA,* | you're calling | a *GODDESS.*"
+      ],
+      "tts": "Every time you say Swaahaa, you're calling a goddess."
+    },
+    {
+      "id": "said",
+      "gap": 0.5,
+      "caps": [
+        "At every *HAVAN,* | every wedding, | every griha pravesh."
+      ],
+      "tts": "At every havan, every wedding, every griha pravesh."
+    },
+    {
+      "id": "veda",
+      "gap": 0.6,
+      "caps": [
+        "In the *VEDAS,* | it ends every offering:",
+        "*AGNAYE SWAHA.* | To Agni, swaha."
+      ],
+      "tts": "In the Vedas, it ends every offering. Agnayay Swaahaa. To Agni, Swaahaa."
+    },
+    {
+      "id": "name",
+      "gap": 0.6,
+      "caps": [
+        "But the *DEVI BHAGAVATAM* | says Swaha | is a *NAME.*"
+      ],
+      "tts": "But the Devi Bhaagavatam says, Swaahaa is a name.",
+      "hold": 0.3
+    },
+    {
+      "id": "hungry",
+      "gap": 0.7,
+      "caps": [
+        "Once, the offerings | never reached the gods.",
+        "The *GODS* went hungry."
+      ],
+      "tts": "Once, the offerings never reached the gods. The gods went hungry."
+    },
+    {
+      "id": "appear",
+      "gap": 0.6,
+      "caps": [
+        "*BRAHMA* prayed, | and from the Devi",
+        "came a goddess: | *SWAHA.*"
+      ],
+      "tts": "Brahma prayed, and from the Devi came a goddess. Swaahaa.",
+      "hold": 0.3
+    },
+    {
+      "id": "agni",
+      "gap": 0.5,
+      "caps": [
+        "She became *AGNI'S* | power to burn, | and his wife."
+      ],
+      "tts": "She became Agni's power to burn, and his wife."
+    },
+    {
+      "id": "rule",
+      "gap": 0.6,
+      "caps": [
+        "Brahma's rule: | end the offering | with her name,",
+        "and it reaches | the *GODS.*"
+      ],
+      "tts": "Brahma's rule: end the offering with her name, and it reaches the gods.",
+      "hold": 0.3
+    },
+    {
+      "id": "snake",
+      "gap": 0.6,
+      "caps": [
+        "A mantra without *SWAHA,* | says the Purana,",
+        "is a snake | without poison."
+      ],
+      "tts": "A mantra without Swaahaa, says the Puraana, is a snake without poison.",
+      "hold": 0.2
+    },
+    {
+      "id": "others",
+      "gap": 0.7,
+      "caps": [
+        "And she isn't alone. | *SWADHA:*",
+        "the name we say | when we feed | our ancestors.",
+        "*DAKSHINA:* | the gift | to the priest.",
+        "Both are | goddesses as well."
+      ],
+      "tts": "And she isn't alone. Swadhaa, the name we say when we feed our ancestors. Dakshina, the gift to the priest. Both are goddesses as well.",
+      "hold": 0.3
+    },
+    {
+      "id": "kid",
+      "gap": 0.7,
+      "caps": [
+        "Next havan, | tell your child | whose name they're saying."
+      ],
+      "tts": "Next havan, tell your child whose name they're saying."
+    },
+    {
+      "id": "ask",
+      "gap": 0.7,
+      "caps": [
+        "Did you know | *SWAHA* was a goddess?",
+        "Comment | *YES* or *NO!*"
+      ],
+      "tts": "Did you know Swaahaa was a goddess? Comment yes, or no!",
+      "hold": 1.2
+    }
+  ]
+}
