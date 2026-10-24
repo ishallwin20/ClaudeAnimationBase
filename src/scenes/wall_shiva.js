@@ -35,7 +35,7 @@
   // the loop (Android, the website): Vasuki lifts his head and flicks his tongue once a loop
   wallpaper('wall_shiva', t => {
     const up = Math.max(0, lsin(t, 1, .55)), tongue = Math.max(0, lsin(t, 6, .1)) * (up > .6 ? 1 : 0);
-    scene(t, { snakeUp: .55 * up, snakeEyes: up > .4 ? 'open' : 'closed', snakeTongue: tongue, snakeLook: lsin(t, 1, .3) * .6 });
+    scene(t, { snakeUp: .55 * up, snakeEyes: up > .4 ? 'open' : 'closed', snakeTongue: tongue, snakeTongueFront: 1.4, snakeLook: lsin(t, 1, .3) * .6 });
   });
   // the iPhone wake-up (2 s; the lock screen plays ~1.5 s of a Live Photo, then holds the still at WAKE_KEY): Vasuki,
   // asleep on his shoulder, pops up (anticipation, overshoot), flicks his tongue at you twice and settles, smiling
@@ -43,10 +43,10 @@
   LOOPS.wall_shiva_wake = t => {
     wallBegin();
     const dip = .06 * Math.sin(Math.PI * seg(t, .12, .3)), rise = backOut(seg(t, .3, .62)), settle = spring(t, .62, 7, 16) * .12;
-    const flick = (a) => Math.sin(Math.PI * seg(t, a, a + .16));
+    const flick = (a) => Math.sin(Math.PI * seg(t, a, a + .26));   // long enough to read on the lock screen
     scene(t, {
       snakeUp: clamp(.88 * rise - dip + settle, 0, 1), snakeEyes: t < .36 ? 'closed' : t < 1.25 ? 'open' : 'happy',
-      snakeTongue: Math.max(flick(.72), flick(.98)), snakeLook: lerp(-.9, .15, ease(seg(t, .35, .8))),
+      snakeTongue: Math.max(flick(.66), flick(1.0)), snakeTongueFront: 1.4, snakeLook: lerp(-.9, .15, ease(seg(t, .35, .8))),
     });
     wallEnd();
   };
