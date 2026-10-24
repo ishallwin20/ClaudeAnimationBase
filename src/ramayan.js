@@ -378,7 +378,7 @@ function ramayanIdent(t, lt, part, title) {
 }
 
 // ---------- the follow card ----------
-// C: { part (the NEXT part's number), title (its title), sale (an offer line over the books line; none by default: owner, 24 Oct 2026, after the Insta Family Sale), at: { head, title, pill, ask, books } (absolute times) }
+// C: { part (the NEXT part's number), title (its title), finale (true: 'missed a part? start from Part 1' instead), sale (an offer line over the books line; none by default: owner, 24 Oct 2026, after the Insta Family Sale), at: { head, title, pill, ask, books } (absolute times) }
 function followCard(t, lt, C) {
   boilSeed('fcbg');
   paint(rectPts(-60, -60, W + 120, H + 120), { wash: RMY.maroon, ink: null });
@@ -389,17 +389,18 @@ function followCard(t, lt, C) {
   const A = C.at, pk = d => Math.max(0, t - d) * 4, X = 470;
   if (t > A.head) {
     letter('RAMAYAN', X, 500, 96, RMY.gold, { screen: true, font: '96px Marcellus', stroke: RMY.maroonDk, sw: .14, ink: false, pop: pk(A.head), maxW: 820 });
-    letter('NEXT', X, 600, 44, RMY.cream, { screen: true, font: '700 44px Poppins', ink: false, pop: pk(A.head + .15) });
+    letter(C.finale ? 'THE END · ALL 12 PARTS' : 'NEXT', X, 600, 44, RMY.cream, { screen: true, font: '700 44px Poppins', ink: false, pop: pk(A.head + .15), maxW: 820 });
   }
   if (t > A.title) {
-    letter(`PART ${C.part}`, X, 700, 120, RMY.cream, { screen: true, stroke: RMY.maroonDk, sw: .2, ink: false, pop: pk(A.title), rot: -.02 });
-    letter(C.title, X, 830, 92, RMY.gold, { screen: true, stroke: RMY.maroonDk, sw: .2, ink: false, pop: pk(A.title + .2), maxW: 820, rot: -.02 });
+    // the finale (owner, 24 Oct 2026): send them back to the start instead of teasing the next part
+    letter(C.finale ? 'MISSED A PART?' : `PART ${C.part}`, X, 700, C.finale ? 96 : 120, RMY.cream, { screen: true, stroke: RMY.maroonDk, sw: .2, ink: false, pop: pk(A.title), rot: -.02, maxW: 820 });
+    letter(C.finale ? 'START FROM PART 1' : C.title, X, 830, 92, RMY.gold, { screen: true, stroke: RMY.maroonDk, sw: .2, ink: false, pop: pk(A.title + .2), maxW: 820, rot: -.02 });
   }
   if (t > A.pill) {
     const k = backOut(clamp(pk(A.pill))) * (1 + .03 * pulse(t, 4));
     boilSeed('fcpill'); push(); translate(X, 1000); scale(k); paint(rrPts(-330, -58, 660, 116, 58), { wash: RMY.orange, ink: null }); pop();
     letter('Follow @therishikatha', X, 1003, 54, RMY.cream, { screen: true, font: '700 54px Poppins', ink: false, pop: pk(A.pill), maxW: 600 });
-    letter("so you don't miss it", X, 1098, 38, RMY.cream, { screen: true, font: '500 38px Poppins', ink: false, pop: pk(A.pill + .2) });
+    letter(C.finale ? 'for the next series' : "so you don't miss it", X, 1098, 38, RMY.cream, { screen: true, font: '500 38px Poppins', ink: false, pop: pk(A.pill + .2) });
   }
   if (t > A.ask) letter(C.ask || 'Comment JAI SHRI RAM 🙏', X, 1200, 56, RMY.gold, { screen: true, stroke: RMY.maroonDk, sw: .2, ink: false, pop: pk(A.ask), maxW: 820 });
   if (t > A.books) {
