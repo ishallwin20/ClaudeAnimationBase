@@ -23,7 +23,7 @@
 //   third:  third 0..1 (the third eye opens), thirdGlow 0..1 (a red ember leaks from it), thirdShake (u of tremble),
 //           thirdCol (hex: the iris, the ember and the glow in another colour, e.g. gold for a blessing)
 //   hair:   moonWob (radians), ganga 0..2 (the fountain; 1 = its idle trickle, 2 = a spurt)
-//   Vasuki: snakeUp 0..1 (rises off the shoulder), snakeEyes 'closed' | 'open' | 'angry' | 'happy', snakeTongue 0..1,
+//   Vasuki: snakeUp 0..1 (rises off the shoulder), snakeEyes 'closed' | 'open' | 'angry' | 'happy', snakeTongue 0..1 (snakeTongueFront: 1 or a length factor: it flicks straight down, toward us),
 //           snakeLook -1..1 (+ = toward screen right)
 //   skin:   col / dk / lt recolour all of him (SHV_WHITE: Karpura Gauram, white as camphor); throat 0..1 paints the
 //           blue throat, Neelkantha (Bhagavata 8.7.43)
@@ -386,7 +386,11 @@ function snakeHead(u, o, sw, rs, INK) {
     }
   }
   const tg = clamp(o.snakeTongue || 0);
-  if (tg > .05) {
+  if (tg > .05 && o.snakeTongueFront) {   // facing us: the forked tongue flicks straight down out of the mouth, K× long
+    const L = (o.snakeTongueFront === true ? 1 : o.snakeTongueFront) * 1.1 * u * tg, fl = Math.sin(T * 40) * .1 * u, x0 = lk * .25 * u, y0 = .55 * u;
+    inkLine([[x0, y0], [x0 + fl, y0 + L]], sw * 1.1, SHV.tongue, 'ink', 0);
+    for (const s of [-1, 1]) inkLine([[x0 + fl, y0 + L], [x0 + fl + s * .22 * u, y0 + L + .28 * u]], sw * .8, SHV.tongue, 'ink', 0);
+  } else if (tg > .05) {
     const tx = lk * 1.1 * u * tg - (lk < 0 ? .3 * u : -.3 * u), ty = .45 * u, fl = Math.sin(T * 40) * .1 * u;
     inkLine([[lk * .5 * u, ty], [tx, ty + fl]], sw * .7, SHV.tongue, 'ink', 0);
     inkLine([[tx, ty + fl], [tx + lk * .25 * u, ty - .15 * u + fl]], sw * .5, SHV.tongue, 'ink', 0);
