@@ -28,12 +28,12 @@
       eyes: 'normal', mouth: 'smile', blush: .55, seed: 1, boilKey: 'wb bappa', noShadow: true,
       dy: -breath, sq: breath * .3, htilt: sway * .05, hx: sway * .12, lookX: .25 * sway,
       ear: .25 + .25 * lsin(t, 2, .3), trunkSway: .25 * lsin(t, 2, .5),
-      aR: .45 + .06 * lsin(t, 2, .2), armR: (uu) => modak(uu * .5, uu * .55, uu * 1.9), aL: .1,
+      aR: .12, armR: (uu) => modak(uu * .5, uu * .4, uu * 1.9), aL: .5 + .05 * lsin(t, 2, .2),
     }), { at: 1.4 });
     // Mooshak, by the lotus, nibbling
-    const chew = Math.max(0, lsin(t, 6)), mx = 805, my = 2110;
-    rigClock(t, 'clawd', 2, () => mooshak(mx, my, 24, { eyes: 'happy', mouth: chew > .3 ? 'o' : 'smile', tail: t / WL * 3, dy: -.08 * chew, boilKey: 'wb moo' }), { at: 3.4 });
-    modak(mx - 2, my - 1.05 * 24 - 5 * chew, 40);
+    const chew = Math.max(0, lsin(t, 6)), mx = 800, my = 2120;
+    rigClock(t, 'clawd', 2, () => mooshak(mx, my, 32, { eyes: 'happy', mouth: chew > .3 ? 'o' : 'smile', tail: t / WL * 3, dy: -.08 * chew, boilKey: 'wb moo' }), { at: 3.4 });
+    modak(mx - 2, my - 1.05 * 32 - 5 * chew, 50);
     // marigold petals in front
     petalFall(t, 18, 'wb', { y0: 140, s: 22 });
     garland(t, 10, 'wb', { n: 3, sag: 110 });

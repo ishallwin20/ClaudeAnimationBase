@@ -20,7 +20,8 @@ function wallEnd() { camEnd(); }
 // The rigs blink when (T·f + off + seed·1.7) mod per < ~.12, and sway on sin(T·k): neither divides the loop. rigClock()
 // runs a rig on a clock that swings A s back and forth (so it repeats every loop), placed so the blink window sits where
 // the swing passes sin = .8: the eyes blink at loop time `at` and again on the way back (WL/2 − at), a double blink.
-const BLINKS = { clawd: [.9, 0, 3.3], balbappa: [.9, 0, 3.3], kid: [.9, .4, 3.4], owl: [.8, .4, 4.1], parvati: [.9, 1.6, 3.3], shiva: [.9, 0, 3.3] };
+const BLINKS = { clawd: [.9, 0, 3.3], balbappa: [.9, 0, 3.3], kid: [.9, .4, 3.4], owl: [.8, .4, 4.1], parvati: [.9, 1.6, 3.3], shiva: [.9, 0, 3.3],
+  narada: [.9, 1.1, 3.7], nandi: [.8, .9, 3.7], lion: [.85, .9, 3.8], durga: [.9, 1.3, 3.6] };
 function rigClock(t, kind, seed, fn, o = {}) {
   const [f, off, per] = BLINKS[kind], A = o.A ?? 1.5, s0 = .8, at = o.at ?? .9;
   const C = (.06 - off - seed * 1.7) / f - A * s0 + 20 * per / f;      // + whole periods: keep T positive (% of a negative)

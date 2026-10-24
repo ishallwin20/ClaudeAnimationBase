@@ -61,3 +61,20 @@ Wallpapers tell no story; each motif is a common, sourced image:
 - The owl (Uluka) as Lakshmi's vahana, worshipped with her on Diwali night (the Bengal tradition of the lokkhi pencha).
   Lakshmi's footprints drawn at the door on Diwali are a household custom.
 - Shiva in meditation on Kailash with the crescent moon, the Ganga in his jata and Vasuki round his neck (Shiva Purana).
+
+## Batch 2 (branch `wall/2-batch`, 24 Oct 2026): ten packs, six files each
+`node tools/wallpack.mjs [--only=01,sindoor]` writes `out/wallpapers2/<NN>-<slug>/`: `wallpaper.png` (the still, the
+Live Photo's key frame), `wallpaper_with_time.png`, `live_wallpaper_ios(.heic/.mov/.pvt)` and `_with_time`, and
+`live_wallpaper_android.mp4` and `_with_time`. The lock screens are `tools/lockscreen.py` (iPhone in San Francisco;
+Samsung One UI for Android).
+- **iPhone:** 1 s, ending on the still. The loops are rendered at 30 fps; each frame is used twice for a 60 fps movie
+  (owner's ask; batch 1's tested pair was 30 fps, so if 60 shows "Motion Not Available", re-run with 30). The window is
+  the loop's last second (5–6 s, a little beat that lands on frame 0) or a chosen moment: the owl's head turn (3.1–4.1),
+  Kanha's lick (2.2–3.2), Shiva's `wall_shiva_wake` (.5–1.5).
+- **Android:** the 6 s loop twice (12 s, under Samsung's 15 s cap), 1080×2400, 30 fps.
+- New loops (`src/scenes/wall_batch2.js`): Hanuman in sindoor at sunrise, Kanha patting his cow, Maa Lakshmi on her
+  lotus pouring coins, Narad Muni on a cloud with his veena, Maa Durga with Sher. Bal Bappa's modak hand now rests on
+  his knee (it read as part of the tusk when raised beside the trunk) and the other hand blesses; Mooshak is bigger.
+- Facts: Hanuman's sindoor for Ram's long life (a widely told tradition, as in ad 29), Krishna the cowherd of Vrindavan
+  (Bhagavata 10.11ff), Lakshmi on the lotus with coins (Sri Sukta), Narad's veena and Narayana's name (Bhagavata 1.6),
+  Durga's ten arms and the gods' gifts, her lion (Devi Mahatmya ch. 2).
