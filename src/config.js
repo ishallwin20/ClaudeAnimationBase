@@ -1,6 +1,5 @@
-// config.js: project settings.
-//   duration: the video's length in seconds.
-//   bpm:      the rhythm that bounces, dances and pulse() follow. Clawd always moves to some beat; if the video has music,
-//             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
-//   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
-const PROJECT = { duration: 11, bpm: 120, offset: 0, w: 1080, h: 1920 };
+// config.js: project settings for the Ramayan trailer's end card (src/scenes/trailer.js). The trailer itself is put
+// together by tools/trailer_build.mjs from clips of the twelve parts, this card, the captions, the voice and the score.
+//   duration: the card's length in seconds (trailer 39.6–48.0).
+const PROJECT = { duration: 8.5, bpm: 96, offset: 0, w: 1080, h: 1920, letterFont: 'Bangers',
+  fonts: ['168px Marcellus', '700 44px Poppins', '700 54px Poppins', '500 38px Poppins', '130px Bangers', '700 30px Poppins'] };

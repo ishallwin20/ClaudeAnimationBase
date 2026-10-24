@@ -1,0 +1,10 @@
+Instrumental trailer score for a 48-second animated trailer of the Ramayan, the Indian epic. Indian epic cinematic style: bansuri flute, tanpura drone, sitar, tabla and dhol, low strings, a wordless choir ("aah", no lyrics), big cinematic percussion. 96 BPM, D minor resolving to D major. It sits under a narrator, so keep the mids clear and leave room for the voice; no vocals with words anywhere.
+
+Timeline (follow these timings closely; total length exactly 48 seconds, ending cleanly):
+0:00–0:09  Quiet and sacred: a tanpura drone and a slow, tender bansuri melody. Soft, intimate, like dawn at a forest hermitage.
+0:09–0:16  Low strings and a soft pulse enter; a hint of mystery and menace (a demon king appears). Still restrained.
+0:16–0:25  Hope rises: tabla and a light dhol groove start, the flute melody returns brighter, building, heroic (Hanuman leaps the ocean).
+0:25–0:30  A driving montage: dhol and big drum hits on every beat, sitar ostinato, rising energy.
+0:30–0:39.6  Full epic: strings, wordless choir and percussion build to a huge climax, rising tension, a riser into 0:39.6.
+0:39.6–0:40.2  A sudden stop: one huge drum hit, then near silence.
+0:40.2–0:48  Triumphant and warm resolution in D major: choir, strings and bansuri play the main theme, majestic but not loud, ending on a final held chord that fades out by 0:48.

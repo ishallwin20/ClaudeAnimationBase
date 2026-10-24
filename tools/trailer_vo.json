@@ -1,0 +1,18 @@
+{
+  "name": "trailer",
+  "dur": 48,
+  "defaults": { "speaker": "girish_en_devotional", "lang": "en-IN", "pace": 1.15 },
+  "lines": [
+    { "id": "verse", "t": 0.35, "caps": ["It began with", "a single verse."] },
+    { "id": "prince", "t": 3.8, "caps": ["A prince, sent to the forest", "for fourteen years."] },
+    { "id": "deer", "t": 9.0, "caps": ["A golden deer."] },
+    { "id": "ravana", "t": 11.4, "caps": ["A demon king with ten heads,", "who took Sita away."] },
+    { "id": "hanuman", "t": 16.5, "caps": ["Then came Hanuman."] },
+    { "id": "leap", "t": 18.4, "caps": ["He leapt across the ocean,", "and set Lanka on fire."] },
+    { "id": "bridge", "t": 30.2, "caps": ["A bridge across the sea."] },
+    { "id": "heads", "t": 33.0, "caps": ["Heads that kept growing back…"] },
+    { "id": "arrow", "t": 36.0, "caps": ["…and one last arrow."] },
+    { "id": "title", "t": 40.4, "caps": ["The Ramayan.", "All twelve parts."], "tts": "The Ramayan. All twelve parts." },
+    { "id": "watch", "t": 43.6, "caps": ["Watch it from Part One."] }
+  ]
+}
