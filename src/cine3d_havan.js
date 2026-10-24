@@ -58,9 +58,8 @@ function havan3(scene, o = {}) {
     block3(G, 2 * s, th, b, m, [0, y, -(P + b / 2)]); block3(G, 2 * s, th, b, m, [0, y, P + b / 2]);
     block3(G, b, th, 2 * P, m, [-(P + b / 2), y, 0]); block3(G, b, th, 2 * P, m, [P + b / 2, y, 0]);
   });
-  // the pit walls (sooty brick) and its floor of ash
+  // the pit's floor of ash (its walls are the tiers' inner faces)
   const soot = new THREE.MeshStandardMaterial({ color: '#2A1E18', roughness: 1 });
-  mesh3(G, new THREE.BoxGeometry(2 * P, top - .02, 2 * P), new THREE.MeshStandardMaterial({ color: '#1A120E', roughness: 1, side: THREE.BackSide }), [0, (top - .02) / 2 + .01, 0], { cast: false });
   mesh3(G, new THREE.PlaneGeometry(2 * P, 2 * P), new THREE.MeshStandardMaterial({ color: '#4A3A32', roughness: 1, emissive: '#3A1404', emissiveIntensity: .8 }), [0, .03, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
   // mango-wood logs, criss-crossed, glowing at the ends
   const bark = new THREE.MeshStandardMaterial({ color: '#3A2618', roughness: 1, emissive: '#5A1A04', emissiveIntensity: .5 });
@@ -87,17 +86,26 @@ function havan3(scene, o = {}) {
   const riseAt = (i, a0, fail) => { const sp = 2.0 + hash(i + 40) * 1.2, h = .7 + a0 * sp + a0 * a0 * (1 - fail) * 1.8, R = (.1 + a0 * .25) * (1 - fail * .5), ang = a0 * 2.4 + i * 2.39;
     return [Math.cos(ang) * R, fail ? Math.min(h, 1.2 + a0 * .5) : h, Math.sin(ang) * R]; };
 
-  // ---- the sruva: a wooden ladle reaching in from the -z side (screen right, seen from the east), its brass cup over
-  // the fire; it tips toward +x (toward a camera in the east) and the ghee runs from its lip into the fire ----
+  // ---- the sruva: one brass ladle, its cup over the fire and its handle reaching back to the -z side (screen right,
+  // seen from the east): the bowl, a neck that dips and rises out of the bowl's rim, a tapering handle with a bead
+  // and a knob at the end; it tips toward +x (toward a camera in the east) and the ghee runs from its lip into the fire ----
   const ladle = new THREE.Group(); ladle.position.set(0, .92, .02); G.add(ladle);
-  const wood = new THREE.MeshStandardMaterial({ color: '#6A3E20', roughness: .55 }), brass = metal3('#D6A24A', .25);
-  mesh3(ladle, new THREE.CylinderGeometry(.013, .017, 1.5, 10), wood, [0, .03, -.8], { rot: [Math.PI / 2 - .04, 0, 0] });
-  mesh3(ladle, new THREE.CylinderGeometry(.02, .02, .06, 10), brass, [0, .005, -.1], { rot: [Math.PI / 2, 0, 0] });
+  const brass = metal3('#D6A24A', .25), sruva = metal3('#C8923C', .3);
   const cupG = new THREE.Group(); ladle.add(cupG);
-  mesh3(cupG, lathe3(smooth3([[0, -.035], [.03, -.034], [.048, -.016], [.052, .006], [.046, .008], [.04, -.012], [0, -.02]], 3), 32), brass, [0, 0, 0]);
+  // the bowl: a thick-walled lathe (outside down to the foot, over the rim, back down the inside)
+  mesh3(cupG, lathe3(smooth3([[0, -.036], [.028, -.035], [.047, -.018], [.054, .002], [.053, .008], [.047, .007], [.042, -.01], [.026, -.024], [0, -.026]], 3), 40), sruva, [0, 0, 0]);
+  // the neck and handle: one tube along a curve from inside the rim, its radius tapering along it
+  const hc = new THREE.CatmullRomCurve3([[0, .0, -.036], [0, -.004, -.07], [0, .004, -.14], [0, .022, -.3], [0, .05, -.7], [0, .08, -1.1], [0, .1, -1.5]].map(p => V3(...p)));
+  const NS = 120, NR = 12, hg = new THREE.TubeGeometry(hc, NS, 1, NR, false), hp = hg.attributes.position;
+  const rad = u => u < .06 ? lerp(.012, .008, u / .06) : u < .2 ? lerp(.008, .012, (u - .06) / .14) : lerp(.012, .01, (u - .2) / .8);
+  for (let i = 0; i <= NS; i++) { const c = hc.getPointAt(i / NS), r = rad(i / NS); for (let j = 0; j <= NR; j++) { const k = i * (NR + 1) + j; hp.setXYZ(k, c.x + (hp.getX(k) - c.x) * r, c.y + (hp.getY(k) - c.y) * r, c.z + (hp.getZ(k) - c.z) * r); } }
+  hg.computeVertexNormals(); mesh3(cupG, hg, sruva, [0, 0, 0]);
+  // a bead where the neck meets the handle, a knob at the end
+  mesh3(cupG, new THREE.TorusGeometry(.013, .005, 8, 20), sruva, hc.getPointAt(.2).toArray(), { rot: [Math.atan2(.018, .16), 0, 0] });
+  mesh3(cupG, new THREE.SphereGeometry(.016, 16, 12), sruva, hc.getPointAt(1).toArray());
   const ghee = mesh3(cupG, new THREE.CircleGeometry(.042, 24), new THREE.MeshStandardMaterial({ color: '#F2C24A', roughness: .2, emissive: '#6A4A08', emissiveIntensity: .4 }), [0, -.002, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
   const pourMat = new THREE.MeshStandardMaterial({ map: waterTex3().rep(3, 1), color: '#FFD060', transparent: true, opacity: .95, roughness: .1, emissive: '#D08A10', emissiveIntensity: 1, depthWrite: false });
-  const L0 = [.055, .9, .02], pourCurve = new THREE.CatmullRomCurve3([L0, [.07, .86, .02], [.075, .6, .015], [.07, .3, .01], [.06, .15, .01]].map(p => V3(...p)));
+  const L0 = [.056, .9, .02], pourCurve = new THREE.CatmullRomCurve3([L0, [.07, .86, .02], [.075, .6, .015], [.07, .3, .01], [.06, .15, .01]].map(p => V3(...p)));
   const pourGeo = new THREE.TubeGeometry(pourCurve, 40, .0055, 8, false), pour = mesh3(G, pourGeo, pourMat, [0, 0, 0], { cast: false, receive: false });
 
   // ---- around the kund: kalash, ghee bowl, samagri plate, two lamps ----
