@@ -105,7 +105,15 @@ function warChariot(x, y, s, t, o = {}) {
 // Agastya: a short old sage with a white beard and topknot (Narad's rig with the elder's colours)
 function agastya(x, y, u, o = {}) { return narada(x, y, u, { veena: false, beard: '#EDE6DC', ...o, pal: { ...NRD_SAGE, ...(o.pal || {}) } }); }
 // Matali, Indra's charioteer: Aruna's rig (Surya's body, a band crown, no halo) from the waist up, holding the reins
-function matali(x, y, u, o = {}) { return surya(x, y, u, { pal: ARUNA_PAL, crown: 'band', halo: 0, legs: false, reins: 1, lotus: false, ...o }); }
+function matali(x, y, u, o = {}) {
+  const q = { pal: ARUNA_PAL, crown: 'band', halo: 0, legs: false, reins: 1, lotus: false, ...o };
+  surya(x, y, u, q);
+  // a black handlebar moustache (he's a grown charioteer, not a boy)
+  const [hx, hy] = suryaHead(x, y, u, q), my = hy + u * 1.15, by = hy + u * 3.7;
+  boilSeed('mtm' + (o.boilKey || ''));
+  for (const d of [-1, 1]) paint([[hx, my - u * .2], [hx + d * u * 1.1, my - u * .25], [hx + d * u * 1.9, my - u * .8], [hx + d * u * 1.6, my + u * .3], [hx + d * u * .6, my + u * .35], [hx, my + u * .25]], { wash: '#2A1A20', ink: null, curv: .4 });
+  paint([[hx - u * 1.1, by - u * .5], [hx + u * 1.1, by - u * .5], [hx + u * .5, by + u * .7], [hx, by + u * .9], [hx - u * .5, by + u * .7]], { wash: '#2A1A20', ink: null, curv: .5 });   // a short beard
+}
 // Sugriva and the vanaras (as in Parts 8 and 11)
 const VK_FUR = { skin: '#C89A4A', skinDk: '#9A702A', skinLt: '#E8BC6A', fur: '#C89A4A', furDk: '#9A702A', furLt: '#E8BC6A', dhoti: '#2E6A5A', dhotiDk: '#1E4A3E', dhotiLt: '#4E8A7A' };
 function vanaraKing(x, y, u, o = {}) { return hanuman(x, y, u, { gada: 0, tail: 'curl', ...o, pal: { ...HNM, ...VK_FUR, ...(o.pal || {}) } }); }

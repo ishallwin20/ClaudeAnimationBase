@@ -10,7 +10,7 @@ import { execFileSync } from 'node:child_process';
 import { track, tone, noise, bell, mixb, env, whoosh, plink, clang, click, thud, shimmer, slide, squeak, note, seed, rnd, clamp, chime, wind, drum, heart, conch, thunder, roar, splash, chirp, crinkle, rumble, crackle, fire, laughter, SR } from './sfx.mjs';
 
 const TL = runInNewContext(readFileSync('src/scenes/rp12_tl.js', 'utf8') + '\n;TL');
-const { GROWS, CUT, B0, C0, D0, E0, F0, G0, H0, I0, J0, K0, END, INDRA, MATALI, AGASTYA, THRICE, STRONG, CUTS, HUNDRED, LOOSE, HEART, FELL, BACK, KING, CROWN, CARD } = TL;
+const { GROWS, CUT, B0, C0, FOOT, D0, E0, F0, G0, H0, I0, J0, K0, END, INDRA, MATALI, AGASTYA, THRICE, STRONG, CUTS, HUNDRED, MIX, CHANT, DRAW, LOOSE, FLY, RV, HUSH, HEART, TOPPLE, FELL, BACK, KING, CROWN, CARD } = TL;
 
 const T = track(END);
 seed(47);
@@ -109,14 +109,22 @@ T.at(B0 - .3, whoosh(.6, 600, 3600), .2, 0);
 T.at(B0, conch(1.6, 311, .7), .14, 0);
 T.at(B0 + .35, pop(.8), .22, 0); T.at(B0 + .7, pop(.6, 1.2), .18, 0);
 T.at(C0 - .3, whoosh(.6, 2200, 500), .14, 0);
-// ---- C: the chariots (war drums; Ravana's donkeys hee-haw; Indra's chariot comes down: a shimmer, hooves, a whinny; Matali)
+// ---- C: Ravana's chariot rolls in (a rumble, wheels, hee-haws, his laugh); Ram on foot (a gust, one drum); Indra's
+// chariot comes down from the clouds (a shimmer, a whoosh, hooves, the landing thud, a whinny; Matali)
 T.at(C0, wind(D0 - C0, 1, .5), .06, 0);
-for (let k = 0; k < 4; k++) T.at(C0 + .2 + k * .7, drum(44, .8, .7), .08, .2);
-T.at(C0 + .6, mixb(voice([[0, .3, 1.4, .8], [.35, .4, .9, .6]], 260, { shake: .3 })), .07, .5);   // hee-haw
-T.at(INDRA, mixb(shimmer(1.6, [note(86), note(90), note(93), note(98), note(102)], .5, .1), whoosh(1.2, 3000, 800)), .1, -.4);
-T.at(INDRA + .4, scurry(.8, .9, .1), .07, -.4);   // hooves
-T.at(INDRA + 1.2, mixb(thud(.6), voice([[0, .6, 1.6, .9]], 420, { fall: .5, shake: .8 })), .07, -.4);   // a whinny
-T.at(MATALI, talk(D0 - MATALI - .4, MATV, { amp: .7, gap: .18, br: .6 }), .09, -.4);
+T.at(C0, rumble(1.8, .7), .12, .4);
+T.at(C0 + .2, scurry(1.3, .8, .12), .06, .4);
+T.at(C0 + .9, mixb(voice([[0, .3, 1.4, .8], [.35, .4, .9, .6]], 260, { shake: .3 })), .07, .2);   // hee-haw
+T.at(C0 + 1.5, voice([[0, .14, 1, .6], [.2, .14, 1.05, .6], [.4, .14, 1.1, .6], [.6, .3, 1.15, .7]], RAVV), .1, .2);   // Ravana's laugh
+for (let k = 0; k < 2; k++) T.at(C0 + .3 + k * 1.1, drum(44, .8, .7), .08, 0);
+T.at(FOOT - .2, whoosh(.6, 2200, 500), .1, 0);
+T.at(FOOT, wind(1.6, 2, .4), .1, 0);
+T.at(FOOT + .3, drum(40, 1, 1), .12, 0);
+T.at(INDRA, mixb(shimmer(1.6, [note(86), note(90), note(93), note(98), note(102)], .5, .1), whoosh(1.5, 3000, 600)), .12, .2);
+T.at(INDRA + .3, scurry(1.2, .9, .1), .07, .2);   // hooves in the air
+T.at(INDRA + 1.5, mixb(thud(1), rumble(.8, .5)), .14, .2);
+T.at(INDRA + 1.6, voice([[0, .6, 1.6, .9]], 420, { fall: .5, shake: .8 }), .07, .2);   // a whinny
+T.at(MATALI, talk(D0 - MATALI - .4, MATV, { amp: .7, gap: .18, br: .6 }), .09, .3);
 T.at(D0 - .3, whoosh(.5, 600, 2600), .12, 0);
 // ---- D: the hymn (a soft tanpura; the sage's voice; Ram's chant x3 with a rising shimmer; a power-up for new strength)
 T.at(D0, tanpura(E0 - D0, .7), .08, 0);
@@ -125,28 +133,46 @@ T.at(AGASTYA + .6, talk(THRICE - AGASTYA - .9, AGV, { amp: .65, gap: .2, br: .5 
 for (let k = 0; k < 3; k++) { T.at(THRICE + k * .45, voice([[0, .38, 1 + k * .05, .4]], RAMV, { rise: .1 }), .07, 0); T.at(THRICE + k * .45 + .1, chime(note(86 + k * 4), .4, 1.2), .05, 0); }
 T.at(STRONG - .3, mixb(slide(1, 200, 1400, .6), tone(1, t => 100 + 300 * t, { type: 'saw', e: env.swell(.3, .2), amp: .12 })), .08, 0);
 T.at(STRONG + .4, mixb(shimmer(1.2, [note(86), note(90), note(93), note(98)], .5, .06), drum(46, .9, 1)), .1, 0);
-// ---- E: the heads (twang + thwip + pop off + boing back, faster and faster; Ram's panting)
+// ---- E: the heads (an arrow's thwip from off frame + pop off + boing back; then faster and faster, a twang on every cut
+// to Ram; Ram's panting at the end)
 T.at(E0, wind(F0 - E0, 2, .5), .05, 0);
-for (const c of CUTS) { T.at(c - .3, mixb(twang(.8), thwip(.8)), .1, -.4); T.at(c, pop(.9, .8), .13, .3); T.at(c + .35, boing2(.8, 220 + 20 * Math.sin(c)), .1, .3); }
-for (let s = HUNDRED + .1; s < F0 - .2; s += .2) { T.at(s, pop(.6, .7 + (s * 7 % 3) * .1), .08, .3); T.at(s + .3, boing2(.5, 260), .05, .3); }
-T.at(HUNDRED, mixb(voice([[0, .14, 1.1, .7], [.2, .14, 1.15, .7], [.4, .3, 1.2, .8]], RAVV + 40)), .08, .4);   // the heads laugh
-T.at(HUNDRED + .5, pant(F0 - HUNDRED - .6, RAMV, .7), .06, -.4);
+for (const c of CUTS) { T.at(c - .25, thwip(.9), .1, -.4); T.at(c, pop(.9, .8), .13, .2); T.at(c + .35, boing2(.8, 220 + 20 * Math.sin(c)), .1, .2); }
+for (let s = HUNDRED + .1; s < F0 - .7; s += .2) { T.at(s, pop(.6, .7 + (s * 7 % 3) * .1), .08, .2); T.at(s + .3, boing2(.5, 260), .05, .2); }
+MIX.forEach(([a, w]) => { T.at(HUNDRED + a, w === 'ram' ? mixb(twang(.8), thwip(.8)) : whoosh(.15, 3000, 800), .1, w === 'ram' ? -.3 : .3); });
+T.at(HUNDRED, mixb(voice([[0, .14, 1.1, .7], [.2, .14, 1.15, .7], [.4, .3, 1.2, .8]], RAVV + 40)), .08, .3);   // the heads laugh
+T.at(F0 - .7, pant(.7, RAMV, .8), .07, -.2);
 // ---- F: Matali's tip (his voice; a lightbulb "ding")
 T.at(F0, wind(G0 - F0, 1, .5), .05, 0);
 T.at(F0 + .3, talk(G0 - F0 - .7, MATV, { amp: .75, gap: .17, br: .6 }), .1, -.4);
 T.at(F0 + 1.2, mixb(bell(note(96), 1.2, { partials: [[1, 1], [2.76, .4]], k: 3, amp: 1 }), click(.3)), .1, .2);
-// ---- G: the Brahmastra (a rising hum; a hush; LOOSE: a great zing; HEART: a flash-boom; FELL: a slow topple and a thud,
-// crowns clinking; BACK: a whoosh home and a "shk" into the quiver)
-T.at(G0 + .2, hum2(LOOSE - G0 - .1, 1, 1), .1, -.3);
-T.at(G0 + .3, creak(LOOSE - G0 - .4, 1), .1, -.4);
-T.at(LOOSE, mixb(twang(1), zing(1), whoosh(.5, 1000, 6000)), .16, -.2);
-T.at(HEART, mixb(drum(38, 1, 1.6), thunder(1.6, .6), shimmer(1.2, [note(86), note(91), note(98)], .5, .05)), .16, .3);
-T.at(HEART + .2, roar(1.2, RAVV, 10, .8), .07, .4);
-T.at(FELL - .4, slide(.9, 400, 120, .5), .07, .4);
-T.at(FELL + .4, mixb(thud(1), rumble(1, .6)), .16, .4);
-for (let k = 0; k < 4; k++) T.at(FELL + .5 + k * .15, clang(note(84 + k * 3), .4), .05, .2 + k * .1);
-T.at(BACK, mixb(whoosh(.6, 4000, 1000), shimmer(.8, [note(98), note(93), note(91)], .4, .1)), .12, -.1);
-T.at(BACK + .6, mixb(click(.8), noise(.1, { hp: 1500, lp: 6000, e: env.pluck(40), amp: .6 })), .1, -.4);
+// ---- G: the Brahmastra. The charge: Ram's low chant, a hum rising, sparks; the bow creaks; LOOSE: a twang, a great
+// zing, a thunder crack. The flight: a roaring rush of fire. Ravana: the heads chuckle, then a rising whine, a gulp, a
+// heartbeat quickening; HUSH: total silence; HEART: the boom. The fall: a ringing, a creak, the long drop, the thud, the
+// crowns clinking. The return: a whoosh home and a "shk" into the quiver, a chime.
+T.at(G0, wind(LOOSE - G0, 3, .6), .05, 0);
+T.at(CHANT, voice(Array.from({ length: 7 }, (_, i) => [i * .21, .18, 1 + .06 * Math.sin(i * 2), .3]), RAMV - 30, { fall: .05 }), .07, -.2);
+T.at(CHANT, hum2(LOOSE - CHANT, 1, 1.4), .1, 0);
+for (let k = 0; k < 8; k++) T.at(CHANT + .2 + k * .3, plink(note(91 + (k % 4) * 3), .3), .04, (k % 2 ? .3 : -.3));
+T.at(DRAW, creak(LOOSE - DRAW - .1, 1), .12, -.2);
+T.at(LOOSE, mixb(twang(1), zing(1), whoosh(.6, 1000, 7000), thunder(.9, .7)), .2, .2);
+T.at(FLY, mixb(fire(RV - FLY, 1, 1), whoosh(RV - FLY + .2, 400, 3500)), .16, 0);
+T.at(FLY + .1, shimmer(1.2, [note(86), note(91), note(93), note(98)], .4, .12), .06, 0);
+T.at(RV + .1, voice([[0, .12, 1.1, .6], [.18, .12, 1.15, .6], [.36, .12, 1.2, .6]], RAVV + 30), .07, 0);   // a smug chuckle
+T.at(RV + .6, slide(HUSH - RV - .6, 300, 2400, .5), .07, -.2);   // the rising whine of the light
+T.at(RV + .6, whoosh(HUSH - RV - .6, 300, 6000), .1, -.3);
+T.at(RV + 1.3, gulp(1), .14, 0);
+for (let s2 = RV + 1.7, g = .5; s2 < HUSH - .1; s2 += g, g = Math.max(.22, g * .8)) T.at(s2, heart(1), .14, 0);
+T.at(HEART, mixb(drum(30, 1, 2.2), thunder(2.5, 1), rumble(2, 1), noise(.6, { lp: 5000, hp: 40, e: env.pluck(4), amp: 1 })), .3, 0);
+T.at(HEART + .05, shimmer(1.4, [note(86), note(91), note(98), note(103)], .5, .05), .07, 0);
+T.at(HEART + .25, roar(1.2, RAVV, 10, .8), .07, .2);
+T.at(TOPPLE, tone(1.6, 3200, { e: env.swell(.05, 1.4), amp: .25 }), .05, 0);   // the ringing after the blast
+T.at(TOPPLE + .3, creak(.8, .7), .07, .3);
+T.at(TOPPLE + .7, slide(FELL - TOPPLE - .7, 500, 110, .6), .08, .3);
+T.at(FELL, mixb(thud(1.2), rumble(1.4, .9), drum(36, 1, 1.2)), .22, .3);
+for (let k = 0; k < 4; k++) T.at(FELL + .15 + k * .17, clang(note(84 + k * 3), .4), .05, .1 + k * .1);
+T.at(BACK + .2, mixb(whoosh(.8, 4000, 1000), shimmer(.8, [note(98), note(93), note(91)], .4, .1)), .12, .3);
+T.at(BACK + 1.0, mixb(click(.8), noise(.1, { hp: 1500, lp: 6000, e: env.pluck(40), amp: .6 })), .1, -.3);
+T.at(BACK + 1.05, chime(note(93), .6, 1.6), .06, -.3);
 T.at(H0 - .3, whoosh(.5, 600, 2600), .12, 0);
 // ---- H: the flowers (a sparkling harp shower; the monkeys cheer; a fanfare)
 T.at(H0, harp(true, .6), .08, 0); T.at(H0 + .8, harp(false, .5), .06, 0);
