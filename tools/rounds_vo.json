@@ -1,0 +1,115 @@
+{
+  "name": "rounds",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "How many times | should you walk | around *EACH GOD?*"
+      ],
+      "tts": "How many times should you walk around each god?"
+    },
+    {
+      "id": "same",
+      "gap": 0.5,
+      "caps": [
+        "Most of us do | the *SAME* rounds | for every god."
+      ],
+      "tts": "Most of us do the same rounds for every god."
+    },
+    {
+      "id": "own",
+      "gap": 0.5,
+      "caps": [
+        "But the scriptures | give each god | their *OWN NUMBER.*"
+      ],
+      "tts": "But the scriptures give each god their own number.",
+      "hold": 0.4
+    },
+    {
+      "id": "devi",
+      "gap": 0.7,
+      "caps": [
+        "For *DEVI,* the Mother: | just *ONE* round."
+      ],
+      "tts": "For Devi, the Mother: just one round.",
+      "hold": 0.6
+    },
+    {
+      "id": "ganesha",
+      "gap": 1.0,
+      "caps": [
+        "For *GANESHA:* | *THREE.*"
+      ],
+      "tts": "For Ganesha: three.",
+      "hold": 1.6
+    },
+    {
+      "id": "vishnu",
+      "gap": 1.3,
+      "caps": [
+        "For *VISHNU:* | *FOUR.*"
+      ],
+      "tts": "For Vishnu: four.",
+      "hold": 1.6
+    },
+    {
+      "id": "surya",
+      "gap": 1.4,
+      "caps": [
+        "For *SURYA,* the Sun: | *SEVEN,* | the most of all."
+      ],
+      "tts": "For Soorya, the Sun: seven, the most of all.",
+      "hold": 0.6
+    },
+    {
+      "id": "shiva",
+      "gap": 1.4,
+      "caps": [
+        "And for *SHIVA?* | Only *HALF.*"
+      ],
+      "tts": "And for Shiva? Only half.",
+      "hold": 0.6
+    },
+    {
+      "id": "why",
+      "gap": 0.6,
+      "caps": [
+        "Remember *PART 1?* | You never cross | the water from his shrine.",
+        "You walk up to it, | and *TURN BACK.*"
+      ],
+      "tts": "Remember Part One? You never cross the water from his shrine. You walk up to it, and turn back."
+    },
+    {
+      "id": "verse",
+      "gap": 0.7,
+      "caps": [
+        "It's all in one verse | of the | *NARASIMHA PURANA.*"
+      ],
+      "tts": "It's all in one verse of the Narasimha Puraana.",
+      "hold": 1.6
+    },
+    {
+      "id": "kid",
+      "gap": 0.7,
+      "caps": [
+        "Next temple visit, | *COUNT THEM* | with your child."
+      ],
+      "tts": "Next temple visit, count them with your child."
+    },
+    {
+      "id": "ask",
+      "gap": 0.6,
+      "caps": [
+        "How many rounds | do *YOU* do? | Comment | *YOUR NUMBER!*"
+      ],
+      "tts": "How many rounds do you do? Comment your number!",
+      "hold": 1.0
+    }
+  ]
+}
