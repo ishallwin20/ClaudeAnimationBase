@@ -1,0 +1,22 @@
+A SHORT film-score cue for a 70-second reel: tempo 72 BPM in 4/4, exactly 21 bars, 70 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:10. Keep moving with the timings below.
+Tender, emotional Indian cinematic score, like the most moving scene of a family film: a whole life passing, from
+childhood bedtime stories with a grandmother to growing old and telling the same stories to a grandchild. Solo felt
+piano, a soft bansuri, warm strings, a gentle tanpura drone, a music-box glockenspiel, a light santoor. Wordless.
+No drums except a soft heartbeat-like pulse where asked. Never loud or bombastic; intimate, warm, bittersweet, hopeful.
+
+0:00-0:06  Solo felt piano alone, very soft, a simple lullaby motif (5 notes), like a music box; one bright glockenspiel note at 0:03.6.
+0:06-0:13  The lullaby motif on bansuri over the piano and a tanpura drone: warm, cosy, a grandmother telling bedtime stories.
+0:13-0:20  A touch of sadness: low strings enter softly, a minor chord; the piano keeps walking forward.
+0:20-0:23  Hush: the strings drop away, only a few slow single piano notes.
+0:23-0:28  The bansuri lifts the lullaby motif again, brighter, strings swell warmly underneath: hope.
+0:28-0:35  Fuller and tender: strings and piano together, a gentle santoor shimmer, love and a new baby.
+0:35-0:38  The lullaby motif returns softly on the music box, as at the start.
+0:38-0:46  Time runs faster: flowing piano arpeggios, a soft pulse, strings building steadily in a long crescendo.
+0:46-0:53  The emotional peak: full warm strings and the bansuri singing the lullaby motif, big but gentle.
+0:53-0:56  Everything thins out to one quiet piano line; it stops at 0:55.8.
+0:56-0:57  Total SILENCE for half a second, then one high sustained string note blooming.
+0:57-1:04  The lullaby motif on solo piano with warm strings beneath, slow and hopeful, like starlight.
+1:04-1:10  Resolution: a soft tanpura, a last bansuri phrase and a final soft piano chord, fading out completely by 1:10.
+
+Total length: 70 seconds, 21 bars at 72 BPM. End at 1:10.
