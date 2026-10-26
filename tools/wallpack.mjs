@@ -30,12 +30,14 @@ const WALLS = [
   ['10-durga-sher', 'wall_durga', ['wall_durga', 6]],
 ];
 // batch 3: [folder, loop, page]; every loop has a <loop>_wake twin (2 s, the still at 1.5 s). Painted ones render from
-// studio.html (src/scenes/wall_batch3.js), Storybook ones from studio_wall_sb.html, the 3D one from studio_wall_3d.html.
+// studio.html (src/scenes/wall_batch3.js), Storybook ones from studio_wall_sb.html, the 3D one from studio_wall_3d.html,
+// the mixed ones (Cinematic light with Storybook shapes) from studio_wall_mix.html.
 const WALLS3 = [
   ['01-mahakal', 'p3_mahakal'], ['02-tirupati-balaji', 'p3_balaji'], ['03-jagannath', 'p3_jagannath'], ['04-kedarnath', 'p3_kedarnath'],
   ['05-bal-murugan', 'p3_murugan'], ['06-ram-lalla', 'p3_ramlalla'], ['07-khatu-shyam', 'p3_khatushyam'], ['08-ayyappa', 'p3_ayyappa'],
   ['09-lakshmi-ganesh', 'p3_lakshmi_ganesh'], ['10-dhanteras', 'sb_dhanteras', 'studio_wall_sb.html'], ['11-tulsi-diya', 'sb_tulsi', 'studio_wall_sb.html'],
   ['12-shiva-sanctum-3d', 'wall3d_sanctum', 'studio_wall_3d.html'],
+  ['13-krishna-moon', 'krishna_moon', 'studio_wall_mix.html'], ['14-diwali-night', 'diwali_night', 'studio_wall_mix.html'], ['15-radha-krishna', 'radha_krishna', 'studio_wall_mix.html'],
 ].map(([f, l, page]) => [f, l, [l + '_wake', 1.5], page]);
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 const B3 = String(args.batch) === '3', LIST = B3 ? WALLS3 : WALLS;
