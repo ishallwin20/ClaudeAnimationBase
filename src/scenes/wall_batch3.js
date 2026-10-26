@@ -289,70 +289,50 @@
     garland(t, 10, 'vb', { n: 3, sag: 110 });
   });
 
-  // ---------- Sabarimala: Ayyappa ----------
-  // Seated in his yogic squat, the yogapatta band round his knees, the right hand in chin mudra, the left resting on the
-  // knee, a bell at his neck; above the eighteen gold steps, the forest hills behind. wake: the lamps along the steps light
+  // ---------- Ayyappa riding the tigress ----------
+  // Manikandan rides a tigress home through the forest (the Ayyappa legend: he went for tigress's milk for the queen and
+  // came back riding one), his bow in hand, the bell at his neck; the Sabarimala hills behind, its gold-roofed shrine on
+  // a hilltop. wake: he raises his hand in blessing; she gives a happy blink and flicks her tail
   const AY = { skin: '#E8B482', skinDk: '#C88A5A', skinLt: '#FFD9B0', teal: '#E8701E', tealDk: '#B8501A', tealLt: '#FFA860', sash: '#2A2A3A', sashDk: '#121218', hair: '#1E1A24', hairLt: '#3A3446', gold: '#F2C230', goldDk: '#B88A1C', gem: '#D9302E', eye: '#2A1A12', brow: '#2A1A12', ink: '#3A2214', dot: '#D2452F', ash: '#FBF3E6' };
   wallpaperK('p3_ayyappa', (t, k) => {
     sky('ay sky', '#1A3A3A', '#4A8A6A', '#F2C27A');
     twinkle(t, 26, 'ay', { y1: 860 });
     const cx = 540;
-    glow(cx, 1380, 720, '#FFE29A', .5);
-    rays(t, cx, 1380, 320, 680, 24, '#FFE9A8', 60, 'ay rays');
-    // forest hills
+    glow(cx, 1400, 720, '#FFE29A', .5);
+    rays(t, cx, 1400, 320, 680, 24, '#FFE9A8', 60, 'ay rays');
+    // the hills, a forest line, the shrine on its hill with its steps
     boilSeed('ay hills');
-    paint([[-60, 1620], [140, 1540], [300, 1590], [470, 1520], [640, 1580], [820, 1500], [1140, 1590], [1140, 2100], [-60, 2100]], { wash: '#2E6A4A', fill: '#1E4A34', fillOp: 70, tex: .5, ink: null, curv: .6 });
-    for (let i = 0; i < 9; i++) { const tx = 40 + i * 125, ty = 1600 + (i % 2) * 40; paint([[tx - 34, ty + 30], [tx, ty - 70], [tx + 34, ty + 30]], { wash: '#1E5A3A', ink: null }); }
-    // the eighteen steps, gold, narrowing up to his seat; lamps along both edges light from the bottom up on wake
-    const steps = (yMax = 1e9) => {   // drawn again over the rig (yMax): its legs, lowered under the seat, must not show
-      boilSeed('ay steps');
-      const sTop = 1880, sBot = 2330, y1 = Math.min(sBot, yMax), w1 = lerp(170, 360, (y1 - sTop) / (sBot - sTop));
-      paint([[cx - 170, sTop], [cx + 170, sTop], [cx + w1, y1], [cx - w1, y1]], { wash: '#E8B83A', fill: '#B8821C', fillOp: 60, tex: .5, ink: INK, sw: 1 });
-      for (let i = 1; i < 18; i++) { const f = i / 18, yy = lerp(sTop, sBot, f), w = lerp(170, 360, f); if (yy < y1) inkLine([[cx - w, yy], [cx + w, yy]], 1, '#9A6A14', 'inkfine', 0); }
-      for (let i = 0; i < 6; i++) { const f = 1 - i / 6 - .08, yy = lerp(sTop, sBot, f), w = lerp(170, 360, f) + 30;
-        if (yy < y1 + 40) for (const s of [-1, 1]) diya(cx + s * w, yy, 60, t, `ay st ${i} ${s}`, { lit: kSeg(k, .05 + i * .1, .2 + i * .1) }); }
-    };
-    steps();
-    // Ayyappa, seated low on a gold seat in his yogic squat: the rig's body lowered 3.5u so his hips sit on the seat, the
-    // seat's front hiding the rest; then the knees up and wide either side of the chest, bare shins down to the feet, the
-    // yogapatta across the front of both knees, the left arm draped over the left knee, the right hand in chin mudra
-    const x = cx, y = 1870, u = 44, breath = lsin(t, 2) * .08, dyB = 3.5 - breath, chin = 3.36, Q = pts => P(pts, x, y, u), Qb = pts => P(pts, x, y + dyB * u - 3.5 * u, u);
-    rigClock(t, 'karti', 0, () => kartikeya(x, y, u, {
-      pal: AY, crown: 1, topknot: false, feather: false, shield: false, spear: false, aL: chin, aR: -1.25,
-      eyes: 'normal', mouth: 'smile', blush: .35, dy: dyB, sq: breath * .3, htilt: lsin(t, 1, .2) * .03, boilKey: 'ay body', noShadow: true,
+    paint([[-60, 1640], [120, 1520], [260, 1480], [380, 1560], [560, 1600], [760, 1540], [900, 1580], [1140, 1560], [1140, 2100], [-60, 2100]], { wash: '#2E6A4A', fill: '#1E4A34', fillOp: 70, tex: .5, ink: null, curv: .6 });
+    for (let i = 0; i < 10; i++) { const tx = 20 + i * 115, ty = 1640 + (i % 3) * 30; paint([[tx - 32, ty + 30], [tx, ty - 66], [tx + 32, ty + 30]], { wash: '#1E5A3A', ink: null }); }
+    paint(rectPts(42, 1500, 76, 46), { wash: '#F2C230', fill: '#C89A1C', fillOp: 60, ink: INK, sw: .7 });
+    paint([[32, 1504], [80, 1460], [128, 1504]], { wash: '#F2C230', fill: '#C89A1C', fillOp: 60, ink: INK, sw: .7 });
+    for (let i = 0; i < 5; i++) inkLine([[64 - i * 6, 1550 + i * 9], [96 + i * 6, 1550 + i * 9]], 1.4, '#F2C230', 'inkfine', 0);
+    floor(1990, '#3E7A4A', '#2A5A34', 'ay floor');
+    rangoli(t, cx, 2150, 450, 96, ['#F7A21B', '#E2476E', '#FFD23C'], 'ay rangoli');
+    diya(100, 2010, 130, t, 'ay L'); diya(980, 2010, 130, t, 'ay R');
+    // the tigress, walking right with her face turned to us; Ayyappa on her back (drawn first: her body hides his legs)
+    const tx = 440, ty = 1990, tu = 45, hap = kBump(k, .45, .8) > .3;
+    const to = { kind: 'tiger', eyes: hap ? 'happy' : 'normal', mouth: 'smile', blush: .5, hx: .5, lookX: .2, nod: lsin(t, 1) * .05 - .04,
+      tail: lsin(t, 2) * .5 + kBump(k, .2, .7) * .9, pitch: lsin(t, 2, .25) * .015, boilKey: 'ay tiger' };
+    const [sx, sy] = lionRunSeat(tx, ty, tu, to), ru = 33, bless = kSeg(k, .1, .55), breath = lsin(t, 2) * .06;
+    rigClock(t, 'karti', 0, () => kartikeya(sx + 6, sy + 6.2 * ru, ru, {
+      pal: AY, crown: 1, topknot: false, feather: false, shield: false, spear: false,
+      aL: lerp(-1.1, .95, bless), aR: -.75, armR: (u, sw) => goldBow(u * .8, sw), eyes: 'normal', mouth: 'smile', blush: .4,
+      dy: -breath, sq: breath * .3, htilt: lsin(t, 1, .2) * .04, boilKey: 'ay body', noShadow: true,
     }), { at: 2.4 });
-    steps(y + 3.6 * u);
-    boilSeed('ay seat'); paint(rrPts(cx - 250, y - 4, 500, 72, 16), { wash: '#F2C230', fill: '#C89A1C', fillOp: 60, tex: .4, ink: INK, sw: 1 });
-    for (let j = 0; j < 5; j++) paint(ellPts(cx - 200 + j * 100, y + 32, 14, 14, 10), { wash: j % 2 ? '#2E8A5A' : '#D9302E', ink: INK, sw: .4 });
-    boilSeed('ay legs');
-    for (const s of [-1, 1]) {
-      paint(ribbon(Q([[s * 1.4, -1.0], [s * 2.6, -2.8], [s * 3.4, -4.1]]), 1.55 * u, 1.3 * u), { wash: AY.teal, fill: AY.tealDk, fillOp: 50, tex: .6, ink: INK, sw: 1 });   // the thighs, in the dhoti
-      paint(ribbon(Q([[s * 3.45, -4.0], [s * 3.55, -2.2], [s * 3.4, -.7]]), 1.15 * u, .95 * u), { wash: AY.skin, fill: AY.skinDk, fillOp: 40, tex: .5, ink: INK, sw: 1 });   // the shins
-      paint(ellPts(x + s * 3.45 * u, y - 4.2 * u, 1.08 * u, .95 * u, 18), { wash: AY.skin, fill: AY.skinLt, fillOp: 50, tex: .5, ink: INK, sw: 1 });   // the knees, up
-      paint(ellPts(x + s * 3.65 * u, y - .4 * u, 1.2 * u, .46 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });   // the feet on the seat
-      inkLine(Q([[s * 2.9, -.95], [s * 4.0, -.95]]), 2.4, AY.gold, 'ink', 0);
-    }
-    // the yogapatta: a gold band across the front of both knees
-    paint(ribbon(Q([[-4.7, -3.0], [-2.3, -2.6], [0, -2.5], [2.3, -2.6], [4.7, -3.0]]), .78 * u, .78 * u), { wash: '#F2C230', fill: '#C89A1C', fillOp: 50, tex: .4, ink: INK, sw: 1 });
-    inkLine(Q([[-4.5, -3.0], [0, -2.55], [4.5, -3.0]]), 1.2, '#9A6A14', 'inkfine', .4);
-    for (const s of [-1, 1]) paint(ellPts(x + s * 4.75 * u, y - 3.0 * u, .3 * u, .42 * u, 10), { wash: '#F2C230', ink: INK, sw: .6 });
-    // the left arm (screen right) over the knee, the hand hanging past it
-    boilSeed('ay arm');
-    paint(ribbon(Qb([[2.6, -5.2], [3.6, -4.7], [4.45, -3.7]]), 1.1 * u, .92 * u), { wash: AY.skin, fill: AY.skinDk, fillOp: 40, tex: .5, ink: INK, sw: 1 });
-    inkLine(Qb([[3.0, -5.4], [3.3, -4.5]]), 2.4, AY.gold, 'ink', 0);
-    paint(ellPts(x + 4.6 * u, y - 3.35 * u + (dyB - 3.5) * u, .62 * u, .7 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });
-    // the chin mudra at his chest: thumb and forefinger in a ring, three fingers up
-    const [mx, my] = kartiHand(x, y, u, { aL: chin, dy: dyB }, -1);
-    paint(ellPts(mx, my, .72 * u, .66 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });
-    paint(ellPts(mx - .3 * u, my - .45 * u, .26 * u, .26 * u, 10), { wash: AY.skinLt, ink: INK, sw: .7 });
-    for (const dd of [0, .3, .58]) inkLine([[mx + dd * u, my - .4 * u], [mx + (dd + .1) * u, my - 1.25 * u]], 3, INK, 'ink', 0);
+    lionRun(tx, ty, tu, to);
+    // his near leg down her flank: the thigh in the dhoti, the shin, an anklet, the foot
+    boilSeed('ay leg');
+    const lx = sx + 30, ly = sy - 6;
+    paint(ribbon([[lx - 10, ly], [lx + 22, ly + 46], [lx + 30, ly + 80]], 46, 40), { wash: AY.teal, fill: AY.tealDk, fillOp: 50, tex: .6, ink: INK, sw: 1 });
+    paint(ribbon([[lx + 30, ly + 76], [lx + 34, ly + 140], [lx + 28, ly + 196]], 34, 28), { wash: AY.skin, fill: AY.skinDk, fillOp: 40, tex: .5, ink: INK, sw: 1 });
+    inkLine([[lx + 14, ly + 176], [lx + 44, ly + 176]], 2.4, AY.gold, 'ink', 0);
+    paint(ellPts(lx + 40, ly + 204, 30, 15, 12), { wash: AY.skin, ink: INK, sw: .9 });
     // the bell at his neck
-    const yy0 = y + (dyB - 3.5) * u;
-    inkLine(P([[-.4, -5.8], [0, -5.5], [.4, -5.8]], x, yy0, u), 1, INK, 'inkfine', .4);
-    const bs = lsin(t, 2) * .12 + kBump(k, .4, 1) * .5;
-    push(); translate(x, yy0 - 5.5 * u); rotate(bs); boilSeed('ay bell');
-    paint(U([[-.5, 0], [.5, 0], [.7, 1.1], [-.7, 1.1]], u), { wash: '#F2C230', fill: '#C89A1C', fillOp: 50, ink: INK, sw: .7, curv: .4 });
-    paint(ellPts(0, 1.2 * u, .2 * u, .2 * u, 8), { wash: '#8A6A14', ink: null }); pop();
+    const nx = sx + 6, ny = sy + 6.2 * ru - 9.1 * ru - breath * ru, bs = lsin(t, 2) * .12 + kBump(k, .3, 1) * .5;
+    push(); translate(nx, ny); rotate(bs); boilSeed('ay bell');
+    paint(U([[-.5, 0], [.5, 0], [.7, 1.1], [-.7, 1.1]], ru), { wash: '#F2C230', fill: '#C89A1C', fillOp: 50, ink: INK, sw: .7, curv: .4 });
+    paint(ellPts(0, 1.2 * ru, .2 * ru, .2 * ru, 8), { wash: '#8A6A14', ink: null }); pop();
     petalFall(t, 14, 'ay', { y0: 160, s: 18 });
     garland(t, 10, 'ay', { n: 3, sag: 110 });
   });
