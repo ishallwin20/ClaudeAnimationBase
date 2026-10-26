@@ -30,7 +30,7 @@ natural tones on it, white or ink lettering with one word in yellow, ink or oran
 | file | what |
 |---|---|
 | `src/storybook.js` | the style, on top of `src/cine.js` (load after it): randomness that boils, shapes, lines and dry brush, faces, backgrounds (`sbBg`, `sbCloud`, `sbSwoosh`, `sbGround`), lettering (`sbSay`), the end card (`sbCard`), the paper finish. It turns cine.js's bloom, vignette and film grain off |
-| `src/sb_cast.js` | the characters: `sbMouse` (Mooshak, with `sbModak`), `sbOwl` (Maa Lakshmi's barn owl, with `sbCoin`), `sbDonkey` (Maa Kalaratri's), `sbBappa` (Bal Bappa), `sbDevi` (`kind` 'lakshmi' or 'kalaratri'; `sbLotus`, `sbBolt`) |
+| `src/sb_cast.js` | the characters: `sbMouse` (Mooshak, with `sbModak`), `sbOwl` (Maa Lakshmi's barn owl, with `sbCoin`), `sbDonkey` (Maa Kalaratri's), `sbBappa` (Bal Bappa), `sbDevi` (`kind` 'lakshmi' or 'kalaratri'; `sbLotus`, `sbBolt`; `coinT` the coins' clock), `sbHanuman` (Bal Hanuman: `pose` 'fly' or 'stand', `reach`, `mouth` 'wide' + `open` for a bite, `tail`, `kick`), `sbShiva` (seated in dhyana, the moon and the Ganga in his jata, `snake: { pop, tongue, sway, blink }` for Vasuki, `ganga`, `trishul`), `sbKrishna` (Bal Krishna: `arm` 'hug', 'hip' or 'none', `feather`), `sbCalf` (`lick`, `head`, `tail`, `ear`), `sbNandi` (side view, jhool, garland, painted horns), `sbDiya` (`lit`, `fl`, `glow`), `sbLimb`; `sbOwl` takes `turn` (the head right round) |
 | `storybook.html`, `src/scenes/sb_sheet.js` | the studio page on main: the cast sheet ([docs/sb_cast.jpg](docs/sb_cast.jpg)) |
 
 `src/storybook.js` needs one hook in cine.js, `LOOK.finish(c, t)`, drawn after `POST` and before the captions.
