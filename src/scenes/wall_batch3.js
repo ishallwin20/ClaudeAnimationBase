@@ -129,8 +129,8 @@
   }
   function peacockHead(t, x, y, s, key, o = {}) {   // neck and head, rising from (x, y), facing left, s ~ head width
     boilSeed(key);
-    const nod = o.nod || 0, hx = x - s * .5, hy = y - s * 3.2 + nod * s * .3;
-    paint(ribbon([[x + s * .2, y], [x + s * .1, y - s * 1.2], [x - s * .15, y - s * 2.2], [hx + s * .25, hy + s * .45]], s * 1.25, s * .5), { wash: '#2E5FC8', fill: '#1E3E9A', fillOp: 60, tex: .5, ink: '#1A2A5A', sw: .9 });
+    const nod = o.nod || 0, hx = x + (o.lean ?? -.5) * s, hy = y - s * 3.2 + nod * s * .3;   // o.lean: the head's x off the neck's foot, in s
+    paint(ribbon([[x + s * .2, y], [x + s * .15, y - s * 1.2], [lerp(x, hx, .55), y - s * 2.3], [hx + s * .25, hy + s * .45]], s * 1.25, s * .5), { wash: '#2E5FC8', fill: '#1E3E9A', fillOp: 60, tex: .5, ink: '#1A2A5A', sw: .9 });
     for (let i = 0; i < 5; i++) { const f = .2 + i * .15; paint(ellPts(lerp(x, hx, f) + s * .1, lerp(y, hy, f), s * .14, s * .1, 8), { wash: '#3FA0D8', ink: null }); }
     paint(ellPts(hx, hy, s * .55, s * .5, 18), { wash: '#2E5FC8', fill: '#1E3E9A', fillOp: 40, tex: .4, ink: '#1A2A5A', sw: .9 });
     for (const [dx, h] of [[-.2, 1.1], [0, 1.25], [.2, 1.1]]) { inkLine([[hx + dx * s, hy - s * .45], [hx + dx * s * 1.6, hy - s * h]], 1.2, '#1A2A5A', 'inkfine', .3); paint(ellPts(hx + dx * s * 1.6, hy - s * h, s * .1, s * .12, 8), { wash: '#2FB0A8', ink: '#1A2A5A', sw: .4 }); }
@@ -155,7 +155,7 @@
     rangoli(t, cx, 2150, 450, 96, ['#F7A21B', '#E2476E', '#2FB0A8'], 'mu rangoli');
     diya(110, 2010, 140, t, 'mu L'); diya(970, 2010, 140, t, 'mu R');
     peacockBody(t, 690, 1720, 'mu body');
-    peacockHead(t, 790, 1680, 78, 'mu pk', { nod: lsin(t, 2) * .3 - pop * .5, blush: 1 });
+    peacockHead(t, 830, 1690, 80, 'mu pk', { lean: 1.25, nod: lsin(t, 2) * .3 - pop * .5, blush: 1 });   // the neck curves out to the right, the head clear of the vel
     const breath = lsin(t, 2) * .1;
     rigClock(t, 'karti', 0, () => kartikeya(cx - 20, 2020, 44, {
       shield: false, spearA: .08, aR: -1.0, aL: -.9, eyes: 'normal', mouth: pop > .3 ? 'grin' : 'smile', blush: .55, lookX: .15,
