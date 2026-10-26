@@ -344,6 +344,7 @@ function frame(c, t) {
     else { const d = DEPTH++, l = scratch('shot' + d); s.draw(l, t - s.a, t); blit(c, l.canvas, k); DEPTH--; }
   }
   for (const p of POST) { c.save(); p(c, t); c.restore(); }
+  if (LOOK.finish) { c.save(); LOOK.finish(c, t); c.restore(); }   // a style's own finish (storybook.js: the paper)
   // bloom: the frame, small, cubed (so only the bright parts survive), blurred, screened back on
   if (LOOK.bloom > 0) {
     const s = scratch('bloom', W / 6, H / 6); s.drawImage(c.canvas, 0, 0, W / 6, H / 6);

@@ -1,7 +1,8 @@
 # Working in this repo
 
 Every reel is made in a named style ([STYLES.md](STYLES.md)): **Painted** ([ANIMATION_GUIDE.md](ANIMATION_GUIDE.md), the
-hand-painted p5.brush cartoon), **Cinematic** ([CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md), the film-lit motion comic) or **3D**
+hand-painted p5.brush cartoon), **Cinematic** ([CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md), the film-lit motion comic), **Storybook** ([STORYBOOK_GUIDE.md](STORYBOOK_GUIDE.md), a flat picture-book look with brush lettering on cine.js:
+`src/storybook.js`, `src/sb_cast.js`, `storybook.html`; for riddles, sweet moments, wallpapers and the books) or **3D**
 ([3D_GUIDE.md](3D_GUIDE.md), a three.js world under the Cinematic layer: `src/cine3d.js`, `cine3d.html`, the shrine set in
 `src/cine3d_temple.js`, Mount Kailash in `src/cine3d_kailash.js`, India as a relief map in `src/cine3d_india.js`, the Palk Strait and Ram Setu in `src/cine3d_setu.js`; trial reel `ad/31-books123-pradakshina`). The owner
 names the style; read that style's guide before drawing anything. This file adds what the guides don't say: how this
@@ -62,7 +63,8 @@ project makes Instagram reels, mostly for Rishi Katha (rishikatha.com, @therishi
   Instagram caption, then the pinned comment at the bottom). Every reel gets a cover.
 
 ## Books (Navagraha series, from Oct 2026)
-- Kids' picture books (ages 3–10), one per graha, drawn in the **Painted** style. Each book gets a branch `book/<n>-<graha>`
+- Kids' picture books (ages 3–10), one per graha, drawn in the **Painted** style; the **Storybook** style is meant for the
+  books too (owner, Oct 2026), through `tools/book.mjs --page=` (see STORYBOOK_GUIDE.md). Each book gets a branch `book/<n>-<graha>`
   (Book 1: `book/1-surya`) holding `books/<slug>/STORY.md` (the text, art notes and "Facts used": the retelling rules
   above apply), `books/<slug>/book.js` (the words and where they sit, in mm on the trim), `src/scenes/<slug>_book.js`
   (the art) and the branch's `src/config.js` / `studio.html`.
