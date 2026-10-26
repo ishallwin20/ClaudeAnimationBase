@@ -518,3 +518,54 @@ function sbNandi(c, x, y, s, o = {}) {
     c.restore();
   }, o);
 }
+
+// ---------- Bal Radha (front view, standing) ----------
+// A little girl in a flared lehenga with a gold border, a choli, an odhni over her head and round her shoulders, a long
+// plait, a bindi, a nose ring, flowers in her hair. o.arm: 'hold' (her right arm, screen left, out to hold a hand) |
+// 'down' | 'none' (the scene draws it); o.lotus (true: a lotus in her other hand); o.odhni (-1..1: the cloth stirs), o.happy, o.look, o.tilt
+const SB_RADHA = { skin: '#F4C6A0', dk: '#E0A47E', hair: '#2A1E1E', lehenga: '#E85A8A', dk2: '#C2406E', border: '#F2B33D', choli: '#F2C230', odhni: '#FBD0B0', odhniDk: '#F2A88A', gold: '#F2B33D', red: '#D8323C', flower: '#FFFFFF' };
+function sbRadha(c, x, y, s, o = {}) {
+  const P = { ...SB_RADHA, ...(o.pal || {}) }, t = o.t || 0, br = sbBreath(o, 1.9, 5), bl = sbBlink(o), ow = o.odhni ?? Math.sin(t * 1.4) * .5;
+  sbAt(c, x, y, s, () => {
+    // the plait behind, down her back
+    sbLine(c, [[60, -620], [120, -520], [110, -380], [130, -300]], 40, P.hair, { taper: .3, trem: .4 }); sbDot(c, 132, -292, 16, P.red);
+    for (const sd of [-1, 1]) { sbEll(c, sd * 40, -20, 36, 16, P.dk, { tex: false }); sbDry(c, [[sd * 40 - 28, -34], [sd * 40 + 28, -34]], 8, P.gold, .9, 3, { n: 6 }); }
+    c.translate(0, br * .4);
+    // the lehenga: a wide flared bell with a gold border
+    const sk = sbPoly([[-190, -40], [-80, -20], [80, -20], [190, -40], [120, -290], [-120, -290]], { n: 8 });
+    sbShape(c, sk, P.lehenga, { shade: ['rgba(80,0,30,.22)', .4], ang: -1.3 });
+    c.save(); sbPath(c, sk); c.clip();
+    sbDry(c, [[-200, -56], [0, -30], [200, -56]], 30, P.border, .95, 10, { n: 20, dry: .03, fade: .1 });
+    for (let i = 0; i < 9; i++) sbDot(c, -150 + i * 38, -120 - (i % 2) * 60, 6, P.border);
+    for (const k of [-1, 0, 1]) sbDry(c, [[k * 30, -285], [k * 80, -60]], 8, P.dk2, .45, 4, { n: 10 });
+    c.restore();
+    // the choli and the bare midriff, the odhni round her shoulders
+    sbEll(c, 0, -330, 92, 64, P.skin, { tex: false });
+    sbEll(c, 0, -380, 100, 74, P.choli, { shade: ['rgba(120,80,0,.2)', 1.5] });
+    sbShape(c, sbPoly([[-120, -420], [120, -420], [150 + ow * 10, -260], [190 + ow * 30, -120], [120 + ow * 20, -150], [60, -320], [-60, -320], [-150, -200], [-170, -240]], { n: 6 }), P.odhni, { alpha: .88, shade: ['rgba(200,90,60,.18)', .6] });
+    sbDry(c, [[-150, -200], [0, -330], [190 + ow * 30, -120]], 10, P.border, .6, 4, { n: 14 });
+    // arms
+    if (o.arm === 'none') {}   // the scene draws that arm (holding a hand)
+    else if ((o.arm || 'hold') === 'hold') { c.save(); c.translate(-95, -400); c.rotate(1.6); sbEll(c, 0, 80, 30, 88, P.skin, { tex: false }); sbDry(c, [[-26, 130], [26, 130]], 9, P.red, .9, 3, { n: 6 }); sbEll(c, 0, 172, 30, 30, P.skin, { tex: false }); c.restore(); }
+    else { c.save(); c.translate(-95, -400); c.rotate(.25); sbEll(c, 0, 80, 30, 88, P.skin, { tex: false }); sbEll(c, 0, 170, 30, 30, P.skin, { tex: false }); c.restore(); }
+    c.save(); c.translate(95, -400); c.rotate(-.35); sbEll(c, 0, 80, 30, 88, P.skin, { tex: false }); sbDry(c, [[-26, 130], [26, 130]], 9, P.red, .9, 3, { n: 6 }); sbEll(c, 0, 170, 30, 30, P.skin, { tex: false });
+    if (o.lotus !== false) sbLotus(c, 6, 158, .55, { lotus: '#F29AB0', lotus2: '#FBD0DA' });
+    c.restore();
+    // head: hair, face, the odhni over the head
+    c.save(); c.translate(0, -520); c.rotate(Math.sin(t * TAU / 3.8) * .03 + (o.tilt || 0)); c.translate(0, 520);
+    sbEll(c, 0, -555, 128, 126, P.hair, { tex: false });
+    sbEll(c, 0, -540, 112, 114, P.skin, { shade: ['rgba(140,60,40,.12)', .6] });
+    sbShape(c, sbPoly([[-114, -570], [-80, -640], [0, -662], [80, -640], [114, -570], [60, -620], [0, -628], [-60, -620]], { n: 6 }), P.hair, { tex: false });
+    sbShape(c, sbPoly([[-150, -470], [-140, -600], [-90, -680], [0, -705], [90, -680], [140, -600], [150, -470], [118, -500], [112, -600], [60, -655], [0, -668], [-60, -655], [-112, -600], [-118, -500]], { n: 6 }), P.odhni, { alpha: .9 });
+    sbDry(c, [[-140, -600], [0, -700], [140, -600]], 9, P.border, .8, 4, { n: 14 });
+    for (const [fx, fy] of [[-100, -610], [-80, -640], [-112, -580]]) sbDot(c, fx, fy, 10, P.flower);
+    for (const sd of [-1, 1]) sbDot(c, sd * 114, -505, 12, P.gold);
+    sbDot(c, 0, -612, 8, P.red);
+    sbEye(c, -42, -545, 17, { blink: bl, happy: o.happy, look: o.look }); sbEye(c, 42, -545, 17, { blink: bl, happy: o.happy, look: o.look });
+    for (const sd of [-1, 1]) if (bl < .6 && !o.happy) for (const k of [-.6, 0]) sbLine(c, [[sd * (42 + 14) + k * 6 * sd, -560], [sd * (42 + 24) + k * 6 * sd, -572]], 3, SB.ink, { taper: .3 });
+    sbCheek(c, -74, -492, 36); sbCheek(c, 74, -492, 36);
+    sbLine(c, [[14, -500], [20, -490], [12, -484]], 3, P.gold, { taper: .2 });   // the nose ring
+    sbMouth(c, 0, -476, o.mouth === 'grin' ? 54 : 40, o.mouth || 'smile', { col: '#B23A4A' });
+    c.restore();
+  }, o);
+}
