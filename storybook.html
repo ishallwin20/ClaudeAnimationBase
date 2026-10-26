@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Storybook studio</title>
+<!-- The Storybook style's studio (see STORYBOOK_GUIDE.md). On main it shows the cast sheet; a Storybook reel or book
+     copies this page to studio.html, loads src/config.js instead of the inline PROJECT, and swaps in its scene. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Marcellus&family=Poppins:wght@500;700&display=block">
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="1080" height="1920"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="41" step="0.0417" value="0"><span id="tt">loading…</span></div>
+</main>
+<script>const PROJECT = { duration: 10, w: 1080, h: 1920, fonts: ['100px "Caveat Brush"', '42px Marcellus', '700 54px Poppins', '500 36px Poppins'] };</script>
+<!-- engine, style, cast -->
+<script src="src/cine.js"></script>
+<script src="src/storybook.js"></script>
+<script src="src/sb_cast.js"></script>
+<script src="src/scenes/rk_images.js"></script>
+<!-- the scene -->
+<script src="src/scenes/sb_sheet.js"></script>
+</body>
+</html>

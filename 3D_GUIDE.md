@@ -14,6 +14,11 @@ section all work the same way here.
 | `src/vendor/three.min.js` | three.js r170 as a classic script (`window.THREE`), so `studio.html` still opens from `file://` (ES modules don't). Built with esbuild from `three` + `RoundedBoxGeometry` + `BufferGeometryUtils`; to rebuild, bundle an entry that re-exports them: `npx esbuild entry.js --bundle --format=iife --global-name=THREE --minify` |
 | `src/cine3d.js` | the bridge: one WebGL renderer (shadows, ACES, sRGB) and `render3()`, the camera, meshes, procedural textures (granite, water, glow, flame, footprints), lamps, water, footprints, skies and the moods (`world3()`) |
 | `src/cine3d_temple.js` | the shrine set: `shrine3(scene)` and the pradakshina path `path3(s)` |
+| `src/cine3d_havan.js` | a havan: `havan3(scene, { at })`, a brick kund with white/red/black mekhalas, a particle fire (flare, dull, gold), embers, smoke, the sruva tipping ghee, gold lights rising to the sky; kalash, ghee bowl, samagri, lamps, rangoli; a tarpan plate (water and black sesame on kusha) and a dakshina plate. First used on `ad/49-books123-swaha` |
+| `src/cine3d_kailash.js` | Mount Kailash and its plateau (1 unit = 100 m): `kailash3()` builds the ledged, snow-banded peak, the kora valley and the Dolma La, the lakes and far ranges, coloured per pixel by a terrain shader (`terrainMat3`); moods morning / day / golden / alpen / blue / map; `kora(s)`, `ribbon()`, `river()`, `flags()`, clouds and the summit's plume. Set `CAM3.far = 4500`. First used on `ad/41-books123-kailash` |
+| `src/cine3d_india.js` | India as a relief map (1 unit = 10 km, centred on 80° E 22° N; `MAP3.xz(lon, lat)`): real heights and sea floor (`src/data/india_dem.js`), India's outline as the Survey of India draws it (`src/data/india_geo.js`, Natural Earth's India view), tinted like a satellite picture; `india3()` → `.at(lon, lat)`, `.mood(name, { focus, edge, … })` (space, day, golden, dusk, night; `focus` dims the land outside India), `.border` / `.lanka` glowing outlines. Shared helpers: `dem3(name)`, `line3(parent, pts)` (a map line of constant width, `.set(on, w, a)`), `pillar3(parent, pos, o)` (a beam of light, `.set(t, on)`), `pin3(c, txt, p, t, at, o)`. Load after `cine3d_kailash.js`, `src/vendor/pako_inflate.min.js` and the data files. First used on `ad/43-books123-jyotirlinga` |
+| `src/cine3d_setu.js` | the Palk Strait (1 unit = 100 m): Rameswaram, the Dhanushkodi spit, Mannar (`src/data/palk_dem.js`), the shoals laid in between, clear water coloured by depth, impact waves, a Milky Way night; the Ramayana's bridge growing along the shoals with flying rocks and splashes, the army's torches, fire arrows, the Ocean god's light. `setu3()`; first used on `ad/42-books123-ram-setu` |
+| `tools/terrain.mjs`, `tools/geo.mjs` | make the data files: real heights from open terrain tiles (registry.opendata.aws/terrain-tiles: SRTM, GEBCO, ETOPO) for any lon/lat box, and country outlines from Natural Earth (public domain). A page with both India and the strait builds for ~9 s: render with `--workers=1` (two pages building at once pass the 30 s load limit) |
 | `cine3d.html`, `src/scenes/cine3d_sheet.js` | the studio page on main: the shrine in its three moods ([docs/cine3d_set.jpg](docs/cine3d_set.jpg)) |
 
 ## Start a reel in this style
@@ -68,3 +73,11 @@ courtyard inside a low prakara wall lined with lamps, trees beyond. `T3.set(t, {
 - **Speed:** ~20 ms a frame on the M4 (a 54 s reel renders in under a minute), so iterate with full sheets.
 - **Frame 0:** put the hook's words fully lit (`at` all -1) and its start before 0, so the caption is up at frame 0.
 - **ffmpeg:** in the mix, `apad` needs `whole_dur`; a bare `apad` ran forever with `loudnorm`.
+
+## What worked (ads 42–43)
+- **Real ground for real places.** A map from actual heights reads as true at once; a pillar of light standing on a
+  site, or a bridge growing along the real shoals, explains the place better than a flat map.
+- **Tilt a map to stand things up on it.** Seen straight down, a pillar is a dot; at ~60° it stands, and India still reads.
+- **Lines on a map are as wide as the camera is high** (`w = altitude × .005`), or they vanish as the camera climbs.
+- **Captions sit lower over a map of India** (y 1385) so the country fills the frame above them.
+- **Break caption lines yourself** (`|`): at 56px Cinzel a line over ~820px wraps and strands a word ("SEA,").

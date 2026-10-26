@@ -10,6 +10,11 @@
 //   T3.channel (the water outside), T3.linga (the linga's group), T3.steps (the east steps' top, [x, y, z])
 //   T3.set(t, o): flicker every lamp and run the water; o.lamps (0..1, or a function of the lamp's index → 0..1), o.water
 //   (0..1: the water running), o.bell (swing angle, radians).
+//   Options (all default true) for a shrine among others, e.g. the corner shrines of a panchayatana: o.court false
+//   leaves out the courtyard, the prakara and its lamps, and the trees; o.soma false the pitha's spout, the pranala and
+//   the channel (no somasutra: a shrine that isn't Shiva's); o.linga false the pitha, linga and pot (an empty sanctum,
+//   the two standing lamps still lit); o.lights false gives the plinth's corner lamps no point lights and the sanctum's
+//   none that cast shadows. Place and size it by moving its group (T3.group.position / .scale).
 const SHR = { F: .7, half: 2.0, top: 3.4, wall: .45, pathA: 3.9, pathR: 1.3, prakara: 7.5 };
 
 // The pradakshina path: a rounded square round the shrine, a = 3.9 m out, starting at the middle of the east side
@@ -33,15 +38,18 @@ function path3(s) {
 
 function shrine3(scene, o = {}) {
   const G = new THREE.Group(); scene.add(G);
+  const court = o.court !== false, soma = o.soma !== false, hasL = o.linga !== false, lit = o.lights !== false, none = { set() {} };
   const F = SHR.F, A = SHR.half, TOP = SHR.top, WT = SHR.wall, col = o.col || '#8E8376';
   const gran = (rx, ry, seed = 1, x = {}) => stone3({ col, seed, rep: [rx, ry], ...x });
   const dark = gran(1, 1, 7, { col: '#3A332E', speck: .6 });
   const black = new THREE.MeshStandardMaterial({ color: '#1A1819', roughness: .22, metalness: .05, bumpMap: stoneTex({ seed: 11, rows: 1, cols: 1, mottle: .4 }).bump, bumpScale: .4 });
 
   // ---- the courtyard and the prakara wall ----
+  const P = SHR.prakara;
+  if (court) {
   const pav = stone3({ col: '#7A7068', rows: 2, cols: 2, seed: 21, rep: [26, 26], speck: .7, mottle: 1.4, bumpK: 3 });
   mesh3(G, new THREE.PlaneGeometry(42, 42), pav, [0, 0, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
-  const P = SHR.prakara, pw = gran(10, 1, 23);
+  const pw = gran(10, 1, 23);
   for (const s of [-1, 1]) {
     block3(G, 2 * P + .5, 1.1, .5, pw, [0, 0, s * P]);                                    // north and south
     block3(G, .5, 1.1, 2 * P + .5, pw, [-P, 0, 0]);                                     // west
@@ -49,6 +57,7 @@ function shrine3(scene, o = {}) {
   }
   for (const s of [-1, 1]) { block3(G, 2 * P + .8, .12, .8, gran(12, .2, 24), [0, 1.1, s * P]); block3(G, .8, .12, 2 * P + .8, gran(12, .2, 24), [-P, 1.1, 0]); block3(G, .8, .12, P - 1.4, gran(5, .2, 24), [P, 1.1, s * (P + 1.4) / 2]); }
   for (const s of [-1, 1]) block3(G, .7, 2.6, .7, gran(1, 2, 25), [P, 0, s * 1.6]);    // the gate posts
+  }
 
   // ---- the plinth (adhishthana): three courses, the middle one recessed ----
   block3(G, 4.9, .22, 4.9, gran(4, .3, 2), [0, 0, 0]);
@@ -116,11 +125,15 @@ function shrine3(scene, o = {}) {
 
   // ---- the sanctum: the pitha and linga, the pot, two standing lamps ----
   const L = new THREE.Group(); L.position.set(0, F, 0); G.add(L);
+  const cu = metal3('#B4683A', .3), potY = 1.62;
+  if (hasL) {
   mesh3(L, lathe3(smooth3([[0, 0], [.52, 0], [.52, .07], [.44, .1], [.42, .2], [.58, .26], [.6, .34], [.56, .37], [.3, .35], [0, .35]], 3), 64), black, [0, 0, 0]);
   // the spout to the north, with its groove
+  if (soma) {
   block3(L, .26, .08, .62, black, [0, .27, -.78]);
   mesh3(L, new THREE.CylinderGeometry(.13, .13, .08, 24, 1, false, Math.PI / 2, Math.PI), black, [0, .31, -1.09]);
   block3(L, .1, .012, .8, new THREE.MeshStandardMaterial({ color: '#0C0B0C', roughness: .5 }), [0, .35, -.72], { cast: false });
+  }
   const linga = new THREE.Group(); L.add(linga);
   const lp = [[.24, 0]]; for (let i = 0; i <= 12; i++) { const a = i / 12 * Math.PI / 2; lp.push([.24 * Math.cos(a), .44 + .3 * Math.sin(a)]); }
   mesh3(linga, lathe3([[0, 0], ...lp, [0, .74]], 64), black, [0, .34, 0]);
@@ -134,47 +147,50 @@ function shrine3(scene, o = {}) {
   const leaf = new THREE.MeshStandardMaterial({ color: '#3E7A2C', roughness: .6, side: THREE.DoubleSide });
   for (let i = 0; i < 3; i++) { const a = i / 3 * TAU + .4; mesh3(linga, new THREE.SphereGeometry(.07, 12, 6), leaf, [Math.cos(a) * .06, .34 + .74, Math.sin(a) * .06], { scale: [1, .12, .5], rot: [0, -a, .25] }); }
   // the copper pot that drips on it, hung from the ceiling by three chains
-  const cu = metal3('#B4683A', .3), potY = 1.62;
   mesh3(L, lathe3(smooth3([[0, 0], [.05, 0], [.15, .05], [.2, .15], [.18, .25], [.1, .31], [.09, .34], [.13, .37], [0, .37]], 4), 48), cu, [0, potY, 0]);
   for (let i = 0; i < 3; i++) { const a = i / 3 * TAU, x = Math.cos(a) * .12, z = Math.sin(a) * .12, len = TOP - F - potY - .36; mesh3(L, new THREE.CylinderGeometry(.006, .006, len, 5), metal3('#6A5040', .5), [x, potY + .36 + len / 2, z], { cast: false }); }
+  }
   // two standing lamps (kuthuvilakku) either side, toward the door
   const lampM = metal3('#C9963E', .3), inner = [];
   for (const s of [-1, 1]) {
     const x = .75, z = s * .95;
     mesh3(L, lathe3(smooth3([[0, 0], [.16, 0], [.16, .03], [.06, .07], [.03, .12], [.03, .72], [.06, .76], [.03, .79], [.12, .83], [.14, .87], [0, .86]], 3), 32), lampM, [x, 0, z]);
-    inner.push(flame3(L, [x, .9, z], .9, { power: 2.2, range: 4.5, shadow: s > 0 }));
+    inner.push(flame3(L, [x, .9, z], .9, { power: 2.2, range: 4.5, shadow: lit && s > 0 }));
   }
   // the water: the drip from the pot, the film in the pitha, the run along the spout, the drop to the floor and the drain
-  const pour = stream3(L, [[0, potY, 0], [0, potY - .3, 0], [0, 1.09, 0]], .009, { speed: 6 });
-  const basin = mesh3(L, new THREE.RingGeometry(.25, .5, 48), waterMat3({ rep: 3, opacity: .5 }), [0, .355, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
-  basin.set = (t, on = 1) => { basin.visible = on > .001; basin.material.opacity = .45 * on; basin.material.map.offset.x = t * .3; };
-  const lip = sheet3(L, .08, .78, [0, .358, -.72], { rot: [-Math.PI / 2, 0, Math.PI / 2], speed: 1.6 });
-  const drop = stream3(L, [[0, .35, -1.15], [0, .3, -1.22], [0, .12, -1.27], [0, .015, -1.3], [0, .015, -1.55]], .016, { speed: 3, opacity: .7 });
-  block3(L, .22, .015, .14, new THREE.MeshStandardMaterial({ color: '#050505', roughness: 1 }), [0, 0, -1.48], { cast: false });
+  const pour = !hasL ? none : stream3(L, [[0, potY, 0], [0, potY - .3, 0], [0, 1.09, 0]], .009, { speed: 6 });
+  const basin = !hasL ? none : mesh3(L, new THREE.RingGeometry(.25, .5, 48), waterMat3({ rep: 3, opacity: .5 }), [0, .355, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
+  if (hasL) basin.set = (t, on = 1) => { basin.visible = on > .001; basin.material.opacity = .45 * on; basin.material.map.offset.x = t * .3; };
+  const lip = !(hasL && soma) ? none : sheet3(L, .08, .78, [0, .358, -.72], { rot: [-Math.PI / 2, 0, Math.PI / 2], speed: 1.6 });
+  const drop = !(hasL && soma) ? none : stream3(L, [[0, .35, -1.15], [0, .3, -1.22], [0, .12, -1.27], [0, .015, -1.3], [0, .015, -1.55]], .016, { speed: 3, opacity: .7 });
+  if (hasL && soma) block3(L, .22, .015, .14, new THREE.MeshStandardMaterial({ color: '#050505', roughness: 1 }), [0, 0, -1.48], { cast: false });
 
   // ---- outside, on the north: the pranala and the channel across the path ----
+  let spout = none, channel = none;
+  if (soma) {
   const pr = gran(1, .3, 13, { col: '#8A7F72' });
   block3(G, .32, .12, 1.0, pr, [0, .52, -2.9]);
   for (const s of [-1, 1]) block3(G, .06, .07, 1.0, pr, [s * .13, .64, -2.9]);
   block3(G, .38, .2, .16, pr, [0, .46, -3.42]);                       // the carved tip
   block3(G, .5, .4, .4, pr, [0, 0, -2.6]);                             // a bracket under it
-  const spout = stream3(G, [[0, .62, -3.38], [0, .6, -3.5], [0, .4, -3.62], [0, .12, -3.7], [0, .05, -3.75]], .035, { speed: 3.2 });
+  spout = stream3(G, [[0, .62, -3.38], [0, .6, -3.5], [0, .4, -3.62], [0, .12, -3.7], [0, .05, -3.75]], .035, { speed: 3.2 });
   const chL = P - 3.5;
   for (const s of [-1, 1]) block3(G, .1, .1, chL, gran(chL, .2, 14), [s * .3, 0, -3.5 - chL / 2]);
   mesh3(G, new THREE.PlaneGeometry(.5, chL), new THREE.MeshStandardMaterial({ color: '#2A2420', roughness: .9 }), [0, .006, -3.5 - chL / 2], { rot: [-Math.PI / 2, 0, 0], cast: false });
-  const channel = sheet3(G, .48, chL, [0, .035, -3.5 - chL / 2], { rot: [-Math.PI / 2, 0, Math.PI / 2], speed: 1.4, opacity: .8 });
+  channel = sheet3(G, .48, chL, [0, .035, -3.5 - chL / 2], { rot: [-Math.PI / 2, 0, Math.PI / 2], speed: 1.4, opacity: .8 });
+  }
 
   // ---- lamps: on the plinth's corners, along the prakara's top ----
   const lamps = [], dish = lathe3([[0, 0], [.05, 0], [.07, .02], [.1, .035], [.1, .045], [.08, .04], [0, .035]], 24);
   const lamp = (x, y, z, light) => { mesh3(G, dish, lampM, [x, y, z]); lamps.push(flame3(G, [x, y + .04, z], 1, { light, power: 3.2, range: 6 })); };
-  for (const [x, z] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) lamp(x * 2.3, F, z * 2.3, true);
+  for (const [x, z] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) lamp(x * 2.3, F, z * 2.3, lit);
   const top = 1.22;
-  for (let i = -6; i <= 6; i += 2) { lamp(i, top, P, i % 4 === 0); lamp(i, top, -P, i % 4 === 0); lamp(-P, top, i, i === 0); if (Math.abs(i) >= 2) lamp(P, top, i, false); }
+  if (court) for (let i = -6; i <= 6; i += 2) { lamp(i, top, P, i % 4 === 0); lamp(i, top, -P, i % 4 === 0); lamp(-P, top, i, i === 0); if (Math.abs(i) >= 2) lamp(P, top, i, false); }
 
   // ---- trees beyond the wall ----
   const leafM = new THREE.MeshStandardMaterial({ color: '#2A3A26', roughness: .9, flatShading: true }), barkM = new THREE.MeshStandardMaterial({ color: '#2A211C', roughness: 1 });
   const rnd = lcg(77);
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < (court ? 14 : 0); i++) {
     const a = i / 14 * TAU + rnd() * .3, d = 17 + rnd() * 8, x = Math.cos(a) * d, z = Math.sin(a) * d, h = 3 + rnd() * 3;
     mesh3(G, new THREE.CylinderGeometry(.18, .3, h, 8), barkM, [x, h / 2, z]);
     for (let j = 0; j < 4; j++) mesh3(G, new THREE.IcosahedronGeometry(1.4 + rnd() * 1.2, 1), leafM, [x + (rnd() - .5) * 2, h + rnd() * 1.6, z + (rnd() - .5) * 2]);
