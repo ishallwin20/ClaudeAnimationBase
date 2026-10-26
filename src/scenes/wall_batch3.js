@@ -115,6 +115,18 @@
       }
     }
   }
+  function peacockBody(t, x, y, key) {   // the body, rump to the left (where the fan grows from), chest to the right, on two legs
+    boilSeed(key);
+    for (const [lx, ph] of [[x + 20, 0], [x + 75, .5]]) {
+      const st = lsin(t, 1, ph) * 4;
+      inkLine([[lx, y + 70], [lx + st, y + 170], [lx - 4 + st, 1980]], 7, '#8A7A6A', 'ink', .3);
+      for (const a2 of [-.6, 0, .6]) inkLine([[lx - 4 + st, 1980], [lx - 4 + st + Math.sin(a2) * 34, 1984 + Math.cos(a2) * 6]], 5, '#8A7A6A', 'ink', 0);
+    }
+    paint(ellPts(x, y, 175, 92, 26, 0, -.12), { wash: '#2E5FC8', fill: '#1E3E9A', fillOp: 60, tex: .5, ink: '#1A2A5A', sw: 1.1 });
+    paint(ellPts(x - 50, y - 22, 120, 52, 20, 0, -.1), { wash: '#C8A070', fill: '#9A7448', fillOp: 60, tex: .6, ink: '#5A3A1A', sw: .8 });   // the folded wing
+    for (let i = 0; i < 5; i++) inkLine([[x - 140 + i * 40, y - 40], [x - 128 + i * 40, y + 6]], 2, '#6A4A2A', 'inkfine', .3);
+    for (let i = 0; i < 7; i++) paint(ellPts(x + 70 + (i % 3) * 22, y - 30 + Math.floor(i / 3) * 26, 10, 8, 8), { wash: '#3FA0D8', ink: null });   // the breast's sheen
+  }
   function peacockHead(t, x, y, s, key, o = {}) {   // neck and head, rising from (x, y), facing left, s ~ head width
     boilSeed(key);
     const nod = o.nod || 0, hx = x - s * .5, hy = y - s * 3.2 + nod * s * .3;
@@ -142,7 +154,8 @@
     floor(1985, '#2F7A6A', '#1E5A4C', 'mu floor');
     rangoli(t, cx, 2150, 450, 96, ['#F7A21B', '#E2476E', '#2FB0A8'], 'mu rangoli');
     diya(110, 2010, 140, t, 'mu L'); diya(970, 2010, 140, t, 'mu R');
-    peacockHead(t, 800, 1640, 78, 'mu pk', { nod: lsin(t, 2) * .3 - pop * .5, blush: 1 });
+    peacockBody(t, 690, 1720, 'mu body');
+    peacockHead(t, 790, 1680, 78, 'mu pk', { nod: lsin(t, 2) * .3 - pop * .5, blush: 1 });
     const breath = lsin(t, 2) * .1;
     rigClock(t, 'karti', 0, () => kartikeya(cx - 20, 2020, 44, {
       shield: false, spearA: .08, aR: -1.0, aL: -.9, eyes: 'normal', mouth: pop > .3 ? 'grin' : 'smile', blush: .55, lookX: .15,
@@ -291,42 +304,53 @@
     paint([[-60, 1620], [140, 1540], [300, 1590], [470, 1520], [640, 1580], [820, 1500], [1140, 1590], [1140, 2100], [-60, 2100]], { wash: '#2E6A4A', fill: '#1E4A34', fillOp: 70, tex: .5, ink: null, curv: .6 });
     for (let i = 0; i < 9; i++) { const tx = 40 + i * 125, ty = 1600 + (i % 2) * 40; paint([[tx - 34, ty + 30], [tx, ty - 70], [tx + 34, ty + 30]], { wash: '#1E5A3A', ink: null }); }
     // the eighteen steps, gold, narrowing up to his seat; lamps along both edges light from the bottom up on wake
-    boilSeed('ay steps');
-    const sTop = 1880, sBot = 2330;
-    paint([[cx - 170, sTop], [cx + 170, sTop], [cx + 360, sBot], [cx - 360, sBot]], { wash: '#E8B83A', fill: '#B8821C', fillOp: 60, tex: .5, ink: INK, sw: 1 });
-    for (let i = 1; i < 18; i++) { const f = i / 18, yy = lerp(sTop, sBot, f), w = lerp(170, 360, f); inkLine([[cx - w, yy], [cx + w, yy]], 1, '#9A6A14', 'inkfine', 0); }
-    for (let i = 0; i < 6; i++) { const f = 1 - i / 6 - .08, yy = lerp(sTop, sBot, f), w = lerp(170, 360, f) + 30;
-      for (const s of [-1, 1]) diya(cx + s * w, yy, 60, t, `ay st ${i} ${s}`, { lit: kSeg(k, .05 + i * .1, .2 + i * .1) }); }
-    // the seat, and Ayyappa
-    boilSeed('ay seat'); paint(rrPts(cx - 220, 1830, 440, 70, 16), { wash: '#F2C230', fill: '#C89A1C', fillOp: 60, tex: .4, ink: INK, sw: 1 });
-    const x = cx, y = 1850, u = 40, breath = lsin(t, 2) * .08, chin = 3.36;
+    const steps = (yMax = 1e9) => {   // drawn again over the rig (yMax): its legs, lowered under the seat, must not show
+      boilSeed('ay steps');
+      const sTop = 1880, sBot = 2330, y1 = Math.min(sBot, yMax), w1 = lerp(170, 360, (y1 - sTop) / (sBot - sTop));
+      paint([[cx - 170, sTop], [cx + 170, sTop], [cx + w1, y1], [cx - w1, y1]], { wash: '#E8B83A', fill: '#B8821C', fillOp: 60, tex: .5, ink: INK, sw: 1 });
+      for (let i = 1; i < 18; i++) { const f = i / 18, yy = lerp(sTop, sBot, f), w = lerp(170, 360, f); if (yy < y1) inkLine([[cx - w, yy], [cx + w, yy]], 1, '#9A6A14', 'inkfine', 0); }
+      for (let i = 0; i < 6; i++) { const f = 1 - i / 6 - .08, yy = lerp(sTop, sBot, f), w = lerp(170, 360, f) + 30;
+        if (yy < y1 + 40) for (const s of [-1, 1]) diya(cx + s * w, yy, 60, t, `ay st ${i} ${s}`, { lit: kSeg(k, .05 + i * .1, .2 + i * .1) }); }
+    };
+    steps();
+    // Ayyappa, seated low on a gold seat in his yogic squat: the rig's body lowered 3.5u so his hips sit on the seat, the
+    // seat's front hiding the rest; then the knees up and wide either side of the chest, bare shins down to the feet, the
+    // yogapatta across the front of both knees, the left arm draped over the left knee, the right hand in chin mudra
+    const x = cx, y = 1870, u = 44, breath = lsin(t, 2) * .08, dyB = 3.5 - breath, chin = 3.36, Q = pts => P(pts, x, y, u), Qb = pts => P(pts, x, y + dyB * u - 3.5 * u, u);
     rigClock(t, 'karti', 0, () => kartikeya(x, y, u, {
-      pal: AY, crown: 1, topknot: false, feather: false, shield: false, spear: false, aL: chin, aR: -1.55,
-      eyes: 'normal', mouth: 'smile', blush: .35, dy: -breath, sq: breath * .3, htilt: lsin(t, 1, .2) * .03, boilKey: 'ay body', noShadow: true,
+      pal: AY, crown: 1, topknot: false, feather: false, shield: false, spear: false, aL: chin, aR: -1.25,
+      eyes: 'normal', mouth: 'smile', blush: .35, dy: dyB, sq: breath * .3, htilt: lsin(t, 1, .2) * .03, boilKey: 'ay body', noShadow: true,
     }), { at: 2.4 });
-    // the squat: knees raised in front, shins down to the seat, the yogapatta round the knees
+    steps(y + 3.6 * u);
+    boilSeed('ay seat'); paint(rrPts(cx - 250, y - 4, 500, 72, 16), { wash: '#F2C230', fill: '#C89A1C', fillOp: 60, tex: .4, ink: INK, sw: 1 });
+    for (let j = 0; j < 5; j++) paint(ellPts(cx - 200 + j * 100, y + 32, 14, 14, 10), { wash: j % 2 ? '#2E8A5A' : '#D9302E', ink: INK, sw: .4 });
     boilSeed('ay legs');
-    paint(P([[-2.2, -6.6], [2.2, -6.6], [1.9, -2.2], [0, -1.7], [-1.9, -2.2]], x, y, u), { wash: AY.teal, fill: AY.tealDk, fillOp: 70, tex: .6, ink: INK, sw: 1, curv: .3 });   // the dhoti hanging between the knees
-    for (const k2 of [-.8, 0, .8]) inkLine(P([[k2 * .8, -6.2], [k2, -2.3]], x, y, u), 1, AY.tealDk, 'inkfine', .4);
-    inkLine(P([[-1.9, -2.3], [0, -1.85], [1.9, -2.3]], x, y, u), 2.4, AY.gold, 'ink', .4);
     for (const s of [-1, 1]) {
-      paint(P([[s * 1.7, -6.2], [s * 3.9, -6.2], [s * 3.6, -.6], [s * 2.0, -.6]], x, y, u), { wash: AY.skin, fill: AY.skinDk, fillOp: 50, tex: .5, ink: INK, sw: 1, curv: .3 });
-      paint(ellPts(x + s * 2.8 * u, y - 6.5 * u, 1.3 * u, 1.0 * u, 18), { wash: AY.skin, fill: AY.skinLt, fillOp: 50, tex: .5, ink: INK, sw: 1 });
-      paint(ellPts(x + s * 2.8 * u, y - .45 * u, 1.25 * u, .5 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });
-      inkLine(P([[s * 2.0, -1.1], [s * 3.6, -1.1]], x, y, u), 2.4, AY.gold, 'ink', 0);
+      paint(ribbon(Q([[s * 1.4, -1.0], [s * 2.6, -2.8], [s * 3.4, -4.1]]), 1.55 * u, 1.3 * u), { wash: AY.teal, fill: AY.tealDk, fillOp: 50, tex: .6, ink: INK, sw: 1 });   // the thighs, in the dhoti
+      paint(ribbon(Q([[s * 3.45, -4.0], [s * 3.55, -2.2], [s * 3.4, -.7]]), 1.15 * u, .95 * u), { wash: AY.skin, fill: AY.skinDk, fillOp: 40, tex: .5, ink: INK, sw: 1 });   // the shins
+      paint(ellPts(x + s * 3.45 * u, y - 4.2 * u, 1.08 * u, .95 * u, 18), { wash: AY.skin, fill: AY.skinLt, fillOp: 50, tex: .5, ink: INK, sw: 1 });   // the knees, up
+      paint(ellPts(x + s * 3.65 * u, y - .4 * u, 1.2 * u, .46 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });   // the feet on the seat
+      inkLine(Q([[s * 2.9, -.95], [s * 4.0, -.95]]), 2.4, AY.gold, 'ink', 0);
     }
-    paint(ribbon(P([[-4.3, -5.3], [-2, -4.8], [0, -4.7], [2, -4.8], [4.3, -5.3]], x, y, u), .9 * u, .9 * u), { wash: '#F2C230', fill: '#C89A1C', fillOp: 50, tex: .4, ink: INK, sw: .9 });
-    inkLine(P([[-4.1, -5.3], [0, -4.75], [4.1, -5.3]], x, y, u), 1.2, '#9A6A14', 'inkfine', .4);
-    // the left hand resting on the knee; the chin mudra's ring of thumb and finger; the bell at his neck
-    const yy0 = y - breath * u;
-    paint(ellPts(x + 2.9 * u, y - 6.7 * u, .72 * u, .62 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });
-    const [mx, my] = kartiHand(x, y, u, { aL: chin, dy: -breath }, -1);
-    paint(ellPts(mx, my, .7 * u, .64 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });
-    paint(ellPts(mx - .3 * u, my - .45 * u, .26 * u, .26 * u, 10), { wash: AY.skinLt, ink: INK, sw: .7 });   // thumb and finger meet in a ring
+    // the yogapatta: a gold band across the front of both knees
+    paint(ribbon(Q([[-4.7, -3.0], [-2.3, -2.6], [0, -2.5], [2.3, -2.6], [4.7, -3.0]]), .78 * u, .78 * u), { wash: '#F2C230', fill: '#C89A1C', fillOp: 50, tex: .4, ink: INK, sw: 1 });
+    inkLine(Q([[-4.5, -3.0], [0, -2.55], [4.5, -3.0]]), 1.2, '#9A6A14', 'inkfine', .4);
+    for (const s of [-1, 1]) paint(ellPts(x + s * 4.75 * u, y - 3.0 * u, .3 * u, .42 * u, 10), { wash: '#F2C230', ink: INK, sw: .6 });
+    // the left arm (screen right) over the knee, the hand hanging past it
+    boilSeed('ay arm');
+    paint(ribbon(Qb([[2.6, -5.2], [3.6, -4.7], [4.45, -3.7]]), 1.1 * u, .92 * u), { wash: AY.skin, fill: AY.skinDk, fillOp: 40, tex: .5, ink: INK, sw: 1 });
+    inkLine(Qb([[3.0, -5.4], [3.3, -4.5]]), 2.4, AY.gold, 'ink', 0);
+    paint(ellPts(x + 4.6 * u, y - 3.35 * u + (dyB - 3.5) * u, .62 * u, .7 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });
+    // the chin mudra at his chest: thumb and forefinger in a ring, three fingers up
+    const [mx, my] = kartiHand(x, y, u, { aL: chin, dy: dyB }, -1);
+    paint(ellPts(mx, my, .72 * u, .66 * u, 14), { wash: AY.skin, ink: INK, sw: .9 });
+    paint(ellPts(mx - .3 * u, my - .45 * u, .26 * u, .26 * u, 10), { wash: AY.skinLt, ink: INK, sw: .7 });
     for (const dd of [0, .3, .58]) inkLine([[mx + dd * u, my - .4 * u], [mx + (dd + .1) * u, my - 1.25 * u]], 3, INK, 'ink', 0);
-    inkLine(P([[-.4, -9.3], [0, -9.0], [.4, -9.3]], x, yy0, u), 1, INK, 'inkfine', .4);
+    // the bell at his neck
+    const yy0 = y + (dyB - 3.5) * u;
+    inkLine(P([[-.4, -5.8], [0, -5.5], [.4, -5.8]], x, yy0, u), 1, INK, 'inkfine', .4);
     const bs = lsin(t, 2) * .12 + kBump(k, .4, 1) * .5;
-    push(); translate(x, yy0 - 9.0 * u); rotate(bs); boilSeed('ay bell');
+    push(); translate(x, yy0 - 5.5 * u); rotate(bs); boilSeed('ay bell');
     paint(U([[-.5, 0], [.5, 0], [.7, 1.1], [-.7, 1.1]], u), { wash: '#F2C230', fill: '#C89A1C', fillOp: 50, ink: INK, sw: .7, curv: .4 });
     paint(ellPts(0, 1.2 * u, .2 * u, .2 * u, 8), { wash: '#8A6A14', ink: null }); pop();
     petalFall(t, 14, 'ay', { y0: 160, s: 18 });
