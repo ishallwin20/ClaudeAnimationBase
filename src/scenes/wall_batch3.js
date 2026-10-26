@@ -96,7 +96,7 @@
 
   // ---------- Bal Murugan and his peacock ----------
   // The peacock stands behind him, its tail fanned out as his halo; Palani hill and its temple far behind.
-  // wake: the peacock opens its tail
+  // the peacock opens its tail every loop (the iPhone's wake-up too)
   function peacockFan(t, x, y, R, open, key) {
     const n = 25, spread = lerp(.25, 1.48, easeOut(open)), r = R * (.55 + .45 * easeOut(open));
     for (const [row, rr, off] of [[0, 1, 0], [1, .74, .5]]) {
@@ -148,7 +148,9 @@
     paint(rectPts(160, 1690, 56, 42), { wash: '#F2C230', fill: '#C89A1C', fillOp: 60, ink: INK, sw: .7 });
     paint([[154, 1692], [188, 1650], [222, 1692]], { wash: '#F2C230', fill: '#C89A1C', fillOp: 60, ink: INK, sw: .7 });
     paint(ellPts(188, 1646, 7, 7, 8), { wash: '#F2C230', ink: INK, sw: .5 });
-    const cx = 540, fy = 1500, open = kSeg(k, .1, .75), pop = kBump(k, .55, 1);
+    // the tail folds down (3.7–4.5 s) and fans open again (4.5–5.85 s) every loop, so Android shows it too; the iPhone's
+    // wake-up is the same last 1.5 s
+    const cx = 540, fy = 1500, open = t < 3.7 ? 1 : t < 4.5 ? 1 - ease(seg(t, 3.7, 4.5)) : easeOut(seg(t, 4.5, 5.85)), pop = Math.sin(Math.PI * seg(t, 5.1, 6));
     glow(cx, fy, 760, '#FFE9A0', .55);
     peacockFan(t, cx, fy + 160, 640, open, 'mu fan');
     floor(1985, '#2F7A6A', '#1E5A4C', 'mu floor');
