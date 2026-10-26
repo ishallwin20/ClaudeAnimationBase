@@ -107,12 +107,14 @@ function sbDonkey(c, x, y, s, o = {}) {
     for (let i = 0; i < 6; i++) { const f = i / 5, mx = lerp(-130, -240, f), my = lerp(-495, -705, f); sbDry(c, [[mx, my], [mx + 22, my - 18]], 10, P.mane, .8, 4, { n: 5 }); }
     for (const [ex, er, ph] of [[-215, .22, 0], [-260, -.18, .6]]) { c.save(); c.translate(ex, -720); c.rotate(er - ears * .25 * (ph ? 1 : -1) + Math.sin(t * 2 + ph) * .03);
       sbEll(c, 0, -80, 34, 100, P.coat, { tex: false }); sbEll(c, 0, -72, 16, 70, P.pink, { tex: false }); c.restore(); }
-    sbEll(c, -280, -650, 110, 90, P.coat, { rot: -.45, shade: ['rgba(40,25,20,.15)', .8] });
-    c.save(); c.translate(-350, -560);
-    sbEll(c, -20, 0, 88, 70, P.muzzle, { rot: -.3 });
-    sbDot(c, -78, -18, 9, P.mane);
-    if (bray > .2) sbMouth(c, -30, 32, 70 * (.6 + bray * .5), 'grin'); else sbMouth(c, -36, 34, 52, o.mouth || 'smile');
+    // the head is one long, soft wedge from the poll to the muzzle; the muzzle is the same shape painted lighter
+    const head = sbPoly([[-250, -742], [-196, -690], [-196, -610], [-262, -548], [-350, -518], [-418, -520], [-458, -560], [-452, -616], [-408, -656], [-332, -712]], { n: 8 });
+    sbShape(c, head, P.coat, { shade: ['rgba(40,25,20,.15)', .8] });
+    c.save(); sbPath(c, head); c.clip();
+    sbShape(c, sbPoly([[-372, -690], [-330, -620], [-318, -540], [-360, -500], [-480, -500], [-480, -690]], { n: 8 }), P.muzzle, { ang: -.3 });
     c.restore();
+    sbDot(c, -432, -585, 9, P.mane);
+    if (bray > .2) sbMouth(c, -390, -540, 70 * (.6 + bray * .5), 'grin'); else sbMouth(c, -396, -538, 50, o.mouth || 'smile');
     sbEye(c, -288, -672, 17, { blink: bl, happy: o.happy || bray > .5, look: o.look });
     sbCheek(c, -240, -610, 44);
     c.restore();
