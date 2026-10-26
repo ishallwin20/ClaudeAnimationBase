@@ -91,14 +91,26 @@ Samsung One UI for Android).
 - **Seamless loops:** the boil runs on the loop time (T), so it repeats; rig idles run on `swing(t)` (forth and back once
   a loop), blinks are placed with `blinkAt(t, …)`, everything else is `lsin` (whole cycles). In 3D every stream scrolls
   a whole number of texture repeats a loop and the lamps flicker on a swinging clock.
-- **The ten** (`out/wallpapers3/batch3_preview.jpg`), with the iPhone wake-up:
-  01 Bal Hanuman reaching for the sun (swoops up, mouth wide for a bite, the sun's eyes go round) · 02 Bal Bappa and
-  Mooshak with a plate of modaks (Mooshak pops up, Bappa's eyes crinkle) · 03 Shiva in dhyana on Kailash (Vasuki rises
-  and flicks a big forked tongue) · 04 Lakshmi and Ganesha on Diwali night (the diyas light left to right, coins start)
-  · 05 the owl's Diwali (his head turns right round; also once a loop) · 06 Dhanteras kalash and Lakshmi's footprints
-  (coins spill out and settle) · 07 Bal Krishna and a calf (it licks his cheek, he laughs) · 08 the vahana squad, Nandi,
-  the donkey, Mooshak and the owl (they pop up in turn) · 09 a lamp for Tulsi in Kartik (the lamp catches) · 10 (3D) the
-  shrine at dusk, the linga through the door (the lamps light, the bell swings).
+- **The twelve** (owner review, 26 Oct: the Storybook scenes felt repetitive; batch 2 sells because each is a darshan,
+  so the gods are back in Painted, `src/scenes/wall_batch3.js` in studio.html, the same `wallpaperK(name, fn(t, k))`
+  contract; preview `out/wallpapers3/batch3_preview.jpg`), with the iPhone wake-up:
+  01 Mahakal of Ujjain in his shringar (a puff of bhasma blows off, his eyes close in it and open) · 02 Tirupati Balaji
+  (the lamps light, a glint runs over the gold) · 03 Jagannath, Balabhadra and Subhadra (they blink in turn, the flag
+  flutters) · 04 Kedarnath in the snow, Nandi kneeling before it (the door and lamps light, the bell swings) · 05 Bal
+  Murugan before his peacock (it opens its tail: his halo) · 06 Ram Lalla of Ayodhya (the lamps light) · 07 Khatu Shyam
+  (a shower of rose petals) · 08 Ayyappa above the eighteen steps (their lamps light bottom to top, his bell swings) ·
+  09 Lakshmi and Ganesha on Diwali night (the diyas light, the coins start) · 10 Dhanteras (Storybook) · 11 Tulsi
+  (Storybook) · 12 the shrine at dusk (3D).
+- Icons, as the temples show them: Mahakal's shringar (a face of sandal and bhasma on the jyotirlinga, the tripundra,
+  the crescent, a silver naga crown, rudraksha); Venkateswara (the tall kirita, the namam over his eyes, chakra and
+  shankh in the upper hands, the lower right in varada pointing to his feet, the lower left on his hip, Lakshmi on his
+  chest, the Ananda Nilayam vimana); Jagannath (dark, round eyes), Balabhadra (white) and Subhadra (yellow) on the
+  ratnavedi, the Neelachakra and flag on the Shree Mandir; Kedarnath's stone temple with Nandi facing it; Murugan with
+  the vel and his peacock (Palani hill behind); Ram Lalla as the 2024 murti (a five-year-old in black stone, a gold bow
+  and arrow, the prabhavali of the ten avatars); Khatu Shyam (Barbarika's head with a crown, earrings and flowers on a
+  throne under an umbrella, nishan flags; Rajasthani shringar); Ayyappa (seated in his yogic squat, the yogapatta round
+  the knees, chin mudra, the left hand on the knee, a bell at his neck, the eighteen steps). Faces are drawn cute, in the
+  Painted rigs' style.
 - Facts: Hanuman leaping at the rising sun (Valmiki, Kishkindha Kanda 66); Ganesha, modaks and Mooshak (Ganesha and
   Mudgala Puranas); Shiva on Kailash with the crescent moon, the Ganga in his jata, Vasuki, the third eye, trishul and
   damaru (Shiva Purana); Lakshmi on the lotus pouring coins (Sri Sukta), Lakshmi and Ganesha worshipped together on
