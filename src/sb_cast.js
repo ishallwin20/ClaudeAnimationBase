@@ -189,28 +189,30 @@ function sbDevi(c, x, y, s, o = {}) {
   sbAt(c, x, y, s, () => {
     if (kind === 'lakshmi') { for (const [lx, sc] of [[-170, 1], [170, 1], [-90, 1.15], [90, 1.15], [0, 1.25]]) sbEll(c, lx, -16, 80 * sc, 34 * sc, sc > 1.2 ? P.lotus2 : P.lotus, { tex: false }); sbEll(c, 0, 0, 230, 30, P.leaf, { tex: false, alpha: .8 }); }
     c.translate(0, br * .3);
+    // bw: the body's width; Lakshmi is slimmer (o.slim, 0..1, default 1 for her, 0 for Kalaratri)
+    const bw = 1 - .22 * (o.slim ?? (kind === 'lakshmi' ? 1 : 0)), dx = 125 * (1 - bw);
     // back arms, raised
-    for (const sd of [-1, 1]) { c.save(); c.translate(sd * 110, -470); c.rotate(sd * ((kind === 'kalaratri' ? .85 : .55) + Math.sin(t * 1.5 + sd) * .03)); if (kind === 'kalaratri') c.scale(1.15, 1.15);
+    for (const sd of [-1, 1]) { c.save(); c.translate(sd * 110 * bw, -470); c.rotate(sd * ((kind === 'kalaratri' ? .85 : .55) + Math.sin(t * 1.5 + sd) * .03)); if (kind === 'kalaratri') c.scale(1.15, 1.15);
       sbEll(c, 0, -80, 30, 95, P.skin, { tex: false }); sbEll(c, 0, -172, 34, 34, P.skin, { tex: false });
       if (kind === 'lakshmi') sbLotus(c, 0, -190, .75, P);
       else if (sd < 0) { c.save(); c.translate(0, -175); c.rotate(-.35); sbShape(c, sbPoly([[-10, 10], [10, 10], [22, -150], [60, -250], [6, -190], [-12, -40]], { n: 6 }), P.blade, { tex: false }); sbEll(c, 0, 20, 40, 12, P.gold, { tex: false }); c.restore(); }
       else { c.save(); c.translate(0, -190); sbBolt(c, 0, 0, 1, P.bolt); c.restore(); }
       c.restore(); }
     // the bell of the sari
-    const bell = sbPoly([[-250, -30], [-120, -6], [120, -6], [250, -30], [170, -330], [100, -470], [-100, -470], [-170, -330]], { n: 8 });
+    const bell = sbPoly([[-250, -30], [-120, -6], [120, -6], [250, -30], [170, -330], [100, -470], [-100, -470], [-170, -330]].map(([x, y]) => [x * bw, y]), { n: 8 });
     sbShape(c, bell, P.sari, { shade: ['rgba(40,0,10,.25)', .4], ang: -1.3 });
-    c.save(); sbPath(c, bell); c.clip();
+    c.save(); sbPath(c, bell); c.clip(); c.scale(bw, 1);
     sbDry(c, [[-260, -48], [0, -14], [260, -48]], 34, P.border, .95, 10, { n: 20, dry: .03, fade: .1 });
     sbShape(c, sbPoly([[-100, -470], [10, -470], [210, -120], [150, -100]], { n: 6 }), P.sari2, { tex: false, alpha: .9 });
     sbDry(c, [[10, -470], [120, -290], [215, -120]], 16, P.border, .9, 6, { n: 16, dry: .03, fade: .1 });
     for (let i = 0; i < 7; i++) sbDot(c, -150 + i * 45 + (i % 2) * 10, -220 + (i % 3) * 50, 6, P.border);
     c.restore();
     // front arms
-    c.save(); c.translate(-125, -400); c.rotate(.35); sbEll(c, -10, 70, 30, 90, P.skin, { tex: false }); sbEll(c, -20, 160, 34, 34, P.skin, { tex: false }); c.restore();
-    c.save(); c.translate(125, -400); c.rotate(-.9); sbEll(c, 10, 70, 30, 90, P.skin, { tex: false }); c.restore();
-    sbEll(c, 210, -440, 36, 40, P.skin, { tex: false });   // abhaya: the right palm up and out
-    sbDot(c, 210, -440, 9, kind === 'lakshmi' ? P.sari : P.gold);
-    if (kind === 'lakshmi' && (o.coins ?? 1) > 0) { const ct = o.coinT ?? t; for (let i = 0; i < 7; i++) { const f = frac(ct * .9 + i / 7); sbCoin(c, -150 + Math.sin(i * 2.3) * 16, -290 + f * 260, .55, { spin: f * 2 + i * .3, ...(f > .92 ? {} : {}) }); } }
+    c.save(); c.translate(-125 + dx, -400); c.rotate(.35); sbEll(c, -10, 70, 30, 90, P.skin, { tex: false }); sbEll(c, -20, 160, 34, 34, P.skin, { tex: false }); c.restore();
+    c.save(); c.translate(125 - dx, -400); c.rotate(-.9); sbEll(c, 10, 70, 30, 90, P.skin, { tex: false }); c.restore();
+    sbEll(c, 210 - dx, -440, 36, 40, P.skin, { tex: false });   // abhaya: the right palm up and out
+    sbDot(c, 210 - dx, -440, 9, kind === 'lakshmi' ? P.sari : P.gold);
+    if (kind === 'lakshmi' && (o.coins ?? 1) > 0) { const ct = o.coinT ?? t; for (let i = 0; i < 7; i++) { const f = frac(ct * .9 + i / 7); sbCoin(c, -150 + dx + Math.sin(i * 2.3) * 16, -290 + f * 260, .55, { spin: f * 2 + i * .3, ...(f > .92 ? {} : {}) }); } }
     // neck, jewellery, head
     sbEll(c, 0, -480, 40, 34, P.dk, { tex: false });
     if (kind === 'kalaratri') sbBoltGarland(c, 0, -455, P.bolt, t); else sbDry(c, [[-80, -462], [0, -410], [80, -462]], 14, P.gold, .95, 5, { n: 14 });
@@ -481,14 +483,15 @@ const SB_NANDI = { coat: '#F3EEE6', shade: '#D9D0C4', hump: '#ECE5DA', muzzle: '
 function sbNandi(c, x, y, s, o = {}) {
   const P = { ...SB_NANDI, ...(o.pal || {}) }, t = o.t || 0, br = sbBreath(o, 2.2, 4), bl = sbBlink(o), tail = o.tail ?? Math.sin(t * 2) * .6;
   sbAt(c, x, y, s, () => {
-    const leg = (lx, back) => { sbShape(c, sbPoly([[lx - 28, -290], [lx + 28, -290], [lx + 23, -40], [lx - 23, -40]], { n: 5, jit: 1 }), back ? P.shade : P.coat, { tex: false }); sbEll(c, lx, -24, 30, 26, P.hoof, { tex: false }); };
+    const leg = (lx, back) => { sbShape(c, sbPoly([[lx - 42, -300], [lx + 42, -300], [lx + 34, -40], [lx - 34, -40]], { n: 5, jit: 1 }), back ? P.shade : P.coat, { tex: false }); sbEll(c, lx, -24, 40, 28, P.hoof, { tex: false }); };
     leg(-90, true); leg(200, true);
     sbDry(c, [[270, -470], [310 + tail * 18, -380], [322 + tail * 36, -250]], 12, P.coat, 1, 5, { n: 16 }); sbEll(c, 326 + tail * 38, -236, 20, 44, P.tuft, { rot: -.2 - tail * .2, tex: false });
     c.save(); c.translate(0, br * .3);
-    sbEll(c, 60, -420, 270, 165, P.coat, { shade: ['rgba(70,50,30,.2)', 1.3] });
-    sbEll(c, -140, -560, 100, 80, P.hump, { tex: false, shade: ['rgba(70,50,30,.12)', 1.2] });
+    sbEll(c, 50, -440, 300, 205, P.coat, { shade: ['rgba(70,50,30,.2)', 1.3] });
+    sbEll(c, -150, -610, 135, 115, P.hump, { tex: false, shade: ['rgba(70,50,30,.12)', 1.2] });
+    sbEll(c, -190, -470, 150, 175, P.coat, { tex: false, shade: ['rgba(70,50,30,.1)', 1.6] });   // the deep chest
     // the jhool: a red cloth over his back, a gold border and little mirrors
-    const cl = sbPoly([[-40, -580], [200, -575], [230, -380], [-60, -370]], { n: 6 });
+    const cl = sbPoly([[-30, -625], [210, -620], [250, -390], [-50, -380]], { n: 6 });
     sbShape(c, cl, P.cloth, { tex: false, shade: ['rgba(60,0,0,.2)', 1.4] });
     c.save(); sbPath(c, cl); c.clip(); sbDry(c, [[-70, -385], [90, -378], [240, -392]], 26, P.border, .95, 8, { n: 16, dry: .02 }); for (let i = 0; i < 5; i++) sbDot(c, 0 + i * 45, -480 + (i % 2) * 30, 9, '#DCE6F0'); c.restore();
     c.restore();
