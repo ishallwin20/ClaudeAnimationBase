@@ -10,7 +10,9 @@
 //   live_wallpaper_ios_with_time.*       the same with the lock screen baked in (a preview)
 //   live_wallpaper_android.mp4           the seamless 6 s loop played twice (12 s, under Samsung's 15 s cap), 1080×2400, 30 fps
 //   live_wallpaper_android_with_time.mp4 the same under a One UI lock screen
-// Usage: node tools/wallpack.mjs [--only=shiva,owl] [--ios] [--keep]     (--ios: only the iPhone files)      (MAKELIVE=<path> if makelive isn't on PATH)
+// Usage: node tools/wallpack.mjs [--batch=3] [--only=shiva,owl] [--ios] [--keep]     (--ios: only the iPhone files)      (MAKELIVE=<path> if makelive isn't on PATH)
+// --batch=3: the Storybook and 3D packs (studio_wall_sb.html, studio_wall_3d.html) into out/wallpapers3/; each loop has
+// a <name>_wake twin, 2 s long, landing on the still at 1.5 s.
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, rmSync, existsSync, readdirSync, copyFileSync, linkSync } from 'node:fs';
 
@@ -27,13 +29,20 @@ const WALLS = [
   ['09-narad', 'wall_narad', ['wall_narad', 6]],
   ['10-durga-sher', 'wall_durga', ['wall_durga', 6]],
 ];
+// batch 3: [folder, loop, [wake loop, the still's time in it], page]
+const WALLS3 = [
+  ['01-hanuman-sun', 'sb_hanuman'], ['02-bappa-modak', 'sb_bappa'], ['03-shiva-vasuki', 'sb_shiva'], ['04-lakshmi-ganesh', 'sb_lakshmi_ganesh'],
+  ['05-owl-diwali', 'sb_owl'], ['06-dhanteras', 'sb_dhanteras'], ['07-krishna-calf', 'sb_krishna_calf'], ['08-vahana-squad', 'sb_vahanas'],
+  ['09-tulsi-diya', 'sb_tulsi'], ['10-shiva-sanctum-3d', 'wall3d_sanctum', null, 'studio_wall_3d.html'],
+].map(([f, l, w, page]) => [f, l, w || [l + '_wake', 1.5], page || 'studio_wall_sb.html']);
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const only = args.only ? String(args.only).split(',') : null, FPS = 30, ROOT = 'out/wallpapers2', TMP = `${ROOT}/_work`;
+const B3 = String(args.batch) === '3', LIST = B3 ? WALLS3 : WALLS;
+const only = args.only ? String(args.only).split(',') : null, FPS = 30, ROOT = B3 ? 'out/wallpapers3' : 'out/wallpapers2', TMP = `${ROOT}/_work`;
 const run = (cmd, a) => { const r = spawnSync(cmd, a, { stdio: ['ignore', 'ignore', 'inherit'] }); if (r.error || r.status) { console.error(`${cmd} ${a.slice(0, 3).join(' ')} failed`); process.exit(1); } };
 const ff = a => run('ffmpeg', ['-y', '-loglevel', 'error', ...a]);
 const pngs = d => readdirSync(d).filter(f => f.endsWith('.png')).sort().map(f => `${d}/${f}`);
-const render = (loop, dir, range) => { rmSync(dir, { recursive: true, force: true });
-  run('node', ['render.mjs', `--loop=${loop}`, '--png', `--fps=${FPS}`, `--out=${dir}`, ...(range ? [`--range=${range}`] : [])]); };
+const render = (loop, dir, range, page) => { rmSync(dir, { recursive: true, force: true });
+  run('node', ['render.mjs', `--loop=${loop}`, '--png', `--fps=${FPS}`, `--out=${dir}`, ...(range ? [`--range=${range}`] : []), ...(page ? [`--page=${page}`] : [])]); };
 
 mkdirSync(TMP, { recursive: true });
 const LP = `${TMP}/livephoto`, ML = process.env.MAKELIVE || 'makelive';
@@ -53,12 +62,12 @@ function live(frames, still, base) {
   if (r.error || r.status) console.warn('  makelive not run: no .pvt (set MAKELIVE)');
 }
 
-for (const [folder, loop, [wake, a]] of WALLS) {
+for (const [folder, loop, [wake, a], page] of LIST) {
   if (only && !only.some(o => folder.includes(o))) continue;
   const out = `${ROOT}/${folder}`, w = `${TMP}/${folder}`; mkdirSync(out, { recursive: true }); mkdirSync(w, { recursive: true });
   console.log(`${folder}: rendering`);
   for (const f of readdirSync(out)) if (f.startsWith('live_wallpaper_ios')) rmSync(`${out}/${f}`, { recursive: true, force: true });
-  render(wake, `${w}/ios`, `${a - 1.5}:${a + .5}`);           // 60 frames, the still at index 45
+  render(wake, `${w}/ios`, `${a - 1.5}:${a + .5}`, page);           // 60 frames, the still at index 45
   const ios = pngs(`${w}/ios`), still = ios[KEY];
   if (!args.ios) {
     copyFileSync(still, `${out}/wallpaper.png`);
@@ -69,7 +78,7 @@ for (const [folder, loop, [wake, a]] of WALLS) {
   ios.forEach((f, i) => ff(['-i', f, '-i', `${TMP}/lock_ios.png`, '-filter_complex', 'overlay', `${tdir}/f${String(i).padStart(4, '0')}.png`]));
   const T = pngs(tdir); live(T, T[KEY], `${out}/live_wallpaper_ios_with_time`);
   if (args.ios) { if (!args.keep) rmSync(w, { recursive: true, force: true }); console.log(`  → ${out}/`); continue; }
-  render(loop, `${w}/loop`);                                   // 180 frames, t = i/30
+  render(loop, `${w}/loop`, null, page);                                   // 180 frames, t = i/30
   const L = pngs(`${w}/loop`);
   // Android: the loop twice
   const seq = ['-framerate', String(FPS), '-i', `${w}/loop/f%04d.png`];
