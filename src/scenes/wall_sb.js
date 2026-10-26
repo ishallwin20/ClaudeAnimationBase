@@ -106,6 +106,17 @@ function sbSun(c, x, y, R, t, o = {}) {
   sbCheek(c, x - R * .52, y + R * .2, R * .22, '#F0606A'); sbCheek(c, x + R * .52, y + R * .2, R * .22, '#F0606A');
   if (sp > .4) sbMouth(c, x, y + R * .32, R * .5, 'o', { col: '#8A3A1A' }); else sbMouth(c, x, y + R * .28, R * .42, 'smile', { col: '#8A3A1A' });
 }
+// air rushing past a flier: thin streaks parallel to the flight, sliding from ahead of him to behind and fading in and
+// out, whole laps a loop. (cx, cy) his middle, ang his lean (0 = straight up); pass a clock that runs ahead to speed it up
+function sbAirflow(c, t, cx, cy, ang) {
+  const dx = Math.sin(ang), dy = -Math.cos(ang), nx = -dy, ny = dx;
+  for (let i = 0; i < 22; i++) {
+    const s = i * 2.7 + 5, laps = 2 + Math.floor(hash(s) * 2), f = frac(hash(s + 1) + t / WL * laps), side = hash(s + 2) < .5 ? -1 : 1;
+    const off = side * (140 + hash(s + 3) * 360), along = lerp(560, -820, f), len = 180 + hash(s + 4) * 260, a = Math.min(1, Math.sin(Math.PI * f) * 1.6) * (.55 + .35 * hash(s + 5));
+    const x = cx + dx * along + nx * off, y = cy + dy * along + ny * off, bend = side * 18 * (1 - Math.abs(off) / 500);
+    sbLine(c, [[x, y], [x - dx * len * .5 + nx * bend, y - dy * len * .5 + ny * bend], [x - dx * len, y - dy * len]], 5 + 4 * hash(s + 6), '#FFFFFF', { taper: .8, alpha: a });
+  }
+}
 // a flock of little dry "v" birds crossing a whole width a loop
 function sbBirds(c, t, n, y, seed, o = {}) {
   for (let i = 0; i < n; i++) { const s = i * 1.7 + seed, k = frac(hash(s) + t / WL * (o.laps ?? 1)), x = -80 + k * (DW + 160), yy = y + hash(s + 1) * 160 + lsin(t, 3, hash(s + 2)) * 10, w = 18 + hash(s + 3) * 10, fl = lsin(t, 12, hash(s)) * .5 + .5;
@@ -154,7 +165,7 @@ wallSB('sb_hanuman', (c, t, k) => {
   sbSun(c, 800, 990, 165, t, { look: [-.7, .6], surprise: sur, blink: blinkAt(t, 3.3) });
   // clouds rushing down past him (he flies up): whole screens a loop
   const up = (1 - easeOut(k)) * 520, bob = lsin(t, 1) * 18, hx = 300 - (1 - easeOut(k)) * 120, hy = 1990 + up + bob;
-  sbSwoosh(c, [[hx - 330, hy + 420], [hx - 150, hy + 170], [hx + 10, hy - 60]], 150, '#FFFFFF', .45);
+  sbAirflow(c, t - 1.5 * (1 - k) ** 2, hx + Math.sin(.42) * 330 * 1.12, hy - Math.cos(.42) * 330 * 1.12, .42);   // the swoop: the air runs up to 3× faster
   sbHanuman(c, hx, hy, 1.12, { t: swing(t), rot: .42, reach: .92 + .08 * lsin(t, 2), tail: lsin(t, 1) * .7, kick: lsin(t, 3), blink: blinkAt(t, 1.6),
     mouth: bite > .15 ? 'wide' : 'grin', open: bite, look: [.6, -.5] });
 });
@@ -305,9 +316,11 @@ wallSB('sb_tulsi', (c, t, k) => {
   // the tulsi plant: stems, leaf clusters and flower spikes, swaying a loop
   const sway = lsin(t, 1) * 10;
   const stems = [[540, 1720, 540, 1240], [540, 1600, 380, 1380], [540, 1560, 700, 1330], [540, 1460, 430, 1290], [540, 1420, 650, 1260]];
-  for (const [x0, y0, x1, y1] of stems) sbLine(c, [[x0, y0], [(x0 + x1) / 2 + sway * .4, (y0 + y1) / 2], [x1 + sway, y1]], 12, '#4A3A4A', { taper: .5 });
+  const stem = ([x0, y0, x1, y1], w, a) => sbLine(c, [[x0, y0], [(x0 + x1) / 2 + sway * .4, (y0 + y1) / 2], [x1 + sway, y1]], w, '#2A1C24', { taper: .55, alpha: a });
+  stems.forEach((st, i) => stem(st, i ? 16 : 26, 1));
   for (let i = 0; i < 90; i++) { const s = stems[i % 5], f = .35 + hash(i * 1.9) * .65, x = lerp(s[0], s[2] + sway, f) + (hash(i * 3.1) - .5) * 90, y = lerp(s[1], s[3], f) + (hash(i * 4.3) - .5) * 60, a = hash(i * 7.7) * TAU, st = lsin(t, 2, hash(i)) * .1;
     c.save(); c.translate(x, y); c.rotate(a + st); sbEll(c, 0, -24, 18, 30, ['#3E7A44', '#4E8E4E', '#5E9C52', '#5A4A78'][i % 4], { tex: false }); c.restore(); }
+  stems.forEach((st, i) => stem(st, i ? 9 : 15, .75));   // the woody stems again, over the leaves
   for (const s of stems) { const x = s[2] + sway, y = s[3]; for (let j = 0; j < 5; j++) sbDot(c, x + Math.sin(j) * 4, y - 14 - j * 16, 6, '#8A5AA8'); }
   // the tulsi vrindavan (whitewashed, a terracotta border), a niche with the lamp
   sbShape(c, sbPoly([[340, 1730], [740, 1730], [720, 2080], [360, 2080]], { n: 4, jit: 1 }), '#F3E6D4', { tex: false, shade: ['rgba(60,40,90,.3)', 0] });
