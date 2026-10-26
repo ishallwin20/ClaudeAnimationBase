@@ -1,6 +1,5 @@
-// config.js: project settings.
-//   duration: the video's length in seconds.
-//   bpm:      the rhythm that bounces, dances and pulse() follow. Clawd always moves to some beat; if the video has music,
-//             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
-//   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
-const PROJECT = { duration: 11, bpm: 120, offset: 0, w: 1080, h: 1920 };
+// config.js: project settings for "You've been doing AARTI wrong" (ad 54, the 3D style).
+//   duration: the video's length in seconds (the card ends at TL.END); w, h: 9:16; fonts: loaded before the first frame.
+const PROJECT = { duration: 56.2, w: 1080, h: 1920, audio: 'assets/aarti_mix.wav',
+  fonts: ['700 56px Cinzel', '700 96px Cinzel', '700 36px Cinzel', '42px Marcellus', '30px Marcellus', '58px "Tiro Devanagari Sanskrit"',
+    '700 54px Poppins', '500 36px Poppins', '700 52px Poppins'] };

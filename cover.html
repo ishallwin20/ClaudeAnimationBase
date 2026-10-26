@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Aarti · cover</title>
+<!-- The 3D style's studio (see 3D_GUIDE.md): cine.js with a three.js world under it. On main it shows the shrine set
+     in its three moods; a 3D reel copies this page to studio.html, loads src/config.js instead of the inline PROJECT,
+     and swaps in its scene. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Marcellus&family=Poppins:wght@500;700&family=Tiro+Devanagari+Sanskrit&display=block">
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="1080" height="1920"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="41" step="0.0417" value="0"><span id="tt">loading…</span></div>
+</main>
+<script src="src/config.js"></script>
+<!-- engine, sets -->
+<script src="src/cine.js"></script>
+<script src="src/vendor/three.min.js"></script>
+<script src="src/cine3d.js"></script>
+<script src="src/cine3d_temple.js"></script>
+<script src="src/cine_sets.js"></script>
+<script src="src/cine_cast.js"></script>
+<script src="src/scenes/rk_images.js"></script>
+<!-- the scene -->
+<script src="src/scenes/aarti_vo.js"></script>
+<script src="src/scenes/aarti_tl.js"></script>
+<script src="src/scenes/aarti_props.js"></script>
+<script src="src/scenes/aarti.js"></script>
+<script src="src/scenes/aarti_cover.js"></script>
+</body>
+</html>
