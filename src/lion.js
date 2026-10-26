@@ -332,7 +332,8 @@ function lion(x, y, u, o = {}) {
 //   paws:   raise 0..1 (the near forepaw comes up by his cheek: a wind-up), reach 0..1 (it swipes forward: the paw SLAP)
 //   face:   eyes ('normal' | 'wide' | 'angry' | 'happy' | 'closed' | 'squeeze' | 'side'), mouth ('smile' | 'grin' |
 //           'talk' | 'open' | 'roar' | 'flat' | 'frown' | 'O' | 'smirk') + mouthK, lookX / lookY, blush, seed, brows
-//   look:   pal (overrides the colours), tail (-1..1)
+//   look:   pal (overrides the colours), tail (-1..1), kind 'tiger' (a tigress: no mane, a cream cheek ruff, ink stripes
+//           on the body, head and tail; TGR colours unless pal says otherwise)
 //   hooks:  rider(u, sw) (WORLD space, drawn last, over the back of his mane: draw the rider at lionRunSeat(...)),
 //           hat(u, sw) (head space: head-local
 //           coordinates, centre (0, 0)), behind(u, sw)
@@ -391,7 +392,7 @@ function lionRunPaw(x, y, u, o = {}, i = 2) { const [, , f] = lionRunLeg(o, i); 
 
 function lionRun(x, y, u, o = {}) {
   const id = o.boilKey ?? 'lr' + (++CLAWD_N), rs = p => boilSeed(`lionrun ${id} ${p}`);
-  const C = { ...LIO, ...(o.pal || {}) }, INK = C.ink;
+  const tiger = o.kind === 'tiger', C = { ...LIO, ...(tiger ? { ...TGR, mane: TGR.body, maneDk: TGR.dk, maneLt: TGR.lt } : {}), ...(o.pal || {}) }, INK = C.ink;
   const sq = (o.sq || 0) + (o.take || 0) + clamp(o.land || 0) * .12 - clamp(o.leap || 0) * .06, sw = clamp(u / 20, .4, 2) * (o.swMul || 1), J = u * .035;
   const { col, dk, lt } = tintCols({ tint: o.tint, tintK: o.tintK, col: C.body, dk: C.dk, lt: C.lt });
   const pose = lionRunPose(o), L = (px, py) => lionRunLocal(o, px, py), LP = pts => U(pts.map(([a, b]) => L(a, b)), u);
@@ -419,13 +420,15 @@ function lionRun(x, y, u, o = {}) {
   const tw = o.tail ?? Math.sin(T * 2.3 + (o.seed || 0)) * .4, ts = clamp(wind) * 1.4;
   const tp = [L(-4.9, -6.9), L(-6.3, -7.9 + ts * .3), L(-7.0 - ts * .8, -9.6 + tw * .6 + ts * .6), L(-6.6 - ts * 1.6 + tw * .5, -11.3 + tw * .4 + ts * 1.2)];
   paint(U(ribbon(tp, .7, .35), u), { wash: col, ink: INK, sw: sw * .7, curv: .5 });
-  paint(lionLobes(tp[3][0] * u, tp[3][1] * u, .7 * u, .62 * u, 5, .3, tw), { wash: C.maneDk, ink: INK, sw: sw * .6, curv: .5 });
+  if (tiger) { for (const f of [.3, .55, .8]) { const [ax, ay] = [lerp(tp[1][0], tp[3][0], f), lerp(tp[1][1], tp[3][1], f)]; inkLine([[(ax - .45) * u, ay * u], [(ax + .45) * u, (ay - .1) * u]], sw * 1.6, C.stripe, 'ink', .2); } paint(ellPts(tp[3][0] * u, tp[3][1] * u, .5 * u, .55 * u, 10), { wash: C.stripe, ink: INK, sw: sw * .5 }); }
+  else paint(lionLobes(tp[3][0] * u, tp[3][1] * u, .7 * u, .62 * u, 5, .3, tw), { wash: C.maneDk, ink: INK, sw: sw * .6, curv: .5 });
   // ---- the body: one bean from the haunch to the chest
   rs('body');
   const body = LP([[-5.4, -6.4], [-4.8, -8.0], [-3.0, -8.6], [-.5, -8.3], [2.0, -8.4], [4.0, -8.0], [4.6, -6.4], [4.0, -4.6], [2.4, -3.9], [0, -3.7], [-2.6, -3.7], [-4.7, -4.4]]);
   paint(body, { wash: col, fill: dk, fillOp: 35, bleed: .06, tex: .5, border: .4, ink: INK, sw: sw * .9, curv: .5 });
   paint(LP([[-3.4, -4.1], [0, -3.9], [2.6, -4.2], [1.8, -4.7], [-1.4, -4.6]]), { wash: C.cream, ink: null, curv: .5 });   // the pale belly
   paint(U(ellPts(...L(-3.6, -6.0), 2.1, 2.0, 18), 1).map(([a, b]) => [a * u, b * u]), { wash: lt, fill: dk, fillOp: 20, tex: .4, ink: INK, sw: sw * .7 });   // the haunch
+  if (tiger) { rs('stripes'); for (let i = 0; i < 8; i++) { const sx = -4.3 + i * 1.05, top = i === 0 || i === 7 ? -7.6 : -8.3; inkLine(LP([[sx, top], [sx + .35, top + 1.1], [sx + .05, top + 2.1 + (i % 2) * .5]]), sw * 2.2, C.stripe, 'ink', .4); } }
   // ---- near legs
   const slapping = (o.reach || 0) > .05 || (o.raise || 0) > .05;   // a raised paw is drawn over his mane
   rs('near'); leg(0, col); if (!slapping) leg(2, lt);
@@ -436,9 +439,12 @@ function lionRun(x, y, u, o = {}) {
   rs('mane');
   const wb = clamp(wind, -1, 1.5), R = 1 + clamp(o.mane || 0) * .08;
   const lobes = (cx, cy, rx, ry, n, dp, phs) => { const P = []; for (let i = 0; i < n * 2; i++) { const t = i / (n * 2) * TAU + phs, r = i % 2 ? 1 : 1 - dp, ca = Math.cos(t); P.push([(cx + ca * rx * r - wb * (1 - ca) * .5 * rx * .22) * u, (cy + Math.sin(t) * ry * r) * u]); } return P; };
+  if (tiger) paint(lobes(.3, .9, 2.9, 2.2, 10, .2, .3), { wash: C.cream, fill: C.creamDk, fillOp: 40, tex: .4, ink: INK, sw: sw * .7, curv: .45 });   // the tigress: a cheek ruff, no mane
+  else {
   paint(lobes(-.9, .1, 4.1 * R, 4.4 * R, 13, .17, .2 + Math.sin(T * 4) * .03 * wb), { wash: C.maneDk, ink: INK, sw: sw * .9, curv: .45 });
   paint(lobes(-.6, .0, 3.45 * R, 3.75 * R, 12, .15, .45), { wash: C.mane, fill: C.maneDk, fillOp: 30, tex: .5, ink: null, curv: .45 });
-  for (let i = 0; i < 8; i++) { const t = i / 8 * TAU + .3; inkLine([[(-.6 + Math.cos(t) * 2.7) * u, Math.sin(t) * 2.9 * u], [(-.6 + Math.cos(t + .1) * 3.5 - wb * .5) * u, Math.sin(t + .1) * 3.7 * u]], sw * .45, C.maneLt, 'inkfine', .3); }
+  }
+  if (!tiger) for (let i = 0; i < 8; i++) { const t = i / 8 * TAU + .3; inkLine([[(-.6 + Math.cos(t) * 2.7) * u, Math.sin(t) * 2.9 * u], [(-.6 + Math.cos(t + .1) * 3.5 - wb * .5) * u, Math.sin(t + .1) * 3.7 * u]], sw * .45, C.maneLt, 'inkfine', .3); }
   if (o.hat) { /* drawn after the face */ }
   rs('ears');
   paint(ellPts(.9 * u, -2.75 * u, .8 * u, .85 * u, 12, J), { wash: mixCol(col, dk, .4), ink: INK, sw: sw * .7 });   // far ear
@@ -450,6 +456,7 @@ function lionRun(x, y, u, o = {}) {
   paint(head, { wash: col, ink: null, curv: .5 });
   paint(ellPts(-.4 * u, -1.6 * u, 1.4 * u, .7 * u, 14, J * 2, -.15), { fill: lt, fillOp: 110, bleed: .2, tex: .8, border: .8, ink: null });
   paint(head, { ink: INK, sw, curv: .5 });
+  if (tiger) for (const [a1, b1, a2, b2] of [[-.2, -2.75, .05, -1.95], [.55, -2.85, .6, -2.05], [1.3, -2.6, 1.15, -1.9], [-1.6, -1.6, -.9, -1.2], [-1.9, -.4, -1.2, -.3]]) inkLine(U([[a1, b1], [(a1 + a2) / 2 + .05, (b1 + b2) / 2], [a2, b2]], u), sw * 1.5, C.stripe, 'ink', .3);   // forehead and cheek stripes
   // brows, eyes (near one bigger), the muzzle pushed toward the nose
   rs('face');
   const ek = Array.isArray(o.eyes) ? o.eyes[0] : o.eyes || 'normal', ang = ek === 'angry' ? -1 : clamp(o.brows || 0, -1, 1);
