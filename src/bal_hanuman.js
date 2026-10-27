@@ -29,7 +29,8 @@
 //           every other kind is Clawd's. drool 0..1 (a drop from the corner of his mouth)
 //   cheeks: puff 0..1 (the cheeks balloon out), cheekGlow 0..1 (the sun inside: they shine), jaw 0..1 (the swelling on
 //           his left jaw where the vajra hit), plaster (a crossed plaster on it)
-//   tail:   tail = 'curl' (up behind him, default) | 'stream' (out behind a flight) | 'droop', tailSway (phase)
+//   tail:   tail = 'curl' (up behind him, default) | 'stream' (out behind a flight) | 'droop' | false (none: draw your own
+//           in behind, Makardhwaja's fish tail), tailSway (phase)
 //   extras: garland 0..1 (Indra's gold lotuses round his neck), glowK (a gold aura, drawn first), emote + emoteK +
 //           emoteAge, hooks behind(u, sw) (body space, first) / hat(u, sw) (head space) / held(u, sw) (body space, under
 //           the hands), boilKey, noShadow, swMul
@@ -108,7 +109,7 @@ function balHanuman(x, y, u, o = {}) {
 
   // ---------------- the tail, behind everything
   rs('tail');
-  push(); if (wig) { translate(0, -3.6 * u); rotate(wig * .12); translate(0, 3.6 * u); } bhTail(u, sw, o, C, dk); pop();
+  if (o.tail !== false) { push(); if (wig) { translate(0, -3.6 * u); rotate(wig * .12); translate(0, 3.6 * u); } bhTail(u, sw, o, C, dk); pop(); }
 
   // ---------------- legs (stand, fly): short and chubby, behind the langot
   if (!sit) {
