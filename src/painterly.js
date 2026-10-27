@@ -180,12 +180,12 @@ function nameRing(c, cx, cy, rx, ry, a0, a1, word, o = {}) {
   const size = o.size || 26, font = `${size}px ${o.font || '"Tiro Devanagari Sanskrit"'}`;
   c.save(); c.font = font; c.textAlign = 'center'; c.textBaseline = 'middle';
   const ww = c.measureText(word).width + (o.gap ?? size * .9), circ = (a1 - a0) * (rx + ry) / 2, n = Math.max(1, Math.floor(circ / ww));
-  const spin = (o.spin || 0) * (o.t || 0), step = (a1 - a0) / n;
+  const spin = o.rot ?? (o.spin || 0) * (o.t || 0), step = (a1 - a0) / n;   // o.rot: an angle to turn by instead of spin × t
   for (let i = 0; i < n + 1; i++) {
     let ang = a0 + ((i * step + spin) % (a1 - a0) + (a1 - a0)) % (a1 - a0);
     const edge = Math.min(seg(ang, a0, a0 + step * 1.5), 1 - seg(ang, a1 - step * 1.5, a1));
     const x = cx + Math.cos(ang) * rx, y = cy + Math.sin(ang) * ry, tang = Math.atan2(Math.cos(ang) * ry, -Math.sin(ang) * rx);
-    const sh = 1 - (o.shimmer ?? .4) * (.5 + .5 * Math.sin((o.t || 0) * 2.1 + i * 1.9 + (o.seed || 0)));
+    const sh = 1 - (o.shimmer ?? .4) * (.5 + .5 * Math.sin((o.ph ?? (o.t || 0) * 2.1) + i * 1.9 + (o.seed || 0)));   // o.ph: the shimmer's phase (radians)
     c.save(); c.translate(x, y); c.rotate(tang); c.globalAlpha = (o.a ?? .6) * sh * edge;
     c.shadowColor = o.glow || 'rgba(255,250,210,.8)'; c.shadowBlur = size * .4;
     c.fillStyle = o.col || '#FFFDF0'; c.fillText(word, 0, 0); c.restore();
