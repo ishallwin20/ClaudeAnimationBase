@@ -20,7 +20,7 @@
 //      ([[x, y, r, a]] discs where the clean design shows back through at a: features that must read), flow (x, y) →
 //      angle for strokes in flat areas, seed, rough (px: how far the paint edge of a cut-out wanders).
 
-const PT = { layers: new Map(), ms: 0, k: 1, raw: location.search.includes('design') };   // ?design: show the unpainted designs
+const PT = { layers: new Map(), ms: 0, k: 1, raw: location.search.includes('design') || !!window.PT_RAW };   // ?design (or PT_RAW): the unpainted designs
 const PT_BRUSHES = [
   { r: 22, grid: 1, thresh: 0, len: 9, a: .9, jit: 10 },
   { r: 11, grid: 1, thresh: 18, len: 10, a: .88, jit: 9 },
