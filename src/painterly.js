@@ -111,6 +111,7 @@ function ptPaint(D, o = {}) {
       ptStroke(oc, pts, R * (.85 + rnd() * .35), col, b.a, rnd);
     }
   }
+  oc.globalAlpha = 1;
   // features that must read: the clean design shows back through, softly, inside discs
   if (o.keep) for (const [kx, ky, kr, ka] of o.keep) {
     const tmp = ptCanvas(w, h), tc = tmp.getContext('2d');
@@ -133,7 +134,7 @@ function ptStroke(c, pts, r, col, a, rnd) {
   c.lineCap = 'round'; c.lineJoin = 'round';
   const path = () => { c.beginPath(); c.moveTo(pts[0][0], pts[0][1]); if (pts.length === 1) c.lineTo(pts[0][0] + .1, pts[0][1] + .1); for (let i = 1; i < pts.length; i++) c.lineTo(pts[i][0], pts[i][1]); };
   c.globalAlpha = a; c.strokeStyle = `rgb(${R},${G},${B})`; c.lineWidth = r * 2; path(); c.stroke();
-  if (r < 2.5) return;
+  if (r < 2.5) { c.globalAlpha = 1; return; }
   // bristles: thin streaks offset across the stroke
   const nb = 2 + (rnd() * 2 | 0);
   for (let k = 0; k < nb; k++) {
