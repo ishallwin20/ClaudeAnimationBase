@@ -1,0 +1,29 @@
+{
+  "name": "rudraksha",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    { "id": "hook", "t": 0.15, "caps": ["Count the lines | on your *RUDRAKSHA.*"], "tts": "Count the lines on your rudraksha." },
+    { "id": "god", "gap": 0.45, "caps": ["Each number belongs | to a different *GOD.*"], "tts": "Each number belongs to a different god.", "hold": 0.6 },
+    { "id": "tapas", "gap": 0.8, "caps": ["In the *SHIVA PURANA,* | Shiva sat in *TAPAS*", "for *THOUSANDS* | of divine years."], "tts": "In the Shiva Purana, Shiva sat in tapas, for thousands of divine years." },
+    { "id": "tears", "gap": 0.6, "caps": ["Then he opened his eyes, | and *TEARS* fell to earth."], "tts": "Then he opened his eyes, and tears fell to the earth.", "hold": 0.5 },
+    { "id": "trees", "gap": 0.5, "caps": ["Where they fell, | *RUDRAKSHA* trees grew."], "tts": "Where they fell, rudraksha trees grew.", "hold": 1.0 },
+    { "id": "name", "gap": 0.5, "caps": ["*RUDRA* · *AKSHA:* | the *EYE* of Shiva."], "tts": "Rudra. Akshaa. The eye of Shiva." },
+    { "id": "blue", "gap": 0.7, "caps": ["Its fruit is *BLUE.*", "The bead is | the *SEED* inside."], "tts": "Its fruit is blue. The bead, is the seed inside.", "hold": 0.6 },
+    { "id": "count", "gap": 0.6, "caps": ["Now count its lines, | top to *BOTTOM.*"], "tts": "Now count its lines, top to bottom.", "hold": 0.5 },
+    { "id": "one", "gap": 0.5, "caps": ["*ONE?* | *SHIVA* himself."], "tts": "One? Shiva himself." },
+    { "id": "four", "gap": 0.45, "caps": ["*FOUR?* *BRAHMA.*"], "tts": "Four? Brahma." },
+    { "id": "six", "gap": 0.45, "caps": ["*SIX?* *KARTIKEYA.*"], "tts": "Six? Kartikeya." },
+    { "id": "nine", "gap": 0.45, "caps": ["*NINE?* *MAA DURGA,* | in her nine forms."], "tts": "Nine? Maa Durga, in her nine forms." },
+    { "id": "ten", "gap": 0.45, "caps": ["*TEN?* *VISHNU.*"], "tts": "Ten. Vishnu." },
+    { "id": "twelve", "gap": 0.45, "caps": ["*TWELVE?* | All twelve *SUN GODS.*"], "tts": "Twelve? All twelve sun gods." },
+    { "id": "fourteen", "gap": 0.45, "caps": ["*FOURTEEN?* | *SHIVA,* the highest."], "tts": "Fourteen? Shiva, the highest.", "hold": 0.4 },
+    { "id": "five", "gap": 0.9, "caps": ["But almost every rudraksha | has *FIVE* lines.", "And *FIVE* is *RUDRA* himself: | *KALAGNI.*"], "tts": "But almost every rudraksha has five lines. And five, is Rudra himself. Kaalaagni.", "hold": 0.6 },
+    { "id": "crore", "gap": 0.7, "caps": ["Chant on it, says | the *SHIVA PURANA,*", "and a mantra is | a *CRORE* times stronger."], "tts": "Chant on it, says the Shiva Purana, and a mantra is a crore times stronger." },
+    { "id": "save", "gap": 0.6, "caps": ["*SAVE* this | for your next puja."], "tts": "Save this, for your next puja.", "hold": 1.2 },
+    { "id": "ask", "gap": 0.5, "caps": ["Now count *YOURS.* | How many lines?", "*COMMENT* | the number!"], "tts": "Now count yours. How many lines? Comment the number!" }
+  ]
+}
