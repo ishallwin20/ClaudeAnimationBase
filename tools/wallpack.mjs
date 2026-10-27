@@ -13,6 +13,7 @@
 // Usage: node tools/wallpack.mjs [--batch=3] [--only=shiva,owl] [--ios] [--keep]     (--ios: only the iPhone files)      (MAKELIVE=<path> if makelive isn't on PATH)
 // --batch=3: the Storybook and 3D packs (studio_wall_sb.html, studio_wall_3d.html) into out/wallpapers3/; each loop has
 // a <name>_wake twin, 2 s long, landing on the still at 1.5 s.
+// --batch=4: the Painterly packs (studio_wall_pt.html, src/scenes/wall_pt.js) into out/wallpapers4/, the same way.
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, rmSync, existsSync, readdirSync, copyFileSync, linkSync } from 'node:fs';
 
@@ -39,9 +40,12 @@ const WALLS3 = [
   ['12-shiva-sanctum-3d', 'wall3d_sanctum', 'studio_wall_3d.html'],
   ['13-krishna-moon', 'krishna_moon', 'studio_wall_mix.html'], ['14-diwali-night', 'diwali_night', 'studio_wall_mix.html'], ['15-radha-krishna', 'radha_krishna', 'studio_wall_mix.html'],
 ].map(([f, l, page]) => [f, l, [l + '_wake', 1.5], page]);
+const WALLS4 = [
+  ['01-hanuman-ram-dhyan', 'pt_hanuman', 'studio_wall_pt.html'],   // the राम rings bloom open round him
+].map(([f, l, page]) => [f, l, [l + '_wake', 1.5], page]);
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const B3 = String(args.batch) === '3', LIST = B3 ? WALLS3 : WALLS;
-const only = args.only ? String(args.only).split(',') : null, FPS = 30, ROOT = B3 ? 'out/wallpapers3' : 'out/wallpapers2', TMP = `${ROOT}/_work`;
+const B3 = String(args.batch) === '3', B4 = String(args.batch) === '4', LIST = B4 ? WALLS4 : B3 ? WALLS3 : WALLS;
+const only = args.only ? String(args.only).split(',') : null, FPS = 30, ROOT = B4 ? 'out/wallpapers4' : B3 ? 'out/wallpapers3' : 'out/wallpapers2', TMP = `${ROOT}/_work`;
 const run = (cmd, a) => { const r = spawnSync(cmd, a, { stdio: ['ignore', 'ignore', 'inherit'] }); if (r.error || r.status) { console.error(`${cmd} ${a.slice(0, 3).join(' ')} failed`); process.exit(1); } };
 const ff = a => run('ffmpeg', ['-y', '-loglevel', 'error', ...a]);
 const pngs = d => readdirSync(d).filter(f => f.endsWith('.png')).sort().map(f => `${d}/${f}`);
