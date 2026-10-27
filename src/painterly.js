@@ -1,5 +1,5 @@
-// painterly.js: the Painterly style (experiment, branch style/painterly-test). A cinemagraph engine over cine.js: a
-// still that looks like a digital painting, made only in code, with a few things moving on top of it.
+// painterly.js: the Painterly style (PAINTERLY_GUIDE.md). A cinemagraph engine over cine.js: a still that looks like a
+// digital painting, made only in code (no AI images), with a few things moving on top of it.
 //
 // How a painting is made: the scene draws a DESIGN of each layer (clean canvas shapes with gradients, the way an artist
 // blocks in colour), and ptPaint() repaints that design in brush strokes, coarse to fine (after Hertzmann, "Painterly
@@ -10,15 +10,17 @@
 // The paintings are baked once, the first time a frame needs them (seeded, so every render worker paints the same
 // picture), and cached. Moving parts (a tail, leaves) are painted as several poses and cycled.
 //
-//   ptLayer(key, box, design, o)   bake (or fetch) a painted layer. box = [x, y, w, h] in frame px; design(c) draws in
-//                                  frame px (it is translated for you). Returns { cv, x, y, w, h, mask }.
-//   ptDraw(c, L, alpha, op)        lay a baked layer down where it belongs
+//   ptLayer(key, box, design, o)   bake (or fetch) a painted layer. box = [x, y, w, h] in design px; design(c) draws in
+//                                  design px (it is placed for you). Returns { cv, x, y, w, h, mask }.
+//   ptDraw(c, L, alpha, op)        lay a baked layer down where it belongs (in design px, under c's transform)
+//   PT.k                           paint resolution: canvas px per design px (1 for a 1080-wide reel; a 1290-wide
+//                                  wallpaper drawing a 1080 design sets PT.k = W / 1080 and scales c the same)
 //   o: alpha (true: a cut-out; strokes stay inside the design's shape), brushes ([{ r, grid, thresh, len, a, jit }],
 //      coarse to fine), fine ([[x, y, r]] frame-px discs that get one more, finer pass: faces, hands), keep
 //      ([[x, y, r, a]] discs where the clean design shows back through at a: features that must read), flow (x, y) →
 //      angle for strokes in flat areas, seed, rough (px: how far the paint edge of a cut-out wanders).
 
-const PT = { layers: new Map(), ms: 0, raw: location.search.includes('design') };   // ?design: show the unpainted designs
+const PT = { layers: new Map(), ms: 0, k: 1, raw: location.search.includes('design') };   // ?design: show the unpainted designs
 const PT_BRUSHES = [
   { r: 22, grid: 1, thresh: 0, len: 9, a: .9, jit: 10 },
   { r: 11, grid: 1, thresh: 18, len: 10, a: .88, jit: 9 },
@@ -31,32 +33,32 @@ const ptCtx = cv => cv.getContext('2d', { willReadFrequently: true });
 
 function ptLayer(key, box, design, o = {}) {
   let L = PT.layers.get(key); if (L) return L;
-  const t0 = performance.now(), [bx, by, bw, bh] = box.map(Math.round);
-  const D = ptCanvas(bw, bh), dc = ptCtx(D); dc.translate(-bx, -by); design(dc); dc.setTransform(1, 0, 0, 1, 0, 0);
-  const cv = PT.raw ? D : ptPaint(D, { ...o, ox: bx, oy: by });
+  const t0 = performance.now(), [bx, by, bw, bh] = box.map(Math.round), k = o.k ?? PT.k;
+  const D = ptCanvas(Math.ceil(bw * k), Math.ceil(bh * k)), dc = ptCtx(D); dc.setTransform(k, 0, 0, k, -bx * k, -by * k); design(dc); dc.setTransform(1, 0, 0, 1, 0, 0);
+  const cv = PT.raw ? D : ptPaint(D, { ...o, ox: bx, oy: by, k });
   let mask = null;
-  if (o.alpha) { mask = ptCanvas(bw, bh); mask.getContext('2d').drawImage(D, 0, 0); }
-  L = { cv, x: bx, y: by, w: bw, h: bh, mask, design: D };
+  if (o.alpha) { mask = ptCanvas(D.width, D.height); mask.getContext('2d').drawImage(D, 0, 0); }
+  L = { cv, x: bx, y: by, w: bw, h: bh, k, mask, design: D };
   PT.layers.set(key, L); PT.ms += performance.now() - t0;
   return L;
 }
 function ptDraw(c, L, alpha = 1, op = 'source-over') {
   if (alpha <= 0) return;
-  c.save(); c.globalAlpha *= alpha; c.globalCompositeOperation = op; c.drawImage(L.cv, L.x, L.y); c.restore();
+  c.save(); c.globalAlpha *= alpha; c.globalCompositeOperation = op; c.drawImage(L.cv, L.x, L.y, L.w, L.h); c.restore();
 }
 
 // The painter. D: the design canvas. Returns a new canvas the same size.
 function ptPaint(D, o = {}) {
-  const w = D.width, h = D.height, rnd = lcg(o.seed || 7), ox = o.ox || 0, oy = o.oy || 0;
-  const brushes = o.brushes || PT_BRUSHES, cut = !!o.alpha;
+  const w = D.width, h = D.height, rnd = lcg(o.seed || 7), ox = o.ox || 0, oy = o.oy || 0, K = o.k || 1;
+  const brushes = (o.brushes || PT_BRUSHES).map(b => ({ ...b, r: b.r * K })), cut = !!o.alpha;
   const out = ptCanvas(w, h), oc = ptCtx(out);
   // underpainting: the design, very blurred (no canvas shows through between the first strokes)
   oc.filter = `blur(${brushes[0].r * .8}px)`; oc.drawImage(D, 0, 0); oc.filter = 'none';
   if (cut) { oc.globalCompositeOperation = 'destination-in'; oc.drawImage(D, 0, 0); oc.globalCompositeOperation = 'source-over'; }
   const flow = o.flow || ((x, y) => Math.PI / 2 + vnoise(x * .004, 3) * 1.2 + vnoise(y * .004, 9) * .8);
-  const inFine = (x, y) => (o.fine || []).some(([fx, fy, fr]) => Math.hypot(x + ox - fx, y + oy - fy) < fr);
+  const inFine = (x, y) => (o.fine || []).some(([fx, fy, fr]) => Math.hypot(x / K + ox - fx, y / K + oy - fy) < fr);
   const layers = brushes.slice();
-  if (o.fine && o.fine.length) layers.push({ r: 1.3, grid: 1, thresh: 16, len: 8, a: .8, jit: 4, only: inFine }, { r: .8, grid: 1, thresh: 14, len: 6, a: .75, jit: 3, only: inFine });
+  if (o.fine && o.fine.length) layers.push({ r: 1.3 * K, grid: 1, thresh: 16, len: 8, a: .8, jit: 4, only: inFine }, { r: .8 * K, grid: 1, thresh: 14, len: 6, a: .75, jit: 3, only: inFine });
 
   for (const b of layers) {
     const R = b.r, ref = ptCanvas(w, h), rc = ptCtx(ref);
@@ -95,7 +97,7 @@ function ptPaint(D, o = {}) {
       for (let k = 1; k < b.len; k++) {
         const [gx, gy] = grad(x, y), mag = Math.hypot(gx, gy);
         let dx = -gy, dy = gx;
-        const fa = flow(x + ox, y + oy), m0 = 6, wg = mag / (mag + m0);
+        const fa = flow(x / K + ox, y / K + oy), m0 = 6, wg = mag / (mag + m0);
         dx = (mag ? dx / mag : 0) * wg + Math.cos(fa) * (1 - wg); dy = (mag ? dy / mag : 0) * wg + Math.sin(fa) * (1 - wg);
         if (k > 1 && dx * ldx + dy * ldy < 0) { dx = -dx; dy = -dy; }
         if (k > 1) { dx = dx * .6 + ldx * .4; dy = dy * .6 + ldy * .4; }
@@ -116,12 +118,12 @@ function ptPaint(D, o = {}) {
   if (o.keep) for (const [kx, ky, kr, ka] of o.keep) {
     const tmp = ptCanvas(w, h), tc = tmp.getContext('2d');
     tc.drawImage(D, 0, 0); tc.globalCompositeOperation = 'destination-in';
-    const gr = tc.createRadialGradient(kx - ox, ky - oy, 0, kx - ox, ky - oy, kr); gr.addColorStop(0, `rgba(0,0,0,${ka})`); gr.addColorStop(.6, `rgba(0,0,0,${ka * .7})`); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    const gr = tc.createRadialGradient((kx - ox) * K, (ky - oy) * K, 0, (kx - ox) * K, (ky - oy) * K, kr * K); gr.addColorStop(0, `rgba(0,0,0,${ka})`); gr.addColorStop(.6, `rgba(0,0,0,${ka * .7})`); gr.addColorStop(1, 'rgba(0,0,0,0)');
     tc.fillStyle = gr; tc.fillRect(0, 0, w, h); oc.drawImage(tmp, 0, 0);
   }
   // a cut-out keeps the design's shape, with a slightly ragged painted edge
   if (cut) {
-    const m = ptCanvas(w, h), mc = m.getContext('2d'), r = o.rough ?? 1.2;
+    const m = ptCanvas(w, h), mc = m.getContext('2d'), r = (o.rough ?? 1.2) * K;
     mc.filter = `blur(${r}px)`; mc.drawImage(D, 0, 0); mc.filter = 'none';
     oc.globalCompositeOperation = 'destination-in'; oc.drawImage(m, 0, 0); oc.globalCompositeOperation = 'source-over';
   }
@@ -146,20 +148,53 @@ function ptStroke(c, pts, r, col, a, rnd) {
   c.globalAlpha = 1;
 }
 
+// ---------- drawing designs ----------
+// Helpers for designs: gradients (ptLin, ptRad), an SVG-path fill (ptShape), a chain of flowers along points (ptFlowers:
+// garlands), a rounded lit form along points (ptForm: arms, fingers; col = { dk, base, lt }, (lx, ly) toward the light),
+// colour blotches over what is drawn (ptMottle: paint is never one flat colour) and a lock of hair (ptLock).
+function ptLin(c, x0, y0, x1, y1, stops) { const g = c.createLinearGradient(x0, y0, x1, y1); stops.forEach(([k, col]) => g.addColorStop(k, col)); return g; }
+function ptRad(c, x, y, r0, r1, stops, x1 = x, y1 = y) { const g = c.createRadialGradient(x, y, r0, x1, y1, r1); stops.forEach(([k, col]) => g.addColorStop(k, col)); return g; }
+function ptShape(c, d, fill) { c.fillStyle = fill; c.fill(new Path2D(d)); }
+function ptFlowers(c, P, r, cols, R, n = 3) {
+  const C = through(P, 14);
+  for (let i = 0; i < C.length; i++) for (let k = 0; k < n; k++) {
+    const [x, y] = C[i], a = R() * TAU, d = R() * r * .5;
+    ellipse(c, x + Math.cos(a) * d, y + Math.sin(a) * d, r * (.45 + R() * .3), r * (.4 + R() * .25), cols[R() * cols.length | 0], R() * TAU);
+  }
+}
+// a rounded form: dark under-colour, the body of the form shifted toward the light, a highlight on the lit side
+function ptForm(c, P, Wd, col, lx = 0, ly = -1, hi = .6) {
+  const w0 = Wd[0], off = (k) => P.map(([x, y]) => [x + lx * w0 * k, y + ly * w0 * k]);
+  limb(c, P, Wd, col.dk);
+  limb(c, off(.1), Wd.map(v => v * .8), col.base);
+  c.save(); c.globalAlpha = hi; limb(c, off(.24), Wd.map(v => v * .38), col.lt); c.restore();
+}
+// blotches of near colours over everything drawn so far (paint is never one flat colour)
+function ptMottle(c, x0, y0, x1, y1, n, cols, R, r0 = 6, r1 = 26, a = .22) {
+  c.save(); c.globalCompositeOperation = 'source-atop';
+  for (let i = 0; i < n; i++) { c.globalAlpha = a * (.4 + R() * .6); ellipse(c, x0 + R() * (x1 - x0), y0 + R() * (y1 - y0), r0 + R() * (r1 - r0), r0 + R() * (r1 - r0) * .7, cols[R() * cols.length | 0], R() * TAU); }
+  c.restore();
+}
+function ptLock(c, P, w, R) {   // a lock of hair: dark body and a few lit strands
+  limb(c, P, [w, w * .8, w * .45, 3], '#140C09');
+  for (let k = 0; k < 3; k++) { const o = (R() - .5) * w * .5; c.save(); c.globalAlpha = .35 + R() * .3; limb(c, P.map(([x, y], i) => [x + o * (1 - i / P.length), y]), [3, 2.4, 1.6, 1], ['#4A3226', '#6B4A34', '#38251C'][k]); c.restore(); }
+}
+
 // ---------- light on a cut-out ----------
 // ptRim(L, o): a rim-light canvas for a baked cut-out: the edges facing the light (direction dx, dy in px), coloured,
 // softened. Lay it with 'screen' or 'lighter' and breathe its alpha. Also returns points along the rim (for sparkles).
 function ptRim(L, o = {}) {
   const key = 'rim:' + (o.key || '') + L.x + ',' + L.y; let R = PT.layers.get(key); if (R) return R;
-  const w = L.w, h = L.h, m = ptCanvas(w, h), mc = ptCtx(m), dx = o.dx ?? 0, dy = o.dy ?? -6;
+  const k = L.k || 1, w = L.mask.width, h = L.mask.height, m = ptCanvas(w, h), mc = ptCtx(m), dx = (o.dx ?? 0) * k, dy = (o.dy ?? -6) * k;
   mc.drawImage(L.mask, 0, 0); mc.globalCompositeOperation = 'destination-out'; mc.drawImage(L.mask, -dx, -dy);
   mc.globalCompositeOperation = 'source-in'; mc.fillStyle = o.col || '#FFF1B0'; mc.fillRect(0, 0, w, h);
   const glow = ptCanvas(w, h), gc = glow.getContext('2d');
-  gc.filter = `blur(${o.blur ?? 5}px)`; gc.drawImage(m, 0, 0); gc.filter = 'none'; gc.drawImage(m, 0, 0);
+  gc.filter = `blur(${(o.blur ?? 5) * k}px)`; gc.drawImage(m, 0, 0); gc.filter = 'none'; gc.drawImage(m, 0, 0);
   // sparkle seats: rim pixels, thinned
   const d = mc.getImageData(0, 0, w, h).data, pts = [], rnd = lcg(o.seed || 3);
-  for (let y = 0; y < h; y += 3) for (let x = 0; x < w; x += 3) if (d[(y * w + x) * 4 + 3] > 120 && rnd() < (o.density ?? .08)) pts.push([x + L.x, y + L.y]);
-  R = { cv: glow, x: L.x, y: L.y, w, h, pts }; PT.layers.set(key, R); return R;
+  const st = Math.max(1, Math.round(3 * k));
+  for (let y = 0; y < h; y += st) for (let x = 0; x < w; x += st) if (d[(y * w + x) * 4 + 3] > 120 && rnd() < (o.density ?? .08)) pts.push([x / k + L.x, y / k + L.y]);
+  R = { cv: glow, x: L.x, y: L.y, w: L.w, h: L.h, pts }; PT.layers.set(key, R); return R;
 }
 
 // A four-point twinkle at (x, y), size r, brightness a (0..1).
