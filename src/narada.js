@@ -25,7 +25,8 @@
 //           Clawd's: heart, swirl, …), lookX / lookY, brow (-1 stern .. 1 raised), mouth ('smile' / 'grin' / 'smug' /
 //           'flat' / 'frown' / 'O' / 'open' / 'scream' / 'sheepish' are his own, else Clawd's), squint, blush, sweat,
 //           seed, tint + tintK; monkey 0..1 (> .5: the monkey face, same eyes and mouths)
-//   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), behind(u, sw) (body space, drawn
+//   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), headBehind(u, sw) (head space, under
+//           the head and over the torso: Panchmukhi Hanuman's other four faces), behind(u, sw) (body space, drawn
 //           first: Hanuman's tail in hanuman.js, Ram's bow), chest(u, sw) (body space, over the torso
 //           and under the mala: a sacred thread), shawl (false: no uttariya), topknot (false: none, for a crown in
 //           hat: Krishna in krishna.js), emote + emoteK + emoteAge, boilKey,
@@ -181,6 +182,7 @@ function narada(x, y, u, o = {}) {
 
     // ---- head
     push(); headT();
+    if (o.headBehind) { rs('headBehind'); o.headBehind(u, sw); }   // head space, under the head: Panchmukhi's other faces
     if (!mk) {
       rs('ears');
       for (const s of [-1, 1]) paint(ellPts(s * 3.15 * u, -20.3 * u, .55 * u, .85 * u, 12, J), { wash: col, fill: dk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7 });

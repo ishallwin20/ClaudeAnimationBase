@@ -62,13 +62,16 @@
 <script src="src/cow.js"></script>   <!-- after bappa.js (U()), clawd.js and bal_krishna.js (bkFeather()) -->
 <script src="src/krishna.js"></script>   <!-- after narada.js and bal_krishna.js: built on them -->
 <script src="src/hanuman.js"></script>   <!-- after narada.js, bal_hanuman.js (BH) and chandraghanta.js (gada()) -->
+<script src="src/panchmukhi.js"></script>   <!-- after hanuman.js, bal_hanuman.js and asuras.js: Panchmukhi Hanuman, Makardhwaja, Ahiravana -->
 <script src="src/ram.js"></script>   <!-- after narada.js, vishnu.js (VSN), bal_krishna.js (BK) and parvati.js -->
 <script src="src/ramayan.js"></script>   <!-- after ram.js, kartikeya.js, chandraghanta.js: the Ramayan series kit -->
 <script src="src/ramayan_sets.js"></script>   <!-- after ramayan.js: the series' shared sets and props -->
 <!-- reference sheets (standalone loops) -->
 <script src="src/sheets.js"></script>
 <!-- your video: add a script per scene file, in order -->
-<script src="src/scenes/demo.js"></script>
+<script src="src/scenes/rk_images.js"></script>
+<script src="src/scenes/panch_props.js"></script>
+<script src="src/scenes/panch.js"></script>
 <script>
   // Open studio.html?loop=emotions (or views) to scrub a standalone loop instead of the video.
   const q = new URLSearchParams(location.search).get('loop'); if (q && LOOPS[q]) window.LOOP = LOOPS[q];
