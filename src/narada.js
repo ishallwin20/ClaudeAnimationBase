@@ -28,7 +28,7 @@
 //   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), headBehind(u, sw) (head space, under
 //           the head and over the torso: Panchmukhi Hanuman's other four faces), behind(u, sw) (body space, drawn
 //           first: Hanuman's tail in hanuman.js, Ram's bow), chest(u, sw) (body space, over the torso
-//           and under the mala: a sacred thread), shawl (false: no uttariya), topknot (false: none, for a crown in
+//           and under the mala: a sacred thread), mala (false: no mala), shawl (false: no uttariya), topknot (false: none, for a crown in
 //           hat: Krishna in krishna.js), emote + emoteK + emoteAge, boilKey,
 //           noShadow, swMul
 //   others: pal (overrides NRD: skin, dhoti, border, shawl, hair, …) + beard (a colour: a full sage's beard and moustache)
@@ -172,9 +172,11 @@ function narada(x, y, u, o = {}) {
     if (o.chest) { rs('chest'); o.chest(u, sw); }
     rs('neck');
     paint(P([[-.85, -18.4], [.85, -18.4], [.9, -16.8], [-.9, -16.8]]), { wash: col, fill: dk, fillOp: 60, tex: .5, ink: INK, sw: sw * .6 });
-    rs('mala');   // a long tulsi-and-rudraksha mala
-    const ML = through(P([[-1.9, -17.1], [-1.5, -15.4], [-.7, -14.1], [0, -13.8], [.7, -14.1], [1.5, -15.4], [1.9, -17.1]]));
-    ML.forEach((p, i) => { if (i % 2 === 0) paint(ellPts(p[0], p[1], .22 * u, .22 * u, 8), { wash: i % 4 ? NRD.tulsi : NRD.bead, ink: INK, sw: sw * .3 }); });
+    if (o.mala !== false) {
+      rs('mala');   // a long tulsi-and-rudraksha mala
+      const ML = through(P([[-1.9, -17.1], [-1.5, -15.4], [-.7, -14.1], [0, -13.8], [.7, -14.1], [1.5, -15.4], [1.9, -17.1]]));
+      ML.forEach((p, i) => { if (i % 2 === 0) paint(ellPts(p[0], p[1], .22 * u, .22 * u, 8), { wash: i % 4 ? NRD.tulsi : NRD.bead, ink: INK, sw: sw * .3 }); });
+    }
     pop();
 
     // ---- the veena, between the body and the head (its neck passes behind the head)
