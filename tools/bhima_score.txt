@@ -1,0 +1,21 @@
+A SHORT, GENTLE score cue for an 80-second children's cartoon reel: tempo 90 BPM in 4/4, exactly 30 bars, 80 seconds, then silence.
+Do not extend it, do not repeat sections, no intro beyond what is written, end at 1:20.
+Warm, playful Indian storybook music, soft and mild, never loud or busy: it sits UNDER sound effects and on-screen text.
+Instruments: bansuri flute, santoor, sitar plucks, soft tabla and dholak, pizzicato strings, warm string pads, harp, a light wordless choir only at the peak.
+The story: the strong prince Bhima meets a lazy old monkey lying across his path; he cannot lift its tail; the monkey is Hanuman, his elder brother; Hanuman grows as tall as a mountain, then hugs him.
+
+0:00-0:03  A playful plucked santoor motif, curious and light, starting on the very first beat.
+0:03-0:07  Magic: harp glissando, shimmering bells, a soft bansuri phrase (a golden lotus floating on the wind).
+0:07-0:12  Bouncy comic march: dholak and pizzicato strings, a strong man stomping through the forest, cheeky.
+0:12-0:15  Tiptoe pizzicato that slows down, sleepy, a little yawn-like bansuri slide down.
+0:15-0:39  Light comic underscore for a conversation: sparse sitar plucks and soft tabla, playful and quiet, small pauses, gently cheeky. Very low energy.
+0:39-0:45  Comic tension: string tremolo rising in pitch, a tabla roll that builds, then it stops dead at 0:44.8.
+0:45-0:48  Hush: a single soft sustained string note.
+0:48-0:51  Reveal: a warm major-key swell, harp and soft choir pad, wonder.
+0:51-0:59  Tender and emotional: warm strings with a sweet bansuri melody, brothers reunited.
+0:59-1:05  Grand: a slow rising crescendo, deep drums, the choir rising, majestic and awe-filled, peaking at 1:03, then easing.
+1:05-1:08  Heartfelt: a gentle bansuri melody over strings, a hug.
+1:08-1:12  Proud and heroic but soft: a noble shehnai phrase over dholak, a flag in the wind.
+1:12-1:20  Warm closing: santoor and bansuri reprise the opening motif, a soft final chord, fading out completely by 1:20.
+
+Total length: 80 seconds, 30 bars at 90 BPM. End at 1:20.
