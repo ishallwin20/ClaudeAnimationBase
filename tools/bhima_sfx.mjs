@@ -140,9 +140,9 @@ T.at(C0 + .3, shimmer(3, [84, 88, 91, 96].map(note), .6, .3), .08, 0);
 
 T.write('assets/bhima_sfx.wav');
 
-// ---- the mix: the score mild and low under the SFX, a fixed loudness for Instagram
+// ---- the mix: the score mild and low under the SFX (owner: SFX must stand out, so the score sits at 0.16), a fixed loudness for Instagram
 const score = (process.argv.find(a => a.startsWith('--score=')) || '--score=assets/bhima_score_a.mp3').split('=')[1];
 execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', 'assets/bhima_sfx.wav', '-i', score, '-filter_complex',
-  `[1:a]atrim=0:${TL.end},afade=t=out:st=${TL.end - 2.5}:d=2.5,volume=0.32[m];[0:a][m]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-16:TP=-1.5:LRA=11[o]`,
+  `[1:a]atrim=0:${TL.end},afade=t=out:st=${TL.end - 2.5}:d=2.5,volume=0.16[m];[0:a][m]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-16:TP=-1.5:LRA=11[o]`,
   '-map', '[o]', '-ar', '48000', '-ac', '2', 'assets/bhima_mix.wav']);
 console.log('wrote assets/bhima_mix.wav (score: ' + score + ')');

@@ -277,8 +277,9 @@ function hugShot(c, t, u, z, faces) {
   cam(c, 520, 1150, z + u * .015, 540, 1130);
   stage(c, t, { tail: false, blur: 1.5 });
   glow(c, 520, 1000, 600, '#FFE9B0', .35);
-  person(c, 'bb', 390, 1490, 1, 'hugB', faces[0], { tilt: .14 });
-  person(c, 'hb', 650, 1490, 1.02, 'hugH', faces[1], { tilt: -.18 });
+  // side by side, leaning in, heads together
+  person(c, 'bb', 420, 1490, 1, 'side', faces[0], { tilt: .16 });
+  person(c, 'hb', 610, 1490, 1.02, 'side', faces[1], { tilt: -.2 });
   for (let i = 0; i < 12; i++) { const ph = frac(t * .6 + hash(i)); twinkle(c, 300 + hash(i + 2) * 460, 820 + hash(i + 4) * 500, 9 + hash(i) * 9, Math.pow(Math.sin(ph * Math.PI), 6)); }
   air(c, t, .8);
 }

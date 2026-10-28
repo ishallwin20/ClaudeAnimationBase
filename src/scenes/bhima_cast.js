@@ -343,10 +343,15 @@ function bhimaBody(P, LK = BH_LOOK) {
     for (const p of [bw[0], bw[6]]) ellipse(c, p[0], p[1], 9, 9, GOLD.dk);
     }
     // the back arm
+    // (P.across: it reaches across his front, so after the torso it is drawn again over the chest from mid upper arm on)
     const [bs, be, bwr] = P.arms.back.map(rot);
-    ptForm(c, [bs, be], [84, 70], skin, .3, -1, .45); ptForm(c, [be, bwr], [70, 58], skin, .3, -1, .45);
-    limb(c, [lerp2(be, bwr, .82), lerp2(be, bwr, .92)], [62, 62], GOLD.dk);
-    bhHand(c, P.hands.back, bwr, Math.atan2(bwr[1] - be[1], bwr[0] - be[0]), { dk: mixCol(S.dk, '#000000', .12), base: mixCol(S.base, S.dk, .2), lt: mixCol(S.lt, S.base, .3) });
+    const backArm = (from, lit) => {
+      const sk = lit ? skin : { dk: mixCol(S.dk, '#000000', .1), base: mixCol(S.base, S.dk, .15), lt: mixCol(S.lt, S.base, .25) };
+      ptForm(c, [from, be], [84, 70], sk, .3, -1, .45); ptForm(c, [be, bwr], [70, 58], sk, .3, -1, .45);
+      limb(c, [lerp2(be, bwr, .82), lerp2(be, bwr, .92)], [62, 62], lit ? GOLD.base : GOLD.dk);
+      bhHand(c, P.hands.back, bwr, Math.atan2(bwr[1] - be[1], bwr[0] - be[0]), lit ? S : { dk: mixCol(S.dk, '#000000', .12), base: mixCol(S.base, S.dk, .2), lt: mixCol(S.lt, S.base, .3) });
+    };
+    backArm(bs, false);
     // legs: thighs under the dhoti, shins and feet below it
     for (const [h, k, f] of [[hl, kl, fl], [hr, kr, fr]].map(l => l.map(p => p))) {
       ptForm(c, [k, f], [66, 52], skin, .25, -1, .45);
@@ -380,6 +385,7 @@ function bhimaBody(P, LK = BH_LOOK) {
     limb(c, [rot([10, -405]), nk], [80, 70], S.dk); limb(c, [rot([12, -405]), [nk[0] + 2, nk[1]]], [66, 56], S.base);
     c.strokeStyle = GOLD.base; c.lineWidth = 7; c.beginPath(); const nc = rot([16, -414]); c.ellipse(nc[0], nc[1], 56, 30, a, .2, Math.PI - .2); c.stroke();
     ellipse(c, nc[0] + 2, nc[1] + 32, 9, 11, '#B81E24');
+    if (P.across) backArm(lerp2(bs, be, .4), true);
     // the front arm
     const [fs, fe, fw] = P.arms.front.map(rot);
     ellipse(c, fs[0], fs[1], 54, 50, S.dk); ellipse(c, fs[0] - 2, fs[1] - 4, 48, 44, S.base); ellipse(c, fs[0] - 8, fs[1] - 18, 24, 16, 'rgba(255,220,160,.6)');
@@ -463,6 +469,7 @@ const BH_BHEAD_BOX = [-90, -135, 190, 225];
 
 // more poses: the hug (Bhima's front arm goes round Hanuman's back; Hanuman, flipped, puts his front arm across
 // Bhima's shoulders), Hanuman standing with his hands on his hips
+BH_POSE.bow.across = true; BH_POSE.grip2.across = true;
 BH_POSE.hugB = { legs: BH_POSE.stand.legs, arms: { back: [[-118, -395], [-182, -322], [-100, -250]], front: [[118, -392], [190, -330], [240, -300]] }, hands: { back: 'hip', front: 'none' } };
 BH_POSE.hugH = { legs: BH_POSE.stand.legs, arms: { back: [[-118, -395], [-182, -322], [-100, -250]], front: [[118, -392], [250, -420], [372, -380]] }, hands: { back: 'hip', front: 'open' } };
 
@@ -557,3 +564,5 @@ const BH_BANNER_BOX = [540, 540, 480, 430];
 // ---------- a banana plant on its own (base at 0,0), to knock over ----------
 const bhFallPlant = seed => c => bhBanana(c, 0, 0, 560, lcg(seed), { depth: .3, leaves: 8, lean: 0, cols: ['#8DB848', '#4E7A28', '#C8E070', '#E8F4A0', '#1E3416'] });
 const BH_FALL_BOX = [-420, -1000, 840, 1020];
+// side by side, arm in arm: the inner (front) arm goes behind the other brother, so only its shoulder shows
+BH_POSE.side = { legs: BH_POSE.stand.legs, arms: { back: [[-118, -395], [-182, -322], [-100, -250]], front: [[112, -396], [126, -350], [122, -330]] }, hands: { back: 'hip', front: 'none' } };
