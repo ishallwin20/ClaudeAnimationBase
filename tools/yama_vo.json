@@ -1,0 +1,101 @@
+{
+  "name": "yama",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Diwali is *FIVE* days. | The god of *DEATH* | gets *THREE.*"
+      ],
+      "tts": "Diwali is five days. The god of death, gets three.",
+      "hold": 0.5
+    },
+    {
+      "id": "d1",
+      "gap": 0.7,
+      "caps": [
+        "Day *ONE,* Dhanteras: | one lamp goes *OUTSIDE* | the door, for *YAMA.*"
+      ],
+      "tts": "Day one, Dhanteras: one lamp goes outside the door, for Yama."
+    },
+    {
+      "id": "south",
+      "gap": 0.5,
+      "caps": [
+        "Families turn it | to face *SOUTH,*",
+        "*Yama's* direction, | and *untimely death* | stays away."
+      ],
+      "tts": "Families turn it to face south, Yama's direction, and untimely death stays away.",
+      "hold": 1.4
+    },
+    {
+      "id": "d2",
+      "gap": 1.6,
+      "caps": [
+        "Day *TWO,* morning: | a holy bath, | then water for Yama,",
+        "by his | *14 NAMES.*"
+      ],
+      "tts": "Day two, morning: a holy bath, then water for Yama, by his fourteen names.",
+      "hold": 3.2
+    },
+    {
+      "id": "d34",
+      "gap": 3.4,
+      "caps": [
+        "Day *THREE,* | the new moon, | is *LAKSHMI'S* night.",
+        "Day *FOUR,* | *GOVARDHAN.*"
+      ],
+      "tts": "Day three, the new moon, is Lakshmi's night. Day four, Govardhan.",
+      "hold": 0.6
+    },
+    {
+      "id": "twist",
+      "gap": 1.2,
+      "caps": [
+        "And day *FIVE?* | The god of death goes | to his *SISTER'S* house."
+      ],
+      "tts": "And day five? The god of death goes to his sister's house.",
+      "hold": 0.4
+    },
+    {
+      "id": "story",
+      "gap": 0.5,
+      "caps": [
+        "Long ago, on this day, | *YAMUNA* fed her brother | in her own home."
+      ],
+      "tts": "Long ago, on this day, Yamuna fed her brother, in her own home."
+    },
+    {
+      "id": "rule",
+      "gap": 0.5,
+      "caps": [
+        "So on Bhai Dooj, | brothers eat from | their *SISTER'S* hand."
+      ],
+      "tts": "So on Bhai Dooj, brothers eat from their sister's hand."
+    },
+    {
+      "id": "close",
+      "gap": 0.8,
+      "caps": [
+        "Two days, | we keep *DEATH* away.",
+        "On the third, | even Death goes *HOME* | to his sister."
+      ],
+      "tts": "Two days, we keep death away. On the third, even death goes home, to his sister.",
+      "hold": 0.6
+    },
+    {
+      "id": "ask",
+      "gap": 0.8,
+      "caps": [
+        "Does *YOUR* family light | the *YAMA DIYA?* | Comment *YES* or *NO!*"
+      ],
+      "tts": "Does your family light the Yama diya? Comment, yes or no!",
+      "hold": 1.0
+    }
+  ]
+}
