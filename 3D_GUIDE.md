@@ -1,5 +1,12 @@
 # The 3D style
 
+> **Before the next 3D reel (owner, 28 Oct 2026):** remind the owner of the planned engine upgrade and ask whether to do
+> it first. Ad 58 (Diwali/Yama) "wasn't mindblowing"; the look was the main problem: flat canvas textures on boxes,
+> no environment light, too dark, a 2D figure in a 3D world. The plan: HDRI lighting (Poly Haven, CC0), real PBR
+> textures and models (Poly Haven, ambientCG, CC0), depth of field, light shafts and a colour grade, proved by
+> re-shooting two ad 58 frames (the diya at the door, the lit lane) as a before/after. Until then, design 3D reels for
+> a striking frame: bright readable light, one hero subject, fewer and longer shots, places and objects over characters.
+
 A lit 3D world rendered with three.js, under the Cinematic style's 2D layer: the camera moves through a real set
 (dollies, orbits, a walker's point of view, straight-down maps), lamps light the stone, the sun casts shadows that
 swing round, water runs; captions, bloom, vignette, grain and the RK card are cine.js's, as in the Cinematic style.
