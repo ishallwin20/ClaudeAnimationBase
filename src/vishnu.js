@@ -52,7 +52,8 @@ function vishnu(x, y, u, o = {}) {
   paint(P([[-2.7, .25], [-3, -.7], [-1.6, -1.25], [0, -1.05], [1.6, -1.25], [3, -.7], [2.7, .25]]), { wash: VSN.silk, fill: VSN.silkDk, fillOp: 50, ink: INK, sw: sw * .7, curv: .4 });
   inkLine(P([[-2.6, .05], [0, .2], [2.6, .05]]), sw * 1.1, VSN.goldDk, 'ink', .4);
   paint(P([[-1.75, -3.4], [1.75, -3.4], [2.05, -1.9], [1.85, -.6], [-1.85, -.6], [-2.05, -1.9]]), { wash: col, fill: dk, fillOp: 35, ink: INK, sw: sw * .8, curv: .4 });
-  inkLine(P([[-1.4, -3.3], [-.2, -1.9], [1.2, -.8]]), sw * .45, VSN.white, 'inkfine', .4);   // the sacred thread
+  const tf = o.flip ? -1 : 1;
+  inkLine(P([[1.4 * tf, -3.3], [.2 * tf, -1.9], [-1.2 * tf, -.8]]), sw * .45, VSN.white, 'inkfine', .4);   // the sacred thread, over his left shoulder (screen right, flipped or not)
   paint(P(ribbon([[-1.6, -3.35], [0, -2.65], [1.6, -3.35]], .55, .55)), { wash: VSN.gold, ink: INK, sw: sw * .5 });   // gold collar
   paint(ellPts(0, -2.55 * u, .22 * u, .25 * u, 8), { wash: VSN.jewel, ink: INK, sw: sw * .35 });   // the Kaustubha
   rs('mala');   // the vanamala, knee-long, of leaves with red and orange flowers

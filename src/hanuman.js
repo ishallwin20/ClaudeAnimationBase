@@ -79,17 +79,18 @@ function hanumanMukut(u, sw, o, C) {
   pop();
 }
 // the munja thread across his chest and a gold mala, in body space (narada()'s torso: chest -16.9..-12)
-function hanumanChest(u, sw, C) {
-  const P = pts => U(pts, u);
-  inkLine(P([[-2.7, -16.8], [-1.2, -15.2], [.6, -13.6], [2.4, -12.3]]), sw * 1.6, C.thread, 'ink', .4);
-  inkLine(P([[-2.55, -16.55], [-1.05, -15], [.75, -13.4], [2.3, -12.1]]), sw * .35, C.shawlDk, 'inkfine', .4);
+// (over his left shoulder: from the screen-right shoulder, flipped or not)
+function hanumanChest(u, sw, C, flip) {
+  const fx = flip ? -1 : 1, P = pts => U(pts.map(([a, b]) => [a * fx, b]), u);
+  inkLine(P([[2.7, -16.8], [1.2, -15.2], [-.6, -13.6], [-2.4, -12.3]]), sw * 1.6, C.thread, 'ink', .4);
+  inkLine(P([[2.55, -16.55], [1.05, -15], [-.75, -13.4], [-2.3, -12.1]]), sw * .35, C.shawlDk, 'inkfine', .4);
 }
 
 function hanuman(x, y, u, o = {}) {
   const C0 = { ...HNM, ...(o.pal || {}) }, k = clamp(o.sindoor || 0), kt = clamp(o.sindoorTail ?? k), C = _hnmCols(C0, k), CT = _hnmCols(C0, kt);
   const q = { veena: false, topknot: false, shawl: false, ...o, monkey: 1, pal: C, col: C.skin, dk: C.skinDk, lt: C.skinLt };   // his own fur always (emotions() hands over Clawd's)
   q.hat = (uu, sw) => { hanumanMukut(uu, sw, o, C); if (o.hat) o.hat(uu, sw); };
-  q.chest = (uu, sw) => { hanumanChest(uu, sw, C); if (o.chest) o.chest(uu, sw); };
+  q.chest = (uu, sw) => { hanumanChest(uu, sw, C, o.flip); if (o.chest) o.chest(uu, sw); };
   q.behind = (uu, sw) => { if (o.tail !== false) hanumanTailDraw(uu, sw, o, CT); if (o.behind) o.behind(uu, sw); };
   const g = clamp(o.gada || 0);
   if (g > 0) {

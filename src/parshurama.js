@@ -5,6 +5,8 @@
 // yajnopavita (sacred thread) across his bare chest, a rudraksha mala and armbands, a deep-saffron dhoti with a maroon
 // border, a krishnajina (blackbuck skin) tied round his hips, a quiver on his back, and THE PARASHU, Shiva's axe, in his
 // right hand. Load after narada.js and chandraghanta.js (dhanush(), baan()).
+// He faces us, so his right hand is on screen LEFT: draw him with flip: 1 to put the axe in his right hand (the
+// iconography) and the bow in his left; unflipped, the hands swap. The sacred thread reads right either way.
 // (x, y) is the ground point under him; u is narada()'s unit (about 29u tall to the top of the jata). Every narada()
 // option works (walk, sit, bow, pray, lean, hx, htilt, handL / handR, eyes, mouth, brow, emote, behind, armL / armR, …)
 // except the veena, the topknot and the uttariya, which he doesn't have.
@@ -114,8 +116,11 @@ function psrChest(u, sw, o, C) {
   for (const s of [-1, 1]) inkLine(P([[s * 2.55, -15.15], [s * 1.5, -14.55], [s * .3, -14.85]]), sw * .55, C.skinDk, 'inkfine', .5);   // the chest
   inkLine(P([[0, -14.55], [0, -13.15]]), sw * .4, C.skinDk, 'inkfine', 0);
   for (const yy of [-13.65, -12.95]) for (const s of [-1, 1]) inkLine(P([[s * .3, yy], [s * .85, yy + .05]]), sw * .35, C.skinDk, 'inkfine', .3);
-  inkLine(P([[-2.8, -16.8], [-1.3, -15.2], [.5, -13.6], [2.5, -12.3]]), sw * 1.15, C.thread, 'ink', .4);   // the sacred thread, left shoulder to right hip
-  inkLine(P([[-2.65, -16.55], [-1.15, -15], [.65, -13.4], [2.4, -12.1]]), sw * .3, C.threadDk, 'inkfine', .4);
+  // the sacred thread, over his left shoulder to his right hip: he faces us, so it falls from the screen-right shoulder
+  // to the screen-left hip, flipped or not (fx undoes narada()'s mirror)
+  const fx = o.flip ? -1 : 1, M = pts => P(pts.map(([a, b]) => [a * fx, b]));
+  inkLine(M([[2.8, -16.8], [1.3, -15.2], [-.5, -13.6], [-2.5, -12.3]]), sw * 1.15, C.thread, 'ink', .4);
+  inkLine(M([[2.65, -16.55], [1.15, -15], [-.65, -13.4], [-2.4, -12.1]]), sw * .3, C.threadDk, 'inkfine', .4);
   if (o.hide === false) return;
   // the blackbuck skin round his hips: dark above, the pale belly fur at its ragged hem, tied at his right hip
   const hide = P([[-3.15, -12.3], [3.15, -12.3], [3.45, -10.6], [3.25, -9.3], [2.7, -9.75], [1.9, -9.2], [1.0, -9.45], [.1, -8.85], [-.9, -9.55], [-1.7, -9.0], [-2.5, -9.6], [-3.25, -9.35], [-3.45, -10.8]]);

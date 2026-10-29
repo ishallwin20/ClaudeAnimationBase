@@ -310,7 +310,8 @@ function ravana(x, y, u, o = {}) {
   paint(tor, { wash: o.young ? col : C.vest, fill: o.young ? dk : C.vestDk, fillOp: 50, bleed: .06, tex: .5, border: .4, ink: INK, sw: sw * .9, curv: .4 });
   if (o.young) {
     paint(P([[-2.6, -12.4], [0, -11.8], [2.6, -12.4], [2.3, -9.4], [0, -9.0], [-2.3, -9.4]]), { wash: lt, ink: null, curv: .5 });
-    inkLine(P([[-2.6, -15.2], [-.8, -12.6], [1.2, -10.4], [3.0, -9.2]]), sw * 1.1, C.thread, 'ink', .5);
+    const fx = o.flip ? -1 : 1;   // the thread over his left shoulder: from the screen-right shoulder, flipped or not
+    inkLine(P([[2.6 * fx, -15.2], [.8 * fx, -12.6], [-1.2 * fx, -10.4], [-3.0 * fx, -9.2]]), sw * 1.1, C.thread, 'ink', .5);
   } else {
     paint(P([[-.75, -15.4], [.75, -15.4], [.6, -9.0], [-.6, -9.0]]), { wash: C.gold, fill: C.goldDk, fillOp: 40, tex: .4, ink: INK, sw: sw * .5 });
     for (const k of [-14.2, -12.6, -11.0]) paint(ellPts(0, k * u, .26 * u, .26 * u, 10), { wash: C.ruby, ink: INK, sw: sw * .4 });

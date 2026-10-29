@@ -145,7 +145,8 @@ function balHanuman(x, y, u, o = {}) {
   paint(ellPts(0, (-5.4 + up) * u, 1.75 * bw * u, 1.85 * bw * u, 20, J), { wash: C.faceLt, fill: C.faceDk, fillOp: 30, tex: .4, ink: null });
   inkLine(B([[-.18, -5.0], [0, -4.85], [.18, -5.0]]), sw * .5, C.faceDk, 'inkfine', .5);   // navel
   rs('thread');
-  inkLine(B([[1.75, -8.1], [.9, -7.2], [-.4, -5.8], [-1.6, -4.6], [-2.35, -4.0]]), sw * 1.1, C.thread, 'ink', .5);
+  const tf = o.flip ? -1 : 1;   // over his left shoulder: from the screen-right shoulder, flipped or not
+  inkLine(B([[1.75 * tf, -8.1], [.9 * tf, -7.2], [-.4 * tf, -5.8], [-1.6 * tf, -4.6], [-2.35 * tf, -4.0]]), sw * 1.1, C.thread, 'ink', .5);
   inkLine(B([[1.75, -8.0], [.9, -7.1], [-.4, -5.7], [-1.6, -4.5], [-2.35, -3.9]]), sw * .3, C.goldDk, 'inkfine', .5);
 
   // ---------------- the langot: a gold waistband, a red wrap and a front flap

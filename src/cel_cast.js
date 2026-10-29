@@ -212,7 +212,7 @@ function celShiva(c, x, y, s, P, o = {}) {
   // the upper body
   c.save(); c.translate(hip[0], hip[1]); c.rotate(lean);
   celShape(c, [[-86, -34], [-94, -120], [-108, -196], [-78, -232], [0, -240], [78, -232], [108, -196], [94, -120], [86, -34], [0, -26]], C.skin, skin);
-  celLine(c, [[-98, -200], [-20, -120], [70, -36]], 7, { col: CEL.ink, under: C.red, taper: 0 });   // the sacred thread
+  celLine(c, [[98, -200], [20, -120], [-70, -36]], 7, { col: CEL.ink, under: C.red, taper: 0 });   // the sacred thread, over his left shoulder (screen right)
   for (let i = 0; i <= 14; i++) { const a = Math.PI * i / 14; celOval(c, 82 * Math.cos(a), -215 + 150 * Math.sin(a), 8, 8, C.bead, { w: 2.2, boil: .3 }); }
   celLine(c, [[-98, -44], [0, -36], [98, -44]], 20, { col: CEL.ink, under: C.red, taper: 0 });   // the waistband
   // Vasuki's coil round the neck (behind the chin)
