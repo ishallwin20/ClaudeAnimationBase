@@ -1,6 +1,6 @@
 # Ad 63: "PARSHURAMA was born a WARRIOR because of a KHEER MIX-UP" (Parshurama series, Part 1)
 
-A ~68 s Painted reel with Bangers captions, no voiceover, retro cartoon SFX and only a mild bed under the story. It
+A 73 s Painted reel with Bangers captions, no voiceover, retro cartoon SFX and only a mild bed under the story. It
 stands on its own (anyone can start the series here) and ends on the Books 1–3 card, ₹500 for the set.
 
 ```
@@ -30,62 +30,78 @@ Arc:     puzzled (frame 0) → smug king → wonder (the horses) → hope (both 
 - **King Gadhi**: `dasharatha()` recoloured (a teal and gold dhoti, a black beard going grey).
 - **The thousand horses**: `suryaHorse()` in white, with a new `earL` / `earR` colour option on the shared rig for the
   one black ear; walking at a canter, not flying.
-- **Varuna**: a hand of water rising from the river with the reins (a light silhouette, no new rig).
+- **Varuna**: the river heaving up in a glowing wave the horses gallop out of (no figure).
 - **Baby Jamadagni**: swaddled in a cradle, a tiny tilak, the gold glow; new prop in the scene's `_props.js`.
 - **Parshurama** (shared `parshurama()`, `flip: 1` so the axe is in his right hand): standing, the axe raised and
   glowing, wind in his locks, the red aura.
 - **Vishvamitra**: `valmiki()` with a dark grey beard and a king's gold armbands kept, in tapas, the gold glow.
 
-## Shots and reads (captions inside y 420–1500, left of x 930; ≥ 2 s each, 3-liners ≥ 3.2 s)
-**A 0–3.6 · the hook.** The two bowls, close, slow push. Caption up from frame 0 to 3.5. 1.2 a hand slides them past each
-other (whoosh, clink); the glows trade places. 2.4 a beat: the red one steams harder. [cut]
+## Time constants (video s; shared by `src/scenes/parshu1.js` and `tools/parshu1_sfx.mjs`)
+```js
+SWAP = 1.2, B0 = 3.6
+WALK0 = 3.7, FOLD = 4.7, SLY = 6.6, C0 = 8.6
+FINGER = 8.8, BUBBLE = 11.2, RICH = 13.4, D0 = 15.6
+LIFT = 15.8, HEAVE = 16.2, HORSE0 = 16.9, GJAW = 19.0, WED = 19.8, E0 = 22.0
+BOWLS = 25.0, VIS = 25.6, LABEL = 27.2, BATHE = 29.6, F0 = 30.6
+EYE = 30.8, WHISPER = 32.2, NOD = 33.0, SWAP2 = 33.5, EAT = 34.6, DOOR = 36.6, G0 = 37.6
+KNOW = 38.0, SCARED = 40.2, H0 = 43.0
+PLEA = 43.2, SIGH = 45.4, PALM = 45.8, DRIFT = 46.4, I0 = 49.2
+YAWN = 50.6, LAPSE = 52.4, J0 = 54.6
+REVEAL = 56.4, K0 = 60.6
+VISH = 62.6, L0 = 65.4
+ASK = 66.0, CARD = 69.0, END = 73.0
+```
 
-**B 3.6–8.6 · the court.** Wide on King Gadhi on his throne, Satyavati beside him; Richika walks in, folds his hands.
-"SAGE RICHIKA ASKED" / "TO MARRY PRINCESS SATYAVATI" (3.8–6.6). 6.6 Gadhi's eyes narrow, a sly smile.
+## Shots and reads (as built; captions inside y 420–1500, left of x 930; ≥ 2 s each, 3-liners ≥ 3.2 s)
+**A 0–3.6 · the hook.** The two bowls on peach, the gold one left, the red right, a slow push. "PARSHURAMA" (gold) /
+"WAS BORN A WARRIOR" / "BECAUSE OF A KHEER MIX-UP!" up from frame 0. 1.2 the bowls hop past each other (whoosh,
+clink); the red one hisses at 2.4. [gold wipe]
 
-**C 8.6–15.2 · the bride price.** Medium on Gadhi, one finger up. "FINE. BRING ME 1,000 WHITE HORSES…" (8.8–11.2),
-"…EACH WITH ONE BLACK EAR." (11.2–13.4) A thought bubble: a white horse, one black ear, ×1000. Reverse on Richika: a
-calm smile. 13.4 "HE THOUGHT NO SAGE COULD DO IT." (13.4–15.2) (Bhagavata 9.15.5–7: Gadhi means to refuse him.)
+**B 3.6–8.6 · the court.** Gadhi on his throne, Satyavati on the right; Richika walks in from the left and joins his
+hands. "SAGE RICHIKA ASKED / TO MARRY PRINCESS SATYAVATI." 6.6 "KING GADHI SMILED…" (smug).
 
-**D 15.2–21.6 · Varuna's horses.** The river bank. Richika lifts his hands; the water heaves; a hand of water rises
-holding reins, and white horses canter out of the river one after another toward camera, each with one black ear, the
-line running to the horizon. Cut to Gadhi, jaw open, crown slipping. "HE GOT THEM FROM VARUNA," / "LORD OF THE WATERS."
-(16.2–19.2) "WEDDING: DONE." (19.4–21.4), flower petals, a conch.
+**C 8.6–15.6 · the bride price.** Closer on Gadhi, his hand up, talking: "FINE. BRING ME / 1,000 WHITE HORSES…" 11.2 a
+thought bubble (a white horse, one black ear, ×1000): "…EACH WITH ONE BLACK EAR!" 13.4 Richika in his ashram, a calm
+smile: "THE KING WAS SURE / HE COULD NEVER DO IT."
 
-**E 21.6–27.8 · two wishes.** The ashram. Satyavati and her mother kneel before Richika. "BOTH MOTHER AND DAUGHTER" /
-"WANTED A SON." (21.8–24.6) Richika at the fire stirs two bowls; over the gold one a calm sage's silhouette rises
-in light, over the red one a warrior's with a sword. "HE MADE TWO BOWLS OF SACRED KHEER:" (24.6–26.4) / labels on the
-bowls "A WISE SAGE" (gold) and "A MIGHTY WARRIOR" (red), held to 27.8. He leaves to bathe (a towel over his shoulder).
+**D 15.6–22.0 · Varuna's horses.** The river: Richika raises his arms; the water heaves up in a glowing wave and white
+horses gallop out of it toward us, each with one black ear, a long line of tiny ones trotting off along the far bank.
+"HE GOT THEM FROM VARUNA, / LORD OF THE WATERS!" 19.0 Gadhi, jaw dropped, "!!". 19.8 the wedding: garlands, petals,
+a conch: "WEDDING: DONE!"
 
-**F 27.8–34.6 · the swap.** Lamplit. The mother eyes the gold bowl. "HER MOTHER THOUGHT:" / "HIS WIFE'S BOWL MUST BE
-BETTER." (28.0–31.0) She whispers to Satyavati; Satyavati hesitates, then nods. Tiptoe SFX, the bowls trade hands
-(the hook's swap, now wide). "SO THEY SWAPPED." (31.2–33.2) Both eat; matched slurps. 33.6 Richika's silhouette in the
-doorway.
+**E 22.0–30.6 · two wishes, two bowls.** The ashram: the queen and Satyavati, hands joined, before Richika (hearts):
+"BOTH MOTHER AND DAUGHTER / WANTED A SON." 25.0 at the yagna fire, the two bowls; a sage in gold light rises over one,
+a warrior with a sword in red over the other: "HE MADE TWO BOWLS / OF SACRED KHEER:" 27.2 "GOLD: A WISE SAGE, FOR HIS
+WIFE." / "RED: A WARRIOR, FOR HER MOTHER." 29.6 he gets up with a towel and goes to bathe. [dusk wipe]
 
-**G 34.6–40.0 · busted.** Close on Richika: he looks at the two empty bowls and knows (a bell of light behind his eyes).
-"WHAT HAVE YOU DONE?" (34.8–36.8). Over Satyavati, scared: "YOUR SON WILL BE A FIERCE WARRIOR." (37.0–40.0)
+**F 30.6–37.6 · the swap.** The ashram kitchen by lamplight, the hearth, a doorway to the dusk. The queen side-eyes the
+gold bowl: "HER MOTHER THOUGHT: / "HIS WIFE'S BOWL MUST BE BETTER!"" She whispers; Satyavati nods; tiptoes, the bowls
+cross: "SO THEY SWAPPED." Both eat (slurps). 36.6 Richika in the doorway; "!" "!".
 
-**H 40.0–46.2 · the plea.** Satyavati at his feet, hands joined, tears. "NOT MY SON, PLEASE!" (40.2–42.4) Richika
-softens, sighs, raises a palm. "THEN… YOUR GRANDSON." (42.6–45.8), the red glow drifting off into the future.
+**G 37.6–43.0 · busted.** Close on Richika over the two empty bowls; a ring of light: "WHAT HAVE YOU DONE?" 40.2
+Satyavati, scared, a red glow pulsing on her: "YOUR SON WILL BE / A FIERCE WARRIOR!"
 
-**I 46.2–51.6 · Jamadagni.** A cradle in the gold glow: a calm baby with a tiny tilak, a yawn. "HER SON, JAMADAGNI," /
-"WAS BORN A CALM SAGE." (46.4–49.4) Time-lapse: the ashram's sun and moon wheel overhead (49.4–51.6).
+**H 43.0–49.2 · the plea.** Satyavati, hands joined, tears: "NOT MY SON, PLEASE!" Richika sighs, softens, raises his
+palm: "THEN… / YOUR GRANDSON." The red light leaves her and drifts off into the future.
 
-**J 51.6–57.6 · Parshurama.** Sunset ridge, low angle, wind. Parshurama in silhouette, then lit: the axe raised and
-glowing, the red aura. Silence, then the impact hit on the reveal. "HIS GRANDSON:" (51.8–53.4) "PARSHURAMA." (53.4–57.4,
-big gold) "A BRAHMIN WITH A WARRIOR'S FIRE." under it from 55.0.
+**I 49.2–54.6 · Jamadagni.** A cradle in gold light, the baby yawns and opens his eyes: "HER SON, JAMADAGNI, / WAS BORN
+A CALM SAGE." 52.4 a sky time-lapse: "YEARS LATER…" [ember wipe]
 
-**K 57.6–62.4 · the twist.** The queen's side: a gold glow, a cradle again, then a king who gave up his crown for tapas.
-"AND THE QUEEN'S SON?" (57.8–59.6) "VISHVAMITRA:" / "A KING WHO BECAME A SAGE." (59.6–62.4)
+**J 54.6–60.6 · Parshurama.** A sunset ridge, wind: a dark silhouette with an axe, "AND HIS SON…"; the swell cuts to
+silence; 56.4 the hit: he's lit, the axe raised and glowing in his right hand (flip: 1), the red aura, a shock ring:
+"PARSHURAMA" / "A BRAHMIN WITH A WARRIOR'S FIRE."
 
-**L 62.4–66.0 · the ask.** The two bowls again, Parshurama and Vishvamitra small behind them, side by side. "ONE BOWL
-SWAPPED. TWO LEGENDS." (62.4–64.2) "COMMENT JAI PARSHURAM" (gold, 63.0–66.0).
+**K 60.6–65.4 · the twist.** A cradle in gold light on the same ridge, cooler: "AND THE QUEEN'S SON?" 62.6 poof: a sage
+in tapas, his crown set down beside him: "VISHVAMITRA: / THE KING WHO BECAME A SAGE."
 
-**M 66.0–70.0 · the card.** The Books 1–3 card (ad 60's): real covers, the RK logo, "Set of 3 for ₹500", the
-rishikatha.com pill, "Follow @therishikatha". No fade.
+**L 65.4–69.0 · the ask.** Peach: Parshurama with the red bowl, Vishvamitra with the gold: "ONE BOWL SWAPPED. / TWO
+LEGENDS." 66.0 "COMMENT "JAI PARSHURAM"".
+
+**M 69.0–73.0 · the card.** The Books 1–3 card (ad 60's): covers, the RK logo, "Set of 3 for ₹500", rishikatha.com,
+"Follow @therishikatha". No fade.
 
 ## Sound
-Retro cartoon SFX (tools/parshu1_sfx.mjs → assets/parshu1_sfx.wav): the swap whoosh + clink, a court fanfare sting,
+Retro cartoon SFX (tools/parshu1_sfx.mjs → assets/parshu1_sfx.wav; assets/parshu1_mix.wav is it at -14.5 LUFS, two-pass loudnorm): the swap whoosh + clink, a court fanfare sting,
 Gadhi's sly "hmm" (a low bassoon blip), the river heave, hoof gallops building, a conch at the wedding, the fire
 crackle and bubbling kheer, tiptoe pizzicato, slurps, a bell for "he knows", a soft harp for the plea and the cradle,
 the time-lapse whoosh, wind on the ridge, a deep taiko hit at PARSHURAMA after a beat of silence, a temple bell on
