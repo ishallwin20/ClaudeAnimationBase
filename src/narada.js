@@ -30,7 +30,8 @@
 //           first: Hanuman's tail in hanuman.js, Ram's bow), chest(u, sw) (body space, over the torso
 //           and under the mala: a sacred thread), mala (false: no mala), shawl (false: no uttariya), topknot (false: none, for a crown in
 //           hat: Krishna in krishna.js), emote + emoteK + emoteAge, boilKey,
-//           noShadow, swMul
+//           noShadow, swMul, tilak (false: none), face(u, sw, J, INK, hx, o) (head space: drawn instead of his head and
+//           face, eyes and mouth included: Jambavan's bear face in jambavan.js; naradaEyes / naradaMouth_ help)
 //   others: pal (overrides NRD: skin, dhoti, border, shawl, hair, …) + beard (a colour: a full sage's beard and moustache)
 //           draw other rishis on his rig (Kashyapa, Agastya in the Surya book; NRD_SAGE is a white-haired elder)
 // Helpers: naradaHand(x, y, u, o, s), naradaHead(x, y, u, o), naradaEye(x, y, u, o, s), naradaMouth(x, y, u, o),
@@ -185,7 +186,8 @@ function narada(x, y, u, o = {}) {
     // ---- head
     push(); headT();
     if (o.headBehind) { rs('headBehind'); o.headBehind(u, sw); }   // head space, under the head: Panchmukhi's other faces
-    if (!mk) {
+    if (o.face) { rs('face'); o.face(u, sw, J, INK, hx, o); }   // another face entirely (Jambavan's bear face)
+    else if (!mk) {
       rs('ears');
       for (const s of [-1, 1]) paint(ellPts(s * 3.15 * u, -20.3 * u, .55 * u, .85 * u, 12, J), { wash: col, fill: dk, fillOp: 60, tex: .5, ink: INK, sw: sw * .7 });
       rs('head');
@@ -216,10 +218,12 @@ function narada(x, y, u, o = {}) {
     push(); translate(hx * .8 * u, 0);
     rs('tilak');   // the urdhva pundra: a white U with a red line up its middle
     const ty = mk ? -22.6 : -21.75;
+    if (o.tilak !== false) {
     inkLine(P([[-.36, ty - .95], [-.3, ty - .2], [0, ty - .02], [.3, ty - .2], [.36, ty - .95]]), sw * .7, NRD.tilak, 'ink', .5);
     inkLine(P([[-.36, ty - .95], [-.3, ty - .2], [0, ty - .02], [.3, ty - .2], [.36, ty - .95]]).map(([a, b]) => [a * 1.18, b + .03 * u]), sw * .3, NRD.skinDk, 'inkfine', .5);
     inkLine(P([[0, ty - 1], [0, ty - .25]]), sw * .7, NRD.red, 'ink', 0);
-    if (!mk) {
+    }
+    if (!mk && !o.face) {
       if (o.blush) for (const s of [-1, 1]) paint(ellPts(s * 2 * u, -19.2 * u, .7 * u, .36 * u, 14), { fill: PAL.rose, fillOp: 150 * clamp(o.blush), bleed: .2, tex: .4, ink: null });
       naradaEyes(u, o, sw, col, [-1.2, -20.5], .62, .48, NRD.hair);
       rs('nose');
