@@ -1,11 +1,9 @@
 # The 3D style
 
-> **Before the next 3D reel (owner, 28 Oct 2026):** remind the owner of the planned engine upgrade and ask whether to do
-> it first. Ad 58 (Diwali/Yama) "wasn't mindblowing"; the look was the main problem: flat canvas textures on boxes,
-> no environment light, too dark, a 2D figure in a 3D world. The plan: HDRI lighting (Poly Haven, CC0), real PBR
-> textures and models (Poly Haven, ambientCG, CC0), depth of field, light shafts and a colour grade, proved by
-> re-shooting two ad 58 frames (the diya at the door, the lit lane) as a before/after. Until then, design 3D reels for
-> a striking frame: bright readable light, one hero subject, fewer and longer shots, places and objects over characters.
+> **The film look (29 Oct 2026):** the engine upgrade planned after ad 58 is on main: `src/cine3d_fx.js` (HDRI light,
+> scanned materials, depth of field, HDR bloom, light shafts, a colour grade, sunbeams, motes, caustics). Use it on
+> every new 3D reel (see "The film look" below); ad 61 (Shaligram) is its first reel. Still design for a striking frame:
+> bright readable light, one hero subject, fewer and longer shots, places and objects over characters.
 
 A lit 3D world rendered with three.js, under the Cinematic style's 2D layer: the camera moves through a real set
 (dollies, orbits, a walker's point of view, straight-down maps), lamps light the stone, the sun casts shadows that
@@ -26,7 +24,29 @@ section all work the same way here.
 | `src/cine3d_india.js` | India as a relief map (1 unit = 10 km, centred on 80° E 22° N; `MAP3.xz(lon, lat)`): real heights and sea floor (`src/data/india_dem.js`), India's outline as the Survey of India draws it (`src/data/india_geo.js`, Natural Earth's India view), tinted like a satellite picture; `india3()` → `.at(lon, lat)`, `.mood(name, { focus, edge, … })` (space, day, golden, dusk, night; `focus` dims the land outside India), `.border` / `.lanka` glowing outlines. Shared helpers: `dem3(name)`, `line3(parent, pts)` (a map line of constant width, `.set(on, w, a)`), `pillar3(parent, pos, o)` (a beam of light, `.set(t, on)`), `pin3(c, txt, p, t, at, o)`. Load after `cine3d_kailash.js`, `src/vendor/pako_inflate.min.js` and the data files. First used on `ad/43-books123-jyotirlinga` |
 | `src/cine3d_setu.js` | the Palk Strait (1 unit = 100 m): Rameswaram, the Dhanushkodi spit, Mannar (`src/data/palk_dem.js`), the shoals laid in between, clear water coloured by depth, impact waves, a Milky Way night; the Ramayana's bridge growing along the shoals with flying rocks and splashes, the army's torches, fire arrows, the Ocean god's light. `setu3()`; first used on `ad/42-books123-ram-setu` |
 | `tools/terrain.mjs`, `tools/geo.mjs` | make the data files: real heights from open terrain tiles (registry.opendata.aws/terrain-tiles: SRTM, GEBCO, ETOPO) for any lon/lat box, and country outlines from Natural Earth (public domain). A page with both India and the strait builds for ~9 s: render with `--workers=1` (two pages building at once pass the 30 s load limit) |
+| `src/cine3d_fx.js`, `tools/hdri.mjs`, `tools/pbr.mjs`, `src/data/hdri_*.js`, `src/data/pbr_*.js`, `cine3d_fx.html` | the film look (below): HDRI light, scanned materials, the post chain (DOF, bloom, shafts, grade), sunbeams, motes, caustics |
 | `cine3d.html`, `src/scenes/cine3d_sheet.js` | the studio page on main: the shrine in its three moods ([docs/cine3d_set.jpg](docs/cine3d_set.jpg)) |
+
+## The film look (src/cine3d_fx.js)
+Load after `cine3d.js`, with `src/vendor/pako_inflate.min.js` and the data files a reel uses
+([docs/cine3d_fx.jpg](docs/cine3d_fx.jpg): before, after, a product shot, the sea; `cine3d_fx.html` on main).
+- **Light from a real sky.** `env3(scene, name, { k, rot, bg, bgK })` lights a scene with an HDRI packed by
+  `node tools/hdri.mjs --id=<polyhaven id> --name=<name> [--bg=4096]` into `src/data/hdri_<name>.js` (on main: `studio`,
+  `day`, `dawn` (both with a sharp sky to show behind), `lamplit`). `studioEnv3({ boxes, room, floor })` is a photo studio
+  of softboxes built in code, for products. **Metal, gloss and water need one of these**: with nothing to reflect they
+  go dull brown (the old `metal3` look).
+- **Scanned materials.** `pbr3(name, { rep, tint, normalK, rough, metal, ao })` from `node tools/pbr.mjs --id=<ambientCG id>
+  --name=<name>` → `src/data/pbr_<name>.js` (on main: `pebbles`, `sand`, `cliff`, `mountain`, `darkwood`, `redwool`).
+- **The lens.** `render3(c, scene, cam, { exposure, fx })` with `fx`: `dof: { focus (m), aperture (px of blur far away),
+  max, nearK }`, `bloom: { k, thresh, knee, radius }` (HDR, before tone mapping: set `LOOK.bloom` low or 0 so cine.js
+  doesn't bloom twice), `rays: { at: [x, y, z] | screen: [u, v], k, thresh, decay, len, col, minZ }` (light shafts from
+  the bright, far parts of the frame), `ca` (chromatic fringe, ~.002), `tone: 'neutral'` (Khronos neutral instead of ACES,
+  truer product colours), `grade: { contrast, sat, temp, tint, lift, gamma, gain, shadows, highlights, split }`.
+  Without `fx` a reel renders as before.
+- **In the world.** `shafts3()` sunbeams (through water, a window), `motes3()` dust or plankton (they write depth, so the
+  lens turns near and far ones into bokeh), `caustics3()` light dancing on a sea floor, `blob3()` a soft contact shadow.
+- **Cost:** 70–300 ms a frame on the M4 (the DOF gather and the shafts are the dear parts), so a 60 s reel renders in
+  2–5 minutes.
 
 ## Start a reel in this style
 1. Branch off `main` as usual. `cp cine3d.html studio.html`; swap the inline `PROJECT` for `<script src="src/config.js">`
