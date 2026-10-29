@@ -109,7 +109,7 @@ const FX3 = (() => {
     float ign(vec2 p) { return fract(52.9829189 * fract(dot(p, vec2(.06711056, .00583715)))); }
     void main() {
       float zc = linZ(texture2D(tDep, vUv).r), cc = coc(zc);
-      vec3 acc = texture2D(tCol, vUv).rgb; float ws = 1.;
+      vec3 acc = texture2D(tCol, vUv).rgb; if (!(dot(acc, vec3(1.)) < 6e4)) acc = vec3(0.); float ws = 1.;
       float rot = ign(gl_FragCoord.xy) * 6.2832;
       for (int i = 0; i < 72; i++) {
         float r = sqrt((float(i) + .5) / 72.) * maxC, a = float(i) * 2.39996 + rot;
@@ -117,7 +117,7 @@ const FX3 = (() => {
         float zs = linZ(texture2D(tDep, uv).r), cs = coc(zs);
         cs = zs > zc ? min(cs, cc) : cs;
         float w = clamp((cs - r + 1.) / 1.5, 0., 1.);
-        vec3 s = texture2D(tCol, uv).rgb;
+        vec3 s = texture2D(tCol, uv).rgb; if (!(dot(s, vec3(1.)) < 6e4)) s = vec3(0.);
         w *= 1. + .25 * min(dot(s, vec3(.3, .59, .11)), 6.);    // bright points bloom into bokeh discs
         acc += s * w; ws += w;
       }
@@ -125,7 +125,7 @@ const FX3 = (() => {
     }`, { tCol: { value: null }, tDep: { value: null }, res: { value: new THREE.Vector2(W, H) }, focus: { value: 5 }, aperture: { value: 0 }, maxC: { value: 20 }, nearK: { value: 1 }, near: { value: .1 }, far: { value: 100 } });
   // bloom: a soft-knee threshold, then a 13-tap downsample chain and a tent upsample (the Call of Duty method)
   const preM = mat(`uniform sampler2D tSrc; uniform float thresh, knee; varying vec2 vUv;
-    void main() { vec3 c = texture2D(tSrc, vUv).rgb; float b = max(c.r, max(c.g, c.b)), s = clamp(b - thresh + knee, 0., 2. * knee); s = s * s / (4. * knee + 1e-4);
+    void main() { vec3 c = texture2D(tSrc, vUv).rgb; if (!(dot(c, vec3(1.)) < 6e4)) c = vec3(0.); c = min(c, vec3(256.)); float b = max(c.r, max(c.g, c.b)), s = clamp(b - thresh + knee, 0., 2. * knee); s = s * s / (4. * knee + 1e-4);
       gl_FragColor = vec4(c * max(s, b - thresh) / max(b, 1e-4), 1.); }`, { tSrc: { value: null }, thresh: { value: 1 }, knee: { value: .5 } });
   const downM = mat(`uniform sampler2D tSrc; uniform vec2 px; varying vec2 vUv;
     vec3 s(vec2 o) { return texture2D(tSrc, vUv + o * px).rgb; }
@@ -296,7 +296,7 @@ function caustics3(parent, w, d, pos, o = {}) {
         vec2 p = mod(uv * 6.2832, 6.2832) - 250., i = p; float c = 1., inten = .005;
         for (int n = 0; n < 5; n++) { float q = tt * (1. - 3.5 / float(n + 1)); i = p + vec2(cos(q - i.x) + sin(q + i.y), sin(q - i.y) + cos(q + i.x));
           c += 1. / length(vec2(p.x / (sin(i.x + q) / inten), p.y / (cos(i.y + q) / inten))); }
-        c /= 5.; c = 1.17 - pow(c, 1.4); return pow(abs(c), 8.); }
+        c /= 5.; c = 1.17 - pow(min(c, 4.), 1.4); return min(pow(abs(c), 8.), 4.); }
       void main() { vec2 p = vW.xz * sc;
         float c = caus(p * .5, t * .5); c = max(c - .08, 0.) * 1.6;
         float fade = exp(-length(vW - cameraPosition) * .07);
