@@ -1,0 +1,163 @@
+{
+  "name": "shaligram",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.35
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "This stone is | *150 MILLION* | years old."
+      ],
+      "tts": "This stone, is one hundred and fifty million years old."
+    },
+    {
+      "id": "vishnu",
+      "gap": 0.35,
+      "caps": [
+        "And Hindus worship it | as *VISHNU* himself."
+      ],
+      "tts": "And Hindus worship it, as Vishnu himself."
+    },
+    {
+      "id": "name",
+      "gap": 0.4,
+      "caps": [
+        "It's a *SHALIGRAM.* | The Purana tells | its story. | So does *SCIENCE.*"
+      ],
+      "tts": "It's a Shaaligram. The Purana tells its story. So does science.",
+      "hold": 0.3
+    },
+    {
+      "id": "heart",
+      "gap": 0.4,
+      "caps": [
+        "Vishnu broke | the heart of his | devotee, *TULSI.*",
+        "She cursed him: | \"Your heart is *STONE.* | Become a *STONE!*\""
+      ],
+      "tts": "Vishnu broke the heart of his devotee, Tulsi. She cursed him. Your heart is stone. Become a stone!",
+      "hold": 0.4
+    },
+    {
+      "id": "accept",
+      "gap": 0.4,
+      "caps": [
+        "Vishnu *accepted:* | \"You'll be the | river *GANDAKI*",
+        "and the *TULSI* plant, | and I'll be a stone | on your *BANK.*\""
+      ],
+      "tts": "Vishnu accepted. You'll be the river Gandaki, and the Tulsi plant, and I'll be a stone on your bank."
+    },
+    {
+      "id": "worms",
+      "gap": 0.4,
+      "caps": [
+        "\"Tiny creatures | with sharp teeth",
+        "will carve my | *CHAKRAS* in them.\""
+      ],
+      "tts": "Tiny creatures with sharp teeth, will carve my chakras in them.",
+      "hold": 0.5
+    },
+    {
+      "id": "science",
+      "gap": 0.4,
+      "caps": [
+        "Now look inside one: | a *SPIRAL.*"
+      ],
+      "tts": "Now look inside one. A spiral.",
+      "hold": 0.3
+    },
+    {
+      "id": "ammonite",
+      "gap": 0.35,
+      "caps": [
+        "It's an *AMMONITE,* | a sea creature | turned to *STONE.*"
+      ],
+      "tts": "It's an ammonite, a sea creature, turned to stone."
+    },
+    {
+      "id": "ocean",
+      "gap": 0.4,
+      "caps": [
+        "It swam in a *SEA* | 150 million | years ago, | with the *DINOSAURS.*"
+      ],
+      "tts": "It swam in a sea, one hundred and fifty million years ago, with the dinosaurs.",
+      "hold": 0.3
+    },
+    {
+      "id": "india",
+      "gap": 0.4,
+      "caps": [
+        "Then *INDIA* | crashed into Asia.",
+        "The sea floor *ROSE* | and became | the *HIMALAYAS.*"
+      ],
+      "tts": "Then India crashed into Asia. The sea floor rose, and became the Himalayas.",
+      "hold": 0.4
+    },
+    {
+      "id": "river",
+      "gap": 0.4,
+      "caps": [
+        "Today these fossils | wash out of | one river: | the *GANDAKI.*"
+      ],
+      "tts": "Today, these fossils wash out of one river. The Gandaki.",
+      "hold": 0.4
+    },
+    {
+      "id": "same",
+      "gap": 0.4,
+      "caps": [
+        "Same *RIVER.* | Same *STONE.* | Same *SPIRAL.*"
+      ],
+      "tts": "Same river. Same stone. Same spiral.",
+      "hold": 0.6
+    },
+    {
+      "id": "puja",
+      "gap": 0.4,
+      "caps": [
+        "So in a | Shaligram puja, | you worship",
+        "a piece of | the *HIMALAYAS* | with *TULSI* | and *RIVER* water."
+      ],
+      "tts": "So in a Shaaligram puja, you worship a piece of the Himalayas, with Tulsi, and river water."
+    },
+    {
+      "id": "gita",
+      "gap": 0.4,
+      "caps": [
+        "Krishna says | in the *GITA:* \"Of all | that stands still, | I am the *HIMALAYA.*\""
+      ],
+      "tts": "Krishna says in the Geeta. Of all that stands still, I am the Himalaya.",
+      "hold": 0.3
+    },
+    {
+      "id": "nature",
+      "gap": 0.4,
+      "caps": [
+        "In Sanatan Dharma, | *NATURE* itself | is sacred."
+      ],
+      "tts": "In Sanaatan Dharma, nature itself, is sacred.",
+      "hold": 0.4
+    },
+    {
+      "id": "tulsi",
+      "gap": 0.4,
+      "caps": [
+        "That's why | a Shaligram is | never worshipped | without *TULSI.*"
+      ],
+      "tts": "That's why a Shaaligram is never worshipped without Tulsi.",
+      "hold": 0.4
+    },
+    {
+      "id": "ask",
+      "gap": 0.4,
+      "caps": [
+        "Did you know | it was a *FOSSIL?* | Comment | *YES* or *NO!*"
+      ],
+      "tts": "Did you know it was a fossil? Comment yes, or no!",
+      "hold": 1.0
+    }
+  ]
+}
