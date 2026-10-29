@@ -3,7 +3,7 @@
 Every reel is made in a named style ([STYLES.md](STYLES.md)): **Painted** ([ANIMATION_GUIDE.md](ANIMATION_GUIDE.md), the
 hand-painted p5.brush cartoon), **Cinematic** ([CINEMATIC_GUIDE.md](CINEMATIC_GUIDE.md), the film-lit motion comic), **Storybook** ([STORYBOOK_GUIDE.md](STORYBOOK_GUIDE.md), a flat picture-book look with brush lettering on cine.js:
 `src/storybook.js`, `src/sb_cast.js`, `storybook.html`; for riddles, sweet moments, wallpapers and the books), **Painterly** ([PAINTERLY_GUIDE.md](PAINTERLY_GUIDE.md), a digital-painting cinemagraph made only in code, no AI images:
-`src/painterly.js`, `src/pt_cast.js`, `painterly.html`; for devotional loops and live wallpapers; first reel `reel/hanuman-ram-loop`) or **3D**
+`src/painterly.js`, `src/pt_cast.js`, `painterly.html`; for devotional loops and live wallpapers; first reel `reel/hanuman-ram-loop`), **Cel** ([CEL_GUIDE.md](CEL_GUIDE.md), cel animation in code: a chibi character with a boiling ink line, held on threes, posed by an IK rig and danced to the beat over an unpainted Painterly set: `src/cel.js`, `src/cel_cast.js`, `cel.html`; first reels `reel/shiva-tandav-cel`) or **3D**
 ([3D_GUIDE.md](3D_GUIDE.md), a three.js world under the Cinematic layer: `src/cine3d.js`, `cine3d.html`, the shrine set in
 `src/cine3d_temple.js`, Mount Kailash in `src/cine3d_kailash.js`, India as a relief map in `src/cine3d_india.js`, the Palk Strait and Ram Setu in `src/cine3d_setu.js`; trial reel `ad/31-books123-pradakshina`). The owner
 names the style; read that style's guide before drawing anything. This file adds what the guides don't say: how this

@@ -28,6 +28,15 @@ Instagram example (a hand-painted Hanuman cinemagraph) and wanted it without AI 
   and anything that drifts (dust, rays) is drawn at t and at t − DUR and crossfaded across the loop (`looped()` in the
   scenes). Instagram replays a reel, and a wallpaper loops, without a seam.
 
+## AI label: a warning (29 Oct 2026)
+
+The Painterly reels were not labelled as AI on Instagram. But a brush-painted anime-style snowy landscape (the Cel
+style's snowfield through `ptLayer`) was. In silent, metadata-free test posts, the painted snowfield alone was
+labelled, while the same scene left as its clean design was not. Meta's classifier judges the look, and a soft, dreamy
+painted landscape is a common AI-image genre. Before posting a new painted set (especially sky, clouds, snow or water
+filling the frame), post a short silent test to a test account. If it's labelled, render with `window.PT_RAW = 1`
+(the clean design) or make the set less dreamy.
+
 ## Files
 
 | file | what |
