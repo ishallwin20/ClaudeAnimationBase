@@ -32,7 +32,9 @@
 //           hat: Krishna in krishna.js), emote + emoteK + emoteAge, boilKey,
 //           noShadow, swMul, tilak (false: none), face(u, sw, J, INK, hx, o) (head space: drawn instead of his head and
 //           face, eyes and mouth included: Jambavan's bear face in jambavan.js; naradaEyes / naradaMouth_ help)
-//   others: pal (overrides NRD: skin, dhoti, border, shawl, hair, …) + beard (a colour: a full sage's beard and moustache)
+//   others: pal (overrides NRD: skin, dhoti, border, shawl, hair, …) + beard (a colour: a full sage's beard and moustache;
+//           beardLen 0..1 shortens it toward the chin), brawn 0..1 (a warrior's build: a broader chest and shoulders,
+//           thicker arms: Parshurama in parshurama.js)
 //           draw other rishis on his rig (Kashyapa, Agastya in the Surya book; NRD_SAGE is a white-haired elder)
 // Helpers: naradaHand(x, y, u, o, s), naradaHead(x, y, u, o), naradaEye(x, y, u, o, s), naradaMouth(x, y, u, o),
 //          naradaTop(x, y, u, o) (the top of the topknot), naradaLocal(x, y, u, o, px, py) → world [x, y] (upper body).
@@ -49,7 +51,7 @@ const NRD_SKIN = { col: NRD.skin, dk: NRD.skinDk, lt: NRD.skinLt };
 const NRD_VB = [-1.3, -9], NRD_VT = [-4.9, -27.4];   // the veena's gourd and its top
 
 function naradaArm(o, s) {
-  const sh = [s * 3, -16.3], sit = o.sit ? 1 : 0;
+  const sh = [s * 3 * (1 + clamp(o.brawn || 0) * .1), -16.3], sit = o.sit ? 1 : 0;
   let ha = (s < 0 ? o.handL : o.handR) || (s < 0 ? (o.veena === false ? [-3.45, -10.8] : [-2.35, -13.2]) : [3.45, -10.8]);
   const st = clamp(o.strum || 0), md = clamp(o.mudra ?? (sit && !(s < 0 ? o.handL : o.handR) ? 1 : 0)), pr = clamp(o.pray || 0);
   if (s > 0 && st > 0) { const w = Math.sin(T * 16) * .35; ha = [lerp(ha[0], -.35 + w, st), lerp(ha[1], -11.4 + w * .4, st)]; }
@@ -158,7 +160,7 @@ function narada(x, y, u, o = {}) {
   upper(() => {
     // ---- torso (puffed with pride), the uttariya, the mala
     rs('torso');
-    push(); translate(0, -14.6 * u); scale(1 + pf * .16, 1 + pf * .06); translate(0, 14.6 * u);
+    push(); translate(0, -14.6 * u); scale(1 + pf * .16 + clamp(o.brawn || 0) * .12, 1 + pf * .06); translate(0, 14.6 * u);
     const chest = P([[-3, -16.9], [3, -16.9], [3.25, -14.6], [2.7, -12], [-2.7, -12], [-3.25, -14.6]]);
     paint(chest, { wash: col, ink: null, curv: .35 });
     paint(ellPts(-1.1 * u, -15.6 * u, 1.5 * u, .9 * u, 14, J * 2, -.3), { fill: lt, fillOp: 120, bleed: .2, tex: .8, border: .8, ink: null });
@@ -230,10 +232,11 @@ function narada(x, y, u, o = {}) {
       inkLine(P([[.02, -19.9], [-.12, -19.35], [.15, -19.25]]), sw * .55, NRD.skinDk, 'inkfine', .5);
       if (o.beard) {   // a sage's beard from the cheeks to the chest, and a moustache over the mouth
         rs('beard');
-        const bc = o.beard, bd = mixCol(bc, NRD.ink, .25);
-        paint(P([[-3.1, -20.2], [-2.9, -18.6], [-2.3, -16.9], [-1.4, -15.4], [0, -14.4], [1.4, -15.4], [2.3, -16.9], [2.9, -18.6], [3.1, -20.2], [2.2, -18.9], [1, -18.1], [0, -17.9], [-1, -18.1], [-2.2, -18.9]]),
+        const bc = o.beard, bd = mixCol(bc, NRD.ink, .25), bl = clamp(o.beardLen ?? 1, .3, 1), by = v => -20.2 + (v + 20.2) * bl;   // beardLen lifts the outer edge toward the chin
+        paint(P([[-3.1, -20.2], [-2.9, by(-18.6)], [-2.3, by(-16.9)], [-1.4, by(-15.4)], [0, by(-14.4)], [1.4, by(-15.4)], [2.3, by(-16.9)], [2.9, by(-18.6)], [3.1, -20.2], [2.2, -18.9], [1, -18.1], [0, -17.9], [-1, -18.1], [-2.2, -18.9]]),
           { wash: bc, fill: bd, fillOp: 50, tex: .6, ink: INK, sw: sw * .8, curv: .45 });
-        for (const k of [-1.3, 0, 1.3]) inkLine(P([[k * .9, -17.4], [k, -16.2], [k * .7, -15.2]]), sw * .45, bd, 'inkfine', .5);
+        const b0 = bl < 1 ? -17.75 : -17.4;
+        for (const k of [-1.3, 0, 1.3]) inkLine(P([[k * .9, b0], [k, bl < 1 ? lerp(b0, by(-15.2), .5) : -16.2], [k * .7, by(-15.2) - (1 - bl) * .3]]), sw * .45, bd, 'inkfine', .5);
         for (const s2 of [-1, 1]) paint(ribbon(P([[s2 * .1, -18.95], [s2 * .7, -19], [s2 * 1.3, -18.6], [s2 * 1.6, -18.1]]), .45 * u, .15 * u), { wash: bc, ink: INK, sw: sw * .4 });
       }
       rs('mouth');
@@ -248,7 +251,8 @@ function narada(x, y, u, o = {}) {
     for (const s of [-1, 1]) {
       rs('arm' + s);
       const [sh, el, ha] = naradaArm(o, s), hook = s < 0 ? o.armL : o.armR;
-      paint(ribbon(P([sh, el, ha]), 1.2 * u, .85 * u), { wash: col, fill: dk, fillOp: 40, tex: .5, ink: INK, sw: sw * .85 });
+      const bm = 1 + clamp(o.brawn || 0) * .3;
+      paint(ribbon(P([sh, el, ha]), 1.2 * bm * u, .85 * bm * u), { wash: col, fill: dk, fillOp: 40, tex: .5, ink: INK, sw: sw * .85 });
       const d = Math.hypot(el[0] - sh[0], el[1] - sh[1]) || 1, nx = -(el[1] - sh[1]) / d * .55, ny = (el[0] - sh[0]) / d * .55, bx = lerp(sh[0], el[0], .5), by = lerp(sh[1], el[1], .5);
       for (const k of [-.12, .12]) inkLine(P([[bx - nx + k, by - ny + k], [bx + nx + k, by + ny + k]]), sw * .8, NRD.bead, 'ink', 0);   // rudraksha armband
       if (pr > .5 && s > 0) {
@@ -259,7 +263,7 @@ function narada(x, y, u, o = {}) {
       if (pr > .5) continue;
       push(); translate(ha[0] * u, ha[1] * u);
       if (s > 0 && o.kartal) naradaKartal(u * clamp(o.kartal), sw, o.clap ?? 9, INK);
-      paint(ellPts(0, 0, .7 * u, .64 * u, 14, J), { wash: col, ink: INK, sw: sw * .75 });
+      paint(ellPts(0, 0, .7 * (1 + (bm - 1) * .5) * u, .64 * (1 + (bm - 1) * .5) * u, 14, J), { wash: col, ink: INK, sw: sw * .75 });
       if (sit && clamp(o.mudra ?? 1) > .5 && !(s < 0 ? o.handL : o.handR) && !(s < 0 && o.veena !== false)) paint(ellPts(.25 * s * u, -.35 * u, .22 * u, .22 * u, 8), { ink: INK, sw: sw * .4 });   // chin mudra ring
       if (hook) hook(u, sw);
       pop();
