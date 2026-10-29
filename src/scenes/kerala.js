@@ -1,4 +1,4 @@
-// kerala.js: "Kerala was pulled out of the SEA" (ad 62, Kerala Piravi, 1 Nov), the 3D style in the film look, no voice.
+// kerala.js: "Kerala was pulled out of the SEA" (ad 62, Kerala Piravi, 1 Nov), the 3D style in the film look, girish VO.
 // Parshurama, a lit silhouette, on a headland at sunset, his axe raised; he had won the earth from arrogant kings and
 // given it all away (MBh 12.49); Kashyapa told him he could not live on land he had given; the ocean made new land for
 // him (MBh 12.49). Kerala's own legend (the Keralolpathi): at Gokarna he prayed to Varuna and threw his axe; the sea drew
@@ -35,14 +35,10 @@ const levelAt = p => lat => { const fl = lerp(KER_N + .1, KER_S - .3, p); return
 function smooth01(x) { x = clamp(x); return x * x * (3 - 2 * x); }
 const rowAt = p => { const f = p * (ROWS.length - 1), i = Math.floor(f), r0 = ROWS[i], r1 = ROWS[Math.min(i + 1, ROWS.length - 1)], k = f - i; return [lerp(r0[0], r1[0], k), lerp(r0[1], r1[1], k)]; };
 
-const CAPY = 1385, TOPY = 540, TOP = new Set(['hook', 'kashyapa', 'varuna', 'throw']);   // over the shore, the captions sit in the sky
-const topAt = t => CAPS.some(([id, a, b]) => TOP.has(id) && t >= a - .2 && t <= b + .2);
+const CAPY = 1385, TOPY = 540;   // over the shore, the captions sit in the sky (y set per line in tools/kerala_vo.json)
+const topAt = t => VO.caps.some(k => k.y === TOPY && t >= k.a - .2 && t <= k.b + .2);
 POST.push((c, t) => { if (t < TL.CARD) topAt(t) ? band(c, 400, 700, .35) : band(c, 1200, 1500, .4); });
-CAPS.forEach(([id, a, b, txt], i) => {
-  const o = { y: TOP.has(id) ? TOPY : CAPY };
-  if (!i) { o.size = 66; const n = txt.split(/\s+/).filter(w => w && w !== '|').length; o.at = Array(n).fill(-1); }
-  say(a, b, txt, o);
-});
+VO.caps.forEach((k, i) => say(i ? k.a : -1, k.b, k.text, { at: i ? k.at : k.at.map(() => -1), y: k.y ?? CAPY, size: k.size }));
 
 // ================= A · the hook: Parshurama on the headland at sunset, the axe raised =================
 const heroCam = (t, a, b, z0, z1) => ({ z: lerp(z0, z1, easeIO(seg(t, a, b))), fx: 700, fy: 1200 });
@@ -107,7 +103,7 @@ SHOTS.push({ a: TL.E0, b: TL.F0 + .4, xf: .4, draw(c, u, t) {
 
 // ================= F, G · he prayed to Varuna; then he threw his axe =================
 SHOTS.push({ a: TL.F0, b: TL.H0 + .3, xf: .45, draw(c, u, t) {
-  const T0 = TL.THROW, wind = easeIO(seg(t, TL.F0 + 1.6, T0 - .3)), sw = easeIn(seg(t, T0 - .12, T0 + .14));
+  const T0 = TL.THROW, wind = easeIO(seg(t, T0 - 2.2, T0 - .3)), sw = easeIn(seg(t, T0 - .12, T0 + .14));
   let arm = lerp(1.35, -1.05, wind); arm = lerp(arm, 2.5, sw);
   const rel = T0 + .02, flying = t > rel, gl = seg(t, TL.F0 + .3, TL.F0 + 1.4) * (1 - .6 * seg(t, T0, T0 + .6));
   const z = t < T0 ? lerp(1.0, 1.12, easeIO(seg(t, TL.F0, T0))) : lerp(1.12, 1.0, easeOut(seg(t, T0, T0 + 1.2)));

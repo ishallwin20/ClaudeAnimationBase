@@ -1,8 +1,9 @@
 # "Kerala was pulled out of the SEA" (ad 62 · Books 1–3 · 3D, the film look · Kerala Piravi, 1 Nov)
 
-A 71.6 s legend + science reel in the **3D** style for Kerala Piravi (1 November). It is a standalone that teases the
-Parshurama series. There is no voice: karaoke captions tell the story over a synthesized SFX track, and music is added
-on Instagram. Parshurama appears as a lit silhouette on a sunset headland, so the Painted character stays the series'
+A 63.1 s legend + science reel in the **3D** style for Kerala Piravi (1 November). It is a standalone that teases the
+Parshurama series. English VO (Sarvam `girish_en_devotional`, pace 1.3, `tools/kerala_vo.json`) with karaoke captions
+over a synthesized SFX track (`assets/kerala_mix.wav`, -14 LUFS); music is added on Instagram. Shot times follow the
+voice (`kerala_tl.js`), so the t column below is approximate. Parshurama appears as a lit silhouette on a sunset headland, so the Painted character stays the series'
 look. The map is the real one: India's DEM, with Kerala in sharper detail (`src/data/kerala_dem.js`, 0.006°). The old
 sea reaches the foot of the Ghats and draws back behind the flying axe from Gokarna to Kanyakumari. Shape: the Purana's
 story, then science ("The legend says the sea drew back. The land says so too."), then a district call-out for comments.
@@ -50,6 +51,7 @@ shoreline did move out).
 - `src/scenes/kerala_tl.js` (captions and timeline), `kerala_props.js` (the silhouette, the axe, the 2D shore, the
   Kerala DEM patch, the coastline, the old sea), `kerala.js` (shots), `kerala_cover.js` + `cover.html`.
 - `src/data/kerala_dem.js`: `node tools/terrain.mjs --name=kerala --bbox=73.6,7.9,78.2,15.0 --z=9 --res=.006`.
-- `tools/kerala_sfx.mjs` → `assets/kerala_sfx.wav` (-14 LUFS).
+- Voice: `node tools/sarvam_tts.mjs --script=tools/kerala_vo.json` → `assets/kerala_vo.wav` + `src/scenes/kerala_vo.js`.
+- `tools/kerala_sfx.mjs` → `assets/kerala_sfx.wav`, then the mix with the voice → `assets/kerala_mix.wav` (-14 LUFS).
 - Render: `node render.mjs --clip --out=out/kerala_out/kerala.mp4`; cover: `node render.mjs --page=cover.html --stills=0
   --out=out/kerala_out` (rename to cover.png).

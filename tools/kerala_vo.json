@@ -1,0 +1,159 @@
+{
+  "name": "kerala",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.3
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "*Kerala* was pulled | out of the *SEA*… | by ONE *AXE*."
+      ],
+      "tts": "Kerala was pulled out of the sea, by one axe.",
+      "y": 540,
+      "size": 66
+    },
+    {
+      "id": "won",
+      "gap": 0.45,
+      "caps": [
+        "*Parshurama* had won the earth | from arrogant kings… | and given ALL of it away."
+      ],
+      "tts": "Parshuraama had won the earth from arrogant kings, and given all of it away."
+    },
+    {
+      "id": "kashyapa",
+      "gap": 0.45,
+      "caps": [
+        "Sage *Kashyapa* told him: | “You can’t live on land | you have given away.”"
+      ],
+      "tts": "Sage Kashyapa told him: you cannot live on land you have given away.",
+      "y": 540
+    },
+    {
+      "id": "mbh",
+      "gap": 0.45,
+      "caps": [
+        "The *Mahabharata* says | the *ocean* made new land for him."
+      ],
+      "tts": "The Mahabharata says, the ocean made new land for him."
+    },
+    {
+      "id": "legend",
+      "gap": 0.45,
+      "caps": [
+        "*Kerala’s* own legend tells how. | He stood at *Gokarna*…"
+      ],
+      "tts": "Kerala's own legend tells how. He stood at Gokarna,"
+    },
+    {
+      "id": "varuna",
+      "gap": 0.35,
+      "caps": [
+        "…and prayed to *Varuna*, | the god of the sea."
+      ],
+      "tts": "and prayed to Varuna, the god of the sea.",
+      "y": 540
+    },
+    {
+      "id": "throw",
+      "gap": 1.1,
+      "caps": [
+        "Then he *THREW* his axe."
+      ],
+      "tts": "Then, he threw his axe!",
+      "y": 540,
+      "hold": 1.2
+    },
+    {
+      "id": "flight",
+      "gap": 1.0,
+      "caps": [
+        "The *sea* drew back | as far as it flew…"
+      ],
+      "tts": "The sea drew back, as far as it flew,"
+    },
+    {
+      "id": "kanya",
+      "gap": 0.3,
+      "caps": [
+        "from *Gokarna* | to *Kanyakumari*."
+      ],
+      "tts": "from Gokarna, to Kanyakumari.",
+      "hold": 1.2
+    },
+    {
+      "id": "name",
+      "gap": 0.9,
+      "caps": [
+        "That’s why Kerala is called | *Parashurama Kshetram*."
+      ],
+      "tts": "That is why Kerala is called, Parashuraama Kshetram.",
+      "hold": 1.0
+    },
+    {
+      "id": "sci",
+      "gap": 0.6,
+      "caps": [
+        "And *science*? | Kerala’s coastal plain | is *young* land."
+      ],
+      "tts": "And science? Kerala's coastal plain is young land."
+    },
+    {
+      "id": "sea",
+      "gap": 0.45,
+      "caps": [
+        "Thousands of years ago, | the *sea* came further inland."
+      ],
+      "tts": "Thousands of years ago, the sea came further inland.",
+      "hold": 0.9
+    },
+    {
+      "id": "back",
+      "gap": 0.5,
+      "caps": [
+        "The *backwaters* began | as a bay of the sea, | shut in by sand bars."
+      ],
+      "tts": "The backwaters began as a bay of the sea, shut in by sand bars."
+    },
+    {
+      "id": "kuttanad",
+      "gap": 0.45,
+      "caps": [
+        "*Kuttanad* is still farmed | *BELOW* sea level."
+      ],
+      "tts": "Kuttanaad is still farmed, below sea level.",
+      "hold": 0.9
+    },
+    {
+      "id": "same",
+      "gap": 0.6,
+      "caps": [
+        "The legend says the sea *drew back*. | The land says so too."
+      ],
+      "tts": "The legend says the sea drew back. The land says so too.",
+      "hold": 1.0
+    },
+    {
+      "id": "piravi",
+      "gap": 0.7,
+      "caps": [
+        "Happy *Kerala Piravi*!"
+      ],
+      "tts": "Happy Kerala Piravi!",
+      "hold": 1.2
+    },
+    {
+      "id": "ask",
+      "gap": 0.6,
+      "caps": [
+        "Which part of *Kerala* | are YOU from? | Tell us below!"
+      ],
+      "tts": "Which part of Kerala are you from? Tell us below!",
+      "hold": 1.6
+    }
+  ]
+}

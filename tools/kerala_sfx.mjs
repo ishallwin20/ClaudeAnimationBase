@@ -1,5 +1,6 @@
 // kerala_sfx.mjs: the sound of "Kerala was pulled out of the SEA" (src/scenes/kerala.js) → assets/kerala_sfx.wav, at
-// -14 LUFS. No voice: times come from the timeline (kerala_tl.js, loaded with vm), so they follow the picture.
+// the mix with the voice → assets/kerala_mix.wav (-14 LUFS). Times come from the voice and the timeline (kerala_vo.js +
+// kerala_tl.js, loaded with vm), so they follow the picture.
 // The shore: waves and a soft sea wind, a temple bell and a swell on the hook; the map: high wind; the gift: a low drum,
 // the light flowing away; Kashyapa: a staff's tap, a low chord; the ocean: a shimmer; Gokarna: a bell; Varuna: a conch
 // and the sea's hum rising; the wind-up swells, a beat of silence, the throw (whoosh, crack, boom); the axe whistles
@@ -11,7 +12,7 @@ import { runInNewContext } from 'node:vm';
 import { execFileSync } from 'node:child_process';
 import { track, tone, noise, bell, mixb, env, whoosh, plink, click, shimmer, drone, note, seed, chime, drum, conch, wind, chirp, thud, splash, rumble, torrent, rnd, SR } from './sfx.mjs';
 
-const TL = runInNewContext(readFileSync('src/scenes/kerala_tl.js', 'utf8') + '\n;TL');
+const TL = runInNewContext(readFileSync('src/scenes/kerala_vo.js', 'utf8') + '\n' + readFileSync('src/scenes/kerala_tl.js', 'utf8') + '\n;TL');
 const T = track(TL.END);
 seed(62);
 const TAU = Math.PI * 2, lerp = (a, b, k) => a + (b - a) * k;
@@ -54,7 +55,7 @@ T.at(TL.E0 + 1.7, templeBell(76, .8), .16, -.1);
 // ---- F: Varuna: a conch, the sea's hum rising; the wind-up swells; silence; the throw
 T.at(TL.F0 + .2, conch(2.8, 233, .8), .13, 0);
 T.at(TL.F0 + .4, pad(3, [43, 50, 55], .9), .08, 0);
-T.at(TL.F0 + 1.6, swell(TL.THROW - .3 - TL.F0 - 1.6, 200, 2600, 1), .1, 0);
+T.at(TL.THROW - 2.2, swell(1.9, 200, 2600, 1), .1, 0);
 T.at(TL.THROW - .2, whoosh(.4, 800, 4000, 1), .3, .2);
 T.at(TL.THROW, mixb(crack(1), drum(36, 1, 1.8)), .4, 0); T.at(TL.THROW, rumble(1.6, 1), .15, 0);
 T.at(TL.THROW + .1, tone(2, t => 1800 - 900 * t, { e: env.swell(.05, 1.6), amp: .5 }), .05, -.4);   // the axe whistles away
@@ -88,7 +89,10 @@ T.at(TL.PRICE, pop(.6, .9), .2, 0);
 T.at(TL.PILL, mixb(pop(1, 1.3), shimmer(.7, [note(91), note(95), note(98)], .6, .06)), .32, 0);
 T.at(TL.CARD, pad(TL.END - TL.CARD, [67, 71, 74], .7), .08, 0);
 
-T.write('assets/kerala_raw.wav');
-execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', 'assets/kerala_raw.wav', '-af', `apad=whole_dur=${TL.END.toFixed(3)},atrim=0:${TL.END.toFixed(3)},loudnorm=I=-14:TP=-1.5:LRA=11`, '-ar', '48000', '-ac', '2', 'assets/kerala_sfx.wav']);
-execFileSync('rm', ['assets/kerala_raw.wav']);
+T.write('assets/kerala_sfx.wav');
 console.log('assets/kerala_sfx.wav', TL.END.toFixed(2), 's');
+// the mix: the voice over the SFX, normalised to -14 LUFS
+execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', 'assets/kerala_vo.wav', '-i', 'assets/kerala_sfx.wav', '-filter_complex',
+  `[1:a]volume=0.8[s];[0:a][s]amix=inputs=2:normalize=0:duration=longest,apad=whole_dur=${TL.END.toFixed(3)},atrim=0:${TL.END.toFixed(3)},loudnorm=I=-14:TP=-1.5:LRA=11[o]`,
+  '-map', '[o]', '-ar', '48000', '-ac', '2', 'assets/kerala_mix.wav']);
+console.log('assets/kerala_mix.wav');
