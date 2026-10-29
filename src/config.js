@@ -1,6 +1,4 @@
-// config.js: project settings.
-//   duration: the video's length in seconds.
-//   bpm:      the rhythm that bounces, dances and pulse() follow. Clawd always moves to some beat; if the video has music,
-//             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
-//   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
-const PROJECT = { duration: 11, bpm: 120, offset: 0, w: 1080, h: 1920 };
+// config.js: project settings. "Shiv Tandav" (Cel style): chibi Shiva dances on the Kailash snowfield to the clip of
+// the Shiv Tandav song from the owner's Instagram example (assets/shiva_tandav_song.wav, kept out of git): 150 BPM, the
+// first beat at 0, a key pose every two beats; 16 s, a seamless loop.
+const PROJECT = { duration: 16, bpm: 150, offset: 0, w: 1080, h: 1920, audio: 'assets/shiva_tandav_song.wav', fonts: ['84px "Tiro Devanagari Sanskrit"', '600 30px Poppins'] };
