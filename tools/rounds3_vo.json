@@ -1,0 +1,139 @@
+{
+  "name": "rounds3",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "How many times | should you walk | around *HANUMAN?*"
+      ],
+      "tts": "How many times should you walk around Hanuman?"
+    },
+    {
+      "id": "asked",
+      "gap": 0.5,
+      "caps": [
+        "In *PART 2,* | you asked for | *FOUR MORE GODS.*"
+      ],
+      "tts": "In Part Two, you asked for four more gods.",
+      "hold": 0.3
+    },
+    {
+      "id": "krishna",
+      "gap": 0.7,
+      "caps": [
+        "For *KRISHNA:* | *FOUR,* | the same as Vishnu."
+      ],
+      "tts": "For Krishna: four, the same as Vishnu.",
+      "hold": 0.8
+    },
+    {
+      "id": "murugan",
+      "gap": 1.0,
+      "caps": [
+        "For *MURUGAN:* | *SIX.*"
+      ],
+      "tts": "For Murugan: six.",
+      "hold": 2.2
+    },
+    {
+      "id": "nava",
+      "gap": 2.2,
+      "caps": [
+        "For the *NAVAGRAHA,* | the nine planets: | *NINE.*"
+      ],
+      "tts": "For the Navagraha, the nine planets: nine.",
+      "hold": 2.0
+    },
+    {
+      "id": "hanuman",
+      "gap": 2.8,
+      "caps": [
+        "And for *HANUMAN?* | *THREE.*",
+        "Or, in many temples, | *ELEVEN.*"
+      ],
+      "tts": "And for Hanuman? Three. Or, in many temples, eleven.",
+      "hold": 1.0
+    },
+    {
+      "id": "twist",
+      "gap": 3.0,
+      "caps": [
+        "But only *ONE* | of these numbers | is in a *PURANA.*"
+      ],
+      "tts": "But only one of these numbers is in a Puraana.",
+      "hold": 0.5
+    },
+    {
+      "id": "kverse",
+      "gap": 0.6,
+      "caps": [
+        "*KRISHNA'S* four rounds | are Part 2's verse, | from the *NARASIMHA PURANA.*"
+      ],
+      "tts": "Krishna's four rounds are Part Two's verse, from the Narasimha Puraana.",
+      "hold": 0.6
+    },
+    {
+      "id": "mverse",
+      "gap": 0.6,
+      "caps": [
+        "*MURUGAN'S SIX* | comes from a | South Indian verse",
+        "with *NO KNOWN SOURCE.*"
+      ],
+      "tts": "Murugan's six comes from a South Indian verse, with no known source.",
+      "hold": 0.4
+    },
+    {
+      "id": "custom",
+      "gap": 0.6,
+      "caps": [
+        "*HANUMAN* | and the *NAVAGRAHA?*",
+        "*TEMPLE CUSTOM,* | handed down."
+      ],
+      "tts": "Hanuman and the Navagraha? Temple custom, handed down."
+    },
+    {
+      "id": "priest",
+      "gap": 0.4,
+      "caps": [
+        "So follow | your temple's *PRIEST.*"
+      ],
+      "tts": "So follow your temple's priest.",
+      "hold": 0.3
+    },
+    {
+      "id": "save",
+      "gap": 0.6,
+      "caps": [
+        "*SCREENSHOT THIS* | for your next | temple visit."
+      ],
+      "tts": "Screen shot this, for your next temple visit.",
+      "hold": 1.4
+    },
+    {
+      "id": "ask",
+      "gap": 0.6,
+      "caps": [
+        "*HANUMAN:* | *THREE* or *ELEVEN?*",
+        "Comment what | *YOUR TEMPLE* does!"
+      ],
+      "tts": "Hanuman: three, or eleven? Comment what your temple does!",
+      "hold": 0.6
+    },
+    {
+      "id": "next",
+      "gap": 0.6,
+      "caps": [
+        "*PART 4:* | Shani, Lakshmi, Ayyappa.",
+        "*FOLLOW* | so you don't miss it."
+      ],
+      "tts": "Part Four: Shani, Lakshmi, Ayyappa. Follow, so you don't miss it.",
+      "hold": 0.6
+    }
+  ]
+}
