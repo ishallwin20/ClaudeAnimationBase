@@ -1,0 +1,179 @@
+{
+  "name": "pushpak",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.3
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "The *WHOLE RAMAYAN,* | in *ONE FLIGHT…* | told by *RAM* himself."
+      ],
+      "tts": "The whole Ramayan, in one flight. Told by Ram himself."
+    },
+    {
+      "id": "setup",
+      "gap": 0.4,
+      "caps": [
+        "After the war, | Ram flew home | on the *PUSHPAK*",
+        "and showed *SITA* | every place below. | *VALMIKI* recorded it all."
+      ],
+      "tts": "After the war, Ram flew home on the Pushpak, and showed Sita every place below. Valmiki recorded it all."
+    },
+    {
+      "id": "hurry",
+      "gap": 0.4,
+      "caps": [
+        "And he had to *HURRY.* | *BHARATA* had sworn:",
+        "\"Come back when | *14 YEARS* end… | or I enter the *FIRE.*\""
+      ],
+      "tts": "And he had to hurry. Bharata had sworn: come back when fourteen years end, or I enter the fire.",
+      "hold": 0.5
+    },
+    {
+      "id": "lanka",
+      "gap": 0.6,
+      "caps": [
+        "\"Look, Sita: *LANKA.* | There, *RAVANA* fell.\""
+      ],
+      "tts": "Look, Sita. Lanka. There, Ravana fell."
+    },
+    {
+      "id": "setu",
+      "gap": 0.4,
+      "caps": [
+        "\"*NALA'S BRIDGE,* | built in *5 DAYS.*\""
+      ],
+      "tts": "Nala's bridge, built in five days."
+    },
+    {
+      "id": "mainaka",
+      "gap": 0.4,
+      "caps": [
+        "\"Here, *MAINAKA* rose | out of the sea | to rest *HANUMAN.*\""
+      ],
+      "tts": "Here, Mainaak rose up out of the sea, to rest Hanuman."
+    },
+    {
+      "id": "kish",
+      "gap": 0.5,
+      "caps": [
+        "\"*KISHKINDHA,* | where I killed *VALI.*\""
+      ],
+      "tts": "Kishkindha, where I killed Vaali."
+    },
+    {
+      "id": "rains",
+      "gap": 0.3,
+      "caps": [
+        "They'd waited out | *4 MONTHS* of rain there."
+      ],
+      "tts": "They had waited out four months of rain there."
+    },
+    {
+      "id": "pampa",
+      "gap": 0.4,
+      "caps": [
+        "\"*RISHYAMUKA,* | where I met *SUGRIVA.*",
+        "*PAMPA,* where I | wept for you… | and met *SHABARI.*\""
+      ],
+      "tts": "Rishyamook, where I met Sugreev. Pampa, where I wept for you, and met Shabari."
+    },
+    {
+      "id": "jatayu",
+      "gap": 0.5,
+      "caps": [
+        "\"There, *JATAYU* | fought for you… | and fell.\""
+      ],
+      "tts": "There, Jatayu fought for you, and fell."
+    },
+    {
+      "id": "panch",
+      "gap": 0.4,
+      "caps": [
+        "\"*PANCHAVATI.* | I fought | *KHARA'S* army there…",
+        "and from our hut, | *RAVANA* took you.\""
+      ],
+      "tts": "Panchavati. I fought Khara's army there, and from our hut, Ravana took you."
+    },
+    {
+      "id": "ashram",
+      "gap": 0.5,
+      "caps": [
+        "\"The ashrams of | *AGASTYA* and *ATRI,* | where *ANASUYA* | blessed you.\""
+      ],
+      "tts": "The ashrams of Agastya, and Atri, where Anasuya blessed you."
+    },
+    {
+      "id": "years",
+      "gap": 0.3,
+      "caps": [
+        "They'd lived *10 YEARS* | among these sages."
+      ],
+      "tts": "They had lived ten years among these sages."
+    },
+    {
+      "id": "chitra",
+      "gap": 0.5,
+      "caps": [
+        "\"*CHITRAKOOT,* | where *BHARATA* | begged me to come home…",
+        "and took my *SANDALS.*\""
+      ],
+      "tts": "Chitrakoot, where Bharat begged me to come home, and took my sandals."
+    },
+    {
+      "id": "rivers",
+      "gap": 0.5,
+      "caps": [
+        "\"The *YAMUNA.* | The *GANGA.* | *GUHA'S* town.\""
+      ],
+      "tts": "The Yamuna. The Ganga. Guha's town."
+    },
+    {
+      "id": "ayodhya",
+      "gap": 0.6,
+      "caps": [
+        "\"And there… | *AYODHYA.* | Bow down to it, Sita.\""
+      ],
+      "tts": "And there... Ayodhya. Bow down to it, Sita.",
+      "hold": 0.6
+    },
+    {
+      "id": "land",
+      "gap": 0.9,
+      "caps": [
+        "The *14th YEAR* | was complete.",
+        "On *PANCHAMI,* | they landed at | *BHARADVAJA'S* ashram."
+      ],
+      "tts": "The fourteenth year was complete. On Panchami, they landed at Bharadwaj's ashram."
+    },
+    {
+      "id": "hanuman",
+      "gap": 0.4,
+      "caps": [
+        "And Ram sent *HANUMAN* | racing ahead | to tell *BHARATA:* | *\"I'M HOME.\"*"
+      ],
+      "tts": "And Ram sent Hanuman racing ahead, to tell Bharat: I'm home.",
+      "hold": 0.4
+    },
+    {
+      "id": "close",
+      "gap": 0.6,
+      "caps": [
+        "*LANKA* to *AYODHYA:* | the whole Ramayan, | in one flight."
+      ],
+      "tts": "Lanka to Ayodhya. The whole Ramayan, in one flight."
+    },
+    {
+      "id": "ask",
+      "gap": 0.5,
+      "caps": [
+        "How many of | these places | have *YOU* visited? | Comment the *NUMBER!*"
+      ],
+      "tts": "How many of these places have you visited? Comment the number!"
+    }
+  ]
+}
