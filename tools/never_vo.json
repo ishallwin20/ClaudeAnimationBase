@@ -1,0 +1,176 @@
+{
+  "name": "never",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "NEVER offer | *THIS* flower | to *SHIVA.*"
+      ],
+      "tts": "Never offer this flower to Shiva."
+    },
+    {
+      "id": "lie",
+      "gap": 0.35,
+      "caps": [
+        "It once | told a *LIE.*"
+      ],
+      "tts": "It once told a lie.",
+      "hold": 0.6
+    },
+    {
+      "id": "fight",
+      "gap": 0.7,
+      "caps": [
+        "*BRAHMA* and *VISHNU* | fought: | who is greater?"
+      ],
+      "tts": "Brahma and Vishnu fought: who is greater?"
+    },
+    {
+      "id": "pillar",
+      "gap": 0.3,
+      "caps": [
+        "Between them rose | a *PILLAR OF FIRE* | with no end."
+      ],
+      "tts": "Between them rose a pillar of fire, with no end.",
+      "hold": 0.4
+    },
+    {
+      "id": "search",
+      "gap": 0.4,
+      "caps": [
+        "Vishnu dived | for its *ROOT.*",
+        "Brahma flew up | to find the *TOP.*"
+      ],
+      "tts": "Vishnu dived, for its root. Brahma flew up, to find the top.",
+      "hold": 0.3
+    },
+    {
+      "id": "fell",
+      "gap": 0.5,
+      "caps": [
+        "On the way, | a flower fell | from *SHIVA'S HEAD:*",
+        "the *KETAKI.*"
+      ],
+      "tts": "On the way, a flower fell from Shiva's head: the Kaytaki.",
+      "hold": 0.5
+    },
+    {
+      "id": "beg",
+      "gap": 0.4,
+      "caps": [
+        "Brahma begged it: | *“Say I saw the top.”*"
+      ],
+      "tts": "Brahma begged it: say I saw the top."
+    },
+    {
+      "id": "lied",
+      "gap": 0.4,
+      "caps": [
+        "And the flower | *LIED.*"
+      ],
+      "tts": "And the flower lied.",
+      "hold": 0.9
+    },
+    {
+      "id": "curse",
+      "gap": 0.9,
+      "caps": [
+        "Shiva said: | *“I have no desire*",
+        "*to include you* | *in my worship.”*"
+      ],
+      "tts": "Shiva said: I have no desire to include you in my worship.",
+      "hold": 0.6
+    },
+    {
+      "id": "champa",
+      "gap": 0.7,
+      "caps": [
+        "The *SHIVA PURANA* | bars one more: | *CHAMPA.*"
+      ],
+      "tts": "The Shiva Puraana bars one more: champa.",
+      "hold": 0.9
+    },
+    {
+      "id": "tulsi",
+      "gap": 0.8,
+      "caps": [
+        "But *TULSI?* | Many say: | *NEVER* for Shiva."
+      ],
+      "tts": "But Tulsi? Many say: never for Shiva.",
+      "hold": 0.4
+    },
+    {
+      "id": "lists",
+      "gap": 0.5,
+      "caps": [
+        "The Shiva Purana | *LISTS* Tulsi for Shiva:",
+        "*JOY* in this life, | and *MOKSHA.*"
+      ],
+      "tts": "The Shiva Puraana lists Tulsi, for Shiva: joy, in this life. And moksha.",
+      "hold": 0.6
+    },
+    {
+      "id": "ganesha",
+      "gap": 0.8,
+      "caps": [
+        "The god who | *REFUSES* Tulsi | is *GANESHA.*"
+      ],
+      "tts": "The god who refuses Tulsi is Ganesha."
+    },
+    {
+      "id": "cursed",
+      "gap": 0.4,
+      "caps": [
+        "She wished to marry him. | He said no.",
+        "They *CURSED* | each other."
+      ],
+      "tts": "She wished to marry him. He said no. They cursed each other.",
+      "hold": 0.6
+    },
+    {
+      "id": "vishnu",
+      "gap": 0.8,
+      "caps": [
+        "And the two flowers | Shiva *REFUSES?*",
+        "*VISHNU* | loves them."
+      ],
+      "tts": "And the two flowers Shiva refuses? Vishnu loves them.",
+      "hold": 0.8
+    },
+    {
+      "id": "save",
+      "gap": 0.6,
+      "caps": [
+        "*SCREENSHOT THIS* | before your next puja."
+      ],
+      "tts": "Screen shot this, before your next pooja.",
+      "hold": 1.4
+    },
+    {
+      "id": "ask",
+      "gap": 0.5,
+      "caps": [
+        "Did you know | Tulsi is *ALLOWED* for Shiva?",
+        "*YES* or *NO?* | Comment!"
+      ],
+      "tts": "Did you know Tulsi is allowed for Shiva? Yes, or no? Comment!",
+      "hold": 0.6
+    },
+    {
+      "id": "next",
+      "gap": 0.6,
+      "caps": [
+        "*NEXT:* what you *POUR* on Shiva | decides what you *GET.*",
+        "*FOLLOW* | so you don't miss it."
+      ],
+      "tts": "Next: what you pour on Shiva decides what you get. Follow, so you don't miss it.",
+      "hold": 0.6
+    }
+  ]
+}
