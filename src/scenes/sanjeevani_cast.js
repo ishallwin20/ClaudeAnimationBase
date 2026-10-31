@@ -1,7 +1,8 @@
 // sanjeevani_cast.js: the designs for "Laye sajeevan" (Painterly, see PAINTERLY_GUIDE.md): Hanuman flying at dusk with
 // the Dronagiri peak on his raised right palm, its herbs shining (Valmiki, Yuddha Kanda 74: the herbs blazed and lit the
 // ten directions, and he tore off the whole peak), the gada in his left hand.
-//   sjSky(c)          the dusk sky: indigo to saffron, the moon, high streaks, and a sea of clouds below
+//   sjSky(c, top, bot) the dusk sky: indigo to saffron, the moon, high streaks, and a sea of clouds below, from y top to
+//                     bot (a wallpaper's taller frame: top < 0, bot > 1920)
 //   sjCloud(i)        a cloud as a design (i: 0–3 sea clouds, 4–6 thin wisps), drawn at [0, 0, SJ_CLOUD[i]]
 //   sjHanuman(c)      him, in the body frame (SJ): head, torso, arms, the dhoti over bent legs
 //   sjMountain(c)     the peak torn out with its earth, roots and his fingers round the front; herbs at SJ_HERBS
@@ -23,10 +24,10 @@ const SJ_SKIN = { dk: '#8F3016', base: '#D4572B', lt: '#F28A4C', muz: '#F2A36C' 
 const SJ_GOLD = { base: '#E5AE34', dk: '#94631A', lt: '#FFE38C' };
 
 // ---------- the sky (design) ----------
-function sjSky(c) {
+function sjSky(c, top = 0, bot = PT_H) {
   const R = lcg(31);
   c.fillStyle = ptLin(c, 0, 0, 0, 1400, [[0, '#0C1033'], [.25, '#1C1A4E'], [.48, '#3A2C68'], [.66, '#7A3F78'], [.8, '#C46478'], [.9, '#EE9A62'], [1, '#FBC77A']]);
-  c.fillRect(0, 0, PT_W, PT_H);
+  c.fillRect(0, top, PT_W, bot - top);
   // the moon, with a soft halo
   c.fillStyle = ptRad(c, SJ_MOON[0], SJ_MOON[1], 40, 340, [[0, 'rgba(230,226,255,.5)'], [.3, 'rgba(170,160,230,.18)'], [1, 'rgba(120,110,200,0)']]); c.fillRect(0, 0, PT_W, 900);
   ellipse(c, SJ_MOON[0], SJ_MOON[1], 66, 66, ptRad(c, SJ_MOON[0] - 18, SJ_MOON[1] - 20, 4, 80, [[0, '#FFFBEA'], [.7, '#F4EBD4'], [1, '#D9CDBE']]));
@@ -40,7 +41,7 @@ function sjSky(c) {
   c.fillStyle = ptRad(c, 540, 1360, 20, 760, [[0, 'rgba(255,214,140,.85)'], [.4, 'rgba(250,160,110,.35)'], [1, 'rgba(240,130,110,0)']]); c.fillRect(0, 900, PT_W, 800);
   // the sea of clouds: rows of rounded tops, small and lit far off, big and violet near
   for (let row = 0; row < 9; row++) {
-    const k = row / 8, y0 = 1300 + Math.pow(k, 1.35) * 560, n = 9 - row * .5, rr = 40 + k * 120;
+    const k = row / 8, y0 = 1300 + Math.pow(k, 1.35) * (bot - 1360), n = 9 - row * .5, rr = 40 + k * 120;
     for (let i = 0; i < n * 3; i++) {
       const x = (i / (n * 3)) * (PT_W + 200) - 100 + (R() - .5) * 80, y = y0 + (R() - .5) * 24, r = rr * (.6 + R() * .6);
       const glowK = clamp(1 - Math.abs(x - 540) / 900) * (1 - k * .75);
@@ -49,9 +50,9 @@ function sjSky(c) {
       ellipse(c, x - r * .1, y - r * .22, r * .7, r * .32, mixCol(mixCol('#806098', '#F2B39A', 1 - k), '#FFE2B0', glowK), 0);
     }
   }
-  ptMottle(c, 0, 1250, PT_W, PT_H, 260, ['#4A3A70', '#C98AA0', '#FFD6A8', '#6C5290'], R, 10, 40, .14);
+  ptMottle(c, 0, 1250, PT_W, bot, 260, ['#4A3A70', '#C98AA0', '#FFD6A8', '#6C5290'], R, 10, 40, .14);
   // the darkest foreground at the bottom
-  c.fillStyle = ptLin(c, 0, 1640, 0, PT_H, [[0, 'rgba(30,22,60,0)'], [1, 'rgba(24,18,52,.65)']]); c.fillRect(0, 1640, PT_W, 280);
+  c.fillStyle = ptLin(c, 0, bot - 280, 0, bot, [[0, 'rgba(30,22,60,0)'], [1, 'rgba(24,18,52,.65)']]); c.fillRect(0, bot - 280, PT_W, 280);
 }
 
 // ---------- clouds that sail past (designs) ----------
