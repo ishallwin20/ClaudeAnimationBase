@@ -16,10 +16,12 @@ the cover in `src/scenes/sanjeevani_cover.js` (`cover.html`).
 The Hanuman Chalisa: लाय सजीवन लखन जियाये / श्रीरघुबीर हरषि उर लाये, centred at y 1392 and 1462 (inside the safe band).
 
 ## Facts used
-- Hanuman fetches the herbs from the Himalaya to revive Lakshman, the herbs blaze with light, and he carries off the
-  whole peak: Valmiki Ramayana, Yuddha Kanda 74 (the herbs hide from him; he tears out the summit) and Yuddha Kanda 101
-  (the second time, for Lakshman struck by Ravana's shakti, with Sushena naming the herbs).
-- The Chalisa line: Tulsidas, Hanuman Chalisa, chaupai 11.
+- The caption follows Tulsidas (the Chalisa's poet), Ramcharitmanas, Lanka Kand: Lakshman is struck down, Sushena
+  says the Sanjeevani from the Himalaya must come before sunrise, Hanuman can't tell the herb and brings the whole
+  mountain, and Lakshman revives.
+- The herbs shining and lighting up the mountain (the glow in the painting): Valmiki Ramayana, Yuddha Kanda 74, where he
+  also tears out the whole peak.
+- The text: Tulsidas, Hanuman Chalisa: लाय सजीवन लखन जियाये, श्रीरघुबीर हरषि उर लाये.
 
 ## Render
     node render.mjs --stills=0 --out=out/check
