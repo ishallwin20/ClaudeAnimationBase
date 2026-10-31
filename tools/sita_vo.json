@@ -1,0 +1,173 @@
+{
+  "name": "sita",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.25
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Was *RAM* right | to leave *SITA?*"
+      ],
+      "tts": "Was Ram right, to leave Sita?",
+      "size": 66
+    },
+    {
+      "id": "setup",
+      "gap": 0.5,
+      "caps": [
+        "We won't judge. | *FOUR POETS* will."
+      ],
+      "tts": "We won't judge. Four poets will."
+    },
+    {
+      "id": "valmiki",
+      "gap": 0.6,
+      "caps": [
+        "First, *VALMIKI.* | Ayodhya whispered:",
+        "\"*RAVANA* held her. | If the king takes her back,",
+        "we'll have to bear it | from our wives too.\""
+      ],
+      "tts": "First, Valmiki. Ayodhya whispered: Ravana held her. If the king takes her back, we'll have to bear it from our wives too."
+    },
+    {
+      "id": "ram1",
+      "gap": 0.5,
+      "caps": [
+        "*RAM* told his brothers: | \"My heart knows | she is *PURE.*",
+        "But for fear of such blame, | I'd give up | my own *LIFE.*\""
+      ],
+      "tts": "Ram told his brothers: My heart knows she is pure. But for fear of such blame, I'd give up my own life.",
+      "hold": 0.6
+    },
+    {
+      "id": "kali",
+      "gap": 0.7,
+      "caps": [
+        "In *KALIDASA,* | Sita sends the king | a message:"
+      ],
+      "tts": "In Kalidas, Sita sends the king a message:"
+    },
+    {
+      "id": "sita1",
+      "gap": 0.4,
+      "speaker": "aditi_en_stories",
+      "pace": 1.1,
+      "fx": "volume=2.2,aecho=0.8:0.45:55|110:0.16|0.08,alimiter=limit=0.95,apad=pad_dur=0.4",
+      "caps": [
+        "\"You saw me *PURE* | in the *FIRE.*",
+        "Still, over gossip, | you left me.",
+        "Is that worthy | of your family?\""
+      ],
+      "tts": "You saw me pure, in the fire. Still, over gossip, you left me. Is that worthy of your family?"
+    },
+    {
+      "id": "pray",
+      "gap": 0.5,
+      "caps": [
+        "And yet | she prays:"
+      ],
+      "tts": "And yet, she prays:"
+    },
+    {
+      "id": "sita2",
+      "gap": 0.2,
+      "speaker": "aditi_en_stories",
+      "pace": 1.1,
+      "fx": "volume=2.2,aecho=0.8:0.45:55|110:0.16|0.08,alimiter=limit=0.95,apad=pad_dur=0.4",
+      "caps": [
+        "\"Even in my next life, | be my *HUSBAND.*\""
+      ],
+      "tts": "Even in my next life, be my husband."
+    },
+    {
+      "id": "heart",
+      "gap": 0.5,
+      "caps": [
+        "Cast out of his house. | Never out of | his *HEART.*"
+      ],
+      "tts": "Cast out of his house. Never out of his heart."
+    },
+    {
+      "id": "yagna",
+      "gap": 0.7,
+      "caps": [
+        "Years later, at his *YAGNA,* | Ram tells *VALMIKI:*",
+        "\"I knew she was *SINLESS.* | Forgive me.\""
+      ],
+      "tts": "Years later, at his yagna, Ram tells Valmiki: I knew she was sinless. Forgive me."
+    },
+    {
+      "id": "oath",
+      "gap": 0.5,
+      "speaker": "aditi_en_stories",
+      "pace": 1.05,
+      "fx": "volume=2.2,aecho=0.8:0.45:55|110:0.16|0.08,alimiter=limit=0.95,apad=pad_dur=0.4",
+      "caps": [
+        "\"If I have never thought | of anyone but *RAM,*",
+        "*MOTHER EARTH,* | open for me.\""
+      ],
+      "tts": "If I have never thought of anyone but Ram, Mother Earth, open for me."
+    },
+    {
+      "id": "earth",
+      "gap": 0.6,
+      "caps": [
+        "And the *EARTH* | took her home."
+      ],
+      "tts": "And the Earth took her home.",
+      "hold": 0.4
+    },
+    {
+      "id": "gold",
+      "gap": 0.5,
+      "caps": [
+        "Ram never married again. | At every yagna,",
+        "a *SITA* of *GOLD* | stood beside him."
+      ],
+      "tts": "Ram never married again. At every yagna, a Sita of gold stood beside him.",
+      "hold": 0.5
+    },
+    {
+      "id": "bhava",
+      "gap": 0.7,
+      "caps": [
+        "*BHAVABHUTI* | couldn't bear it.",
+        "In his play, | they are *REUNITED.*"
+      ],
+      "tts": "Bhavabhuti couldn't bear it. In his play, they are reunited."
+    },
+    {
+      "id": "tulsi",
+      "gap": 0.6,
+      "caps": [
+        "And *TULSIDAS?* | In his Ramcharitmanas,",
+        "there is | *NO EXILE* at all."
+      ],
+      "tts": "And Tulsidas? In his Ramcharitmanas, there is no exile at all.",
+      "hold": 0.4
+    },
+    {
+      "id": "split",
+      "gap": 0.7,
+      "caps": [
+        "Even in Valmiki, | the crowd was *DIVIDED.*",
+        "\"Well done, *SITA!*\" | \"Well done, *RAM!*\"",
+        "And some said: | *BOTH.*"
+      ],
+      "tts": "Even in Valmiki, the crowd was divided. Well done, Sita! Well done, Ram! And some said: both."
+    },
+    {
+      "id": "ask",
+      "gap": 0.7,
+      "caps": [
+        "Which *RAMAYAN* | did *YOU* grow up with? | Comment yours."
+      ],
+      "tts": "Which Ramayan did you grow up with? Comment yours.",
+      "hold": 0.5
+    }
+  ]
+}
