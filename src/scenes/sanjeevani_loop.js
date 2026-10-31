@@ -56,7 +56,7 @@ SHOTS.push({
     const gada = ptLayer('gada', SJ_GADA_BOX, sjGada, { alpha: true, seed: 13, brushes: PT_BRUSHES.slice(1) });
     ptDraw(c, gada);
     const [fx, fy] = sjW(...SJ_FACE);
-    const hero = ptLayer('hanuman', [150, 430, 740, 980], sjHanuman, {
+    const hero = ptLayer('hanuman', [50, 410, 840, 1000], sjHanuman, {
       alpha: true, seed: 17, brushes: PT_BRUSHES.slice(1),
       fine: [[fx, fy - 10, 92], [...sjW(-302, -352), 40], [...sjW(288, 168), 40]], keep: [[fx, fy + 4, 70, .55]],
     });
@@ -86,8 +86,8 @@ SHOTS.push({
     lane(c, t, LANES[2]);
     looped(t, (tt, k) => motes(c, { n: 40, seed: 4, box: [0, 300, W, 1500], r: 2.6, col: '#FFE9C8', a: .5 * k, vx: -40, vy: -4, t: tt }));
     // the Chalisa's line, over the clouds, inside the safe band
-    c.save(); c.globalAlpha = .5; c.translate(540, 1428); c.scale(1, .24); glow(c, 0, 0, 470, '#1A0F2E', 1, 'source-over'); c.restore();
-    LINES.forEach((ln, i) => text(c, ln, 540, 1392 + i * 70, '54px "Tiro Devanagari Sanskrit"', '#FFF6DE', { glow: ['rgba(30,14,40,.9)', 18], maxW: 900 }));
+    c.save(); c.globalAlpha = .5; c.translate(540, 1445); c.scale(1, .24); glow(c, 0, 0, 470, '#1A0F2E', 1, 'source-over'); c.restore();
+    LINES.forEach((ln, i) => text(c, ln, 540, 1412 + i * 66, '52px "Tiro Devanagari Sanskrit"', '#FFF6DE', { glow: ['rgba(30,14,40,.9)', 18], maxW: 900 }));
   }
 });
 LOOK.bloom = .24; LOOK.vignette = .5; LOOK.grain = .045;

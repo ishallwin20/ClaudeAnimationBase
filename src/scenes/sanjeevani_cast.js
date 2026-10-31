@@ -10,7 +10,7 @@
 //   sjScarf(ph)       the two ends of his uttariya streaming back in the wind, for flutter phase ph (0..1)
 // The figure is drawn in a body frame: origin at his chest, upright, then leaned and scaled into the frame by SJ.
 // sjW(x, y) maps a body-frame point to frame px (for fine/keep discs, herb glows, the rim).
-const SJ = { ox: 560, oy: 905, th: .08, s: .92 };
+const SJ = { ox: 560, oy: 890, th: .08, s: .92 };
 const sjW = (x, y) => [SJ.ox + (x * Math.cos(SJ.th) - y * Math.sin(SJ.th)) * SJ.s, SJ.oy + (x * Math.sin(SJ.th) + y * Math.cos(SJ.th)) * SJ.s];
 const sjFrame = c => { c.translate(SJ.ox, SJ.oy); c.rotate(SJ.th); c.scale(SJ.s, SJ.s); };
 const SJ_FACE = [0, -215], SJ_HS = 1.22;            // face centre (body frame) and head scale
@@ -124,27 +124,38 @@ function sjHanuman(c) {
   }
   for (let k = 0; k < 4; k++) ptLock(c, [[50 + k * 4, -210 + k * 6], [82 + k * 6, -165], [104 + k * 10, -120 + k * 4], [112 + k * 14, -82 + k * 8]], 26 - k * 3, R);
 
-  // ---- legs: the shins folded back behind the knees (drawn first, the dhoti over them)
-  ptForm(c, [[-200, 360], [-258, 330], [-318, 292]], [64, 56, 46], skin, -.3, -.9);                  // his right shin, folded back
-  ellipse(c, -340, 282, 42, 22, SJ_SKIN.dk, -.6); ellipse(c, -338, 278, 38, 18, SJ_SKIN.base, -.6); ellipse(c, -330, 274, 24, 9, SJ_SKIN.muz, -.6);
-  limb(c, [[-312, 300], [-296, 286]], [16, 16], SJ_GOLD.base);
-  ptForm(c, [[160, 384], [138, 428], [112, 462]], [66, 56, 44], skin, -.4, -.8);                       // his left shin, hanging back
-  ellipse(c, 92, 476, 40, 20, SJ_SKIN.dk, .5); ellipse(c, 90, 472, 36, 17, SJ_SKIN.base, .5); ellipse(c, 84, 468, 22, 8, SJ_SKIN.muz, .5);
-  limb(c, [[100, 452], [124, 462]], [15, 15], SJ_GOLD.base);
+  // ---- legs, in a flying stride: his right leg stretched out behind (screen left), his left knee driving forward with
+  // the shin hanging back under it. Shins and feet first, the dhoti over the thighs.
+  const foot = (P, Wd, toeDir) => {   // a foot along P (heel to toes), toes fanned at the end
+    ptForm(c, P, Wd, skin, -.3, -.9, .55);
+    const [tx, ty] = P[P.length - 1], [px, py] = P[P.length - 2], a = Math.atan2(ty - py, tx - px), nx = -Math.sin(a), ny = Math.cos(a);
+    for (let k = -2; k <= 2; k++) { const o = k * Wd[Wd.length - 1] * .2, r = 8 - Math.abs(k) * .8; ellipse(c, tx + nx * o + Math.cos(a) * (6 - Math.abs(k) * 2), ty + ny * o + Math.sin(a) * (6 - Math.abs(k) * 2), r, r * .8, SJ_SKIN.base); ellipse(c, tx + nx * o + Math.cos(a) * (6 - Math.abs(k) * 2) - 2, ty + ny * o + Math.sin(a) * (6 - Math.abs(k) * 2) - 2, r * .5, r * .4, SJ_SKIN.lt); }
+    ellipse(c, P[0][0] - Math.cos(a) * 6, P[0][1] - Math.sin(a) * 6, Wd[0] * .42, Wd[0] * .36, SJ_SKIN.base);   // the heel
+  };
+  // his right leg, behind: the calf, the ankle, the foot pointed back
+  ptForm(c, [[-236, 318], [-300, 340], [-360, 352], [-404, 356]], [104, 98, 74, 56], skin, -.25, -.95);
+  ellipse(c, -300, 326, 46, 20, 'rgba(250,150,90,.45)', .2);                                               // the calf's lit top
+  limb(c, [[-394, 330], [-398, 356], [-400, 382]], [18, 18, 18], SJ_GOLD.base); limb(c, [[-391, 330], [-395, 356], [-397, 382]], [4, 4, 4], SJ_GOLD.lt);   // anklet
+  foot([[-412, 360], [-448, 356], [-486, 346]], [54, 46, 34]);
+  // his left leg, in front: the shin hangs back under the knee, the foot points down and back
+  ptForm(c, [[190, 384], [158, 420], [124, 448], [92, 466]], [106, 100, 76, 56], skin, -.3, -.9);
+  ellipse(c, 168, 408, 40, 20, 'rgba(250,150,90,.45)', -.7);                                              // the calf's lit top
+  limb(c, [[86, 440], [96, 464], [106, 488]], [18, 18, 18], SJ_GOLD.base); limb(c, [[89, 439], [99, 463], [109, 487]], [4, 4, 4], SJ_GOLD.lt);   // anklet
+  foot([[82, 476], [54, 486], [24, 488]], [52, 44, 32]);
   // the dhoti: pelvis and both thighs to the knees, yellow, folds running to the knees
   const dh = ptLin(c, 0, 190, 0, 400, [[0, '#F6C255'], [.55, '#E19B33'], [1, '#A65B1C']]);
-  ptShape(c, 'M -132 192 C -150 240 -160 270 -150 300 L 150 300 C 160 270 150 240 132 192 Z', dh);
-  ptForm(c, [[-80, 255], [-150, 312], [-205, 362]], [150, 128, 104], { dk: '#A65B1C', base: '#E9A43A', lt: '#FFD27A' }, -.3, -.9, .55);
-  ptForm(c, [[78, 258], [128, 322], [168, 384]], [150, 130, 106], { dk: '#A65B1C', base: '#EFAE46', lt: '#FFDA86' }, -.3, -.9, .55);
+  ptShape(c, 'M -134 192 C -156 240 -166 272 -156 304 L 156 304 C 166 272 156 240 134 192 Z', dh);
+  ptForm(c, [[-82, 258], [-160, 292], [-244, 320]], [176, 160, 132], { dk: '#A65B1C', base: '#E9A43A', lt: '#FFD27A' }, -.25, -.95, .55);
+  ptForm(c, [[80, 258], [136, 316], [186, 372]], [180, 162, 136], { dk: '#A65B1C', base: '#EFAE46', lt: '#FFDA86' }, -.3, -.9, .55);
   c.lineCap = 'round';
-  for (let i = 0; i < 12; i++) {
-    const s = i % 2 ? 1 : -1, x0 = s * (40 + R() * 60), y0 = 230 + R() * 40, x1 = s > 0 ? 150 + R() * 20 : -190 - R() * 20, y1 = s > 0 ? 360 + R() * 20 : 340 + R() * 20;
+  for (let i = 0; i < 14; i++) {
+    const s = i % 2 ? 1 : -1, x0 = s * (40 + R() * 60), y0 = 230 + R() * 40, x1 = s > 0 ? 160 + R() * 30 : -220 - R() * 30, y1 = s > 0 ? 350 + R() * 30 : 300 + R() * 30;
     c.strokeStyle = R() < .5 ? 'rgba(150,78,20,.5)' : 'rgba(255,224,140,.5)'; c.lineWidth = 4 + R() * 6;
     c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo((x0 + x1) / 2 + (R() - .5) * 40, (y0 + y1) / 2 + 20, x1, y1); c.stroke();
   }
   // the front pleats between the thighs, and the hems at the knees
   ptShape(c, 'M -22 205 L 22 205 L 34 330 Q 0 345 -30 330 Z', ptLin(c, -30, 0, 34, 0, [[0, '#C7782A'], [.5, '#FBCB66'], [1, '#C17026']]));
-  limb(c, [[-232, 340], [-210, 378], [-178, 392]], [18, 18, 16], '#B8282A'); limb(c, [[132, 398], [168, 408], [198, 388]], [18, 18, 16], '#B8282A');
+  limb(c, [[-268, 262], [-262, 322], [-250, 384]], [20, 20, 18], '#B8282A'); limb(c, [[118, 418], [176, 432], [244, 404]], [20, 20, 18], '#B8282A');
 
   // ---- torso
   const torso = 'M -48 -140 C -95 -122 -150 -112 -178 -92 C -200 -40 -175 30 -160 60 C -145 95 -132 150 -128 200 L 128 200 C 132 150 145 95 160 60 C 175 30 200 -40 178 -92 C 150 -112 95 -122 48 -140 Z';
@@ -301,7 +312,7 @@ const SJ_TAIL_BOX = [620, 480, 420, 760];
 function sjScarf(ph) {
   return (c) => {
     c.save(); sjFrame(c);
-    for (const [x0, y0, L, droop, w0, off] of [[-130, -40, 400, 50, 80, 0], [-110, 190, 330, 70, 62, .45]]) {
+    for (const [x0, y0, L, droop, w0, off] of [[-130, -40, 400, 50, 80, 0], [-110, 160, 330, 60, 62, .45]]) {
       const n = 14, mid = [], top = [], bot = [];
       for (let i = 0; i <= n; i++) {
         const s = i / n, wave = TAU * (s * 1.1 - ph - off), a = 46 * Math.pow(s, 1.1);
