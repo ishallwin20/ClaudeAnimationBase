@@ -1,0 +1,148 @@
+{
+  "name": "pour",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "What you *POUR* on *SHIVA* | decides what you *GET.*"
+      ],
+      "tts": "What you pour on Shiva decides what you get.",
+      "hold": 0.5
+    },
+    {
+      "id": "splash",
+      "gap": 0.4,
+      "caps": [
+        "Not a *SPLASH.*"
+      ],
+      "tts": "Not a splash.",
+      "hold": 0.5
+    },
+    {
+      "id": "stream",
+      "gap": 0.3,
+      "caps": [
+        "The *SHIVA PURANA* says: | a *STREAM* | that never breaks."
+      ],
+      "tts": "The Shiva Puraana says: a stream, that never breaks.",
+      "hold": 0.55
+    },
+    {
+      "id": "water",
+      "gap": 1,
+      "caps": [
+        "*WATER,* | in a stream: | it eases *FEVER.*"
+      ],
+      "tts": "Water, in a stream: it eases fever.",
+      "hold": 1.05
+    },
+    {
+      "id": "ghee",
+      "gap": 1.5,
+      "caps": [
+        "*GHEE:* | your *FAMILY* flourishes."
+      ],
+      "tts": "Ghee: your family flourishes.",
+      "hold": 1.05
+    },
+    {
+      "id": "milk",
+      "gap": 1.5,
+      "caps": [
+        "*MILK* with *SUGAR:* | a mind as sharp as *BRIHASPATI,*",
+        "the guru | of the gods."
+      ],
+      "tts": "Milk, with sugar: a mind as sharp as Brihaspati, the guru of the gods.",
+      "hold": 1.05
+    },
+    {
+      "id": "honey",
+      "gap": 1.5,
+      "caps": [
+        "*HONEY:* | wealth like *KUBERA.*"
+      ],
+      "tts": "Honey: wealth, like Kubera.",
+      "hold": 1.15
+    },
+    {
+      "id": "cane",
+      "gap": 1.6,
+      "caps": [
+        "*SUGARCANE JUICE:* | every *JOY.*"
+      ],
+      "tts": "Sugarcane juice: every joy.",
+      "hold": 1.15
+    },
+    {
+      "id": "enemy",
+      "gap": 1.6,
+      "caps": [
+        "And one more? | It defeats *ENEMIES.*"
+      ],
+      "tts": "And one more? It defeats enemies.",
+      "hold": 1.05
+    },
+    {
+      "id": "only",
+      "gap": 1.5,
+      "caps": [
+        "Only *ONE* gives you | the joys of this life | *AND MOKSHA:*"
+      ],
+      "tts": "Only one gives you the joys of this life, and moksha:",
+      "hold": 0.2
+    },
+    {
+      "id": "ganga",
+      "gap": 0.3,
+      "caps": [
+        "*GANGA JAL.*"
+      ],
+      "tts": "Ganga jal.",
+      "hold": 1.45
+    },
+    {
+      "id": "mantra",
+      "gap": 1.9,
+      "caps": [
+        "With every stream, | the *MAHAMRITYUNJAYA* mantra.",
+        "*TEN THOUSAND* | times."
+      ],
+      "tts": "With every stream, the Mahaa Mrityunjaya mantra. Ten thousand times.",
+      "hold": 0.55
+    },
+    {
+      "id": "save",
+      "gap": 1,
+      "caps": [
+        "*SCREENSHOT THIS* | before Monday."
+      ],
+      "tts": "Screen shot this, before Monday.",
+      "hold": 0.35
+    },
+    {
+      "id": "ask",
+      "gap": 0.8,
+      "caps": [
+        "Which one will *YOU* pour? | Comment!"
+      ],
+      "tts": "Which one will you pour? Comment!",
+      "hold": 0.45
+    },
+    {
+      "id": "next",
+      "gap": 0.9,
+      "caps": [
+        "*NEXT:* do your *DIWALI AARTI* | *WITH* this reel.",
+        "*FOLLOW* | so you don't miss it."
+      ],
+      "tts": "Next: do your Diwali aarti with this reel. Follow, so you don't miss it.",
+      "hold": 0.6
+    }
+  ]
+}
