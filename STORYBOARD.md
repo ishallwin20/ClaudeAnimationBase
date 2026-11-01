@@ -1,196 +1,160 @@
-# Ad 68: "PARSHURAMA fought a DEMON ARMY with NO WEAPONS" (Parshurama series, Part 2)
+# Ad 70: "His father ordered PARSHURAMA to KILL HIS MOTHER" (Parshurama series, Part 3)
 
-A ~78 s Painted reel with Bangers captions, no voiceover, retro cartoon SFX and only a mild bed under the story. It
-stands on its own (no Part 1 needed) and ends on the Navadurga card (no price).
+An ~87 s Painted reel with Bangers captions, no voiceover, and dark, spare SFX (not cartoon foley this time). It stands
+on its own and ends on the Navadurga card (no price).
 
-**Pacing (owner, 31 Oct, after a viewer called Part 1 "too fast"):** Part 1 had 26 caption groups in 73 s, most up for
-2.0–2.3 s, back to back. This one has **14 groups in ~74 s of story** (about 11 a minute): two-line captions stay up ≥ 3.5 s, three-line
-captions and quotes ≥ 4.5 s, and there is 0.4–1 s of picture alone between them. Shots hold ≥ 4 s, camera moves are slow,
-and the two big moments (the fight and the axe) get a beat of silence first.
+**Pacing (owner, 1 Nov 2026): "the starting few seconds fast enough (like in Part 1), the latter ones the same pace as
+Part 2."** So there are two speeds:
+- **The cold open (0–10.2 s)** cuts like Part 1: the hook (3.4 s), the father's order (1.4 s), four refusals in four
+  whip-pans (0.7 s each), "ONE DIDN'T." (2.6 s). Three short, one-line caption groups after the hook.
+- **The story (10.2–83.4 s)** keeps Part 2's pace: 13 caption groups in ~73 s, two-line captions up ≥ 3.5 s, quotes
+  ≥ 4.2 s, picture alone between them, shots ≥ 4 s, apart from the deliberate shot / reverse on the order.
+
+**Intensity (owner: "if it's intense, make it really intense"):** this part is the darkest in the series, so it plays as
+a thriller, not a cartoon. Blood-maroon grounds, burning eyes, a sub drone and a heartbeat, silence before every hit.
+The killing is NEVER shown: a silhouette lifts the axe against the sun, the heartbeat slows, half a second of silence, then
+cut to the ashram's lamp as its flame goes out, and black. "HE OBEYED." in the dark.
 
 ```
-Logline: Young Rama, Jamadagni's son, prays to Shiva for weapons. Shiva says: "When you are pure. They burn anyone
-         unfit." Years later the demons crush the gods and Shiva sends him. "But I have no weapons!" "Go." He beats them
-         with his bare hands, comes back wounded, Shiva heals him with a touch and gives him divine weapons and the axe:
-         PARASHU. Rama with the axe: PARSHURAMA.
-Why it should travel: everyone knows Parshurama by his axe; almost nobody knows he won his first war WITHOUT it, or that
-         the axe is where his name comes from. A puzzle in the hook ("no weapons?") and its answer in the last shot.
-Hook:    Frame 0: young Parshurama on a plain peach ground, fists up, and beside his right hand the dashed outline of
-         the axe that isn't there, a "?" by it. Caption up: "PARSHURAMA" / "FOUGHT A DEMON ARMY" / "WITH NO WEAPONS!"
-World:   peach hook → a Himalayan rock at dawn (tapas) → white-hot weapons in a cold blue light (the warning) → the same
-         rock through a time-lapse of days and snows → Kailash in bright day (Shiva and Uma) → a red-brown storm sky
-         (the demons) → shot / reverse on Rama and Shiva on the rock, noon → a dusty plain at dusk (the fight) → warm gold
-         (the healing, the gifts) → the hook's peach, now with the axe (the name) → the card.
-Motif:   THE EMPTY HAND. The dashed axe outline by his right hand (the hook), his open empty palms ("no weapons!"), his
-         fists (the fight), Shiva's hand on his head (the healing), and the axe landing in that hand (the gift). The hook's
-         peach pose returns at the end with the outline filled.
-         Second motif: THE WEAPONS' LIGHT. White-hot and hissing when he isn't ready (C), calm gold when he is (K).
-Arc:     puzzled (frame 0) → devoted → humbled ("not yet") → patient (years) → loved (Shiva smiles) → alarm (the demons)
-         → doubt ("no weapons!") → trust ("go") → fury and grit (the fight) → tenderness (the touch) → awe (the axe) →
-         the click (the name).
+Logline: Jamadagni orders his sons to kill their mother Renuka. Four refuse and his curse takes their minds. Rama, the
+         youngest, obeys. Pleased, the sage offers boons, and Rama spends them undoing it all: his mother alive, with no
+         memory of it, and his brothers healed.
+Why it should travel: the most shocking episode in Parshurama's life, told straight from the Mahabharata, with a twist
+         almost nobody knows (he used the boons to bring her back, and she never knew). It ends on a real debate:
+         "4 SONS REFUSED. 1 OBEYED. WHO WAS RIGHT?" — a question with no easy answer drives comments.
+Hook:    Frame 0: young Parshurama close on a blood-maroon ground, the axe trembling in his hand, eyes wide, a sweat drop.
+         Caption up: "HIS FATHER ORDERED" / "PARSHURAMA" (gold) / "TO KILL HIS MOTHER." (red).
+World:   blood-maroon (the cold open) → the ashram by day → the river at noon (bright, lush) → a bokeh close → the ashram
+         at dusk (cold blue) → blood-maroon (DHIK!) → dusk, then violet (the curse) → the sunset ridge → blood-maroon (the
+         order) → the sun (the silhouette) → black (the lamp) → night → night lit gold by the lamp (the boons) → dawn →
+         blood-maroon (the ask) → the card.
+Motif:   THE LAMP. It goes out at the killing and lights again at the first boon; its gold light brings her back.
+         Second motif: THE EYES. The father's burning eyes (red with anger, violet with the curse), the brothers' blank
+         eyes, Rama's wide then teary eyes, Renuka's starlit eyes at the river and her happy, closed eyes at the end.
+Arc:     dread (frame 0) → shock (the order, the refusals) → calm (the family) → longing (the river) → guilt (home) →
+         fury ("DHIK!") → terror (the curse) → heartbreak (the order to Rama) → silence (the lamp) → mercy (the boons) →
+         tears and relief (she never knew) → debate (the ask).
 ```
 
 ## Characters
-- **Rama (young Parshurama)**: shared `parshurama()` with `beard: false` (young, clean-shaven), `flip: 1` (his right hand
-  on screen left); `axe: false` until shot K, then `axe: 'raise'` / `'hold'`. Tapas: `sit: 1, mudra: 1`. Bruises and
-  scratches for J are a scene overlay (little red-violet strokes on face and arms), cleared by sparkles.
-- **Shiva**: shared `shiva()` (seated in lotus pose), blue, the crescent moon, Vasuki. In B he appears seated on a
-  cloud in light above the rock; in E on Kailash; in H and J close, with `handR` raised (abhaya) and then on Rama's head.
-- **Uma (Parvati)**: shared `parvati()` standing beside him on Kailash (E only), smiling at what he says.
-- **The Danavas**: Mahishasura's rig through `asura()`, recoloured so they aren't the named Devi Mahatmya asuras: four
-  or five brutes (horns, tusks, clubs; teal, rust, mustard, slate), proud and grinning; heaped with swirl eyes after.
-- **The devas**: small figures fleeing across the clouds in F (Narad's rig with gold crowns, recoloured); no faces close.
-- **The weapons**: a fan of celestial weapons in light (a bow, a spear, a discus-like ring, a sword, the axe among
-  them), drawn in the scene's props; white-hot with heat-shimmer in C, gold and calm in K.
+- **Rama (young Parshurama)**: shared `parshurama()`, `beard: false`, `flip: 1` (the axe in his right hand), as at the end
+  of Part 2: he has Shiva's axe. Against the sun in L his palette is all one dark (`silPal(PSR)`).
+- **Jamadagni**: `valmiki()` with a long dark-grey beard and an ochre dhoti (`jamadagni()` in parshu3_props.js); his
+  eyes blaze (`eyeBlaze`) red in anger, violet as he curses.
+- **Renuka**: `parvati()` with no crown, a rose saree and a turmeric blouse (`renuka()`); a clay water pot on her hip at
+  the river and coming home; `eyeStars` as she gazes at the king; water drips as she comes home.
+- **The four elder brothers** (`brother(i)`, BROS): Parshurama's rig without axe, quiver, hide or aura, bearded, each
+  in his own cloth: Rumanvan (ochre), Sushena (rust), Vasu (olive), Vishvavasu (undyed). Name tags as they're ordered.
+  Cursed: `dazed()` (blank white eyes, a violet fog, slow stars), slumped.
+- **King Chitraratha and his wife**: `dasharatha()` (young, black beard, sky-blue and gold) with a pink lotus garland,
+  and `kaikeyi()` in sea-green; waist-deep in the river, splashing, far off.
 
-## Time constants (video s; shared by `src/scenes/parshu2.js` and `tools/parshu2_sfx.mjs`)
+## Time constants (video s; shared by `src/scenes/parshu3.js` and `tools/parshu3_sfx.mjs`)
 ```js
-B0 = 5.4
-PRAY = 5.8, SHIVA_IN = 9.9, SAYS = 10.9, C0 = 15.5
-HOT = 15.6, WARN = 16.0, D0 = 20.6
-LAPSE = 20.8, E0 = 25.6
-SMILE = 26.0, F0 = 31.0
-STOMP = 31.0, SEND = 33.8, G0 = 36.0
-SHRUG = 36.4, H0 = 41.5
-GO = 41.9, I0 = 46.6
-STRIDE = 46.6, BRAWL = 47.8, CLEAR = 50.2, J0 = 53.1
-KNEEL = 53.2, TOUCH = 55.2, K0 = 58.6
-GIFTS = 58.8, AXE_IN = 61.0, CATCH = 62.0, L0 = 64.6
-N1 = 65.0, N2 = 66.2, NAME = 67.4, M0 = 70.6
-ASK = 70.7, CARD = 74.3, END = 78.3
+B0 = 3.4, C0 = 4.8, D0 = 7.6
+E0 = 10.2, WALK = 13.6
+F0 = 15.2, G0 = 20.6
+H0 = 25.6, OPEN = 27.4, DHIK = 30.4
+I0 = 34.0, J0 = 39.4, CURSE = 40.6
+K0 = 45.0, FATHER = 47.2, REACT = 49.6
+L0 = 51.6, LAMP = 55.1, M0 = 59.0
+N0 = 64.2, B1 = 65.0, B2 = 67.6, B3 = 70.2
+O0 = 73.8, P0 = 79.0, CARD = 83.4, END = 87.4
 ```
 
 ## Shots and reads (captions inside y 420–1500, left of x 930)
-**A 0–5.4 · the hook.** Peach (`peachGround`), young Rama standing, fists up in a fighter's stance, a slow push. By his
-right hand (screen left) the axe's dashed outline floats, bobbing, a painted "?" beside it.
-- Caption from frame 0 (age offset): "PARSHURAMA" (gold, big) / "FOUGHT A DEMON ARMY" / "WITH NO WEAPONS!" (gold), up
-  to 4.9: **5.9 s of read** with the offset.
-- 4.9–5.4 picture alone: he glances at the outline, a little shrug. [gold brush wipe]
+**The cold open (fast)**
+- **A 0–3.4 · the hook.** Rama close on blood-maroon, the axe trembling, a slow push. "HIS FATHER ORDERED" /
+  "PARSHURAMA" / "TO KILL HIS MOTHER." up from frame 0 (4.4 s of read with the offset). Sub drone, heartbeat. [white flash]
+- **B 3.4–4.8 · the order.** Jamadagni close, eyes blazing red, his arm thrust out to the side, pointing. Thunder, a boom,
+  a low "Kill her." No caption (the hook said it).
+- **C 4.8–7.6 · four refuse.** Four whip-pans, one brother each, eyes shut, shaking his head. "4 SONS REFUSED." A drum and
+  a "mm-mm" on each cut.
+- **D 7.6–10.2 · one didn't.** Rama close: eyes open, hard; the axe's glow pulses with a heartbeat. "ONE DIDN'T." (gold)
+  [iris to black]
 
-**B 5.4–15.5 · tapas; Shiva answers.** A Himalayan rock at dawn: snow peaks, a few pines, a cold pink sky; Rama sits in
-lotus pose on the rock, eyes closed, a faint gold aura breathing. Slow drift up.
-- 5.8–9.9 "HIS NAME WAS JUST RAMA." / "HE PRAYED TO SHIVA FOR WEAPONS." (gold: RAMA, SHIVA) · **4.1 s**
-- 9.9–10.9 picture alone: a damru-roll of light; clouds part above the rock and Shiva appears, seated on a cloud in a
-  soft halo. Rama's eyes open and look up (the eyes lead, then the head).
-- 10.9–15.4 Shiva, talking, a calm half-smile: "\"I WILL GIVE THEM TO YOU" / "WHEN YOU ARE PURE.\"" · **4.5 s**
-  [cut on the light: the halo flares to white]
-
-**C 15.5–20.6 · the warning.** Close on Rama from Shiva's side; between them a fan of celestial weapons floats in
-white-hot light, the air rippling with heat, sparks spitting; the light goes cold blue on his face. He leans back, eyes
-wide, a sweat drop. Slow push.
-- 15.6–16.0 picture alone: the weapons flare in.
-- 16.0–20.5 "\"THEY BURN ANYONE" / "WHO IS UNFIT.\"" (UNFIT in red-orange) · **4.5 s** [the light dims to a pinpoint: iris]
-
-**D 20.6–25.6 · the years.** Wide on the rock: a time-lapse (`skyLapse`-style) of suns and moons arcing over; snow
-falls and melts on his shoulders, flowers open and close at the rock's foot, his aura grows steadier and warmer. He
-doesn't move.
-- 21.0–25.1 "SO HE KEPT PRAYING…" / "FOR YEARS." (gold) · **4.1 s** [whip-pan up into the clouds]
-
-**E 25.6–31.0 · Kailash.** Bright day on Kailash: Shiva seated, Uma standing beside him, both looking down (toward
-the rock, off screen). Shiva smiles and turns to her; she smiles back, a little bloom of light.
-- 25.6–26.0 picture alone.
-- 26.0–30.5 Shiva to Uma: "\"THIS RAMA" / "IS DEVOTED TO ME.\"" (gold: RAMA) · **4.5 s** [smash cut on the thunder]
-
-**F 31.0–36.0 · the demons; Shiva sends him.** 31.0–33.8 a red-brown storm sky: a row of Danavas stomps across the
-clouds, clubs up, grinning; tiny crowned devas run off the right edge. 33.8–36.0 back on Kailash, closer: Shiva's
-open hand points down; on the rock below, Rama looks up.
-- 31.0–31.4 picture alone (thunder, the stomp).
-- 31.4–35.8 "WHEN DEMONS ATTACKED THE GODS," / "SHIVA SENT RAMA TO FIGHT THEM." (gold: SHIVA, RAMA) · **4.4 s**
-
-**G 36.0–41.5 · "no weapons!"** Rama, medium close, on the rock at noon, Shiva's glow on him from above. He holds up
-two empty open palms, shrugs, looks from one hand to the other. A "?" and a sweat drop. (Shot one of a shot / reverse.)
-- 36.4–40.9 "\"BUT LORD…" / "I HAVE NO WEAPONS!\"" (gold: NO WEAPONS) · **4.5 s**
-- 40.9–41.5 picture alone: he looks up, waiting.
-
-**H 41.5–46.6 · "Go."** Reverse: Shiva close, low angle, calm, his right palm raised (abhaya); the halo pulses once.
-- 41.9–46.4 "\"GO." (gold, big) / "YOU WILL WIN.\"" · **4.5 s** [cut on action: Rama's first stride]
-
-**I 46.6–53.1 · bare hands.** A dusty plain at dusk, the Danavas in a line, laughing at the man with no weapons. Rama
-strides in from the left; he stops, cracks his knuckles (46.6–47.8: the score drops out: silence and one knuckle crack).
-47.8–50.2: a cartoon brawl cloud (dust, flying fists and feet, stars, a club spinning out of it; no blood, nothing seen
-landing). 50.2: the dust clears: the Danavas heaped up with swirl eyes, Rama on his feet beside them, dusting his hands.
-- 48.2–52.8 "HE BEAT THEM ALL" / "WITH HIS BARE HANDS!" (gold: BARE HANDS) · **4.6 s**
-  [gold wipe]
-
-**J 53.1–58.6 · the touch.** Back on the rock, warm afternoon: Rama kneels before Shiva, tired, scratches and bruises on
-his arms and face, head bowed. 55.2 Shiva reaches out and lays his hand on Rama's head: gold light spreads from the
-palm, the marks fade in a ripple of sparkles, Rama looks up and smiles.
-- 53.5–58.2 "HE CAME BACK WOUNDED." then at 55.4 "ONE TOUCH OF SHIVA HEALED HIM." (gold: SHIVA) · **4.7 s**
-
-**K 58.6–64.6 · the gifts; the axe.** The same weapons from C float down around him again, but gold and calm now (no
-shimmer, no sparks): he reaches up and they settle into his hands and onto his back, and stay. 61.0 one last light
-descends alone; silence; 62.0 it lands in his right hand: THE AXE, glowing (a hit, a shock ring, `axe: 'raise'`).
-- 59.0–64.3 "SHIVA'S GIFTS:" / "DIVINE WEAPONS…" and, at 62.2, "…AND ONE AXE." (gold, big) · **5.3 s**
-  [brush wipe in the axe's glow colours]
-
-**L 64.6–70.6 · the name.** The hook's peach and pose, rhymed: Parshurama in the same fighter's stance, but the dashed
-outline is now the real axe, raised and glowing. The three lines build one by one, with a soft tick each and a big hit
-on the name:
-- 65.0 "PARASHU = AXE" · 66.2 "RAMA + PARASHU =" · 67.4 "PARSHURAMA" (gold, biggest) · all up to 70.6: **5.6 s**
-  for the first line, 3.2 s for the name alone
-
-**M 70.6–74.3 · the ask.** The same image, a slow push, his aura breathing.
-- 70.7–74.3 COMMENT "HAR HAR MAHADEV" (gold, low in the band, y ≈ 1430) · **3.6 s**
-
-**N 74.3–78.3 · the card.** The Navadurga card, NO price (owner, 31 Oct): the Books 1–3 covers, the RK logo, "The
-Navadurga Set is OUT NOW", the rishikatha.com pill, "Check the link in bio", "Follow @therishikatha". No fade.
+**The story (Part 2's pace)**
+- **E 10.2–15.2 · the family.** The ashram by day: Jamadagni in tapas, Renuka, the five sons in a row, the youngest
+  glowing, tagged RAMA. 13.6 they set off to gather fruit. "SAGE JAMADAGNI AND RENUKA" / "HAD 5 SONS. RAMA WAS THE
+  YOUNGEST." · 4.6 s
+- **F 15.2–20.6 · the river.** Renuka on the near bank with her water pot, looking across: a king and his queen
+  waist-deep, splashing and laughing, a lotus garland, his gold catching the sun. "ONE DAY AT THE RIVER, SHE SAW" / "A KING
+  PLAYING IN THE WATER." · 4.8 s
+- **G 20.6–25.6 · her heart wandered.** Renuka close over bokeh: a slow smile, a blush, starlight in her eyes. "FOR ONE
+  MOMENT," / "HER HEART WANDERED." (gold) · 4.4 s. A low, wrong swell as the frame cools to dusk.
+- **H 25.6–30.4 · home.** The ashram at dusk: she walks in with the pot, head down, dripping, trembling; her soft glow
+  fades; Jamadagni's eyes open (27.4). "SHE CAME HOME, SHAKING." / "THE SAGE SAW IT IN HER FACE." · 4.2 s. A riser, then
+  0.2 s of silence.
+- **H2 30.4–34.0 · "DHIK!"** Smash to Jamadagni close, roaring, eyes blazing, a shock ring, a hard shake, a red flash.
+  "\"DHIK!\"" (red, huge) / "(SHAME!)" · 3.6 s. A taiko, thunder, a ring after.
+- **I 34.0–40.6 · the order.** Dusk: Jamadagni on the left, pointing; the four brothers in a row, frozen, wide-eyed,
+  sweating; their name tags pop in (RUMANVAN, SUSHENA, VASU, VISHVAVASU). "HE ORDERED EACH SON:" / "\"KILL YOUR
+  MOTHER.\"" (red) · 4.7 s. A heartbeat quickening.
+- **J 40.6–45.0 · the curse.** His eyes go violet, a curse wave rolls over them, a violet flash; one by one they slump,
+  blank-eyed, dazed. "THEY STOOD SILENT." / "HIS CURSE TOOK THEIR MINDS." (violet) · 5.0 s
+- **K 45.0–51.6 · Rama comes home; the order.** 45.0 the sunset ridge: Rama walks in, the axe on his shoulder, and stops
+  at his dazed brothers (picture alone). 47.2 Jamadagni close, red: "\"KILL YOUR MOTHER, SON." / "AND DO NOT GRIEVE.\""
+  (4.2 s, across the cut) · 49.6 the reverse: Rama close, the sun behind him; his face falls; tears.
+- **L 51.6–59.0 · he obeyed.** A silhouette against the sun slowly lifting the axe; the heartbeat slows; the frame
+  sinks to black; silence. 55.1 the ashram's lamp, close: the flame goes out, a curl of smoke. "HE OBEYED." in the dark
+  · 3.0 s. A ringing tone, one deep bell.
+- **M 59.0–64.2 · the boon.** Night; Jamadagni, calm now, a hand raised in blessing; Rama kneeling, head bowed.
+  "\"WHAT YOU DID WAS HARD, SON." / "ASK FOR ANY BOON.\"" (gold) · 4.6 s
+- **N 64.2–73.8 · the boons.** "RAMA ASKED:" then the list builds: 65.0 "1. BRING MY MOTHER BACK." (the lamp catches,
+  its gold light spreads, and Renuka forms out of the light, eyes closed, in sparkles: a harp glissando and a choir pad);
+  67.6 "2. LET HER NEVER REMEMBER IT."; 70.2 "3. HEAL MY BROTHERS." (the violet fog lifts, their eyes come back). All up
+  to 73.6: 9.1 s for the first line, 3.4 s for the last.
+- **O 73.8–79.0 · she never knew.** Dawn: Renuka, smiling, lays her hand on Rama's head; he weeps and smiles. "SHE WOKE UP
+  SMILING…" / "SHE NEVER KNEW." (gold) · 4.6 s
+- **P 79.0–83.4 · the ask.** Blood-maroon: the four brothers on the left, VS, Rama on the right with the axe and a warm
+  aura. "4 SONS REFUSED. 1 OBEYED." / "WHO WAS RIGHT?" (gold) / "COMMENT BELOW" · 4.2 s
+- **Q 83.4–87.4 · the card.** `navCard()` (from Part 2): the Navadurga Set, OUT NOW, rishikatha.com, link in bio, follow.
 
 ## Sound
-Retro cartoon SFX (tools/parshu2_sfx.mjs → assets/parshu2_sfx.wav; the mix at -14.5 LUFS, two-pass loudnorm, kept out of
-git) over a mild tanpura bed, never loud:
-the hook's "?" plink and a little shrug squeak; dawn wind and a bird; a damru roll and a soft choir pad as Shiva appears;
-the weapons' white-hot hiss, sizzle and spark crackles (C), a cold glassy drone; the time-lapse whoosh with tick-tocks
-of days and a soft wind of snow; Kailash's bright bell; thunder and heavy demon stomps, a growl-laugh; a questioning
-bassoon "huh?" on the shrug; a deep, warm bell on "GO"; the knuckle crack in silence, then the brawl (retro thwacks,
-boings, a spinning-club whoosh, a cartoon cymbal), a final "thud" as the heap settles and a hand-dust pat; a harp
-glissando and shimmer on the touch; soft chimes as each weapon settles; silence, then a taiko hit with a metal ring on
-the axe; three rising ticks for the name and a big taiko + bell on PARSHURAMA; a temple bell under the ask; the card
-quiet.
+`tools/parshu3_sfx.mjs` → assets/parshu3_sfx.wav; assets/parshu3_mix.wav is it +16 dB through a limiter (−1.9 dBFS
+ceiling): −16.3 LUFS integrated, true peak −1.7 dB. Both kept out of git. The soft stretches (morning, river, boons,
+waking) are lifted in the script (LIFT) so they carry on a phone. Never cartoon: no boings or squeaks in this part.
 
 ## Facts used
+All from the **Mahabharata, Vana Parva 3.116** (Akritavrana tells Yudhishthira the story at Mahendra mountain), verses
+quoted from the Sanskrit text (enjoylearningsanskrit.com, ch. 116; Ganguli's Vana Parva section CXVI is the same).
+
 | Beat | Source |
 |---|---|
-| He is called Rama, Jamadagni's son of Bhrigu's line ("became celebrated by the name of Rama") | MBh 8.24 (Critical Ed.) = Karna Parva section 34 (Ganguli); MBh 12.49.29 |
-| He pleases Shiva with fierce austerities, to obtain weapons | MBh 8.24 (Ganguli 8.34: "he gratified the god Bhava for obtaining weapons") |
-| Shiva: "I will give you the weapons when you become pure. They burn one who is unfit and incapable" | MBh 8.24.135 (dāsyāmi te tadāstrāṇi yadā pūto bhaviṣyasi / apātram asamarthaṃ ca dahanty astrāṇi bhārgava) |
-| He goes on worshipping for many years | MBh 8.24 (Ganguli 8.34: "adored Sarva for many long years") |
-| Shiva, with his consort and the gods, praises him: "This Rama, of firm vows, is ever devoted to me" | MBh 8.24 (Ganguli 8.34) |
-| The Danavas, proud and mighty, oppress the gods; Shiva pledges their destruction and summons Rama | MBh 8.24.145 |
-| Rama: "Unskilled in weapons, what power have I to slay all the Danavas, who are armed and proud in war?" | MBh 8.24.147 (akṛtāstrasya … kā śaktir me) |
-| Shiva: "Go at my command. You will slay those foes" | MBh 8.24 (Ganguli 8.34) |
-| He kills them "with blows alone", blows like Indra's thunderbolt | MBh 8.24.150 (prahārair eva) |
-| He comes back wounded; Shiva touches him and the wounds heal at once | MBh 8.24.151 (saṃspṛṣṭaḥ sthāṇunā sadyo nirvraṇaḥ) |
-| Shiva, pleased, gives him boons and divine weapons, and he leaves with the gods' leave | MBh 8.24 (Ganguli 8.34: "accept from me these celestial weapons") |
-| Shiva gave him the axe (paraśu) and divine weapons, in Parshurama's own words | MBh 13.18.11 (Critical Ed.: paraśuṃ ca dadau devo divyāny astrāṇi caiva me) |
-| The axe from Mahadeva, before the Kartavirya story | MBh 12.49 in Ganguli's (vulgate) text only; not in the Critical Edition's 12.49 |
-| Paraśu = axe; Paraśurāma = "Rama with the axe" | Sanskrit paraśu (axe); the name is a compound of the two |
+| Jamadagni, of great austerities; he married Renuka, King Prasenajit's daughter | MBh 3.116.1–3 |
+| Five sons, Rama the fifth and youngest | 3.116.4 (*kumārāś catvāro jajñire rāmapañcamāḥ … rāma āsīj jaghanyajaḥ*) |
+| The sons had gone out for fruit; Renuka went to bathe | 3.116.5 (*phalāhāreṣu sarveṣu gateṣv atha suteṣu*) |
+| She saw King Chitraratha of Martikavata playing in the water with his wife, wearing a lotus garland | 3.116.6–7 (*krīḍantaṃ salile … sabhāryaṃ padmamālinam*) |
+| She longed for him ("her heart wandered" is our gentle wording for *spṛhayāmāsa*) | 3.116.7 |
+| She came home wet and shaken; her husband knew | 3.116.8 (*klinnāmbhasi … praviveśāśramaṃ trastā tāṃ vai bhartānvabudhyata*) |
+| He saw her fallen from steadiness, her radiance gone, and cried "Dhik!" (shame) | 3.116.9 (*dhik-śabdena garhayāmāsa*) |
+| The four sons came: Rumanvan the eldest, Sushena, Vasu, Vishvavasu | 3.116.10 |
+| He ordered each in turn to kill their mother; dumbstruck, they said nothing | 3.116.11 |
+| He cursed them; they lost their minds and became like beasts and birds | 3.116.12 (*cetanāṃ jahuḥ, mṛgapakṣisadharmāṇaḥ*) |
+| Rama came last; Jamadagni: "Kill this mother of yours, and do not grieve, son" | 3.116.13–14 (*jahīmāṃ mātaraṃ … mā ca putra vyathāṃ kṛthāḥ*); the caption drops the word *pāpām* (sinful) |
+| Rama took the axe and did it (never shown) | 3.116.14 (*tata ādāya paraśuṃ rāmo …*) |
+| His anger left him; "You did a hard thing at my word: choose your wishes" | 3.116.15–16 (*kṛtaṃ te karma duṣkaram, vṛṇīṣva kāmān*) |
+| Rama asked: his mother raised up, no memory of the killing, the sin not to touch him, his brothers restored, no equal in battle, a long life; all granted | 3.116.17–18 |
 
-**Version:** the Mahabharata's own telling, Karna Parva 8.24 (Duryodhana tells it to Shalya to prove a teacher who got
-his weapons this way would not have taught an unworthy Karna). The Brahmanda Purana has a parallel telling (Bhrigu
-sends him to tapas on the Himavan, Shiva sends him to protect the devas, then gives him missiles), which we don't use.
+**Version:** the Mahabharata's. The Bhagavata (9.16.1–8) sets it after the Kartavirya war, at the Ganga with the Gandharva
+king Chitraratha, and has Rama kill his brothers too, "knowing his father's power"; we don't use it on screen (the series
+order follows the Mahabharata, where Renuka comes before Kartavirya, 3.116.19 on). It goes in the pinned comment as the
+answer to "why did he obey?", labelled as the Bhagavata's.
 
-**The one join, said honestly:** 8.24 says "divine weapons" without naming the axe; the axe is named as Shiva's gift in
-13.18.11 (Rama's own testimony, set later in his life in that chapter) and in Ganguli's 12.49. So the caption says
-"SHIVA'S GIFTS: DIVINE WEAPONS… AND ONE AXE" and never claims the axe was handed over on that same day; the picture puts
-the gifts together. Gandhamadana is not named (it is only in the vulgate 12.49), and the rock is a generic Himalayan
-height. "Bare hands" is our wording for *prahārair eva*, "with blows alone".
+**On screen, honestly:** the captions list three of the boons ("1. BRING MY MOTHER BACK. 2. LET HER NEVER REMEMBER IT.
+3. HEAL MY BROTHERS.") and never say "only"; the others (no sin on him, no equal in battle, a long life) are in the
+pinned comment. "SHE WOKE UP SMILING" is the picture of *mātur utthānam* (his mother's rising) with no memory. The water
+pot, the lamp, the light she rises from and her hand on his head are staging, not claims. Renuka is never called sinful
+on screen: she is worshipped as a goddess (Renuka Devi, Yellamma) by millions.
 
-**Gags (claim no plot fact):** the dashed axe outline and "?", the shrug and sweat drop, the knuckle crack, the cartoon
-brawl cloud and the swirl-eyed heap, the hand-dusting, snow piling on his shoulders in the time-lapse.
+**No gags this time.** The comedy rule is "the performance carries it"; this part is played straight.
 
 ## Cover
-The series template (`parshu1_cover.js` → `parshu2_cover.js`): the orange "PART 2" pill over the gold title, inside the
-3:4 crop (y 240–1680). Title: "PARSHURAMA" / "FOUGHT A DEMON ARMY" / "WITH NO WEAPONS!". Art: young Parshurama on the
-dusk plain, fists up, the swirl-eyed Danava heap behind him, the axe's dashed outline by his hand.
-
-## Card
-`navCard()` in parshu2_props.js: Part 1's card with the price lines replaced: "The Navadurga Set" / "OUT NOW" (orange),
-the rishikatha.com pill, "Check the link in bio", "Follow @therishikatha".
+The series template, `src/scenes/parshu3_cover.js` (`cover.html`): Rama close on blood-maroon with the axe, eyes wide; the
+orange PART 3 pill over "HIS FATHER ORDERED" / "PARSHURAMA" (gold) / "TO KILL HIS MOTHER" (red), inside the 3:4 crop.
 
 ## Build notes
-- Young Rama's hook pose is `FISTS`; the axe that isn't there is `axeOutline()` (dashed, on a ghost fill of the blade).
-- The touch draws Shiva twice (`only: 'body'`, then Rama, then `only: 'arms'`) so his hand rests on top of Rama's head.
-- The falling axe in K is drawn after Rama: a `parashu()` drawn under push/translate/rotate before him, entering from
-  above the frame, knocked him out of the frame (p5.brush); after him it's fine.
-- Audio: `node tools/parshu2_sfx.mjs` → assets/parshu2_sfx.wav; assets/parshu2_mix.wav is it loudnormed (two-pass,
-  linear, TP -1.5) to -15.3 LUFS. Both kept out of git.
+- Silhouette: `silPal(PSR)` maps every colour to one dark and `col/dk/lt` do the skin; `tilak: false`.
+- `dazed()` paints blank eyes over narada-rig eyes via `naradaEye()` (the rig's own eye kinds don't include 'blank').
+- `whipStreaks()` is drawn before the captions so a cut never wipes a read.
+- Out: `out/parshu3_out/` (parshu3.mp4, cover.png, captions.txt).
