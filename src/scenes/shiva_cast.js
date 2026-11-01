@@ -12,22 +12,23 @@
 // Positions: SV_FACE, SV_THIRD (the third eye), SV_MOON (the crescent), SV_GANGA (the stream's path), SV_HOOD(ph) (the
 // snake's mouth), SV_FIRE (the fire's base).
 //   svScene(c, t, o)   the whole cinemagraph at loop time t (o.len: the loop's length; o.wake: the wake-up; o.top: sky).
-const SV_S = 1.1, SV_FY = 880;                        // the figure, drawn in ptHanuman's frame, is scaled by SV_S, its face at y SV_FY
+const SV_S = 1.1, SV_FY = 930;                        // the figure, drawn in ptHanuman's frame, is scaled by SV_S, its face at y SV_FY
 const SVH = (x, y) => [PT_HX + (x - PT_HX) * SV_S, SV_FY + (y - 1000) * SV_S];   // ptHanuman's frame → the reel's
 function svPlace(c) { c.translate(PT_HX * (1 - SV_S), SV_FY - 1000 * SV_S); c.scale(SV_S, SV_S); }   // draw in ptHanuman's frame
-const SV_HEAD = 1.12;                                 // a human head, a little bigger than his
-const SVhd = (x, y) => [PT_HX + (x - PT_HX) * SV_HEAD, 1000 + (y - 1000) * SV_HEAD];   // a head point (ptHanuman frame), scaled
-const SV_FACE = SVH(540, 1000);
+const SV_HEAD = 1.25, SV_CHIN = 1068;                // a human head, bigger than his, grown up from the chin (the throat stays clear)
+const SVhd = (x, y) => [PT_HX + (x - PT_HX) * SV_HEAD, SV_CHIN + (y - SV_CHIN) * SV_HEAD];   // a head point (ptHanuman frame), scaled
+const SV_GY = 50;                                     // the ground (ledge, tiger skin, dhuni, trishul) sits this far down
+const SV_FACE = SVH(...SVhd(540, 1000));
 const SV_THIRD = SVH(...SVhd(540, 959));
 const SV_MOON = SVH(...SVhd(592, 866));
-const SV_FIRE = [884, 1616];
+const SV_FIRE = [884, 1616 + SV_GY];
 const SV_SKIN = { base: '#DCE2EC', dk: '#8590AC', lt: '#FAFBFF', warm: '#F3D9CB' };
 const SV_HAIR = { base: '#1A1311', mid: '#33241D', lt: '#6E625C' };   // matted, ash in it
 const SV_TIGER = { base: '#D98A2B', dk: '#97521A', lt: '#F2B85A' };
 const SV_SNAKE = { base: '#1F4E4A', dk: '#0B2224', lt: '#4F8C80', belly: '#E2D8A0' };
-const SV_BOX = [...SVH(100, 740), 880 * SV_S, 820 * SV_S];
-const SV_FINE = [[...SVH(540, 980), 100], [...SVH(240, 1440), 55], [...SVH(840, 1440), 55]];
-const SV_KEEP = [[...SVH(540, 988), 78, .6]];
+const SV_BOX = [...SVH(100, 660), 880 * SV_S, 900 * SV_S];
+const SV_FINE = [[...SVH(...SVhd(540, 990)), 112], [...SVH(240, 1440), 55], [...SVH(840, 1440), 55]];
+const SV_KEEP = [[...SVH(...SVhd(540, 996)), 88, .6]];
 
 // ---------- the set (design) ----------
 function svNight(c, top = 0) {
@@ -54,7 +55,7 @@ function svNight(c, top = 0) {
   ptMottle(c, kx - 380, ky, kx + 400, 1260, 200, ['#7A88B0', '#4E5C8A', '#98A6CC', '#2E3862'], R, 8, 26, .18);
   // the ranges either side: lower peaks, darker, with a little snow on their crests
   const range = (pts, col, snow) => {
-    poly(c, [...pts, [pts[pts.length - 1][0], 1400], [pts[0][0], 1400]], col);
+    poly(c, [...pts, [pts[pts.length - 1][0], 1500], [pts[0][0], 1500]], col);
     for (let i = 1; i < pts.length - 1; i++) if (pts[i][1] < pts[i - 1][1] && pts[i][1] < pts[i + 1][1]) {
       const [x, y] = pts[i]; poly(c, [[x, y], [x + 40, y + 46], [x + 10, y + 36], [x - 12, y + 60], [x - 36, y + 40]], snow);
     }
@@ -65,6 +66,7 @@ function svNight(c, top = 0) {
   // a thin band of mist in the valley below the ranges
   c.save(); c.translate(540, 1290); c.scale(1, .1); glow(c, 0, 0, 700, '#6E7FB4', .35, 'source-over'); c.restore();
 
+  c.save(); c.translate(0, SV_GY);   // the ground
   // the rock ledge he sits on: dark stone, its top edge lit by his light, strata and cracks
   const ledge = `M 0 1416 C 160 1398 300 1382 540 1380 C 780 1382 940 1396 1080 1412 L 1080 1920 L 0 1920 Z`;
   ptShape(c, ledge, ptLin(c, 0, 1380, 0, 1920, [[0, '#46507A'], [.15, '#2C3350'], [.6, '#1A1F33'], [1, '#0C0E18']]));
@@ -80,7 +82,7 @@ function svNight(c, top = 0) {
     ptMottle(c, 0, 1380, PT_W, 1920, 300, ['#2E3550', '#1A1F30', '#3C4462', '#11141F'], R, 10, 40, .3);
     limb(c, [[0, 1418], [300, 1386], [540, 1384], [780, 1386], [1080, 1416]], [8, 10, 10, 10, 8], 'rgba(160,180,230,.4)', false);   // the lit lip
     // firelight pooled round the dhuni
-    c.save(); c.translate(SV_FIRE[0], SV_FIRE[1]); c.scale(1, .45); glow(c, 0, 0, 420, '#FF8A3A', .55, 'source-over'); c.restore();
+    c.save(); c.translate(SV_FIRE[0], SV_FIRE[1] - SV_GY); c.scale(1, .45); glow(c, 0, 0, 420, '#FF8A3A', .55, 'source-over'); c.restore();
   });
   // the tiger skin spread under him, its paws at the corners
   const [tx, ty] = [540, 1446];
@@ -101,7 +103,7 @@ function svNight(c, top = 0) {
   c.save(); c.translate(540, 1480); c.scale(1, .12); glow(c, 0, 0, 470, '#140C06', .7, 'source-over'); c.restore();
 
   // the dhuni: a ring of stones, glowing ash, crossed logs
-  const [fx, fy] = SV_FIRE;
+  const [fx, fy] = [SV_FIRE[0], SV_FIRE[1] - SV_GY];
   ellipse(c, fx, fy + 6, 116, 34, '#1A0E08');
   ellipse(c, fx, fy, 92, 24, ptRad(c, fx, fy, 4, 92, [[0, '#FFE28A'], [.35, '#F07A26'], [.8, '#7A2A10'], [1, '#2A1008']]));
   limb(c, [[fx - 70, fy + 4], [fx + 60, fy - 16]], [20, 16], '#3A2214'); limb(c, [[fx - 64, fy - 14], [fx + 66, fy + 8]], [18, 18], '#2E1A10');
@@ -110,6 +112,7 @@ function svNight(c, top = 0) {
     const a = Math.PI * (.02 + i / 10 * .96), x = fx + Math.cos(a) * 112, y = fy + 8 + Math.sin(a) * 30;
     ellipse(c, x, y, 22 + R() * 8, 15 + R() * 4, '#2C2E3C'); ellipse(c, x - 2, y - 5, 16, 8, mixCol('#A06040', '#5A5E74', Math.abs(Math.cos(a))), 0);
   }
+  c.restore();
 }
 
 // ---------- Shiva in meditation (design, in ptHanuman's frame) ----------
@@ -123,6 +126,28 @@ function svBeads(c, P, r, gap, R) {   // a rudraksha mala along points
     d += Math.hypot(C[i][0] - C[i - 1][0], C[i][1] - C[i - 1][1]); if (d < gap) continue; d = 0;
     const [x, y] = C[i]; ellipse(c, x, y + .8, r, r * .92, '#2E1208'); ellipse(c, x, y, r * .86, r * .8, ['#7A3A1C', '#6A3014', '#86441E'][R() * 3 | 0]); ellipse(c, x - r * .3, y - r * .32, r * .3, r * .26, 'rgba(255,200,150,.55)');
   }
+}
+// A hand resting palm-up on the knee in jnana mudra: drawn along the hand from the wrist (u out to the fingertips, v
+// across it, toward the front edge), mirrored for the left. The tips of the thumb and first finger meet in a small ring
+// at the root of the fingers; the other three lie out straight, a little apart, over the knee.
+function svHand(c, wr, s, skin) {
+  const sk = { dk: '#7A84A2', base: skin.base, lt: skin.lt };
+  c.save(); c.translate(wr[0], wr[1]); c.scale(s, 1); c.rotate(.5);
+  const L = (x, y) => [x, y];
+  // the palm, cupped a little: darker heel, lit mound
+  ellipse(c, 24, 2, 32, 22, sk.dk); ellipse(c, 24, 0, 29, 19, sk.base); ellipse(c, 18, 6, 14, 9, 'rgba(255,255,255,.45)');
+  ellipse(c, 34, -4, 10, 6, 'rgba(110,116,150,.3)');   // the hollow of the palm
+  // three fingers out straight: middle, ring, little; each a lit tapered form with a crease between
+  [[-4, 44, 12], [7, 40, 11], [17, 32, 9.5]].forEach(([v, len, w], i) => {
+    const P = [L(44, v), L(44 + len * .55, v + 2 + i), L(44 + len, v + 5 + i * 1.5)];
+    ptForm(c, P, [w, w * .92, w * .74], sk, -.4, -.9, .55);
+    ellipse(c, 44 + len - 2, v + 5 + i * 1.5, w * .3, w * .22, 'rgba(255,220,220,.5)');   // the nail end, warm
+  });
+  // the thumb comes up from the heel of the hand; the first finger curls back to meet it: a ring between them
+  ptForm(c, [L(8, -14), L(26, -24), L(42, -26)], [16, 13, 10], sk, -.4, -.9, .55);
+  ptForm(c, [L(44, -14), L(58, -22), L(54, -32), L(44, -30)], [12, 11, 10, 9], sk, -.4, -.9, .55);
+  ellipse(c, 49, -24, 4, 3.4, 'rgba(60,66,96,.75)');   // the hole of the ring
+  c.restore();
 }
 function svShiva(c) {
   const R = lcg(41), X = PT_HX, skin = { dk: SV_SKIN.dk, base: SV_SKIN.base, lt: SV_SKIN.lt };
@@ -183,16 +208,12 @@ function svShiva(c) {
     for (let k = 0; k < 3; k++) limb(c, [[X + s * (184 + k * 2), 1160 + k * 11], [X + s * (210 + k * 2), 1164 + k * 11], [X + s * (234 + k * 2), 1160 + k * 11]], [3.4, 3.8, 3], 'rgba(120,128,156,.55)', false);
     svBeads(c, [[X + s * 186, 1206], [X + s * 212, 1214], [X + s * 240, 1208]], 6, 11, R);
     svBeads(c, [[X + s * 268, 1404], [X + s * 282, 1400], [X + s * 296, 1394]], 5.5, 10, R);
-    // the hand palm-up on the knee in jnana mudra: three fingers out, thumb and first finger touching
-    ellipse(c, wr[0] + s * 16, wr[1] + 22, 30, 21, SV_SKIN.dk, s * .5); ellipse(c, wr[0] + s * 14, wr[1] + 18, 28, 19, SV_SKIN.base, s * .5);
-    for (let k = 0; k < 3; k++) ptForm(c, [[wr[0] + s * (26 + k * 2), wr[1] + 26 + k * 8], [wr[0] + s * (46 + k * 2), wr[1] + 34 + k * 8], [wr[0] + s * (62 + k * 1), wr[1] + 38 + k * 9]], [12, 10, 8], skin, 0, -1, .5);
-    c.strokeStyle = SV_SKIN.base; c.lineWidth = 9; c.beginPath(); c.arc(wr[0] + s * 34, wr[1] + 6, 10, 0, TAU); c.stroke();
-    c.strokeStyle = SV_SKIN.lt; c.lineWidth = 3; c.beginPath(); c.arc(wr[0] + s * 34, wr[1] + 4, 10, Math.PI * 1.1, Math.PI * 1.9); c.stroke();
+    svHand(c, wr, s, skin);
   }
   ptMottle(c, X - 420, 1060, X + 420, 1540, 420, ['#C8D0E0', '#FFFFFF', '#B4BED6', '#E8E4EC', '#D0D8E8'], R, 6, 24, .16);
 
   // ---- neck: the throat blue with the poison he holds there
-  const neck = `M ${X - 38} 1040 L ${X + 38} 1040 C ${X + 44} 1076 ${X + 70} 1094 ${X + 110} 1104 L ${X - 110} 1104 C ${X - 70} 1094 ${X - 44} 1076 ${X - 38} 1040 Z`;
+  const neck = `M ${X - 46} 1040 L ${X + 46} 1040 C ${X + 50} 1076 ${X + 74} 1094 ${X + 112} 1104 L ${X - 112} 1104 C ${X - 74} 1094 ${X - 50} 1076 ${X - 46} 1040 Z`;
   ptShape(c, neck, ptLin(c, 0, 1040, 0, 1104, [[0, SV_SKIN.dk], [1, SV_SKIN.base]]));
   inside(c, neck, () => { ellipse(c, X, 1086, 26, 5, 'rgba(70,80,120,.3)'); c.save(); c.globalAlpha = .8; ellipse(c, X, 1098, 34, 12, '#5274C0'); c.restore(); c.save(); c.translate(X, 1098); c.scale(1, .4); glow(c, 0, 0, 56, '#3E62B4', .8, 'source-over'); c.restore(); ellipse(c, X + 8, 1096, 12, 4, 'rgba(170,200,255,.4)'); });
   // locks in front: two over each shoulder
@@ -212,7 +233,7 @@ function svShiva(c) {
   ellipse(c, X, 1346, 10, 13, '#6A3014'); limb(c, [[X, 1356], [X - 4, 1380]], [6, 2], '#C2401E');   // the meru bead and its tassel
 
   // ---- the head (a little bigger than his, scaled about the face)
-  c.save(); c.translate(X, 1000); c.scale(SV_HEAD, SV_HEAD); c.translate(-X, -1000);
+  c.save(); c.translate(X, SV_CHIN); c.scale(SV_HEAD, SV_HEAD); c.translate(-X, -SV_CHIN);
   for (const s of [-1, 1]) {   // ears with gold kundals
     ellipse(c, X + s * 54, 1002, 13, 20, SV_SKIN.base); ellipse(c, X + s * 55, 1004, 7, 12, SV_SKIN.dk);
     c.strokeStyle = '#94631A'; c.lineWidth = 5.5; c.beginPath(); c.arc(X + s * 57, 1038, 13, 0, TAU); c.stroke();
@@ -282,9 +303,9 @@ function svShiva(c) {
 // ---------- Vasuki's hood (design, one pose per phase, in ptHanuman's frame) ----------
 // He rises from the coil over Shiva's right shoulder (screen left) and spreads his hood beside the face, looking at us;
 // the hood sways and the head tilts with phase ph (0..1).
-const SV_SNAKE_BOX = [...SVH(300, 780), 200 * SV_S, 330 * SV_S];
+const SV_SNAKE_BOX = [...SVH(280, 760), 220 * SV_S, 350 * SV_S];
 const SV_HOOD_K = 1.25;
-function svHoodAt(ph) { const sw = Math.sin(ph * TAU); return { x: 390 + sw * 9, y: 950 - Math.abs(Math.cos(ph * TAU)) * 4, a: sw * .09 }; }
+function svHoodAt(ph) { const sw = Math.sin(ph * TAU); return { x: 372 + sw * 9, y: 928 - Math.abs(Math.cos(ph * TAU)) * 4, a: sw * .09 }; }
 const SV_HOOD = ph => { const h = svHoodAt(ph), r = 39 * SV_HOOD_K; return SVH(h.x + Math.sin(h.a) * r, h.y - Math.cos(h.a) * r); };   // the mouth, for the tongue (reel px)
 function svVasuki(ph) {
   return (c) => {
@@ -334,10 +355,11 @@ function svFire(ph) {
 
 // ---------- the trishul and the damru (design, one pose per phase) ----------
 // Planted in the rock at his right (screen left); the damru hangs tied below the prongs, its red cloth stirring with ph.
-const SV_TRI_X = 96, SV_TRI_BOX = [12, 440, 200, 1160];
+const SV_TRI_X = 96, SV_TRI_BOX = [12, 440 + SV_GY, 200, 1160];
 const SV_IRON = { base: '#9AA4BC', dk: '#4A5270', lt: '#E8EEFA' };
 function svTrishul(ph) {
   return (c) => {
+    c.translate(0, SV_GY);
     const x = SV_TRI_X, iron = ptLin(c, x - 16, 0, x + 16, 0, [[0, SV_IRON.dk], [.4, SV_IRON.lt], [.6, SV_IRON.base], [1, SV_IRON.dk]]);
     limb(c, [[x - 2, 1580], [x + 2, 1000], [x + 6, 600]], [18, 16, 14], ptLin(c, x - 10, 0, x + 10, 0, [[0, '#3A2414'], [.45, '#8A5A30'], [1, '#2A180C']]));   // the staff
     // the prongs: a long spear in the middle, two curving out and up
@@ -369,7 +391,7 @@ const SV_SNAKE_N = 12, SV_CLOTH_N = 10, SV_FIRE_N = 12, SV_FIRE_FPS = 8;   // po
 const svFireSeq = L => Array.from({ length: L * SV_FIRE_FPS }, (_, i) => (i * 5 + (hash(i * 1.7) * 3 | 0)) % SV_FIRE_N);   // never the same pose twice running
 
 // the Ganga's path from the top of his knot, up and over to the right, falling away into spray
-const SV_GANGA = [SVhd(546, 776), [556, 716], [590, 696], [640, 700], [684, 732], [712, 790], [730, 870]].map(([x, y]) => SVH(x, y));
+const SV_GANGA = [[546, 776], [554, 752], [584, 738], [629, 742], [668, 766], [694, 815], [710, 884]].map(([x, y]) => SVH(...SVhd(x, y)));
 function svGanga(c, t, L, k = 1) {
   const C = through(SV_GANGA, 10), n = C.length;
   c.save(); c.globalAlpha = .4 * k; limb(c, SV_GANGA, [10, 14, 18, 20, 24, 30, 40], 'rgba(150,190,250,.5)'); c.globalAlpha = .55 * k; limb(c, SV_GANGA, [5, 7, 8, 9, 10, 10, 8], 'rgba(220,238,255,.6)'); c.restore();
@@ -420,7 +442,7 @@ function svScene(c, t, o = {}) {
   ptDraw(c, ptRim(hero, { dx: 6, dy: 2, col: '#FFB066', blur: 7, key: 'svf', seed: 4, density: 0 }), .3 + .25 * fl, 'screen');
   // Vasuki: the hood sways; now and then the tongue flicks
   const ph = frac(t / L * n(3)), ks = Math.floor(ph * SV_SNAKE_N) % SV_SNAKE_N;
-  ptDraw(c, ptLayer('sv_vasuki' + ks, SV_SNAKE_BOX, svVasuki(ks / SV_SNAKE_N), { alpha: true, seed: 29, brushes: PT_BRUSHES.slice(2), fine: [[...SVH(394, 880), 44]] }));
+  ptDraw(c, ptLayer('sv_vasuki' + ks, SV_SNAKE_BOX, svVasuki(ks / SV_SNAKE_N), { alpha: true, seed: 29, brushes: PT_BRUSHES.slice(2), fine: [[...SVH(372, 866), 46]] }));
   const fq = frac(t / L * n(5)), fk = fq < .1 ? Math.sin(fq / .1 * Math.PI) : 0;
   if (fk > 0) {
     const [mx, my] = SV_HOOD(ks / SV_SNAKE_N), L = 26 * fk, wig = Math.sin(t * 90) * 3;
