@@ -1,4 +1,4 @@
-# The tortoise who couldn't keep quiet (format test: wordless moral story, Painted)
+# The tortoise who couldn't keep quiet (the first Fable reel: FABLE_GUIDE.md)
 
 **Format** (from a viral reposted short the owner sent, 1 Nov 2026): a black 9:16 frame; a bold two-line headline in
 white with one yellow keyword; a 3:2-ish picture band in the middle; no captions, no voice. The story is told only by
@@ -17,8 +17,8 @@ one orange (their beaks). The light doesn't change; the tortoise's face does (sa
 **Motif:** the "zipped mouth" doodle. The swan shows it before take-off, again mid-flight, and once more after the fall.
 
 ## Cast
-- **Kambugriva**, the tortoise (`tortoise()`, new): olive shell, sage skin, big pale googly eyes with heavy lids.
-- **Sankata and Vikata**, the two swans (`hamsa()`, new: white hamsas with orange beaks); Sankata (the lead, right) has
+- **Kambugriva**, the tortoise (`tortoise()` in src/fable.js): olive shell, sage skin, big pale googly eyes with heavy lids.
+- **Sankata and Vikata**, the two swans (`hamsa()` in src/fable.js: white hamsas with orange beaks); Sankata (the lead, right) has
   a little crest.
 - Two town kids on Kartikeya's rig (`pal`, a girl and a boy) behind a mud wall.
 

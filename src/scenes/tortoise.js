@@ -4,7 +4,7 @@
 // open his mouth; over a town the people say it looks like a cart wheel; he opens his mouth to answer and falls.
 // The format: a black 9:16 frame, a two-line headline (one word yellow), the story in a band in the middle, no words in
 // the story: only acting and thought bubbles with pencil doodles. STORYBOARD.md has the plan and the sources;
-// the cast and the doodles are in tortoise_cast.js. All times are video time; tools/tortoise_sfx.mjs uses the same ones.
+// the cast, the bubbles and the frame are in src/fable.js (the Fable style, FABLE_GUIDE.md). All times are video time; tools/tortoise_sfx.mjs uses the same ones.
 (() => {
   // ---- time constants (keep in sync with STORYBOARD.md and tools/tortoise_sfx.mjs)
   const DRY0 = .6, DRY1 = 1.6, SIGH = 1.75, LANDB = 1.95, LANDA = 2.3;
@@ -16,24 +16,12 @@
   const BAND = [600, 1380];
 
   const pop = (t, t0, k = 4) => backOut(clamp((t - t0) * k));
-  const life = (t, a, b, k = 5) => t < a || t > b ? 0 : Math.min(clamp((t - a) * k), clamp((b - t) * 7));   // a bubble's pop in and out
   const blinkAt = (t, ts, d = .12) => ts.some(b => t > b && t < b + d);
 
-  // ---- the frame: black bars and the headline (the reel's only words)
-  const HEAD = [[['This Is Why You Don’t Need', '#FFFFFF']], [['To ', '#FFFFFF'], ['Reply', '#FFE14D'], [' To Everyone', '#FFFFFF']]];
-  const HFONT = '700 50px Poppins';
-  let mctx = null;
-  const measure = s => { if (!mctx) { mctx = document.createElement('canvas').getContext('2d'); } mctx.font = HFONT; return mctx.measureText(s).width; };
-  function frame(fade = 0) {
-    boilSeed('matte');
-    if (fade > 0) paint(rectPts(-10, BAND[0], W + 20, BAND[1] - BAND[0]), { wash: '#0D0C0E', washOp: 255 * fade, ink: null });
-    paint(rectPts(-20, -20, W + 40, BAND[0] + 20), { wash: '#0D0C0E', ink: null });
-    paint(rectPts(-20, BAND[1], W + 40, H - BAND[1] + 20), { wash: '#0D0C0E', ink: null });
-    HEAD.forEach((line, i) => {
-      const tot = line.reduce((s, [txt]) => s + measure(txt), 0); let x = W / 2 - tot / 2;
-      for (const [txt, color] of line) { letter(txt, x, 498 + i * 62, 50, color, { screen: true, font: HFONT, align: 'left', ink: false }); x += measure(txt); }
-    });
-  }
+  // ---- the frame: black bars and the headline (the reel's only words), from src/fable.js
+  const HEADLINE = ['This Is Why You Don\u2019t Need', 'To *Reply* To Everyone'];
+  const frame = (fade = 0) => fableFrame(HEADLINE, fade);
+  const life = fableLife;
 
   // ---- sets
   const SKY = '#EADCC0', SKYLT = '#F4EBDA', HAZE = '#DCCBA8';
@@ -242,16 +230,7 @@
     frame();
   }
 
-  // speed lines for the tilt up (k 0..1 across the cut), screen space
-  function whip(k, dir) {
-    const a = Math.sin(clamp(k) * Math.PI);
-    if (a < .05) return;
-    boilSeed('whip');
-    for (let i = 0; i < 16; i++) {
-      const x = 40 + hash(i * 3.3) * 1000, y = BAND[0] + hash(i * 1.7) * (BAND[1] - BAND[0]), l = 120 + 260 * hash(i * 5.1);
-      inkLine([[x, y], [x, y + dir * l * a]], 3 * a, '#FFF6E6', 'inkfine', 0);
-    }
-  }
+  const whip = fableWhip;
 
   // ================= B · the sky over the town =================
   function actSky(t, lt, dur) {
@@ -331,26 +310,4 @@
 
   shots([[0, actPond], [B0, actSky]]);
 
-  // model sheets: ?loop=ttcast, ?loop=ttdood
-  LOOPS.ttcast = t => {
-    paint(rectPts(-20, -20, W + 40, H + 40), { wash: '#EFE3CC', ink: null });
-    tortoise(300, 500, 34, { lid: .35 });
-    tortoise(760, 500, 34, { neck: 1, eyes: 'wide', mouth: 'open' });
-    tortoise(300, 900, 34, { neck: .7, eyes: 'angry', mouth: 'bite', puff: .8, tint: 'flush', tintK: .6 });
-    { const o = { neck: 1, neckA: -.6, rot: -.5, dangle: 1, kick: t, eyes: 'happy', mouth: 'bite', noShadow: true }, m = tortoiseMouth(0, 0, 34, o);
-      stick(760, 700, 0, 'stk'); tortoise(760 - m[0], 700 - m[1], 34, o); }
-    hamsa(300, hamsaStandY(1450, 30), 30, { tuft: 1, eyes: 'stern' });
-    hamsa(760, hamsaStandY(1450, 30), 30, { down: 1, beak: .6 });
-    hamsa(300, 1650, 30, { fly: 1, flap: t * 1.5, eyes: 'half' });
-    hamsa(760, 1650, 30, { fly: 1, flap: t * 1.5 + .5, tuft: 1, flip: true });
-  };
-  LOOPS.ttcast.len = 2;
-  LOOPS.ttdood = t => {
-    paint(rectPts(-20, -20, W + 40, H + 40), { wash: '#EFE3CC', ink: null });
-    ['lake', 'wings', 'stick', 'zip', 'wheel', 'wheelLegs', 'burst'].forEach((k, i) => {
-      const x = 280 + (i % 2) * 520, y = 300 + Math.floor(i / 2) * 420;
-      bubble(x, y, 420, 300, [x - 120, y + 220], 1, 'd' + i, DOODLE[k]);
-    });
-  };
-  LOOPS.ttdood.len = 1;
 })();
