@@ -1,6 +1,4 @@
-// config.js: project settings.
-//   duration: the video's length in seconds.
-//   bpm:      the rhythm that bounces, dances and pulse() follow. Clawd always moves to some beat; if the video has music,
-//             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
-//   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
-const PROJECT = { duration: 11, bpm: 120, offset: 0, w: 1080, h: 1920 };
+// config.js: "Karpur Gauram", a Painterly cinemagraph loop (Shiva in meditation below Kailash at night, white as camphor).
+// No music sync: the owner adds the song in Edits. Every motion in the scene repeats exactly over this length, so the
+// reel (and any loop of it) has no seam.
+const PROJECT = { duration: 15, w: 1080, h: 1920, fonts: ['52px "Tiro Devanagari Sanskrit"', '96px "Tiro Devanagari Sanskrit"', '600 30px Poppins'] };
