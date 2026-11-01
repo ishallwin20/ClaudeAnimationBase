@@ -9,8 +9,9 @@
 //   svVasuki(ph)       Vasuki's neck and spread hood rising over his right shoulder, for sway phase ph (box SV_SNAKE_BOX).
 //   svFire(ph)         the dhuni's flames for flicker phase ph (box SV_FIRE_BOX).
 //   svTrishul(ph)      the trishul with the damru tied below the prongs, its red cloth for flutter phase ph (SV_TRI_BOX).
-// Positions the scene needs: SV_FACE, SV_THIRD (the third eye), SV_MOON (the crescent), SV_GANGA (the stream's path),
-// SV_HOOD(ph) (the snake's mouth), SV_FIRE (the fire's base).
+// Positions: SV_FACE, SV_THIRD (the third eye), SV_MOON (the crescent), SV_GANGA (the stream's path), SV_HOOD(ph) (the
+// snake's mouth), SV_FIRE (the fire's base).
+//   svScene(c, t, o)   the whole cinemagraph at loop time t (o.len: the loop's length; o.wake: the wake-up; o.top: sky).
 const SV_S = 1.1, SV_FY = 880;                        // the figure, drawn in ptHanuman's frame, is scaled by SV_S, its face at y SV_FY
 const SVH = (x, y) => [PT_HX + (x - PT_HX) * SV_S, SV_FY + (y - 1000) * SV_S];   // ptHanuman's frame → the reel's
 function svPlace(c) { c.translate(PT_HX * (1 - SV_S), SV_FY - 1000 * SV_S); c.scale(SV_S, SV_S); }   // draw in ptHanuman's frame
@@ -359,3 +360,94 @@ function svTrishul(ph) {
     }
   };
 }
+
+// ---------- the scene ----------
+// svScene(c, t, o) draws the whole cinemagraph at loop time t for a loop of o.len seconds (a whole number): every motion
+// runs a whole number of times a loop, at about the pace it has in the 15 s reel. o.wake (0..1, default 1): the iPhone
+// wake-up (the halo rises, the mantra rings open, the Ganga starts to run). o.top: how far up the sky goes (stars).
+const SV_SNAKE_N = 12, SV_CLOTH_N = 10, SV_FIRE_N = 12, SV_FIRE_FPS = 8;   // poses; flame steps a second
+const svFireSeq = L => Array.from({ length: L * SV_FIRE_FPS }, (_, i) => (i * 5 + (hash(i * 1.7) * 3 | 0)) % SV_FIRE_N);   // never the same pose twice running
+
+// the Ganga's path from the top of his knot, up and over to the right, falling away into spray
+const SV_GANGA = [SVhd(546, 776), [556, 716], [590, 696], [640, 700], [684, 732], [712, 790], [730, 870]].map(([x, y]) => SVH(x, y));
+function svGanga(c, t, L, k = 1) {
+  const C = through(SV_GANGA, 10), n = C.length;
+  c.save(); c.globalAlpha = .4 * k; limb(c, SV_GANGA, [10, 14, 18, 20, 24, 30, 40], 'rgba(150,190,250,.5)'); c.globalAlpha = .55 * k; limb(c, SV_GANGA, [5, 7, 8, 9, 10, 10, 8], 'rgba(220,238,255,.6)'); c.restore();
+  // the water running: bright beads travelling along it, a whole number of runs a loop
+  for (let i = 0; i < 26; i++) {
+    const s = frac(i / 26 + t * svPer(L, 6) / L), p = s * (n - 1), j = Math.min(n - 2, p | 0), f = p - j;
+    const x = lerp(C[j][0], C[j + 1][0], f), y = lerp(C[j][1], C[j + 1][1], f);
+    glow(c, x, y, 7 + s * 6, '#E6F4FF', (.55 + .3 * hash(i)) * Math.sin(s * Math.PI) ** .5 * k, 'lighter');
+  }
+  // spray falling off the end and fading
+  const [ex, ey] = SV_GANGA[SV_GANGA.length - 1];
+  for (let i = 0; i < 18; i++) {
+    const s = frac(hash(i + 2) + t * svPer(L, 3 + (i % 3)) / L), x = ex + (hash(i + 7) - .3) * 40 + s * 24, y = ey + s * s * 140;
+    glow(c, x, y, 5 + hash(i) * 4, '#DDEEFF', .6 * (1 - s) * k, 'lighter');
+  }
+  glow(c, ...SV_GANGA[0], 26, '#CFE6FF', .5 * k, 'lighter');
+}
+
+// stars: only in the open sky (not over Kailash or the ranges)
+const svInSky = (x, y) => y < 880 && !(y > 560 && Math.abs(x - 800) < (y - 560) * .6 + 50) && !(x < 480 && y > 850);
+const svStars = (top = 0) => Array.from({ length: Math.round(140 * (850 - top) / 850) }, (_, i) => [hash(i * 3.1) * PT_W, top + 30 + Math.pow(hash(i * 7.7), 1.2) * (820 - top), .4 + hash(i * 1.3)]).filter(([x, y]) => svInSky(x, y));
+const svPer = (L, n15) => Math.max(1, Math.round(n15 * L / 15));   // n15 times in 15 s → a whole number of times in L s
+
+function svScene(c, t, o = {}) {
+  const L = o.len || 15, LP = TAU / L, wake = o.wake ?? 1, e = easeOut(wake), n = k => svPer(L, k);
+  const looped = (t, draw) => { const u = t / L; draw(t, 1 - u); draw(t - L, u); };   // drifting things come back round
+  const stars = svScene.stars[o.top || 0] ??= svStars(o.top || 0), fireSeq = svScene.fire[L] ??= svFireSeq(L);
+  ptDraw(c, ptLayer('sv_night' + (o.top || 0), [0, o.top || 0, PT_W, PT_H - (o.top || 0)], c2 => svNight(c2, o.top || 0), { seed: 5 }));
+  stars.forEach(([x, y, s], i) => {
+    const k = .5 + .5 * Math.sin(t * n(2 + (hash(i + 5) * 5 | 0)) * LP + i * 2.4);
+    twinkle(c, x, y, 4 + s * 6, (.2 + .6 * Math.pow(k, 3)) * (.6 + .4 * s), '#EEF0FF');
+  });
+  // his halo: moonlight behind his head, a soft disc and a thin ring, breathing
+  const [hx, hy] = [SV_FACE[0], SV_FACE[1] - 40], br = .5 + .5 * Math.sin(t * n(2) * LP);
+  glow(c, hx, hy, 640, '#7FA2E6', (.28 + .06 * br) * lerp(.4, 1, e), 'screen');
+  glow(c, hx, hy, 260, '#E4EEFF', (.32 + .08 * br) * lerp(.3, 1, e), 'screen');
+  c.save(); c.globalCompositeOperation = 'screen'; c.strokeStyle = `rgba(220,232,255,${(.22 + .08 * br) * e})`; c.lineWidth = 3; c.shadowColor = 'rgba(200,220,255,.9)'; c.shadowBlur = 18;
+  c.beginPath(); c.arc(hx, hy, 236, 0, TAU); c.stroke(); c.restore();
+
+  const kc = Math.floor(t / L * n(10) * SV_CLOTH_N) % SV_CLOTH_N;
+  ptDraw(c, ptLayer('sv_trishul' + kc, SV_TRI_BOX, svTrishul(kc / SV_CLOTH_N), { alpha: true, seed: 23, brushes: PT_BRUSHES.slice(2) }));
+  const hero = ptLayer('sv_shiva', SV_BOX, (c2) => { svPlace(c2); svShiva(c2); }, { alpha: true, seed: 17, brushes: PT_BRUSHES.slice(1), fine: SV_FINE, keep: SV_KEEP });
+  ptDraw(c, hero);
+  // rim light: cool from the halo above and behind; warm from the fire at his left, flickering with it
+  const fl = .5 + .25 * Math.sin(t * n(23) * LP) + .15 * Math.sin(t * n(37) * LP + 1) + .1 * Math.sin(t * n(61) * LP + 2);
+  const rim = ptRim(hero, { dx: 0, dy: -5, col: '#E6F0FF', blur: 6, key: 'svh' });
+  ptDraw(c, rim, (.5 + .15 * br) * lerp(.2, 1, e), 'screen');
+  ptDraw(c, ptRim(hero, { dx: 6, dy: 2, col: '#FFB066', blur: 7, key: 'svf', seed: 4, density: 0 }), .3 + .25 * fl, 'screen');
+  // Vasuki: the hood sways; now and then the tongue flicks
+  const ph = frac(t / L * n(3)), ks = Math.floor(ph * SV_SNAKE_N) % SV_SNAKE_N;
+  ptDraw(c, ptLayer('sv_vasuki' + ks, SV_SNAKE_BOX, svVasuki(ks / SV_SNAKE_N), { alpha: true, seed: 29, brushes: PT_BRUSHES.slice(2), fine: [[...SVH(394, 880), 44]] }));
+  const fq = frac(t / L * n(5)), fk = fq < .1 ? Math.sin(fq / .1 * Math.PI) : 0;
+  if (fk > 0) {
+    const [mx, my] = SV_HOOD(ks / SV_SNAKE_N), L = 26 * fk, wig = Math.sin(t * 90) * 3;
+    c.save(); c.strokeStyle = '#C8202A'; c.lineCap = 'round'; c.lineWidth = 2.6;
+    c.beginPath(); c.moveTo(mx, my); c.quadraticCurveTo(mx + wig, my + L * .6, mx, my + L); c.stroke();
+    c.lineWidth = 1.8; c.beginPath(); c.moveTo(mx, my + L); c.lineTo(mx - 5, my + L + 7 * fk); c.moveTo(mx, my + L); c.lineTo(mx + 5, my + L + 7 * fk); c.stroke(); c.restore();
+  }
+  // the Ganga, the crescent's glow, the third eye breathing
+  svGanga(c, t, L, e);
+  glow(c, ...SV_MOON, 46, '#FFF6D8', (.35 + .12 * Math.sin(t * n(3) * LP)) * e, 'lighter');
+  glow(c, ...SV_THIRD, 16, '#FF9A6A', (.25 + .2 * Math.pow(.5 + .5 * Math.sin(t * n(2) * LP - 1), 2)) * e, 'lighter');
+  // the dhuni: stepped flames, the glow round them, sparks and a thread of smoke
+  const kf = fireSeq[Math.floor(t * SV_FIRE_FPS) % fireSeq.length];
+  glow(c, SV_FIRE[0], SV_FIRE[1] - 50, 300, '#FF8A3A', .32 + .12 * fl, 'lighter');
+  ptDraw(c, ptLayer('sv_fire' + kf, SV_FIRE_BOX, svFire(kf / SV_FIRE_N), { alpha: true, seed: 31 + kf, brushes: PT_BRUSHES.slice(2), rough: 2 }));
+  glow(c, SV_FIRE[0], SV_FIRE[1] - 40, 120, '#FFD27A', .25 + .15 * fl, 'lighter');
+  looped(t, (tt, k) => motes(c, { n: 26, seed: 6, box: [SV_FIRE[0] - 90, SV_FIRE[1] - 520, SV_FIRE[0] + 90, SV_FIRE[1] - 60], r: 2.6, col: '#FFB45A', a: .9 * k, vx: -6, vy: -70, t: tt }));
+  // ॐ नमः शिवाय, round him in rings that open on wake
+  [[250, 235, .55, 25], [326, 312, .4, 24]].forEach(([rx, ry, a, size], i) => {
+    const ki = easeOut(wake >= 1 ? 1 : seg(wake, i * .15, .55 + i * .15)), s = lerp(.55, 1, ki);
+    nameRing(c, SV_FACE[0], SV_FACE[1] + 33, rx * s, ry * s, -Math.PI * 1.08, Math.PI * .08, 'ॐ नमः शिवाय', { size, a: a * ki, gap: 40, rot: (i % 2 ? -1 : 1) * .05 * Math.sin(t * LP + i), ph: t * n(4) * LP, seed: i * 3, shimmer: .45, glow: 'rgba(200,220,255,.85)', col: '#F4F8FF' });
+  });
+  // motes of light in the cold air, and sparkles on his rim
+  looped(t, (tt, k) => motes(c, { n: 50, seed: 4, box: [60, 300, 1020, 1500], r: 2.6, col: '#DDE8FF', a: .55 * k, vx: 5, vy: -8, t: tt }));
+  rim.pts.forEach(([x, y], i) => {
+    const rate = Math.max(1, Math.round((.35 + hash(i) * .4) * L)) / L, q = frac(t * rate + hash(i + 9));
+    twinkle(c, x, y, 8 + hash(i + 3) * 7, Math.pow(Math.max(0, Math.sin(q * Math.PI)), 6) * .8 * e, '#F2F6FF');
+  });
+}
+svScene.stars = {}; svScene.fire = {};
