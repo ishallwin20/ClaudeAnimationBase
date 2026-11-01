@@ -466,7 +466,8 @@ function door3() {
   mesh3(S, new THREE.PlaneGeometry(40, 40), gnd, [0, 0, 6], { rot: [-Math.PI / 2, 0, 0], cast: false });
   const wallM = new THREE.MeshStandardMaterial({ map: plasterTex3().rep(1.5, 1), roughness: .95, color: '#FFF6EA' });
   const DW = 1.1, DH = 2.05, WT = .34;
-  block3(S, 4, 3.2, WT, wallM, [-(DW / 2 + 2), 0, 0]); block3(S, 4, 3.2, WT, wallM, [DW / 2 + 2, 0, 0]);
+  // the walls end inside the jambs (their end faces on the jambs' inner faces z-fought, flickering white)
+  block3(S, 4, 3.2, WT, wallM, [-(DW / 2 + .1 + 2), 0, 0]); block3(S, 4, 3.2, WT, wallM, [DW / 2 + .1 + 2, 0, 0]);
   block3(S, DW, 3.2 - DH - .2, WT, wallM, [0, DH + .2, 0]);
   // the roof's edge: a dark wooden eave with clay tiles
   block3(S, 9, .12, 1.1, pbr3('darkwood', { rep: [6, 1], tint: '#6A4A34' }), [0, 3.2, .3]);
