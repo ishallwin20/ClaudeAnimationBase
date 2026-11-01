@@ -1,0 +1,151 @@
+{
+  "name": "dhan",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "*DHANTERAS* | was never about *GOLD.*"
+      ],
+      "tts": "Dhanteras was never about gold.",
+      "hold": 0.6
+    },
+    {
+      "id": "name",
+      "gap": 0.5,
+      "caps": [
+        "Its other name? | *DHANVANTARI TRAYODASHI.*"
+      ],
+      "tts": "Its other name? Dhanvantari Trayodashi.",
+      "hold": 0.8
+    },
+    {
+      "id": "churn",
+      "gap": 1.1,
+      "caps": [
+        "The gods churned | the *OCEAN OF MILK*",
+        "for *ONE* thing: | *AMRIT.*"
+      ],
+      "tts": "The gods churned the ocean of milk for one thing: amrit.",
+      "hold": 0.9
+    },
+    {
+      "id": "treasure",
+      "gap": 1.1,
+      "caps": [
+        "First came *TREASURES:*",
+        "the wish-cow, the white elephant, | the great *JEWEL.*"
+      ],
+      "tts": "First came treasures: the wish-cow, the white elephant, the great jewel.",
+      "hold": 0.6
+    },
+    {
+      "id": "lakshmi",
+      "gap": 0.6,
+      "caps": [
+        "Then *LAKSHMI* herself, | the goddess of *WEALTH.*"
+      ],
+      "tts": "Then Lakshmi herself, the goddess of wealth.",
+      "hold": 1
+    },
+    {
+      "id": "kept",
+      "gap": 1.1,
+      "caps": [
+        "But the gods | kept *CHURNING.*"
+      ],
+      "tts": "But the gods kept churning.",
+      "hold": 1.5
+    },
+    {
+      "id": "last",
+      "gap": 1,
+      "caps": [
+        "*LAST* of all | rose *DHANVANTARI,*",
+        "carrying a jug | full of *AMRIT.*"
+      ],
+      "tts": "Last of all rose Dhanvantari, carrying a jug full of amrit.",
+      "hold": 0.9
+    },
+    {
+      "id": "health",
+      "gap": 0.7,
+      "caps": [
+        "The god of *HEALTH,* | who gave the world *AYURVEDA.*"
+      ],
+      "tts": "The god of health, who gave the world Ayurveda.",
+      "hold": 0.9
+    },
+    {
+      "id": "prize",
+      "gap": 1.2,
+      "caps": [
+        "*WEALTH* came first. | *LIFE* was the prize."
+      ],
+      "tts": "Wealth came first. Life was the prize.",
+      "hold": 1.8
+    },
+    {
+      "id": "lamp",
+      "gap": 1.5,
+      "caps": [
+        "And for this night, | the *PADMA PURANA* gives *ONE* rule:"
+      ],
+      "tts": "And for this night, the Padma Puraana gives one rule:",
+      "hold": 0.4
+    },
+    {
+      "id": "yama",
+      "gap": 0.4,
+      "caps": [
+        "a lamp for *YAMA* | outside your door,",
+        "so untimely *DEATH* | stays away."
+      ],
+      "tts": "a lamp for Yama, outside your door, so untimely death stays away.",
+      "hold": 1
+    },
+    {
+      "id": "gold",
+      "gap": 0.6,
+      "caps": [
+        "Not one word | about *GOLD.*"
+      ],
+      "tts": "Not one word about gold.",
+      "hold": 1.2
+    },
+    {
+      "id": "save",
+      "gap": 0.6,
+      "y": 1380,
+      "caps": [
+        "*SCREENSHOT THIS* | for Friday."
+      ],
+      "tts": "Screenshot this for Friday.",
+      "hold": 1.6
+    },
+    {
+      "id": "ask",
+      "gap": 1.9,
+      "caps": [
+        "So this Dhanteras: | *GOLD* or *HEALTH?* Comment!"
+      ],
+      "tts": "So this Dhanteras: gold, or health? Comment!",
+      "hold": 1
+    },
+    {
+      "id": "next",
+      "gap": 0.6,
+      "caps": [
+        "*NEXT:* do your *DIWALI AARTI* | *WITH* our reel.",
+        "*FOLLOW* | so you don't miss it."
+      ],
+      "tts": "Next: do your Diwali aarti with our reel. Follow, so you don't miss it.",
+      "hold": 0.6
+    }
+  ]
+}
