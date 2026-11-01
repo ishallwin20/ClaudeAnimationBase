@@ -43,6 +43,7 @@ const WALLS3 = [
 const WALLS4 = [
   ['01-hanuman-ram-dhyan', 'pt_hanuman', 'studio_wall_pt.html'],   // the राम rings bloom open round him
   ['02-hanuman-sanjeevani', 'pt_sanjeevani', 'studio_wall_pt.html', true],   // the herbs on the peak light up; a 12 s loop, played once
+  ['03-shiva-karpur-gauram', 'pt_shiva', 'studio_wall_pt.html'],   // his halo rises, the mantra rings open, the Ganga starts to run
 ].map(([f, l, page, once]) => [f, l, [l + '_wake', 1.5], page, once]);
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 const B3 = String(args.batch) === '3', B4 = String(args.batch) === '4', LIST = B4 ? WALLS4 : B3 ? WALLS3 : WALLS;

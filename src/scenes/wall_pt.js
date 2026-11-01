@@ -125,3 +125,13 @@ wallP('pt_sanjeevani', { bloom: .24, vignette: .5, grain: .045 }, (c, t, k) => {
 }, SJL);
 // loopedW for the 12 s loop
 function loopedW2(t, draw) { const u = t / SJL; draw(t, 1 - u); draw(t - SJL, u); }
+
+// ---------- Shiva, Karpur Gauram (the reel on reel/shiva-dhyan-loop; designs and scene in shiva_cast.js) ----------
+// The reel's scene moved down 420 px, the night sky grown up behind the clock (more stars there), no verse. A 6 s loop:
+// one sway of Vasuki's hood, two tongue flicks, the fire on its 8-a-second poses. wake: his halo rises, the ॐ नमः शिवाय
+// rings open out round him and the Ganga starts to run from his jata.
+const SVDY = 420;
+wallP('pt_shiva', { bloom: .24, vignette: .5, grain: .045 }, (c, t, k) => {
+  c.translate(0, SVDY);
+  svScene(c, t, { len: WL, wake: k, top: -SVDY });
+});
