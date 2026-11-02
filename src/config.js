@@ -1,6 +1,5 @@
-// config.js: project settings.
-//   duration: the video's length in seconds.
-//   bpm:      the rhythm that bounces, dances and pulse() follow. Clawd always moves to some beat; if the video has music,
-//             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
-//   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
-const PROJECT = { duration: 11, bpm: 120, offset: 0, w: 1080, h: 1920 };
+// config.js: project settings for the Diwali aarti-along (ad 73, the 3D style): one seamless loop, no voice.
+//   duration: the loop's length in seconds (LOOP in along.js: frame 0 follows the last frame); w, h: 9:16; fonts: loaded
+//   before the first frame.
+const PROJECT = { duration: 31, w: 1080, h: 1920, audio: 'assets/along_mix.wav',
+  fonts: ['700 50px Cinzel', '700 150px Cinzel', '700 56px Cinzel', '700 48px Cinzel', '700 32px Cinzel', '700 26px Cinzel', '700 110px Cinzel', '700 64px Cinzel', '700 40px Cinzel', 'italic 64px Marcellus', '40px Marcellus'] };
