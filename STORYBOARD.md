@@ -1,160 +1,136 @@
-# Ad 70: "His father ordered PARSHURAMA to KILL HIS MOTHER" (Parshurama series, Part 3)
+# Ad 72: "PARSHURAMA vs the KING with 1000 ARMS" (Parshurama series, Part 4)
 
-An ~87 s Painted reel with Bangers captions, no voiceover, and dark, spare SFX (not cartoon foley this time). It stands
-on its own and ends on the Navadurga card (no price).
+An 87.4 s Painted reel with Bangers captions, no voiceover and SFX: Part 2's retro cartoon foley for the king and Ravana,
+Part 3's dark hits for the theft and the axe. It stands on its own and ends on the Navadurga card (no price).
 
-**Pacing (owner, 1 Nov 2026): "the starting few seconds fast enough (like in Part 1), the latter ones the same pace as
-Part 2."** So there are two speeds:
-- **The cold open (0–10.2 s)** cuts like Part 1: the hook (3.4 s), the father's order (1.4 s), four refusals in four
-  whip-pans (0.7 s each), "ONE DIDN'T." (2.6 s). Three short, one-line caption groups after the hook.
-- **The story (10.2–83.4 s)** keeps Part 2's pace: 13 caption groups in ~73 s, two-line captions up ≥ 3.5 s, quotes
-  ≥ 4.2 s, picture alone between them, shots ≥ 4 s, apart from the deliberate shot / reverse on the order.
-
-**Intensity (owner: "if it's intense, make it really intense"):** this part is the darkest in the series, so it plays as
-a thriller, not a cartoon. Blood-maroon grounds, burning eyes, a sub drone and a heartbeat, silence before every hit.
-The killing is NEVER shown: a silhouette lifts the axe against the sun, the heartbeat slows, half a second of silence, then
-cut to the ashram's lamp as its flame goes out, and black. "HE OBEYED." in the dark.
+**Pacing:** Part 3's shape. A fast cold open (0–9.8 s: the hook 3.6 s, the theft 3.6 s, "BIG MISTAKE." 2.6 s), then
+Part 2's pace: 15 caption groups in ~74 s, two-line captions up ≥ 3.5 s, three-liners and the quote ≥ 4.5 s.
 
 ```
-Logline: Jamadagni orders his sons to kill their mother Renuka. Four refuse and his curse takes their minds. Rama, the
-         youngest, obeys. Pleased, the sage offers boons, and Rama spends them undoing it all: his mother alive, with no
-         memory of it, and his brothers healed.
-Why it should travel: the most shocking episode in Parshurama's life, told straight from the Mahabharata, with a twist
-         almost nobody knows (he used the boons to bring her back, and she never knew). It ends on a real debate:
-         "4 SONS REFUSED. 1 OBEYED. WHO WAS RIGHT?" — a question with no easy answer drives comments.
-Hook:    Frame 0: young Parshurama close on a blood-maroon ground, the axe trembling in his hand, eyes wide, a sweat drop.
-         Caption up: "HIS FATHER ORDERED" / "PARSHURAMA" (gold) / "TO KILL HIS MOTHER." (red).
-World:   blood-maroon (the cold open) → the ashram by day → the river at noon (bright, lush) → a bokeh close → the ashram
-         at dusk (cold blue) → blood-maroon (DHIK!) → dusk, then violet (the curse) → the sunset ridge → blood-maroon (the
-         order) → the sun (the silhouette) → black (the lamp) → night → night lit gold by the lamp (the boons) → dawn →
-         blood-maroon (the ask) → the card.
-Motif:   THE LAMP. It goes out at the killing and lights again at the first boon; its gold light brings her back.
-         Second motif: THE EYES. The father's burning eyes (red with anger, violet with the curse), the brothers' blank
-         eyes, Rama's wide then teary eyes, Renuka's starlit eyes at the river and her happy, closed eyes at the end.
-Arc:     dread (frame 0) → shock (the order, the refusals) → calm (the family) → longing (the river) → guilt (home) →
-         fury ("DHIK!") → terror (the curse) → heartbreak (the order to Rama) → silence (the lamp) → mercy (the boons) →
-         tears and relief (she never knew) → debate (the ask).
+Logline: Kartavirya Arjuna, the king with a thousand arms who once caught Ravana like a monkey, is fed with his whole
+         army by Sage Jamadagni's wish-cow, wants her, and has her dragged away crying with her calf. Rama comes home,
+         goes after him alone, through 17 armies and 500 bows, and his axe ends it. He brings the cow home, and his
+         father says: "We are brahmins, son. Our strength is forgiveness."
+Why it should travel: a power ladder everybody knows one end of (RAVANA lost to this king; this king lost to
+         PARSHURAMA), a cow taken from a sage (a gut punch for this audience), a hero's rampage, then a twist: the
+         father isn't proud. The ask continues the ladder: "WHO HUMBLED PARSHURAMA?" (Ram, Bhishma, comment fights).
+Hook:    Frame 0: the king on a crimson sunburst, his thousand arms fanned behind him, Ravana tied up and dangling from
+         one fist, ten grumpy faces. "THIS KING HAD 1000 ARMS" / "AND CAPTURED" / "RAVANA." (gold)
+World:   crimson sunburst → the ashram at sunset (the theft) → blood-maroon → the court → the Narmada at noon → Ravana's
+         camp → blood-maroon → the river bank → the ashram by day → sunset → the dusk plain (the chase, the armies,
+         the bows, the hill) → the sun → the dust at dusk (the crown) → the ashram by day → dusk → the sunburst → card.
+Motif:   THE ARMS: a fan that sprouts ring by ring, holds back a river, holds Ravana up, holds 500 bows and a hill; after
+         the axe there is only a crown rolling in the dust. And THE COW: glowing at the feast, crying when taken,
+         nuzzling Rama at home.
 ```
 
 ## Characters
-- **Rama (young Parshurama)**: shared `parshurama()`, `beard: false`, `flip: 1` (the axe in his right hand), as at the end
-  of Part 2: he has Shiva's axe. Against the sun in L his palette is all one dark (`silPal(PSR)`).
-- **Jamadagni**: `valmiki()` with a long dark-grey beard and an ochre dhoti (`jamadagni()` in parshu3_props.js); his
-  eyes blaze (`eyeBlaze`) red in anger, violet as he curses.
-- **Renuka**: `parvati()` with no crown, a rose saree and a turmeric blouse (`renuka()`); a clay water pot on her hip at
-  the river and coming home; `eyeStars` as she gazes at the king; water drips as she comes home.
-- **The four elder brothers** (`brother(i)`, BROS): Parshurama's rig without axe, quiver, hide or aura, bearded, each
-  in his own cloth: Rumanvan (ochre), Sushena (rust), Vasu (olive), Vishvavasu (undyed). Name tags as they're ordered.
-  Cursed: `dazed()` (blank white eyes, a violet fog, slow stars), slumped.
-- **King Chitraratha and his wife**: `dasharatha()` (young, black beard, sky-blue and gold) with a pink lotus garland,
-  and `kaikeyi()` in sea-green; waist-deep in the river, splashing, far off.
+- **Kartavirya Arjuna** (`kartavirya()` in parshu4_props.js): Dasharatha's rig, young, a short black beard, the gold
+  kirita, a crimson dhoti, a gold uttariya; `armFan()` behind him: 66 arms in three rings with gold bangles (`fan` 0..1
+  sprouts them, `fanRange` aims them, `fanHeld: 'bow' | 'grip'`, `fanSil`). `kartReach()` is one long arm out to a fist
+  (holding Ravana).
+- **Ravana**: the shared chibi `ravana()`; `ravanaTied()` folds his arms away and ropes him; `spread: .62` narrows the
+  head row when he dangles.
+- **Kamadhenu** (`kamadhenu()`): cow.js in pure white with a gold light; her calf is `cow({ calf: 1, coat: 'dhavala' })`.
+- **Rama (young Parshurama)**: `parshurama()`, `flip: 1`, clean-shaven, as in Parts 2–3. **Jamadagni**: `jamadagni()`
+  (Part 3). **The queens**: `queen4()` on Kaikeyi's rig. **Haihaya soldiers**: `soldier()` on Narad's rig, iron helmet,
+  spear.
 
-## Time constants (video s; shared by `src/scenes/parshu3.js` and `tools/parshu3_sfx.mjs`)
+## Time constants (video s; shared by `src/scenes/parshu4.js` and `tools/parshu4_sfx.mjs`)
 ```js
-B0 = 3.4, C0 = 4.8, D0 = 7.6
-E0 = 10.2, WALK = 13.6
-F0 = 15.2, G0 = 20.6
-H0 = 25.6, OPEN = 27.4, DHIK = 30.4
-I0 = 34.0, J0 = 39.4, CURSE = 40.6
-K0 = 45.0, FATHER = 47.2, REACT = 49.6
-L0 = 51.6, LAMP = 55.1, M0 = 59.0
-N0 = 64.2, B1 = 65.0, B2 = 67.6, B3 = 70.2
-O0 = 73.8, P0 = 79.0, CARD = 83.4, END = 87.4
+B0 = 3.6, C0 = 7.2
+D0 = 9.8, SPROUT = 11.0
+E0 = 15.2, F0 = 20.2, WAVE = 21.4
+G0 = 25.0, CAUGHT = 26.6
+H0 = 30.0, I0 = 35.0, J0 = 39.6
+K0 = 44.6, SEE = 46.4, L0 = 48.6
+M0 = 53.0, N0 = 58.4, LOOSE = 59.8, N1 = 60.6
+O0 = 63.4, LEAP = 64.5, AXE = 65.0
+P0 = 68.0, Q0 = 72.6, R0 = 78.4, CARD = 83.4, END = 87.4
 ```
 
 ## Shots and reads (captions inside y 420–1500, left of x 930)
 **The cold open (fast)**
-- **A 0–3.4 · the hook.** Rama close on blood-maroon, the axe trembling, a slow push. "HIS FATHER ORDERED" /
-  "PARSHURAMA" / "TO KILL HIS MOTHER." up from frame 0 (4.4 s of read with the offset). Sub drone, heartbeat. [white flash]
-- **B 3.4–4.8 · the order.** Jamadagni close, eyes blazing red, his arm thrust out to the side, pointing. Thunder, a boom,
-  a low "Kill her." No caption (the hook said it).
-- **C 4.8–7.6 · four refuse.** Four whip-pans, one brother each, eyes shut, shaking his head. "4 SONS REFUSED." A drum and
-  a "mm-mm" on each cut.
-- **D 7.6–10.2 · one didn't.** Rama close: eyes open, hard; the axe's glow pulses with a heartbeat. "ONE DIDN'T." (gold)
-  [iris to black]
+- **A 0–3.6 · the hook.** The king, the fan, Ravana dangling. "THIS KING HAD 1000 ARMS" / "AND CAPTURED" / "RAVANA."
+- **B 3.6–7.2 · the theft.** Sunset ashram: soldiers drag the white cow by a rope, tears. "THEN HE STOLE A COW" / "FROM
+  PARSHURAMA'S FATHER."
+- **C 7.2–9.8 · big mistake.** Rama close on blood-maroon; his eyes open and blaze; the axe pulses. "BIG MISTAKE."
 
 **The story (Part 2's pace)**
-- **E 10.2–15.2 · the family.** The ashram by day: Jamadagni in tapas, Renuka, the five sons in a row, the youngest
-  glowing, tagged RAMA. 13.6 they set off to gather fruit. "SAGE JAMADAGNI AND RENUKA" / "HAD 5 SONS. RAMA WAS THE
-  YOUNGEST." · 4.6 s
-- **F 15.2–20.6 · the river.** Renuka on the near bank with her water pot, looking across: a king and his queen
-  waist-deep, splashing and laughing, a lotus garland, his gold catching the sun. "ONE DAY AT THE RIVER, SHE SAW" / "A KING
-  PLAYING IN THE WATER." · 4.8 s
-- **G 20.6–25.6 · her heart wandered.** Renuka close over bokeh: a slow smile, a blush, starlight in her eyes. "FOR ONE
-  MOMENT," / "HER HEART WANDERED." (gold) · 4.4 s. A low, wrong swell as the frame cools to dusk.
-- **H 25.6–30.4 · home.** The ashram at dusk: she walks in with the pot, head down, dripping, trembling; her soft glow
-  fades; Jamadagni's eyes open (27.4). "SHE CAME HOME, SHAKING." / "THE SAGE SAW IT IN HER FACE." · 4.2 s. A riser, then
-  0.2 s of silence.
-- **H2 30.4–34.0 · "DHIK!"** Smash to Jamadagni close, roaring, eyes blazing, a shock ring, a hard shake, a red flash.
-  "\"DHIK!\"" (red, huge) / "(SHAME!)" · 3.6 s. A taiko, thunder, a ring after.
-- **I 34.0–40.6 · the order.** Dusk: Jamadagni on the left, pointing; the four brothers in a row, frozen, wide-eyed,
-  sweating; their name tags pop in (RUMANVAN, SUSHENA, VASU, VISHVAVASU). "HE ORDERED EACH SON:" / "\"KILL YOUR
-  MOTHER.\"" (red) · 4.7 s. A heartbeat quickening.
-- **J 40.6–45.0 · the curse.** His eyes go violet, a curse wave rolls over them, a violet flash; one by one they slump,
-  blank-eyed, dazed. "THEY STOOD SILENT." / "HIS CURSE TOOK THEIR MINDS." (violet) · 5.0 s
-- **K 45.0–51.6 · Rama comes home; the order.** 45.0 the sunset ridge: Rama walks in, the axe on his shoulder, and stops
-  at his dazed brothers (picture alone). 47.2 Jamadagni close, red: "\"KILL YOUR MOTHER, SON." / "AND DO NOT GRIEVE.\""
-  (4.2 s, across the cut) · 49.6 the reverse: Rama close, the sun behind him; his face falls; tears.
-- **L 51.6–59.0 · he obeyed.** A silhouette against the sun slowly lifting the axe; the heartbeat slows; the frame
-  sinks to black; silence. 55.1 the ashram's lamp, close: the flame goes out, a curl of smoke. "HE OBEYED." in the dark
-  · 3.0 s. A ringing tone, one deep bell.
-- **M 59.0–64.2 · the boon.** Night; Jamadagni, calm now, a hand raised in blessing; Rama kneeling, head bowed.
-  "\"WHAT YOU DID WAS HARD, SON." / "ASK FOR ANY BOON.\"" (gold) · 4.6 s
-- **N 64.2–73.8 · the boons.** "RAMA ASKED:" then the list builds: 65.0 "1. BRING MY MOTHER BACK." (the lamp catches,
-  its gold light spreads, and Renuka forms out of the light, eyes closed, in sparkles: a harp glissando and a choir pad);
-  67.6 "2. LET HER NEVER REMEMBER IT."; 70.2 "3. HEAL MY BROTHERS." (the violet fog lifts, their eyes come back). All up
-  to 73.6: 9.1 s for the first line, 3.4 s for the last.
-- **O 73.8–79.0 · she never knew.** Dawn: Renuka, smiling, lays her hand on Rama's head; he weeps and smiles. "SHE WOKE UP
-  SMILING…" / "SHE NEVER KNEW." (gold) · 4.6 s
-- **P 79.0–83.4 · the ask.** Blood-maroon: the four brothers on the left, VS, Rama on the right with the axe and a warm
-  aura. "4 SONS REFUSED. 1 OBEYED." / "WHO WAS RIGHT?" (gold) / "COMMENT BELOW" · 4.2 s
-- **Q 83.4–87.4 · the card.** `navCard()` (from Part 2): the Navadurga Set, OUT NOW, rishikatha.com, link in bio, follow.
+- **D 9.8–15.2 · the boon.** The court, a column of light; he prays; the arms sprout ring by ring (pops). "KING
+  KARTAVIRYA ARJUNA" / "PRAYED TO DATTATREYA" / "AND GOT 1000 ARMS."
+- **E 15.2–20.2 · the Narmada.** Waist-deep, arms wide, the river heaped up behind him, two queens splashing. "IN THE
+  NARMADA, HE STOPPED" / "THE RIVER WITH HIS ARMS."
+- **F 20.2–25.0 · the flood.** Ravana munching outside his tent; a wave sweeps in; ten wet faces, a nightcap floats off.
+  "THE RIVER FLOWED BACK" / "AND FLOODED RAVANA'S CAMP."
+- **G 25.0–30.0 · caught.** Ravana storms in, dripping (blood-maroon); smash to the bank: the king holds him up by the
+  crown, tied, swinging; the queens laugh. "RAVANA PICKED A FIGHT." / "THE KING CAUGHT HIM" / "LIKE A MONKEY!"
+- **H 30.0–35.0 · the feast.** The ashram: Jamadagni, the glowing cow, soldiers whose leaf plates fill with sparkles, the
+  king staring. "SAGE JAMADAGNI FED HIS ARMY" / "FROM HIS WISH-COW, KAMADHENU."
+- **I 35.0–39.6 · greed.** The king close, a gold glint in his eyes, the cow behind. "A SAGE RICHER THAN A KING?" / "THE
+  KING WANTED HER."
+- **J 39.6–44.6 · taken.** Sunset: soldiers drag her off, both crying, the calf following; the sage sits, eyes shut.
+  "HIS MEN DRAGGED HER AWAY," / "CRYING, WITH HER CALF."
+- **K 44.6–48.6 · home.** Rama walks in smiling; the empty stake, a snapped rope; his face falls, then burns (push-in).
+  "RAMA CAME HOME." / "THE COW WAS GONE."
+- **L 48.6–53.0 · the chase.** The dusk plain, running, axe and bow, dust, a war drum. "HE TOOK HIS AXE AND BOW" / "AND
+  WENT AFTER THE KING."
+- **M 53.0–58.4 · 17 armies.** Ranks to the horizon; a brawl cloud; soldiers flung out swirl-eyed; Rama pops up, axe
+  high. "THE KING SENT 17 ARMIES." / "RAMA FOUGHT THEM ALONE."
+- **N 58.4–63.4 · 500 bows.** The fan holding a bow in every hand; the volley (59.8). 60.6 Rama with one bow, their
+  arrows breaking on his. "HE SHOT 500 BOWS AT ONCE." / "RAMA HAD ONE."
+- **O 63.4–68.0 · the axe.** The king lifts a hill with its trees; 64.5 Rama leaps against the sun, the axe blazing;
+  65.0 white flash; a gold crown rolls through the dust and falls still. "ONE AXE." / "1000 ARMS."
+- **P 68.0–72.6 · home.** The cow nuzzles Rama, the calf hops, a heart. "HE BROUGHT HER HOME," / "AND HER CALF."
+- **Q 72.6–78.4 · the father.** Jamadagni close, calm, a teaching hand. "BUT HIS FATHER SAID:" / "\"WE ARE BRAHMINS,
+  SON." / "OUR STRENGTH IS FORGIVENESS.\""
+- **R 78.4–83.4 · the ask.** A podium: RAVANA (tied) < KARTAVIRYA < PARSHURAMA < a glowing "?". "WHO HUMBLED" /
+  "PARSHURAMA?" / "COMMENT BELOW"
+- **S 83.4–87.4 · the card.** `navCard()`.
 
 ## Sound
-`tools/parshu3_sfx.mjs` → assets/parshu3_sfx.wav; assets/parshu3_mix.wav is it +16 dB through a limiter (−1.9 dBFS
-ceiling): −16.3 LUFS integrated, true peak −1.7 dB. Both kept out of git. The soft stretches (morning, river, boons,
-waking) are lifted in the script (LIFT) so they carry on a phone. Never cartoon: no boings or squeaks in this part.
+`tools/parshu4_sfx.mjs` → assets/parshu4_sfx.wav; assets/parshu4_mix.wav is it +17 dB through a limiter (0.8 ceiling):
+−16.6 LUFS integrated, true peak −1.5 dB. Both kept out of git.
 
 ## Facts used
-All from the **Mahabharata, Vana Parva 3.116** (Akritavrana tells Yudhishthira the story at Mahendra mountain), verses
-quoted from the Sanskrit text (enjoylearningsanskrit.com, ch. 116; Ganguli's Vana Parva section CXVI is the same).
+One version: the **Bhagavata Purana, Skandha 9, chapter 15** (verse numbers as in the BBT edition, vedabase.io).
 
 | Beat | Source |
 |---|---|
-| Jamadagni, of great austerities; he married Renuka, King Prasenajit's daughter | MBh 3.116.1–3 |
-| Five sons, Rama the fifth and youngest | 3.116.4 (*kumārāś catvāro jajñire rāmapañcamāḥ … rāma āsīj jaghanyajaḥ*) |
-| The sons had gone out for fruit; Renuka went to bathe | 3.116.5 (*phalāhāreṣu sarveṣu gateṣv atha suteṣu*) |
-| She saw King Chitraratha of Martikavata playing in the water with his wife, wearing a lotus garland | 3.116.6–7 (*krīḍantaṃ salile … sabhāryaṃ padmamālinam*) |
-| She longed for him ("her heart wandered" is our gentle wording for *spṛhayāmāsa*) | 3.116.7 |
-| She came home wet and shaken; her husband knew | 3.116.8 (*klinnāmbhasi … praviveśāśramaṃ trastā tāṃ vai bhartānvabudhyata*) |
-| He saw her fallen from steadiness, her radiance gone, and cried "Dhik!" (shame) | 3.116.9 (*dhik-śabdena garhayāmāsa*) |
-| The four sons came: Rumanvan the eldest, Sushena, Vasu, Vishvavasu | 3.116.10 |
-| He ordered each in turn to kill their mother; dumbstruck, they said nothing | 3.116.11 |
-| He cursed them; they lost their minds and became like beasts and birds | 3.116.12 (*cetanāṃ jahuḥ, mṛgapakṣisadharmāṇaḥ*) |
-| Rama came last; Jamadagni: "Kill this mother of yours, and do not grieve, son" | 3.116.13–14 (*jahīmāṃ mātaraṃ … mā ca putra vyathāṃ kṛthāḥ*); the caption drops the word *pāpām* (sinful) |
-| Rama took the axe and did it (never shown) | 3.116.14 (*tata ādāya paraśuṃ rāmo …*) |
-| His anger left him; "You did a hard thing at my word: choose your wishes" | 3.116.15–16 (*kṛtaṃ te karma duṣkaram, vṛṇīṣva kāmān*) |
-| Rama asked: his mother raised up, no memory of the killing, the sin not to touch him, his brothers restored, no equal in battle, a long life; all granted | 3.116.17–18 |
+| Kartavirya Arjuna, king of the Haihayas, worshipped Dattatreya and got a thousand arms, invincibility | Bhagavata 9.15.17–19 |
+| Sporting in the Narmada with women, he stopped the river with his arms | 9.15.20 |
+| The water flowed back and flooded Ravana's camp; Ravana couldn't bear his power | 9.15.21 |
+| Ravana offended him before the women; he seized him effortlessly, held him at Mahishmati and let him go, "like a monkey" (*kapir yathā*) | 9.15.22 |
+| Out hunting, he came to Jamadagni's ashram | 9.15.23 |
+| The sage received the king, his ministers and army, providing everything through the kamadhenu | 9.15.24 |
+| Seeing the sage's wealth surpass his own, he (and the Haihayas) wanted the cow | 9.15.25 |
+| He had his men take the cow, crying (*krandatīm*), with her calf, to Mahishmati | 9.15.26 |
+| Rama came back, heard, and was furious | 9.15.27 |
+| He took up his axe, shield, bow and quiver and went after the king | 9.15.28 |
+| The king sent 17 akshauhinis; Rama destroyed them alone | 9.15.30–32 |
+| The king fixed arrows on 500 bows at once with his thousand arms; Rama cut them with one bow | 9.15.33 |
+| The king tore up hills and trees; Rama cut off his arms with the axe | 9.15.34 |
+| ... and his head (never shown: the crown in the dust); the king's sons fled | 9.15.35 |
+| Rama brought the cow and calf home to his father | 9.15.36 |
+| Jamadagni: "Killing a king is a sin; we brahmins are worshipped for forgiveness" | 9.15.38–40 (39: *vayaṁ hi brāhmaṇās tāta kṣamayārhaṇatāṁ gatāḥ*) |
+| Atone at the holy places; Rama did, for a year | 9.15.41, 9.16.1 |
 
-**Version:** the Mahabharata's. The Bhagavata (9.16.1–8) sets it after the Kartavirya war, at the Ganga with the Gandharva
-king Chitraratha, and has Rama kill his brothers too, "knowing his father's power"; we don't use it on screen (the series
-order follows the Mahabharata, where Renuka comes before Kartavirya, 3.116.19 on). It goes in the pinned comment as the
-answer to "why did he obey?", labelled as the Bhagavata's.
+**Other versions:** the Mahabharata (Vana Parva 3.116.19–25) tells it briefly: the king takes the homa cow's calf, Rama
+cuts his thousand arms with arrows from a bow, and his sons then kill Jamadagni (Part 5's story). Ravana's capture is
+also in Valmiki's Uttara Kanda (Ravana fights Arjuna at the Narmada and is taken to Mahishmati; Pulastya has him
+released): it backs "RAVANA PICKED A FIGHT."
 
-**On screen, honestly:** the captions list three of the boons ("1. BRING MY MOTHER BACK. 2. LET HER NEVER REMEMBER IT.
-3. HEAL MY BROTHERS.") and never say "only"; the others (no sin on him, no equal in battle, a long life) are in the
-pinned comment. "SHE WOKE UP SMILING" is the picture of *mātur utthānam* (his mother's rising) with no memory. The water
-pot, the lamp, the light she rises from and her hand on his head are staging, not claims. Renuka is never called sinful
-on screen: she is worshipped as a goddess (Renuka Devi, Yellamma) by millions.
-
-**No gags this time.** The comedy rule is "the performance carries it"; this part is played straight.
+**On screen, honestly:** "PRAYED TO" is our gentle word for *ārādhya* (worshipped). The captions name the axe and the bow
+(he also took a shield and quiver). "17 ARMIES" is 17 akshauhinis. "OUR STRENGTH IS FORGIVENESS" is our wording of
+9.15.39. Not claimed: Ravana munching in his camp, the nightcap, the queens' laughter, his fist on Ravana's crown, the
+plates filling with sparkles, the stake and rope, the hill's two trees, the crown rolling, the podium. The order in the
+Bhagavata (Kartavirya, then the pilgrimage, then Renuka) differs from the Mahabharata's (Renuka first) that Part 3
+followed; this part says nothing about order.
 
 ## Cover
-The series template, `src/scenes/parshu3_cover.js` (`cover.html`): Rama close on blood-maroon with the axe, eyes wide; the
-orange PART 3 pill over "HIS FATHER ORDERED" / "PARSHURAMA" (gold) / "TO KILL HIS MOTHER" (red), inside the 3:4 crop.
+`src/scenes/parshu4_cover.js` (`cover.html`): Rama close with the axe, the king's fan of arms behind him on the
+sunburst; the orange PART 4 pill over "PARSHURAMA" (gold) / "VS THE KING" / "WITH 1000 ARMS" (red).
 
-## Build notes
-- Silhouette: `silPal(PSR)` maps every colour to one dark and `col/dk/lt` do the skin; `tilak: false`.
-- `dazed()` paints blank eyes over narada-rig eyes via `naradaEye()` (the rig's own eye kinds don't include 'blank').
-- `whipStreaks()` is drawn before the captions so a cut never wipes a read.
-- Out: `out/parshu3_out/` (parshu3.mp4, cover.png, captions.txt).
+## Out
+`out/parshu4_out/` (parshu4.mp4, cover.png, captions.txt; the pinned comment answers the follower who asked for
+Vishvamitra vs Vasishtha: another king who wanted a sage's wish-cow).
