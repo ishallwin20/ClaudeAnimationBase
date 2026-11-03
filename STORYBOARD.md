@@ -1,136 +1,142 @@
-# Ad 72: "PARSHURAMA vs the KING with 1000 ARMS" (Parshurama series, Part 4)
+# Ad 74: "PARSHURAMA won the whole EARTH, then gave it away" (Parshurama series, Part 5)
 
-An 87.4 s Painted reel with Bangers captions, no voiceover and SFX: Part 2's retro cartoon foley for the king and Ravana,
-Part 3's dark hits for the theft and the axe. It stands on its own and ends on the Navadurga card (no price).
+An 84 s Painted reel with Bangers captions, no voiceover and SFX: Part 3's dark hits for the death, the lamp and the
+vow, a taiko tally for the 21 wars, a tanpura and warm pads for the ashram, the ancestors and the crowning. It stands on
+its own and ends on the Navadurga card (no price).
 
-**Pacing:** Part 3's shape. A fast cold open (0–9.8 s: the hook 3.6 s, the theft 3.6 s, "BIG MISTAKE." 2.6 s), then
-Part 2's pace: 15 caption groups in ~74 s, two-line captions up ≥ 3.5 s, three-liners and the quote ≥ 4.5 s.
+**Pacing:** Part 4's shape. A fast cold open (0–10.2 s: the hook 3.8 s, the gift 3.6 s, "IT TOOK 21 WARS." 2.8 s), then
+Part 2's pace: 14 caption groups in ~70 s, two-line captions up ≥ 3.5 s, three-liners and quotes ≥ 4.5 s.
 
 ```
-Logline: Kartavirya Arjuna, the king with a thousand arms who once caught Ravana like a monkey, is fed with his whole
-         army by Sage Jamadagni's wish-cow, wants her, and has her dragged away crying with her calf. Rama comes home,
-         goes after him alone, through 17 armies and 500 bows, and his axe ends it. He brings the cow home, and his
-         father says: "We are brahmins, son. Our strength is forgiveness."
-Why it should travel: a power ladder everybody knows one end of (RAVANA lost to this king; this king lost to
-         PARSHURAMA), a cow taken from a sage (a gut punch for this audience), a hero's rampage, then a twist: the
-         father isn't proud. The ask continues the ladder: "WHO HUMBLED PARSHURAMA?" (Ram, Bhishma, comment fights).
-Hook:    Frame 0: the king on a crimson sunburst, his thousand arms fanned behind him, Ravana tied up and dangling from
-         one fist, ten grumpy faces. "THIS KING HAD 1000 ARMS" / "AND CAPTURED" / "RAVANA." (gold)
-World:   crimson sunburst → the ashram at sunset (the theft) → blood-maroon → the court → the Narmada at noon → Ravana's
-         camp → blood-maroon → the river bank → the ashram by day → sunset → the dusk plain (the chase, the armies,
-         the bows, the hill) → the sun → the dust at dusk (the crown) → the ashram by day → dusk → the sunburst → card.
-Motif:   THE ARMS: a fan that sprouts ring by ring, holds back a river, holds Ravana up, holds 500 bows and a hill; after
-         the axe there is only a crown rolling in the dust. And THE COW: glowing at the feast, crying when taken,
-         nuzzling Rama at home.
+Logline: Kartavirya's sons take revenge: while Rama is out fetching firewood they kill his father, who is in tapas and
+         will not fight, crying "Rama! Rama!". Rama comes back too late, lights the pyre and vows. Twenty-one times he
+         fights the arrogant kings of the earth, until at Samantapanchaka, by five lakes of blood, his ancestors appear:
+         "We are pleased. Now be at peace." Those lakes are at Kurukshetra. He gives the whole earth to Kashyapa and
+         leaves for the sea; Kashyapa crowns the princes who grew up hidden among bears and cows.
+Why it should travel: a paradox hook (he WON the earth, then GAVE IT AWAY, and the new owner told him to leave), the
+         most famous number in his story (21) as a tally, a reveal everyone knows (KURUKSHETRA), and a feel-good end
+         (bears and cows raised kings). The ask, "WHY EXACTLY 21 TIMES?", draws the people who know the Brahmanda answer;
+         the pinned comment gives it.
+Hook:    Frame 0: Parshurama, axe glowing, standing on top of the whole earth on the crimson sunburst.
+         "PARSHURAMA WON" / "THE WHOLE EARTH." (gold)
+World:   sunburst → the ashram by day (the gift) → blood-maroon → Mahishmati's court at dusk → the ashram by day → dusk
+         → night → the lamp → the ashram at sunset → the night pyre → the court → the dust → the time-lapse ridge →
+         Samantapanchaka at dusk → the ancestors' sky → Samantapanchaka in gold → the ashram (the yagna) → the ashram
+         (the princes) → the sunburst → card.
+Motif:   THE LAMP and THE CROWN from Parts 3–4 (the lamp goes out; crowns roll in the dust), THE LAKES (blood → clear,
+         with lotuses), THE EARTH (a little globe: stood on, handed over, held by Kashyapa).
 ```
 
 ## Characters
-- **Kartavirya Arjuna** (`kartavirya()` in parshu4_props.js): Dasharatha's rig, young, a short black beard, the gold
-  kirita, a crimson dhoti, a gold uttariya; `armFan()` behind him: 66 arms in three rings with gold bangles (`fan` 0..1
-  sprouts them, `fanRange` aims them, `fanHeld: 'bow' | 'grip'`, `fanSil`). `kartReach()` is one long arm out to a fist
-  (holding Ravana).
-- **Ravana**: the shared chibi `ravana()`; `ravanaTied()` folds his arms away and ropes him; `spread: .62` narrows the
-  head row when he dangles.
-- **Kamadhenu** (`kamadhenu()`): cow.js in pure white with a gold light; her calf is `cow({ calf: 1, coat: 'dhavala' })`.
-- **Rama (young Parshurama)**: `parshurama()`, `flip: 1`, clean-shaven, as in Parts 2–3. **Jamadagni**: `jamadagni()`
-  (Part 3). **The queens**: `queen4()` on Kaikeyi's rig. **Haihaya soldiers**: `soldier()` on Narad's rig, iron helmet,
-  spear.
+- **Rama (Parshurama)**: `parshurama()`, `flip: 1`, clean-shaven before the vow as in Parts 2–4; from the pyre on he
+  wears the short beard (`beard: PSR.hair`), the years of the 21 wars.
+- **Jamadagni**: `jamadagni()` (Part 3); sitting in tapas.
+- **Kartavirya's sons** (`kartSon()` in parshu5_props.js): their father's rig without the thousand arms, gold kiritas,
+  three colourways; in F as silhouettes with burning eyes and bows.
+- **Kashyapa** (`kashyapa()`): Valmiki's rig, a long white beard, a turmeric dhoti; `ladle` (the sruva), `earth`.
+- **The ancestors** (`ancestor()`): Valmiki's rig washed in pale gold with a glow; 0 is Richika (Part 1's dark beard).
+- **The hidden princes** (`littlePrince()`): Kartikeya's rig, no spear or shield, `crownK` pops a kirita on; the bear
+  is `jambavan()` (no staff), the cows `cow()` (gauri, and a kapila calf).
 
-## Time constants (video s; shared by `src/scenes/parshu4.js` and `tools/parshu4_sfx.mjs`)
+## Time constants (video s; shared by `src/scenes/parshu5.js` and `tools/parshu5_sfx.mjs`)
 ```js
-B0 = 3.6, C0 = 7.2
-D0 = 9.8, SPROUT = 11.0
-E0 = 15.2, F0 = 20.2, WAVE = 21.4
-G0 = 25.0, CAUGHT = 26.6
-H0 = 30.0, I0 = 35.0, J0 = 39.6
-K0 = 44.6, SEE = 46.4, L0 = 48.6
-M0 = 53.0, N0 = 58.4, LOOSE = 59.8, N1 = 60.6
-O0 = 63.4, LEAP = 64.5, AXE = 65.0
-P0 = 68.0, Q0 = 72.6, R0 = 78.4, CARD = 83.4, END = 87.4
+B0 = 3.8, C0 = 7.4
+D0 = 10.2, E0 = 15.0, F0 = 19.6
+G0 = 24.6, CRY = 25.4, LAMP = 26.6, OUT = 27.4
+H0 = 29.2, DROP = 31.0, I0 = 33.8, VOW = 36.4
+J0 = 38.8, CROWNS = 41.4, K0 = 43.6, TALLY = 44.2, TOP = 48.0      // war n ticks at TALLY + (TOP − TALLY)·√((n−1)/20)
+L0 = 50.0, M0 = 54.8, O0 = 60.0, CALM = 60.2, KURU = 61.6
+P0 = 64.8, GIVE = 65.4, LEAVE = 67.0, R0 = 69.6, CROWN1 = 71.6, S0 = 75.0, CARD = 80.0, END = 84.0
 ```
 
 ## Shots and reads (captions inside y 420–1500, left of x 930)
 **The cold open (fast)**
-- **A 0–3.6 · the hook.** The king, the fan, Ravana dangling. "THIS KING HAD 1000 ARMS" / "AND CAPTURED" / "RAVANA."
-- **B 3.6–7.2 · the theft.** Sunset ashram: soldiers drag the white cow by a rope, tears. "THEN HE STOLE A COW" / "FROM
-  PARSHURAMA'S FATHER."
-- **C 7.2–9.8 · big mistake.** Rama close on blood-maroon; his eyes open and blaze; the axe pulses. "BIG MISTAKE."
+- **A 0–3.8 · the hook.** Rama on top of the earth, axe glowing. "PARSHURAMA WON" / "THE WHOLE EARTH."
+- **B 3.8–7.4 · the gift.** The ashram, a yagna: Kashyapa holds the little earth and points away with his ladle; Rama
+  blinks. "THEN HE GAVE IT AWAY." / "\"NOW LEAVE MY LAND.\""
+- **C 7.4–10.2 · 21 wars.** Rama close on blood-maroon; his eyes open and blaze. "IT TOOK" / "21 WARS."
 
 **The story (Part 2's pace)**
-- **D 9.8–15.2 · the boon.** The court, a column of light; he prays; the arms sprout ring by ring (pops). "KING
-  KARTAVIRYA ARJUNA" / "PRAYED TO DATTATREYA" / "AND GOT 1000 ARMS."
-- **E 15.2–20.2 · the Narmada.** Waist-deep, arms wide, the river heaped up behind him, two queens splashing. "IN THE
-  NARMADA, HE STOPPED" / "THE RIVER WITH HIS ARMS."
-- **F 20.2–25.0 · the flood.** Ravana munching outside his tent; a wave sweeps in; ten wet faces, a nightcap floats off.
-  "THE RIVER FLOWED BACK" / "AND FLOODED RAVANA'S CAMP."
-- **G 25.0–30.0 · caught.** Ravana storms in, dripping (blood-maroon); smash to the bank: the king holds him up by the
-  crown, tied, swinging; the queens laugh. "RAVANA PICKED A FIGHT." / "THE KING CAUGHT HIM" / "LIKE A MONKEY!"
-- **H 30.0–35.0 · the feast.** The ashram: Jamadagni, the glowing cow, soldiers whose leaf plates fill with sparkles, the
-  king staring. "SAGE JAMADAGNI FED HIS ARMY" / "FROM HIS WISH-COW, KAMADHENU."
-- **I 35.0–39.6 · greed.** The king close, a gold glint in his eyes, the cow behind. "A SAGE RICHER THAN A KING?" / "THE
-  KING WANTED HER."
-- **J 39.6–44.6 · taken.** Sunset: soldiers drag her off, both crying, the calf following; the sage sits, eyes shut.
-  "HIS MEN DRAGGED HER AWAY," / "CRYING, WITH HER CALF."
-- **K 44.6–48.6 · home.** Rama walks in smiling; the empty stake, a snapped rope; his face falls, then burns (push-in).
-  "RAMA CAME HOME." / "THE COW WAS GONE."
-- **L 48.6–53.0 · the chase.** The dusk plain, running, axe and bow, dust, a war drum. "HE TOOK HIS AXE AND BOW" / "AND
-  WENT AFTER THE KING."
-- **M 53.0–58.4 · 17 armies.** Ranks to the horizon; a brawl cloud; soldiers flung out swirl-eyed; Rama pops up, axe
-  high. "THE KING SENT 17 ARMIES." / "RAMA FOUGHT THEM ALONE."
-- **N 58.4–63.4 · 500 bows.** The fan holding a bow in every hand; the volley (59.8). 60.6 Rama with one bow, their
-  arrows breaking on his. "HE SHOT 500 BOWS AT ONCE." / "RAMA HAD ONE."
-- **O 63.4–68.0 · the axe.** The king lifts a hill with its trees; 64.5 Rama leaps against the sun, the axe blazing;
-  65.0 white flash; a gold crown rolls through the dust and falls still. "ONE AXE." / "1000 ARMS."
-- **P 68.0–72.6 · home.** The cow nuzzles Rama, the calf hops, a heart. "HE BROUGHT HER HOME," / "AND HER CALF."
-- **Q 72.6–78.4 · the father.** Jamadagni close, calm, a teaching hand. "BUT HIS FATHER SAID:" / "\"WE ARE BRAHMINS,
-  SON." / "OUR STRENGTH IS FORGIVENESS.\""
-- **R 78.4–83.4 · the ask.** A podium: RAVANA (tied) < KARTAVIRYA < PARSHURAMA < a glowing "?". "WHO HUMBLED" /
-  "PARSHURAMA?" / "COMMENT BELOW"
-- **S 83.4–87.4 · the card.** `navCard()`.
+- **D 10.2–15.0 · the sons.** Mahishmati's court at dusk, the empty throne with the crown on it, two sons turning
+  furious. "THE KING WITH 1000 ARMS HAD FALLEN." / "HIS SONS WANTED REVENGE."
+- **E 15.0–19.6 · firewood.** The ashram by day: Jamadagni in tapas by the fire; Rama walks off, axe on his shoulder.
+  "ONE DAY, RAMA WENT" / "TO FETCH FIREWOOD."
+- **F 19.6–24.6 · they come.** Dusk: the sons creep in as silhouettes with bows and burning eyes; the sage does not
+  open his eyes. "THE SONS CAME FOR HIS FATHER." / "HE WAS DEEP IN TAPAS." / "HE WOULD NOT FIGHT."
+- **G 24.6–29.2 · the cry.** Night, Jamadagni close; at 25.4 his eyes open and he calls out. 26.6 the lamp by the
+  wall, arrow shadows sweep over it; 27.4 the flame dies, a wisp of smoke. "HE CALLED OUT:" / "\"RAMA! RAMA!\""
+- **H 29.2–33.8 · too late.** Sunset: Rama walks home smiling, a bundle of firewood on his shoulder; at 31.0 he sees,
+  the sticks clatter down, the camera pushes in on his tears. "RAMA CAME BACK" / "TOO LATE."
+- **I 33.8–38.8 · the pyre.** Night: the pyre burning across the clearing; Rama in front, hands joined, crying; at 36.4
+  his eyes open and blaze, the axe in his hand. "HE LIT HIS FATHER'S PYRE" / "AND MADE A VOW."
+- **J 38.8–43.6 · the sons.** The court: Rama strides in, axe high; the sons yelp; 41.4 white flash; two crowns roll
+  through the dust and fall still. "HE WENT TO THE KING'S CITY" / "AND FACED THE SONS ALONE."
+- **K 43.6–50.0 · 21 times.** Days and nights race over a dark ridge, Rama marching in silhouette; a gold tally ticks
+  1 → 21, faster and faster, a taiko per war. "THEN HE FOUGHT ARROGANT KINGS" / "ALL OVER THE EARTH." then "TIMES."
+  under the 21.
+- **L 50.0–54.8 · Samantapanchaka.** Five red lakes on a dusk plain; Rama stands among them, hands joined, offering to
+  his fathers. "AT SAMANTAPANCHAKA," / "HE FILLED FIVE LAKES WITH BLOOD."
+- **M 54.8–60.0 · the ancestors.** The sky opens gold: four rishis of light on clouds, Richika in front, a hand raised;
+  Rama below, looking up, his aura going out. "THEN HIS ANCESTORS APPEARED." / "\"RAMA, WE ARE PLEASED." / "NOW BE AT
+  PEACE.\""
+- **O 60.0–64.8 · Kurukshetra.** Rama sits in peace; the lakes clear to blue with lotuses, the sky turns gold; a
+  signpost pops up; war banners on the horizon. "THOSE LAKES ARE IN" / "KURUKSHETRA." / "WHERE THE MAHABHARATA WAR WAS
+  FOUGHT."
+- **P 64.8–69.6 · the earth given.** The yagna: the little earth floats from Rama's hands over the fire to Kashyapa;
+  Rama shoulders his axe and walks away. "HE GAVE THE WHOLE EARTH" / "TO SAGE KASHYAPA," / "AND LEFT FOR THE SEA."
+- **R 69.6–75.0 · new kings.** The ashram: a bear with a little prince, a cow and calf with another; Kashyapa raises his
+  hands and crowns pop onto them (71.6, 72.2). "BEARS AND COWS HAD RAISED" / "A FEW HIDDEN PRINCES." / "KASHYAPA MADE
+  THEM KINGS."
+- **S 75.0–80.0 · the ask.** The sunburst, a big glowing 21, Rama below. "WHY EXACTLY" / "21 TIMES?" / "COMMENT IF YOU
+  KNOW"
+- **card 80.0–84.0.** `navCard()`.
 
 ## Sound
-`tools/parshu4_sfx.mjs` → assets/parshu4_sfx.wav; assets/parshu4_mix.wav is it +17 dB through a limiter (0.8 ceiling):
-−16.6 LUFS integrated, true peak −1.5 dB. Both kept out of git.
+`tools/parshu5_sfx.mjs` → assets/parshu5_sfx.wav; assets/parshu5_mix.wav is it +15 dB through a limiter (0.8 ceiling):
+−15.7 LUFS integrated, true peak −1.8 dB. Both kept out of git.
+`ffmpeg -i assets/parshu5_sfx.wav -af "volume=15dB,alimiter=limit=0.8:level=false" assets/parshu5_mix.wav`
 
 ## Facts used
-One version: the **Bhagavata Purana, Skandha 9, chapter 15** (verse numbers as in the BBT edition, vedabase.io).
+One version: the **Mahabharata** (K. M. Ganguli's translation): Vana Parva 3.116–117 (the Tirtha-yatra telling at
+Mahendra), Adi Parva 1.2 (Samantapanchaka) and Shanti Parva 12.49 (Krishna's telling to Yudhishthira).
 
 | Beat | Source |
 |---|---|
-| Kartavirya Arjuna, king of the Haihayas, worshipped Dattatreya and got a thousand arms, invincibility | Bhagavata 9.15.17–19 |
-| Sporting in the Narmada with women, he stopped the river with his arms | 9.15.20 |
-| The water flowed back and flooded Ravana's camp; Ravana couldn't bear his power | 9.15.21 |
-| Ravana offended him before the women; he seized him effortlessly, held him at Mahishmati and let him go, "like a monkey" (*kapir yathā*) | 9.15.22 |
-| Out hunting, he came to Jamadagni's ashram | 9.15.23 |
-| The sage received the king, his ministers and army, providing everything through the kamadhenu | 9.15.24 |
-| Seeing the sage's wealth surpass his own, he (and the Haihayas) wanted the cow | 9.15.25 |
-| He had his men take the cow, crying (*krandatīm*), with her calf, to Mahishmati | 9.15.26 |
-| Rama came back, heard, and was furious | 9.15.27 |
-| He took up his axe, shield, bow and quiver and went after the king | 9.15.28 |
-| The king sent 17 akshauhinis; Rama destroyed them alone | 9.15.30–32 |
-| The king fixed arrows on 500 bows at once with his thousand arms; Rama cut them with one bow | 9.15.33 |
-| The king tore up hills and trees; Rama cut off his arms with the axe | 9.15.34 |
-| ... and his head (never shown: the crown in the dust); the king's sons fled | 9.15.35 |
-| Rama brought the cow and calf home to his father | 9.15.36 |
-| Jamadagni: "Killing a king is a sin; we brahmins are worshipped for forgiveness" | 9.15.38–40 (39: *vayaṁ hi brāhmaṇās tāta kṣamayārhaṇatāṁ gatāḥ*) |
-| Atone at the holy places; Rama did, for a year | 9.15.41, 9.16.1 |
+| After Rama cut down Kartavirya Arjuna, Arjuna's kin/sons came to the ashram while Rama was away | MBh 3.116 (end); 12.49 |
+| Rama was out fetching sacred fuel and grass | 12.49 ("out for fetching sacred fuel and grass"); 3.116 ("bearing in his arms fuel for religious rites") |
+| Jamadagni was engaged in penance and would not fight | 3.116 ("being at the time engaged in penances, he would not fight"); 3.117 ("absolutely averse to fighting") |
+| He cried out "Rama!" again and again | 3.116 ("he repeatedly shouted the name of Rama") |
+| They shot him with arrows and went away | 3.116; 3.117 ("killed thee with hundreds of sharpened shafts") (12.49 says lances: we show arrow shadows, 3.116's) |
+| Rama returned with the fuel, found his father dead, and lamented | 3.116 (end); 3.117 |
+| He cremated his father and vowed | 3.117 |
+| Single-handed, he killed Kartavirya's sons | 3.117 ("singlehanded put Kartavirya's sons to death"); 12.49 |
+| He did it thrice seven (21) times | 12.49 ("thrice seven times"); Critical Edition 3.117.9 (*triḥsaptakṛtvaḥ*; Ganguli renders it "thrice … seven times") |
+| At Samantapanchaka he made five lakes of blood and offered to his ancestors | 1.2; 3.117 |
+| His ancestors, led by Richika, appeared: "we have been gratified … ask a boon"; he asked that the lakes become holy and his sin be absolved; "So shall it be. But be thou pacified." And he was | 1.2; 3.117 ("Richika appeared to him in a visible form, and spake to him words of counsel") |
+| The Kuru–Pandava battle was fought at Samantapanchaka | 1.2 |
+| At the end of a horse sacrifice he gave the earth to Kashyapa | 12.49; 3.117 |
+| Kashyapa, still holding the sacrificial ladle: "repair to the shores of the southern ocean … reside not within my dominion" | 12.49 |
+| The earth, unprotected, asked Kashyapa for kings: princes hidden among women; Viduratha's son raised among bears on the Rikshavat; Gopati among cows; Vatsa among calves (and others) | 12.49 |
+| Kashyapa sought them out and installed them as kings | 12.49 |
 
-**Other versions:** the Mahabharata (Vana Parva 3.116.19–25) tells it briefly: the king takes the homa cow's calf, Rama
-cuts his thousand arms with arrows from a bow, and his sons then kill Jamadagni (Part 5's story). Ravana's capture is
-also in Valmiki's Uttara Kanda (Ravana fights Arjuna at the Narmada and is taken to Mahishmati; Pulastya has him
-released): it backs "RAVANA PICKED A FIGHT."
+**On screen, honestly:** "WON THE WHOLE EARTH" is 3.117's "subdued the entire world"; "21 WARS" stands for the 21
+campaigns. Per the series framing (owner, 29 Oct) the reel says "ARROGANT KINGS" where the text says the warrior class
+(12.49 calls Kartavirya's sons "haughty and cruel"; 1.2 says he was "urged by impatience of wrongs"), and it never shows
+a killing. "RAMA, WE ARE PLEASED. NOW BE AT PEACE." is our wording of 1.2's "we have been gratified … be thou
+pacified". "THOSE LAKES ARE IN KURUKSHETRA" rests on 1.2 (the battle was fought at Samantapanchaka). "LEFT FOR THE SEA"
+is 12.49's southern ocean (the ocean then made Shurparaka for him; Part 5 doesn't say so). "BEARS AND COWS" are two of
+12.49's hiding places (bears, cows, calves). Not claimed: the empty throne and crown, the sons' bows in F (3.116 says
+arrows), the lamp, the dropped bundle, the signpost and banners, the earth as a little globe, the crowns popping on.
+12.49's harsher lines (the children) are left out. Jamadagni being restored to life is the Bhagavata's (9.16.24),
+another version: not in this part.
 
-**On screen, honestly:** "PRAYED TO" is our gentle word for *ārādhya* (worshipped). The captions name the axe and the bow
-(he also took a shield and quiver). "17 ARMIES" is 17 akshauhinis. "OUR STRENGTH IS FORGIVENESS" is our wording of
-9.15.39. Not claimed: Ravana munching in his camp, the nightcap, the queens' laughter, his fist on Ravana's crown, the
-plates filling with sparkles, the stake and rope, the hill's two trees, the crown rolling, the podium. The order in the
-Bhagavata (Kartavirya, then the pilgrimage, then Renuka) differs from the Mahabharata's (Renuka first) that Part 3
-followed; this part says nothing about order.
+**The pinned comment (another text, labelled):** the "why 21" answer is the **Brahmanda Purana**'s (Madhyama Bhaga,
+the Parashurama chapters; ch. 30 in the Motilal numbering): Renuka beat her breast 21 times in grief, and Rama vowed to
+fight that many times. Not in the reel.
 
 ## Cover
-`src/scenes/parshu4_cover.js` (`cover.html`): Rama close with the axe, the king's fan of arms behind him on the
-sunburst; the orange PART 4 pill over "PARSHURAMA" (gold) / "VS THE KING" / "WITH 1000 ARMS" (red).
+`src/scenes/parshu5_cover.js` (`cover.html`): Rama, bearded, axe glowing, on top of the earth on the sunburst; the
+orange PART 5 pill over "PARSHURAMA" (gold) / "WON THE WHOLE EARTH" / "& GAVE IT AWAY" (red).
 
 ## Out
-`out/parshu4_out/` (parshu4.mp4, cover.png, captions.txt; the pinned comment answers the follower who asked for
-Vishvamitra vs Vasishtha: another king who wanted a sage's wish-cow).
+`out/parshu5_out/` (parshu5.mp4, cover.png, captions.txt).
