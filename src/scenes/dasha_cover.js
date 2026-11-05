@@ -1,5 +1,5 @@
 // dasha_cover.js: the Instagram cover for ad 77 (cover.html = studio.html + this). One still: Vishnu on Shesha on the
-// cosmic ocean, ringed by his ten forms (the 9th the plough, the 10th a "?"), the debate pill over the title, inside the
+// cosmic ocean, ringed by his ten forms (the 10th a "?"), the "WHY A FISH?" pill over the title, inside the
 // 3:4 grid crop (y 240–1680).
 //   node render.mjs --page=cover.html --stills=0 --out=out/dasha_cover
 SHOTS.length = 0;
@@ -17,8 +17,8 @@ SHOTS.length = 0;
     }
     camEnd();
     boilSeed('cvpill');
-    paint(rrPts(540 - 230, 300 - 52, 460, 104, 52), { wash: '#F15A24', ink: DP.ink, sw: 1.6 });
-    letter('WHO IS NUMBER 9?', 540, 304, 72, '#FFF5E2', { screen: true, stroke: DP.ink, sw: .2, ink: false, rot: 0 });
+    paint(rrPts(540 - 190, 300 - 52, 380, 104, 52), { wash: '#F15A24', ink: DP.ink, sw: 1.6 });
+    letter('WHY A FISH?', 540, 304, 76, '#FFF5E2', { screen: true, stroke: DP.ink, sw: .2, ink: false, rot: 0 });
     const L = (txt, y, size, col, rot = -.025) => letter(txt, 540, y, size, col, { screen: true, stroke: DP.ink, sw: .22, ink: false, maxW: 980, rot });
     L('VISHNU\'S', 450, 110, '#FFFFFF');
     L('10 AVATARS', 590, 160, GOLDC, -.02);

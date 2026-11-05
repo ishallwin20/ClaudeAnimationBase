@@ -1,31 +1,31 @@
-// dasha_sfx.mjs: the sound for "VISHNU has come 9 times" (src/scenes/dasha.js, ad 77, Dashavatar, no voice) →
+// dasha_sfx.mjs: the sound for "VISHNU has arrived 9 times" (src/scenes/dasha.js, ad 77, Dashavatar, no voice) →
 // assets/dasha_sfx.wav. Times are the scene's constants (keep them in sync). One signature sound for the descent (a
 // falling whistle into a chime and a shimmer) every time the light becomes a form, and a pop for each badge; then each
 // avatar's world: a river and a pleading squeak, a storm at sea; the churning, a groan, a splash and a cheer; the deep,
 // a demon's laugh, the boar's burst into dawn; a laugh, three drum ticks for the boon, the fist, the pillar's boom and
 // the ROAR; a fire, a bubble, a laugh, a riser and two giant steps; war drums and the axe; ten heads laughing, the bow,
-// ten gulps; the conch, a flute and a tanpura for the Gita; a split chime, a river's rush, a goat; the storm, hooves,
+// ten gulps; the conch, a flute and a tanpura for the Gita; a bell, birds and a goat for the Buddha; the storm, hooves,
 // thunder and a neigh; the ring of pops on the ask. Mild, never loud: the music is added on Instagram.
 import { tone, noise, bell, mixb, env, whoosh, plink, squeak, click, thud, shimmer, chime, drum, om, wind, thunder,
   note, seed, rnd, clamp, SR, track, heart, roar, crunch, clang, rumble, slide, splash, gurgle, laughter, drone, rockfall, crackle } from './sfx.mjs';
 
 const FLASH0 = 2.4;
-const M0 = 4.0, MGROW = 8.2;
-const K0 = 12.4, KRISE = 14.6;
-const V0 = 19.4, VBURST = 22.2;
-const N0 = 26.8, STRIKE = 31.2, PILLAR = 31.8, FEAR = 33.8, ROAR2 = 35.0;
-const W0 = 36.8, WGROW = 41.6, STEP1 = 42.4, STEP2 = 43.4, HEAD = 44.4;
-const P0 = 46.8, PAXE = 49.4, PFLEE = 51.6;
-const R0 = 53.3, RAM = 57.6, REV = 59.8;
-const G0 = 61.3;
-const B9 = 70.3, BAL = 74.0, BUD = 79.0;
-const X0 = 84.3, YET = 88.6;
-const ASK = 92.3, CARD = 97.8, END = 101.8;
+const M0 = 4.4, MGROW = 9.0;
+const K0 = 14.0, KRISE = 16.6;
+const V0 = 22.4, VBURST = 25.8;
+const N0 = 31.4, STRIKE = 36.6, PILLAR = 37.2, FEAR = 39.6, ROAR2 = 41.0;
+const W0 = 43.4, WGROW = 49.0, STEP1 = 49.8, STEP2 = 51.1, HEAD = 52.3;
+const P0 = 55.3, PAXE = 58.5, PFLEE = 61.1;
+const R0 = 63.3, RAM = 68.1, REV = 70.7;
+const G0 = 72.7;
+const B9 = 82.7;
+const X0 = 90.2, YET = 95.0;
+const ASK = 99.0, CARD = 104.5, END = 108.5;
 
 const T0 = track(END);
 seed(77);
 // the soft stretches (Manu's river, the Gita, the Buddha, the card) sit well under the hits: lift them on a phone
-const LIFTS = [[M0, MGROW - .4, 1.8], [G0 + .8, B9 - .3, 1.5], [BUD + .2, X0 - .3, 1.6], [CARD - .3, END, 2]];
+const LIFTS = [[M0, MGROW - .4, 1.8], [G0 + .8, B9 - .3, 1.5], [B9 + .2, X0 - .3, 1.6], [CARD - .3, END, 2]];
 const T = { at: (t0, b, g = 1, pan = 0) => { const l = LIFTS.find(([a, z]) => t0 >= a && t0 < z); T0.at(t0, b, g * (l ? l[2] : 1), pan); }, write: (...a) => T0.write(...a) };
 // a buzzy voice: syllables [start, dur, pitch ×, brightness 0..1] (as in ads 63, 68, 70, 72)
 function voice(syl, f0, { amp = 1, fall = .1, rise = 0, shake = 0 } = {}) {
@@ -156,7 +156,7 @@ T.at(N0 - .3, whoosh(.4, 300, 3000), .14, 0);
 // ================= 4 · Narasimha =================
 T.at(N0, tanpura(STRIKE - N0, 43, 1), .04, 0);
 T.at(N0 + .3, mixb(laughter(2, .9), voice([[0, .3, 1, .4], [.35, .3, .92, .4], [.7, .3, .85, .4], [1.05, .45, .8, .4]], 85, { amp: 1 })), .13, 0);
-[N0 + .9, N0 + 1.4, N0 + 1.9].forEach((a, i) => T.at(a, mixb(drum(60 - i * 6, .9, .5), click(.6)), .16, 0));   // the clauses
+[N0 + 1.2, N0 + 2.0, N0 + 2.8].forEach((a, i) => T.at(a, mixb(drum(60 - i * 6, .9, .5), click(.6)), .16, 0));   // the clauses
 for (let k = 0; k < 4; k++) T.at(STRIKE - 1.0 + k * .16, step(.6), .1, -.2);
 T.at(STRIKE - .45, whoosh(.4, 300, 2000), .12, -.2);
 T.at(STRIKE, mixb(thud(1), crunch(1), drum(44, 1, .6)), .38, -.3);   // the fist
@@ -204,7 +204,7 @@ T.at(R0 - .3, whoosh(.4, 300, 3000), .14, 0);
 // ================= 7 · Ram =================
 T.at(R0, sub(RAM - R0, 41, .8), .1, 0);
 T.at(R0 + .2, mixb(laughter(1.6, 1), voice([[0, .25, 1, .5], [.3, .25, .95, .5], [.6, .25, .9, .5]], 110, { amp: .8 }), voice([[.1, .25, 1.4, .6], [.4, .25, 1.3, .6]], 160, { amp: .6 })), .12, 0);
-T.at(R0 + 1.9, mixb(noise(.3, { hp: 600, lp: 3000, e: env.pluck(10), amp: .8 }), voice([[0, .4, .8, .3]], 140, { fall: .2, amp: .6 })), .08, 0);   // "pfft, humans"
+T.at(R0 + 2.4, mixb(noise(.3, { hp: 600, lp: 3000, e: env.pluck(10), amp: .8 }), voice([[0, .4, .8, .3]], 140, { fall: .2, amp: .6 })), .08, 0);   // "pfft, humans"
 descend(RAM, 0);
 T.at(RAM + .4, creak(1.2, .8), .1, .2);   // the string drawn
 T.at(RAM + .3, pad(REV - RAM, [57, 64, 69, 76], 1, .3, .4), .07, 0);
@@ -220,24 +220,17 @@ T.at(G0 + .3, tanpura(B9 - G0 - .3, 50, 1), .045, 0);
 T.at(G0 + 1.2, flute(7.2, [74, 76, 79, 81, 79, 76, 74, 71, 74, 76, 74, 69], .9), .08, .1);
 T.at(G0 + 1.0, pad(B9 - G0 - 1.0, [50, 57, 62, 66], 1, 1.4, 1.2), .06, 0);
 T.at(G0 + 1.2, bell(note(69), 2.6, { k: 1.4 }), .08, 0);
-T.at(G0 + 3.2, mixb(chime(note(86), .6, 1.8), shimmer(1.4, [note(81), note(86), note(90)], .5, .1)), .08, 0);
+T.at(G0 + 3.6, mixb(chime(note(86), .6, 1.8), shimmer(1.4, [note(81), note(86), note(90)], .5, .1)), .08, 0);
 T.at(B9 - .3, whoosh(.4, 300, 3000), .14, 0);
 
-// ================= 9 · Balarama or Buddha =================
-descend(B9 + .6, -.4, .8); descend(B9 + .75, .4, .8);
-T.at(B9 + 1.2, boing(200, .9), .12, 0);   // the ?
-T.at(B9 + 1.4, mixb(chime(note(79), .6, 1.4), chime(note(80), .6, 1.4)), .06, 0);   // two notes that don't agree
-T.at(BAL, mixb(taiko(1), drum(52, .6, .6)), .2, -.2);
-T.at(BAL + .8, mixb(thud(.8), crunch(.6)), .2, .1);   // the plough bites
-T.at(BAL + 1.4, mixb(splash(.6), whoosh(2.0, 300, 1200), gurgle(2, .7)), .2, .1);   // the river drags
-T.at(BAL + 1.4, brass(2.2, [43, 50, 55], 1, .6, .6), .08, 0);
-T.at(BUD - .3, whoosh(.4, 3000, 300), .12, 0);
-T.at(BUD, bell(note(62), 3.4, { k: 1 }), .1, 0);
-T.at(BUD, pad(X0 - BUD, [62, 69, 74, 78], 1, 1, 1.2), .05, 0);
-for (let k = 0; k < 3; k++) T.at(BUD + .6 + k * 1.3, bird(2800 + k * 300, .5), .03, -.5 + k * .3);
-for (let k = 0; k < 6; k++) T.at(BUD + .5 + k * .36, step(.25), .05, -.6 + k * .1);
-T.at(BUD + 1.4, bleat(.8), .07, -.4);
-T.at(BUD + 3.3, mixb(chime(note(88), .5, 1.4), plink(1600, .4)), .06, -.1);   // the heart
+// ================= 9 · the Buddha =================
+descend(B9 + .6, 0, .8);
+T.at(B9 + .6, bell(note(62), 3.4, { k: 1 }), .1, 0);
+T.at(B9 + .4, pad(X0 - B9 - .4, [62, 69, 74, 78], 1, 1, 1.2), .05, 0);
+for (let k = 0; k < 3; k++) T.at(B9 + 1.0 + k * 1.6, bird(2800 + k * 300, .5), .03, -.5 + k * .3);
+for (let k = 0; k < 7; k++) T.at(B9 + 1.8 + k * .32, step(.25), .05, -.6 + k * .1);
+T.at(B9 + 2.4, bleat(.8), .07, -.4);
+T.at(B9 + 4.7, mixb(chime(note(88), .5, 1.4), plink(1600, .4)), .06, -.1);   // the heart
 
 // ================= 10 · Kalki =================
 T.at(X0, mixb(thunder(2.6, 1), click(1)), .34, -.3);

@@ -1,24 +1,24 @@
-// dasha.js: "VISHNU has come 9 times. The 10th is still COMING." (ad 77, Dashavatar, ~102 s, Bangers captions, SFX, no
+// dasha.js: "VISHNU has arrived 9 times. The 10th is yet to ARRIVE." (ad 77, Dashavatar, ~108 s, Bangers captions, SFX, no
 // voice). The ten avatars, each one the shape the trouble needed, each arriving as a light falling from the top of the
 // frame (avatara: the descent), counted 1 → 10 by a gold badge. The list follows the Agni Purana (2–16); the stories
 // the Bhagavata (Matsya 8.24, Kurma 8.7, Varaha 3.13, Narasimha 7.3 + 7.8, Vamana 8.18–22, Kalki 12.2), Valmiki Bala 16
-// (Ravana's boon left out men) and the Gita (4.7–8). The 9th differs between the texts: both, with no verdict.
+// (Ravana's boon left out men) and the Gita (4.7–8). The 9th is the Buddha, as in the Agni Purana (16).
 // STORYBOARD.md has the plan and the sources; sets and props are in dasha_props.js, the new cast in src/dashavatar.js.
 // All times are video time (t); tools/dasha_sfx.mjs uses the same constants.
 (() => {
   // ---- time constants (keep in sync with STORYBOARD.md and tools/dasha_sfx.mjs)
   const FLASH0 = 2.4;
-  const M0 = 4.0, MGROW = 8.2;
-  const K0 = 12.4, KRISE = 14.6;
-  const V0 = 19.4, VBURST = 22.2;
-  const N0 = 26.8, STRIKE = 31.2, PILLAR = 31.8, FEAR = 33.8, ROAR2 = 35.0;
-  const W0 = 36.8, WGROW = 41.6, STEP1 = 42.4, STEP2 = 43.4, HEAD = 44.4;
-  const P0 = 46.8, PAXE = 49.4, PFLEE = 51.6;
-  const R0 = 53.3, RAM = 57.6, REV = 59.8;
-  const G0 = 61.3;
-  const B9 = 70.3, BAL = 74.0, BUD = 79.0;
-  const X0 = 84.3, YET = 88.6;
-  const ASK = 92.3, CARD = 97.8;
+  const M0 = 4.4, MGROW = 9.0;
+  const K0 = 14.0, KRISE = 16.6;
+  const V0 = 22.4, VBURST = 25.8;
+  const N0 = 31.4, STRIKE = 36.6, PILLAR = 37.2, FEAR = 39.6, ROAR2 = 41.0;
+  const W0 = 43.4, WGROW = 49.0, STEP1 = 49.8, STEP2 = 51.1, HEAD = 52.3;
+  const P0 = 55.3, PAXE = 58.5, PFLEE = 61.1;
+  const R0 = 63.3, RAM = 68.1, REV = 70.7;
+  const G0 = 72.7;
+  const B9 = 82.7;
+  const X0 = 90.2, YET = 95.0;
+  const ASK = 99.0, CARD = 104.5;
   const CARDC = { cap: CARD + .1, covers: CARD + .3, line: CARD + 1.0, logo: CARD + 1.3, pill: CARD + 1.6, bio: CARD + 1.9, follow: CARD + 2.2 };
 
   const GOLDC = '#F5C542', REDC = '#FF6A4A', BLUEC = '#9FDCFF', SRC = '#CFE6FF';
@@ -31,29 +31,27 @@
 
   // ---- every caption: [text, y, t0, life, size, colour]
   const CAPS = [
-    ['VISHNU', 470, -1, M0 + .9, 150, GOLDC], ['HAS COME 9 TIMES.', 600, -1, M0 + .9, 92], ['THE 10TH IS STILL COMING.', 710, -1, M0 + .9, 74, GOLDC],
+    ['VISHNU', 470, -1, M0 + .9, 150, GOLDC], ['HAS ARRIVED 9 TIMES.', 600, -1, M0 + .9, 92], ['THE 10TH IS YET TO ARRIVE.', 710, -1, M0 + .9, 74, GOLDC],
     ['A TINY FISH ASKED KING MANU', 580, M0 + .5, MGROW - M0 - .6, 64], ['TO SAVE IT.', 675, M0 + .9, MGROW - M0 - 1.0, 86, GOLDC],
     ['THEN IT GREW HUGE', 580, MGROW + .3, K0 - MGROW - .4, 86, GOLDC], ['AND TOWED HIS BOAT THROUGH THE FLOOD.', 680, MGROW + .7, K0 - MGROW - .8, 52],
     ['THE CHURNING MOUNTAIN WAS SINKING.', 580, K0 + .5, V0 - K0 - .7, 56], ['SO HE BECAME A TURTLE', 670, KRISE + .3, V0 - KRISE - .5, 74, GOLDC], ['AND HELD IT UP.', 765, KRISE + .7, V0 - KRISE - .9, 78, GOLDC],
     ['A DEMON SANK THE EARTH', 580, V0 + .5, N0 - V0 - .7, 72], ['IN THE OCEAN.', 670, V0 + .8, N0 - V0 - 1.0, 72], ['HE DIVED AS A BOAR', 770, VBURST + .4, N0 - VBURST - .6, 76, GOLDC], ['AND LIFTED IT ON HIS TUSKS.', 862, VBURST + .8, N0 - VBURST - 1.0, 64, GOLDC],
-    ['HIS BOON:', 580, N0 + .5, STRIKE - N0 - .6, 84, REDC], ['NO MAN, NO BEAST,', 680, N0 + .9, STRIKE - N0 - 1.0, 74], ['NOT DAY, NOT NIGHT,', 770, N0 + 1.4, STRIKE - N0 - 1.5, 74], ['NOT INSIDE, NOT OUTSIDE.', 860, N0 + 1.9, STRIKE - N0 - 2.0, 66],
-    ['SO HE CAME HALF-MAN, HALF-LION,', 580, PILLAR + .6, W0 - PILLAR - .8, 60, GOLDC], ['AT DUSK, ON THE DOORSTEP.', 680, PILLAR + 1.2, W0 - PILLAR - 1.4, 66],
+    ['HIS BOON:', 580, N0 + .5, STRIKE - N0 - .6, 84, REDC], ['NO MAN, NO BEAST,', 680, N0 + 1.2, STRIKE - N0 - 1.3, 74], ['NOT DAY, NOT NIGHT,', 770, N0 + 2.0, STRIKE - N0 - 2.1, 74], ['NOT INSIDE, NOT OUTSIDE.', 860, N0 + 2.8, STRIKE - N0 - 2.9, 66],
+    ['SO HE APPEARED HALF-MAN, HALF-LION,', 580, PILLAR + .6, W0 - PILLAR - .8, 60, GOLDC], ['AT DUSK, ON THE DOORSTEP.', 680, PILLAR + 1.2, W0 - PILLAR - 1.4, 66],
     ['KING BALI HAD WON ALL 3 WORLDS.', 580, W0 + .5, WGROW - W0 - .6, 58], ['A LITTLE BOY ASKED HIM', 670, W0 + 1.4, WGROW - W0 - 1.5, 70, GOLDC], ['FOR 3 STEPS OF LAND.', 760, W0 + 1.8, WGROW - W0 - 1.9, 76, GOLDC],
     ['2 STEPS COVERED EVERYTHING.', 580, STEP1 + .2, P0 - STEP1 - .4, 68, GOLDC], ['BALI OFFERED HIS HEAD FOR THE 3RD.', 680, HEAD - .2, P0 - HEAD, 54],
-    ['KINGS GREW ARROGANT AND CRUEL.', 580, P0 + .5, R0 - P0 - .7, 60], ['HE CAME WITH SHIVA\'S AXE.', 680, PAXE + .2, R0 - PAXE - .4, 70, GOLDC],
-    ['RAVANA\'S BOON:', 580, R0 + .5, RAM - R0 - .6, 84, REDC], ['NO GOD OR DEMON COULD KILL HIM.', 680, R0 + 1.0, RAM - R0 - 1.1, 56], ['HE DIDN\'T BOTHER WITH HUMANS.', 775, R0 + 1.8, RAM - R0 - 1.9, 58],
+    ['KINGS GREW ARROGANT AND CRUEL.', 580, P0 + .5, R0 - P0 - .7, 60], ['HE ARRIVED WITH SHIVA\'S AXE.', 680, PAXE + .2, R0 - PAXE - .4, 70, GOLDC],
+    ['RAVANA\'S BOON:', 580, R0 + .5, RAM - R0 - .6, 84, REDC], ['NO GOD OR DEMON COULD KILL HIM.', 680, R0 + 1.2, RAM - R0 - 1.3, 56], ['HE DIDN\'T BOTHER WITH HUMANS.', 775, R0 + 2.3, RAM - R0 - 2.4, 58],
     ['SO VISHNU WAS BORN A MAN:', 580, RAM + .3, G0 - RAM - .5, 64], ['RAM.', 710, RAM + .8, G0 - RAM - 1.0, 150, GOLDC],
-    ['KRISHNA TOLD US WHY:', 580, G0 + .5, B9 - G0 - .7, 70, BLUEC], ['"WHENEVER DHARMA FALLS,', 900, G0 + 3.2, B9 - G0 - 3.4, 66, GOLDC], ['I COME, AGE AFTER AGE."', 990, G0 + 3.7, B9 - G0 - 3.9, 66, GOLDC],
-    ['THE SCRIPTURES', 600, B9 + .7, BAL - B9 - .8, 84], ['DON\'T AGREE.', 705, B9 + 1.1, BAL - B9 - 1.2, 100, GOLDC],
-    ['TEAM BALARAMA', 580, BAL + .3, BUD - BAL - .4, 96, GOLDC], ['KRISHNA\'S ELDER BROTHER, WHO', 680, BAL + .8, BUD - BAL - .9, 58], ['DRAGGED THE YAMUNA WITH HIS PLOUGH.', 760, BAL + 1.1, BUD - BAL - 1.2, 50], ['IN SOUTH INDIA\'S SRI VAISHNAVA LISTS', 850, BAL + 1.9, BUD - BAL - 2.0, 40, SRC],
-    ['TEAM BUDDHA', 580, BUD + .3, X0 - BUD - .4, 96, GOLDC], ['HE SPOKE AGAINST ANIMAL SACRIFICE,', 680, BUD + .8, X0 - BUD - .9, 52], ['OUT OF COMPASSION.', 765, BUD + 1.1, X0 - BUD - 1.2, 66], ['IN THE AGNI PURANA AND GITA GOVINDA', 855, BUD + 1.9, X0 - BUD - 2.0, 40, SRC],
-    ['AT THE END OF KALI YUGA,', 580, X0 + .5, YET - X0 - .6, 70], ['HE WILL COME ON A WHITE HORSE.', 680, X0 + 1.0, YET - X0 - 1.1, 60, GOLDC],
-    ['HE HASN\'T COME YET.', 600, YET + .3, ASK - YET - .5, 90, GOLDC],
-    ['SO WHO IS NUMBER 9?', 580, ASK + .4, CARD - ASK - .5, 84, GOLDC], ['BALARAMA OR BUDDHA?', 690, ASK + .9, CARD - ASK - 1.0, 80], ['COMMENT!', 800, ASK + 1.5, CARD - ASK - 1.6, 100, GOLDC],
+    ['KRISHNA TOLD US WHY:', 580, G0 + .5, B9 - G0 - .7, 70, BLUEC], ['"WHENEVER DHARMA FALLS,', 900, G0 + 3.6, B9 - G0 - 3.8, 66, GOLDC], ['I APPEAR, AGE AFTER AGE."', 990, G0 + 4.2, B9 - G0 - 4.4, 66, GOLDC],
+    ['HE SPOKE AGAINST', 580, B9 + 1.0, X0 - B9 - 1.3, 76], ['ANIMAL SACRIFICE,', 680, B9 + 1.4, X0 - B9 - 1.7, 84, GOLDC], ['OUT OF COMPASSION.', 785, B9 + 2.0, X0 - B9 - 2.3, 76, GOLDC],
+    ['AT THE END OF KALI YUGA,', 580, X0 + .5, YET - X0 - .6, 70], ['HE WILL ARRIVE ON A WHITE HORSE.', 680, X0 + 1.0, YET - X0 - 1.1, 60, GOLDC],
+    ['HE HASN\'T ARRIVED YET.', 600, YET + .3, ASK - YET - .5, 90, GOLDC],
+    ['WHICH AVATAR', 580, ASK + .4, CARD - ASK - .5, 84], ['IS YOUR FAVOURITE?', 690, ASK + .9, CARD - ASK - 1.0, 84, GOLDC], ['COMMENT!', 800, ASK + 1.6, CARD - ASK - 1.7, 100, GOLDC],
   ];
   const caps = t => { for (const [txt, y, t0, life, size, color] of CAPS) caption(txt, y, t - t0, { life, size, color }); };
   const BADGES = [[1, 'MATSYA', M0, K0], [2, 'KURMA', K0, V0], [3, 'VARAHA', V0, N0], [4, 'NARASIMHA', N0, W0], [5, 'VAMANA', W0, P0],
-    [6, 'PARSHURAMA', P0, R0], [7, 'RAM', R0, G0], [8, 'KRISHNA', G0, B9], [9, 'BALARAMA OR BUDDHA?', B9, X0], [10, 'KALKI', X0, ASK]];
+    [6, 'PARSHURAMA', P0, R0], [7, 'RAM', R0, G0], [8, 'KRISHNA', G0, B9], [9, 'BUDDHA', B9, X0], [10, 'KALKI', X0, ASK]];
   const words = t => { badges(t); caps(t); };
   function badges(t) { for (const [n, name, a, b] of BADGES) badge(n, name, t - a - .3, b - a - .45); }
 
@@ -324,7 +322,7 @@
       const l = t - PAXE;
       camBegin(540, 1280 - l * 12, 1.06 + .02 * l);
       bloodGround(t, 540, 1150);
-      rama(540, 2100, 30, { axe: 'raise', axeGlow: .8 + .2 * Math.sin(t * 5), eyes: blinkAt(t, 50.6) ? 'closed' : 'angry', brow: -1, mouth: 'frown', wind: .6, aura: .75, puff: .3 });
+      rama(540, 2100, 30, { axe: 'raise', axeGlow: .8 + .2 * Math.sin(t * 5), eyes: blinkAt(t, PAXE + 1.2) ? 'closed' : 'angry', brow: -1, mouth: 'frown', wind: .6, aura: .75, puff: .3 });
       camEnd();
       words(t);
       cutFlash(l, '#FFFFFF', .15, .8);
@@ -366,7 +364,7 @@
       const l = t - RAM, draw = ease(seg(t, RAM + .4, RAM + 1.6));
       camBegin(540, 1300 - l * 10, 1.05 + .025 * l);
       sunburst(t, 540, 1250);
-      ram(560, 2120, 29, { flip: 1, kodanda: false, handL: [-7.6, -18], handR: [lerp(-4, -1.6, draw), -18.4], bendR: .5, armL: heldBow(draw, true), eyes: blinkAt(t, 58.7) ? 'closed' : 'normal', brow: -.3, mouth: 'flat', boilKey: 'rram' });
+      ram(560, 2120, 29, { flip: 1, kodanda: false, handL: [-7.6, -18], handR: [lerp(-4, -1.6, draw), -18.4], bendR: .5, armL: heldBow(draw, true), eyes: blinkAt(t, RAM + 1.1) ? 'closed' : 'normal', brow: -.3, mouth: 'flat', boilKey: 'rram' });
       camEnd();
       words(t);
       if (l < .15) flash(1 - l / .15, '#FFFFFF');
@@ -395,7 +393,7 @@
       halo(kh[0], kh[1], 160 + 60 * lit, lit, 'ghalo', '#FFE6A0');
       glow(kh[0], kh[1], 500 + 300 * lit, '#FFE6A0', .5 * lit);
       arjuna(sx - 80, sy + 40, 13, { sit: 1, pray: 1, bow: .25, eyes: 'look', lookX: .8, lookY: -.6, mouth: 'O', hx: .3 });
-      krishna(sx + 50, sy, 15.5, { boilKey: 'gkrs', eyes: blinkAt(t, 66.2) ? 'closed' : 'happy', mouth: t > G0 + 3.2 && t < G0 + 6.0 ? (Math.sin(t * 16) > -.2 ? 'open' : 'smile') : 'smile', lookX: -.7, hx: -.3, handL: [-5.6, -18.8], bendL: .6, flute: 'hand' });
+      krishna(sx + 50, sy, 15.5, { boilKey: 'gkrs', eyes: blinkAt(t, G0 + 4.9) ? 'closed' : 'happy', mouth: t > G0 + 3.6 && t < G0 + 6.6 ? (Math.sin(t * 16) > -.2 ? 'open' : 'smile') : 'smile', lookX: -.7, hx: -.3, handL: [-5.6, -18.8], bendL: .6, flute: 'hand' });
     } });
     camEnd();
     words(t);
@@ -405,54 +403,23 @@
     outFlash(lt, dur);
   }
 
-  // ================= 9 · the 9th: the light splits; Team Balarama; Team Buddha =================
+  // ================= 9 · the Buddha: the light lands under the bodhi tree; a goat walks free from the post and settles beside him =================
   function shotNine(t, lt, dur) {
-    if (t < BAL) {
-      camBegin(540, 1250, 1.0);
-      boilSeed('9warm'); paint(rectPts(-300, -300, 840, 2600), { wash: DP.warmHi, fill: DP.warmLo, fillOp: 90, tex: .4, ink: null });
-      boilSeed('9cool'); paint(rectPts(540, -300, 900, 2600), { wash: DP.coolHi, fill: DP.coolLo, fillOp: 90, tex: .4, ink: null });
-      boilSeed('9gw'); paint(rectPts(-300, 1660, 840, 900), { wash: DP.field, fill: DP.fieldDk, fillOp: 50, tex: .5, ink: null });
-      boilSeed('9gc'); paint(rectPts(540, 1660, 900, 900), { wash: DP.grove, fill: DP.groveDk, fillOp: 50, tex: .5, ink: null });
-      boilSeed('9div'); inkLine(Array.from({ length: 16 }, (_, i) => [540 + (hash(i * 3.1) - .5) * 16, -100 + i * 160]), 6, DP.ink, 'ink', .2);
-      const la = B9 + .6, lb = B9 + .75;
-      if (t > la) balarama(270, 1680, 12.5 * backOut(clamp((t - la) * 3)), { boilKey: 'b9bal', eyes: 'normal', mouth: 'smile', lookX: .6 });
-      if (t > lb) buddha(810, 1700, 11.5 * backOut(clamp((t - lb) * 3)), { boilKey: 'b9bud' });
-      descentBeam(270, 1560, (t - B9) / .6, 'b9da', '#FFE6A0');
-      descentBeam(810, 1580, (t - B9 - .15) / .6, 'b9db', '#BFE0FF');
-      if (t > B9 + 1.2) letter('?', 540, 1300, 260 * (1 + .06 * Math.sin(t * 5)), GOLDC, { stroke: DP.ink, sw: .18, ink: false, rot: 0, pop: (t - B9 - 1.2) * 3 });
-      camEnd();
-      words(t);
-      cutFlash(lt, '#FFFFFF', .2, .9);
-      if (t > BAL - .12) flash((t - BAL + .12) / .12, '#FFFFFF');
-      return;
-    }
-    if (t < BUD) {   // Balarama hooks the Yamuna and drags it to him
-      const l = t - BAL, hook = ease(seg(t, BAL + .8, BAL + 1.4)), drag = ease(seg(t, BAL + 1.4, BAL + 3.4));
-      camBegin(540, 1200, 1.0 + .015 * l);
-      const bo = { boilKey: 'b9bal2', ploughA: lerp(-.25, .35, hook) - .15 * drag, lean: -1.2 * drag, eyes: drag > .1 ? 'angry' : 'normal', brow: -.6, mouth: drag > .1 ? 'frown' : 'smile', lookX: .8, hx: .2 };
-      const share = balaramaShare(380, 1740, 20, bo);
-      warmBank(t, drag, { groundY: 1700, bendTo: [share[0] + 40, share[1] - 20] });
-      balarama(380, 1740, 20, bo);
-      if (drag > .05 && drag < .99) splash(share[0] + 40, share[1] - 30, 220, frac(t * 1.5), 'b9spl');
-      camEnd();
-      words(t);
-      cutFlash(l, '#FFFFFF', .15, .8);
-      return;
-    }
-    // the Buddha under the tree; a goat walks free from the post and settles beside him
-    const l = t - BUD, walk = ease(seg(t, BUD + .5, BUD + 2.6)), sit = ease(seg(t, BUD + 2.7, BUD + 3.2));
-    camBegin(540, 1330, 1.0 + .012 * l);
+    const land = B9 + .6, walk = ease(seg(t, B9 + 1.8, B9 + 4.0)), sit = ease(seg(t, B9 + 4.1, B9 + 4.6));
+    camBegin(540, 1330, 1.0 + .012 * lt);
     coolGrove(t, { groundY: 1680 });
     bodhiTree(560, 1700, 180, t, 'b9tree');
     boilSeed('b9post'); paint(rectPts(70, 1380, 34, 330), { wash: DP.bark, fill: DP.barkDk, fillOp: 50, ink: DP.ink, sw: 1.2 });
     inkLine([[104, 1500], [140, 1560], [130, 1640], [160, 1690]], 3, '#C8A27A', 'ink', .6);   // the loose rope
-    glow(560, 1430, 420, '#FFF2C8', .35);
-    buddha(560, 1720, 19, { boilKey: 'b9bud2', mouth: 'smile', blush: .2 * sit });
+    glow(560, 1430, 420, '#FFF2C8', .35 * clamp((t - land) * 2));
+    if (t > land) buddha(560, 1720, 19 * backOut(clamp((t - land) * 3)), { boilKey: 'b9bud2', mouth: 'smile', blush: .2 * sit });
+    if (t > land && t < land + .9) sparkleBurst(560, 1500, 220, (t - land) / .9, 'b9sp', 10, ['#FFFFFF', '#FFF2C8']);
     goat(lerp(150, 330, walk), 1730, 26, { key: 'b9goat', walk: walk < 1 ? t * 1.8 : undefined, sit });
-    if (sit > .9) emote('heart', 360, 1560, 26, clamp((t - BUD - 3.2) * 3), t);
+    if (sit > .9) emote('heart', 360, 1560, 26, clamp((t - B9 - 4.6) * 3), t);
+    descentBeam(560, 1560, (t - B9) / .6, 'b9desc', '#FFF2C8');
     camEnd();
     words(t);
-    cutFlash(l, '#FFFFFF', .15, .8);
+    cutFlash(lt, '#FFFFFF', .2, .9);
     outFlash(lt, dur);
   }
 
@@ -477,7 +444,7 @@
     camBegin(540, 990 - lt * 6, 1.0 + .008 * lt);
     cosmicOcean(t, { seaY: 1640 });
     shesha(520, 1660, 25, { boilKey: 'qsh' });
-    vishnu(520, 1660, 25, { boilKey: 'qvi', eyes: blinkAt(t, 95.4) ? 'closed' : 'happy', mouth: 'smile', chakraSpin: t * 3 });
+    vishnu(520, 1660, 25, { boilKey: 'qvi', eyes: blinkAt(t, ASK + 3.1) ? 'closed' : 'happy', mouth: 'smile', chakraSpin: t * 3 });
     for (let i = 0; i < 10; i++) {
       const a = Math.PI + (i + .5) / 10 * Math.PI, x = 520 + Math.cos(a) * 400, y = 1480 + Math.sin(a) * 440;
       medallion(i, x, y, 54, t, (t - ASK - .2 - i * .12) * 3);

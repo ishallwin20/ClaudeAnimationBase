@@ -385,13 +385,7 @@ function medallion(i, x, y, r, t, k, o = {}) {
     paint(ellPts(0, -15 * s, 3.2 * s, 4.4 * s, 10), { wash: '#1E2A4A', ink: null });
     pop();
   }
-  if (i === 8) {
-    const flip = Math.cos(t * 2.4), w = Math.abs(flip);
-    push(); scale(w, 1);
-    if (flip > 0) { push(); rotate(.4); translate(-4 * s, -34 * s); hala(5.6 * s, .8, 0); pop(); }
-    else { boilSeed(key + 'leaf'); paint(heartPts(0, 4 * s, 30 * s), { wash: DP.leaf, fill: DP.leafDk, fillOp: 50, ink: DP.ink, sw: 1 }); inkLine([[0, 34 * s], [0, -20 * s]], 1.2, DP.leafDk, 'inkfine', 0); }
-    pop();
-  }
+  if (i === 8) { boilSeed(key + 'leaf'); paint(heartPts(0, 4 * s, 30 * s), { wash: DP.leaf, fill: DP.leafDk, fillOp: 50, ink: DP.ink, sw: 1 }); inkLine([[0, 34 * s], [0, -20 * s]], 1.2, DP.leafDk, 'inkfine', 0); }   // the bodhi leaf
   if (i === 9) { letter('?', x, y + 4, r * 1.3, DP.goldLt, { ink: false, rot: 0, pop: k * 3 }); }
   pop();
 }
