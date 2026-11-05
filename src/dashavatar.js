@@ -389,7 +389,7 @@ function arjuna(x, y, u, o = {}) { return lakshman(x, y, u, { boilKey: 'arj', se
     matsya(470, 260, 5, { eyes: 'plead' });
     kurma(800, 400, 30, { eyes: 'happy', mouth: 'smile', neck: .8 });
     varaha(260, 820, 22, { lift: .6, eyes: 'happy' });
-    earthBall(...varahaTusk(260, 820, 22, { lift: .6 }).map((v, i) => v - (i ? 70 : 0)), 70, t, 'sheetearth');
+    if (typeof earthBall === 'function') earthBall(...varahaTusk(260, 820, 22, { lift: .6 }).map((v, i) => v - (i ? 70 : 0)), 70, t, 'sheetearth');   // the globe lives in parshu5_props.js
     narasimha(800, 1000, 15, { eyes: 'angry', mouth: 'roar', handL: [-6, -20], handR: [6, -20] });
     vamana(160, 1460, 17, { eyes: 'normal', mouth: 'smile' });
     trivikramaFoot(330, 1440, 16, { legLen: 14 });
