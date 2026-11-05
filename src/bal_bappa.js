@@ -19,7 +19,8 @@
 //   face:   eyes, mouth, lookX / lookY, squint, blush, seed, tint + tintK. Plain 'normal' / 'look' eyes are his own
 //           round glossy ones with brows; every other kind is Clawd's.
 //   extras: emote + emoteK + emoteAge, armL(u, sw) / armR(u, sw) (hooks at the hand), crownTilt (tips the turban),
-//           held(u, sw) (body space, sitting coordinates: drawn over the belly and under folded arms and the head, a hug)
+//           held(u, sw) (body space, sitting coordinates: drawn over the belly and under folded arms and the head, a hug),
+//           tusks (size, default 1), broken 1: his left tusk (screen right) is a stump: Ekadanta, after Parshurama's axe (Brahmanda Purana 3.42)
 //   human:  human 1 draws the human-faced baby Ganesha was born as in the Brahma Vaivarta Purana (no trunk, tusks or fan
 //           ears; little ears, black curls, a button nose); part 'head' draws only the head and turban (a head that
 //           flies off), part 'body' everything but (the shawl, the belly and the arms)
@@ -205,8 +206,20 @@ function balBappa(x, y, u, o = {}) {
     push(); translate(0, -7.3 * u); scale(.48); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .48 * .8); pop();
   } else {
   push(); translate(-.75 * u, -6.6 * u); scale(.5); translate(0, 4.3 * u); mouth(u, o.mouth, sw / .5 * .8); pop();
-  rs('tusk');   // two stubby tusks either side of the trunk root
-  for (const s of [-1, 1]) paint(ellPts(s * 1.45 * u, -7.3 * u, .42 * u, .55 * u, 14, 0, s * -.35), { wash: BAL.tusk, fill: BAL.cream, fillOp: 90, tex: .4, ink: INK, sw: sw * .6 });
+  rs('tusk');   // two stubby tusks either side of the trunk root; broken: his left one (screen right) is a stump
+  const TK = o.tusks || 1;   // tusks 1.5: bigger, for a story about one
+  for (const s of [-1, 1]) {
+    const cx = s * (1.45 + (TK - 1) * .15), cy = -7.3 + (TK - 1) * .5, rx = .42 * TK, ry = .55 * TK, a = s * -.35;
+    if (s > 0 && o.broken) {   // the top of the same tusk, snapped off in a jagged line just below the lip
+      const E = [], ca = Math.cos(a), sa = Math.sin(a);
+      for (let i = 0; i <= 10; i++) { const th = Math.PI + i / 10 * Math.PI, ex = Math.cos(th) * rx, ey = Math.sin(th) * ry; E.push([cx + .12 + ex * ca - ey * sa, cy - .1 + ex * sa + ey * ca]); }
+      const [ax, ay] = E[10], [bx, by] = E[0];
+      for (let k = 1; k < 5; k++) { const f = k / 5; E.push([lerp(ax, bx, f), lerp(ay, by, f) + (k % 2 ? .16 : -.04) * TK]); }
+      paint(P(E), { wash: BAL.tusk, fill: BAL.cream, fillOp: 90, tex: .4, ink: INK, sw: sw * .6 });
+      continue;
+    }
+    paint(ellPts(cx * u, cy * u, rx * u, ry * u, 14, 0, a), { wash: BAL.tusk, fill: BAL.cream, fillOp: 90, tex: .4, ink: INK, sw: sw * .6 });
+  }
   rs('trunk');
   let tp = balTrunk(o.trunk);
   if (o.trunk2 && o.trunkK > 0) { const a = resample(tp, 9), b = resample(balTrunk(o.trunk2), 9); tp = a.map((p, i) => [lerp(p[0], b[i][0], o.trunkK), lerp(p[1], b[i][1], o.trunkK)]); }
@@ -259,6 +272,21 @@ function balBappa(x, y, u, o = {}) {
   rs('after');
 }
 
+// the tusk on its own (broken off at the top): centred at (0, 0), pointing down, about 1.1u long; for a tusk that falls
+// or that he holds (armR: (u, sw) => balTusk(u * 1.6, sw))
+function balTusk(u, sw, o = {}) {
+  paint(U([[-.4, -.5], [-.28, -.62], [-.12, -.5], [.05, -.64], [.2, -.5], [.38, -.6], [.42, -.1], [.3, .3], [.08, .55], [-.12, .4], [-.32, .05]], u),
+    { wash: BAL.tusk, fill: BAL.cream, fillOp: 90, tex: .4, ink: o.ink || BAL.ink, sw: sw * .6, curv: .3 });
+  inkLine(U([[.18, -.3], [.22, .1], [.1, .35]], u), sw * .35, '#E8CFA8', 'inkfine', .5);
+}
+// the world point of his trunk tip (rot and htilt ignored), for something the trunk holds
+function balTrunkTip(x, y, u, o = {}) {
+  const tp = balTrunk(o.trunk), n = tp.length, sway = o.trunkSway || 0, tap = o.trunkTap || 0;
+  const [px, py] = tp[n - 1], sq = (o.sq || 0) + (o.take || 0), HY = (o.stand || 0) > .5 ? 2.6 : 0;
+  return [x + (o.dx || 0) * u + (o.flip ? -1 : 1) * (1 + sq * .6) * (px + sway + (o.hx || 0) * 1.4) * u,
+    y + (o.dy || 0) * u + (1 - sq) * (py - tap * .7 - HY) * u];
+}
+
 // Model sheet: studio.html?loop=balbappa, or node render.mjs --loop=balbappa --sheet=0.5 --cols=1 --w=1080
 (() => {
   LOOPS.balbappa = t => {
@@ -281,7 +309,7 @@ function balBappa(x, y, u, o = {}) {
     const cells = [
       ['neutral', {}], ['angry', { cross: 1 }], ['proud', { aR: .4, armR: (u) => modak(u * .4, u * .3, u * 1.3) }],
       ['sad', { trunk: 'down' }], ['furious', { ear: .9, trunk: 'up' }], ['idea', { aR: 1.3 }],
-      ['relieved', { trunk: 'palm' }], ['smug', { hx: .6, trunk: 'hold' }], ['happy', { aL: .9, aR: .9, walk: t * 1.5 }],
+      ['relieved', { trunk: 'palm', broken: 1, aR: .5, armR: (u, sw) => balTusk(u * 1.6, sw) }], ['smug', { hx: .6, trunk: 'hold' }], ['happy', { aL: .9, aR: .9, walk: t * 1.5 }],
     ];
     cells.forEach(([name, over], i) => {
       const cx = 180 + (i % 3) * 360, gy = 640 + Math.floor(i / 3) * 540;
@@ -289,6 +317,15 @@ function balBappa(x, y, u, o = {}) {
     });
   };
   LOOPS.balstand.len = 4;
+
+  // Ekadanta: the broken tusk, and the tusk in his hand: studio.html?loop=ekadanta
+  LOOPS.ekadanta = t => {
+    paint(rectPts(-40, -40, W + 80, H + 80), { wash: PAL.paper, ink: null });
+    balBappa(290, 900, 34, { ...feel('neutral', t), stand: 1, tusks: 1.5 });
+    balBappa(790, 900, 34, { ...feel('happy', t, { seed: 2 }), stand: 1, tusks: 1.5, broken: 1, aR: .45, armR: (u, sw) => balTusk(u * 2.4, sw) });
+    balBappa(540, 1750, 40, { ...feel('sad', t, { seed: 3 }), stand: 1, tusks: 1.5, broken: 1, trunk: 'down' });
+  };
+  LOOPS.ekadanta.len = 4;
 
   // the human-faced baby of the Brahma Vaivarta Purana, and his head on its own: studio.html?loop=balhuman
   LOOPS.balhuman = t => {
