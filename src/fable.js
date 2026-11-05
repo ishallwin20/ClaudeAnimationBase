@@ -26,7 +26,7 @@
 //          (cheeks blown out), tint + tintK (skin: 'flush' goes red), twitch 0..1 (the eye jumps)
 //   tuck:  tuckLegs 0..1, tuckHead 0..1 (drawn into the shell: past halfway the head goes behind it), brows (white
 //          elder brows: the old tortoise of reel/fable-phone)
-//   extras: noShadow, boilKey, held(u, sw) (a hook in head space at the mouth)
+//   extras: noShadow, boilKey, held(u, sw) (a hook in head space at the mouth), pal (overrides TT: shell / skin colours)
 // tortoiseMouth(x, y, u, o) → the world point where he bites; tortoiseHead(…) → his eye. To hang him from a stick
 //   by his mouth: o = { neck: 1, neckA: -.6, rot: -.5, dangle: 1 }, m = tortoiseMouth(0, 0, u, o), draw at stick - m.
 //
@@ -66,7 +66,7 @@
 //   shellHeart (reel/fable-phone: drawn with dlB, a bolder line): the pencil doodles so far. Add new ones to DOODLE
 //   with dl(s, points, w, colour, curv) (a pencil line; 2-point lines are drawn straight) and dlE(s, cx, cy, rx, ry, w)
 //   (an ellipse or arc).
-const TT = {
+const TT_BASE = {
   shell: '#8A9150', shellDk: '#5D6634', shellLt: '#ADB46E', rim: '#C9B36A', rimDk: '#9E8A47',
   skin: '#A9B57E', skinDk: '#7D8A57', skinLt: '#C9D3A0', ink: '#3E3A2C', eye: '#FBF6E8', pupil: '#2A241C',
   mouth: '#5B2A26', blush: '#E07A64',
@@ -94,6 +94,7 @@ const tortoiseMouth = (x, y, u, o = {}) => ttWorld(x, y, u, o, ...ttHeadPt(o, 1.
 const tortoiseHead = (x, y, u, o = {}) => ttWorld(x, y, u, o, ...ttHeadPt(o, .2, -.35));
 
 function tortoise(x, y, u, o = {}) {
+  const TT = o.pal ? { ...TT_BASE, ...o.pal } : TT_BASE;   // pal recolours him (Kurma in dashavatar.js)
   const id = o.boilKey ?? 't' + (++CLAWD_N), rs = p => boilSeed(`tortoise ${id} ${p}`);
   const sw = clamp(u / 20, .4, 2), INK = TT.ink, P = pts => U(pts, u), J = u * .03, sq = o.sq || 0;
   const { col: skin, dk: skinDk, lt: skinLt } = tintCols({ ...o, col: TT.skin, dk: TT.skinDk, lt: TT.skinLt });
