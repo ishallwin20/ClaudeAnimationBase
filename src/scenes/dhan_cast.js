@@ -20,7 +20,7 @@ const DH_GOLD = { base: '#D9A440', dk: '#8A5A16', lt: '#FFE6A0', mid: '#F2C25A' 
 const DH_PINK = { tip: '#D9497A', mid: '#F08FAE', base: '#FFE4EC' };
 const DH_BOX = [140, 580 + DH_DY, 800, 1100];
 const DH_FINE = [[DH_X, DH_FY, 135], [DH_X - 330, 1470 + DH_DY, 60], [DH_X + 300, 1530 + DH_DY, 50], [DH_X - 290, 1072 + DH_DY, 40], [DH_X + 290, 1072 + DH_DY, 40]];
-const DH_KEEP = [[DH_X, DH_FY + 4, 118, .62], [...dhHd(DH_X - 33, 990), 34, .4], [...dhHd(DH_X + 33, 990), 34, .4]];
+const DH_KEEP = [[DH_X, DH_FY + 4, 118, .7], [...dhHd(DH_X - 40, 988), 40, .55], [...dhHd(DH_X + 40, 988), 40, .55], [...dhHd(DH_X, 1068), 26, .5]];
 const DH_POUR = [DH_X - 342, 1512 + DH_DY];
 const DH_POT = [196, 1700];
 const DH_KALASH = [DH_X + 304, 1398 + DH_DY];
@@ -263,59 +263,76 @@ function dhLakshmi(eyes = 1) {
     c.save(); c.translate(X, DH_CHIN); c.scale(DH_HEAD, DH_HEAD); c.translate(-X, -DH_CHIN);
     // ears and the jhumkas
     for (const s of [-1, 1]) {
-      ellipse(c, X + s * 76, 1004, 12, 20, sk.base); ellipse(c, X + s * 77, 1006, 6, 11, sk.dk);
+      ellipse(c, X + s * 71, 1012, 8, 15, sk.base); ellipse(c, X + s * 72, 1013, 4, 8, sk.dk);
       dhGem(c, X + s * 78, 1030, 6, '#B0182C');
       const jx = X + s * 80, jy = 1046;
       ptShape(c, `M ${jx - 6} ${jy} C ${jx - 20} ${jy + 12} ${jx - 22} ${jy + 30} ${jx - 20} ${jy + 40} L ${jx + 20} ${jy + 40} C ${jx + 22} ${jy + 30} ${jx + 20} ${jy + 12} ${jx + 6} ${jy} Z`, ptLin(c, jx - 22, 0, jx + 22, 0, [[0, DH_GOLD.dk], [.4, DH_GOLD.lt], [1, DH_GOLD.base]]));
       for (let k = 0; k < 5; k++) ellipse(c, jx - 16 + k * 8, jy + 46, 3.4, 3.8, '#FFFFFF');
       dhBand(c, [[jx - 22, jy + 40], [jx + 22, jy + 40]], 6);
     }
-    const faceD = `M ${X - 72} 955 C ${X - 78} 1012 ${X - 64} 1058 ${X - 34} 1090 C ${X - 17} 1106 ${X + 17} 1106 ${X + 34} 1090 C ${X + 64} 1058 ${X + 78} 1012 ${X + 72} 955 C ${X + 52} 905 ${X - 52} 905 ${X - 72} 955 Z`;
-    ptShape(c, faceD, ptRad(c, X - 8, 1000, 6, 110, [[0, sk.lt], [.6, sk.base], [1, sk.dk]], X, 1010));
+    // the face: an oval, a softly tapered chin, lit from the upper left
+    const faceD = `M ${X - 68} 952 C ${X - 72} 1004 ${X - 64} 1044 ${X - 42} 1074 C ${X - 27} 1096 ${X - 12} 1107 ${X} 1108 C ${X + 12} 1107 ${X + 27} 1096 ${X + 42} 1074 C ${X + 64} 1044 ${X + 72} 1004 ${X + 68} 952 C ${X + 50} 908 ${X - 50} 908 ${X - 68} 952 Z`;
+    ptShape(c, faceD, ptRad(c, X - 14, 990, 8, 118, [[0, '#FFE2C6'], [.45, '#F2C09A'], [.8, '#DDA07A'], [1, '#B47452']], X, 1006));
     inside(c, faceD, () => {
+      ellipse(c, X + 62, 1020, 20, 70, 'rgba(150,80,50,.22)');               // the far side of the face, in shade
+      ellipse(c, X - 64, 1020, 12, 60, 'rgba(150,80,50,.12)');
       for (const s of [-1, 1]) {
-        ellipse(c, X + s * 31, 985, 28, 14, 'rgba(170,90,70,.22)');          // the sockets
-        ellipse(c, X + s * 40, 1038, 16, 10, 'rgba(240,120,110,.16)');        // the cheeks, flushed
-        ellipse(c, X + s * 66, 1020, 12, 48, 'rgba(150,80,50,.28)');         // the sides of the face
+        ellipse(c, X + s * 36, 970, 30, 10, 'rgba(150,80,55,.16)');         // under the brow
+        ellipse(c, X + s * 42, 1036, 17, 11, 'rgba(236,128,112,.17)');      // a little colour on the cheeks
+        ellipse(c, X + s * 36, 1014, 22, 7, 'rgba(255,236,220,.22)');       // the lit top of the cheekbone
       }
-      ellipse(c, X + 8, 1020, 6, 20, 'rgba(150,80,50,.18)');                 // the nose's shaded side
-      ellipse(c, X - 3, 1018, 3.5, 16, 'rgba(255,240,225,.28)');                // its lit bridge
-      ellipse(c, X, 1094, 22, 6, 'rgba(150,80,50,.3)');                       // under the chin
-      ellipse(c, X, 1084, 16, 7, 'rgba(255,236,215,.5)');                     // the chin, lit
+      ellipse(c, X, 940, 40, 14, 'rgba(255,240,225,.3)');                    // the forehead, lit
+      ellipse(c, X + 9, 1012, 5, 24, 'rgba(150,80,50,.16)');                 // the shaded side of the nose
+      ellipse(c, X, 1056, 5, 5, 'rgba(150,80,50,.1)');                       // the philtrum
+      ellipse(c, X, 1084, 13, 3.5, 'rgba(150,80,50,.28)');                   // under the lower lip
+      ellipse(c, X - 2, 1093, 13, 7, 'rgba(255,236,215,.4)');                // the chin, lit
+      ellipse(c, X, 1106, 30, 6, 'rgba(130,64,40,.28)');                     // under the chin
     });
-    // eyes: large almond eyes lined with kajal, the outer corners winged
-    const eye = s => `M ${X + s * 8} 994 C ${X + s * 18} 974 ${X + s * 42} 970 ${X + s * 61} 985 C ${X + s * 44} 1006 ${X + s * 22} 1008 ${X + s * 8} 994 Z`;
+    // the eyes: long fish-shaped (meenakshi) eyes, the upper lid resting on the iris, kajal sweeping up into a wing
+    const eye = s => `M ${X + s * 13} 995 C ${X + s * 21} 983 ${X + s * 40} 976 ${X + s * 56} 983 C ${X + s * 61} 985 ${X + s * 64} 987 ${X + s * 68} 989 C ${X + s * 50} 999 ${X + s * 26} 1002 ${X + s * 13} 995 Z`;
+    c.lineCap = 'round'; c.lineJoin = 'round';
     for (const s of [-1, 1]) {
-      c.lineCap = 'round'; c.lineJoin = 'round';
-      ellipse(c, X + s * 34, 976, 24, 7, 'rgba(160,70,70,.25)');                                                       // a blush of colour on the lid
+      // the lid: a rose-gold tint between the crease and the lashes
+      c.save(); c.globalAlpha = .38; ptShape(c, `M ${X + s * 12} 994 C ${X + s * 18} 966 ${X + s * 46} 960 ${X + s * 70} 984 C ${X + s * 50} 974 ${X + s * 24} 976 ${X + s * 12} 994 Z`, 'rgba(178,92,70,.6)'); c.restore();
+      c.strokeStyle = 'rgba(120,56,38,.5)'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(X + s * 17, 976); c.bezierCurveTo(X + s * 28, 964, X + s * 50, 963, X + s * 62, 975); c.stroke();   // the crease
       if (eyes) {
-        ptShape(c, eye(s), '#FBF4EA');
+        ptShape(c, eye(s), ptLin(c, X + s * 13, 0, X + s * 67, 0, [[0, '#E4CFC0'], [.25, '#F6ECE2'], [.75, '#F4E8DC'], [1, '#D8BBA8']]));
         inside(c, eye(s), () => {
-          ellipse(c, X + s * 32, 991, 12.5, 12.5, '#5A3218'); ellipse(c, X + s * 32, 991, 9, 9, '#2A1408'); ellipse(c, X + s * 32, 991, 5.2, 5.2, '#0E0604');
-          ellipse(c, X + s * 28, 984, 3.6, 3.6, '#FFFFFF'); ellipse(c, X + s * 34, 994, 1.4, 1.4, 'rgba(255,255,255,.7)');
-          ellipse(c, X + s * 32, 978, 30, 8, 'rgba(90,40,30,.38)');                                                       // the lid's shadow on the eye
+          ellipse(c, X + s * 37, 990.5, 13, 13, '#24120A');                                     // the iris's dark rim: both lids cut it
+          ellipse(c, X + s * 37, 990.5, 11.5, 11.5, ptRad(c, X + s * 37, 994, 2, 11.5, [[0, '#8A5426'], [.6, '#5A3216'], [1, '#3A1E0C']]));
+          ellipse(c, X + s * 37, 990.5, 5, 5, '#0A0402');                                       // the pupil
+          ellipse(c, X + s * 33, 986, 2.6, 2.4, '#FFFFFF'); ellipse(c, X + s * 40, 995, 1.2, 1.1, 'rgba(255,255,255,.7)');   // catchlights
+          ellipse(c, X + s * 40, 978, 32, 6, 'rgba(70,30,20,.5)');                               // the upper lid's shadow across the eye
+          ellipse(c, X + s * 15, 995, 4, 3, 'rgba(220,130,130,.6)');                             // the pink inner corner
         });
-        c.strokeStyle = '#140A08'; c.lineWidth = 4.6; c.beginPath(); c.moveTo(X + s * 7, 994); c.bezierCurveTo(X + s * 18, 974, X + s * 42, 969, X + s * 62, 984); c.lineTo(X + s * 74, 977); c.stroke();
-        c.lineWidth = 2.4; c.beginPath(); c.moveTo(X + s * 10, 997); c.bezierCurveTo(X + s * 22, 1008, X + s * 44, 1006, X + s * 62, 986); c.stroke();
-        c.strokeStyle = 'rgba(120,60,40,.6)'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(X + s * 14, 974); c.quadraticCurveTo(X + s * 36, 962, X + s * 58, 973); c.stroke();   // the crease
+        // kajal: a heavy upper line that sweeps up into a wing, a softer line below meeting it at the outer corner
+        limb(c, [[X + s * 12, 995], [X + s * 22, 983], [X + s * 40, 976], [X + s * 57, 983], [X + s * 69, 988], [X + s * 83, 979]], [2, 4.4, 5, 4.8, 3.4, .8], '#120806');
+        limb(c, [[X + s * 15, 997.5], [X + s * 30, 1002.5], [X + s * 50, 999.5], [X + s * 67, 989]], [1, 2.4, 2.8, 1.6], 'rgba(22,10,8,.9)');
+        for (let k = 0; k < 5; k++) { const q = .5 + k * .11, x = X + s * lerp(40, 66, q * 1.2 - .5), y = lerp(973, 986, (q - .5) * 2); c.beginPath(); c.moveTo(x, y - 2); c.lineTo(x + s * (3 + k), y - 6 - k * .6); c.stroke(); }
       } else {
-        // shut: the lid down, the lash line curving down, the kajal wing still there
-        c.strokeStyle = '#140A08'; c.lineWidth = 3.8; c.beginPath(); c.moveTo(X + s * 9, 993); c.bezierCurveTo(X + s * 22, 1001, X + s * 42, 1000, X + s * 58, 988); c.lineTo(X + s * 68, 981); c.stroke();
-        c.lineWidth = 1.5; for (let k = 0; k < 4; k++) { const x = X + s * (20 + k * 9); c.beginPath(); c.moveTo(x, 999); c.lineTo(x + s * 2, 1005); c.stroke(); }
-        ellipse(c, X + s * 33, 988, 18, 6, 'rgba(255,236,215,.4)');
+        // shut: the lid down over the eye, the lashes curving down, the kajal wing still there
+        ptShape(c, eye(s), 'rgba(196,118,92,.45)');
+        limb(c, [[X + s * 12, 995], [X + s * 30, 1001], [X + s * 50, 999], [X + s * 66, 989], [X + s * 80, 980]], [2, 4, 4.4, 3.2, .8], '#120806');
+        c.strokeStyle = '#120806'; c.lineWidth = 1.4; for (let k = 0; k < 5; k++) { const x = X + s * (24 + k * 8); c.beginPath(); c.moveTo(x, 1001); c.lineTo(x + s * 2, 1007); c.stroke(); }
       }
-      // the brow, a long arch
-      c.strokeStyle = '#2A140C'; c.lineWidth = 3.6; c.beginPath(); c.moveTo(X + s * 12, 962); c.quadraticCurveTo(X + s * 36, 944, X + s * 66, 960); c.stroke();
+      // the brow: a long, fine, tapered arch
+      limb(c, [[X + s * 15, 961], [X + s * 30, 951], [X + s * 48, 948], [X + s * 70, 957]], [2.6, 4, 3, .8], '#2A140C');
     }
-    // the nose, the nath, the lips
-    c.strokeStyle = 'rgba(130,60,40,.32)'; c.lineWidth = 2; c.beginPath(); c.moveTo(X + 7, 1012); c.quadraticCurveTo(X + 10, 1026, X + 9, 1035); c.stroke(); c.strokeStyle = 'rgba(130,60,40,.6)';
-    c.beginPath(); c.moveTo(X - 11, 1040); c.quadraticCurveTo(X, 1048, X + 11, 1040); c.stroke();
-    ellipse(c, X - 7, 1042, 3, 2, '#7A3A26'); ellipse(c, X + 7, 1042, 3, 2, '#7A3A26');
-    ellipse(c, X - 1, 1036, 5, 3.4, 'rgba(255,240,225,.7)');
-    ptShape(c, `M ${X - 19} 1066 C ${X - 10} 1060 ${X - 3} 1060 ${X} 1063 C ${X + 3} 1060 ${X + 10} 1060 ${X + 19} 1066 C ${X + 8} 1068 ${X - 8} 1068 ${X - 19} 1066 Z`, '#A4232E');
-    ptShape(c, `M ${X - 17} 1067 C ${X - 9} 1080 ${X + 9} 1080 ${X + 17} 1067 C ${X + 8} 1070 ${X - 8} 1070 ${X - 17} 1067 Z`, '#CC3E48');
-    ellipse(c, X + 3, 1073, 6, 2.2, 'rgba(255,200,200,.6)');
-    c.strokeStyle = '#6A1018'; c.lineWidth = 1.8; c.beginPath(); c.moveTo(X - 21, 1064); c.quadraticCurveTo(X, 1070, X + 21, 1064); c.stroke();   // a soft smile, corners up
+    // the nose: a soft line down its shaded side, a rounded tip, the nostril wings
+    limb(c, [[X + 10, 1000], [X + 10, 1016], [X + 12, 1030]], [.6, 1.6, 1.2], 'rgba(140,66,44,.28)');
+    ellipse(c, X - 1, 1033, 7, 5, 'rgba(255,240,226,.55)');
+    c.strokeStyle = 'rgba(112,48,32,.75)'; c.lineWidth = 2;
+    for (const s of [-1, 1]) { c.beginPath(); c.moveTo(X + s * 14, 1033); c.bezierCurveTo(X + s * 17, 1042, X + s * 11, 1046, X + s * 6, 1043.5); c.stroke(); }
+    c.lineWidth = 1.5; c.beginPath(); c.moveTo(X - 6, 1043.5); c.quadraticCurveTo(X, 1046.5, X + 6, 1043.5); c.stroke();
+    ellipse(c, X - 7, 1042, 2.8, 1.6, '#5E2618'); ellipse(c, X + 7, 1042, 2.8, 1.6, '#5E2618');
+    ellipse(c, X, 1050, 10, 3, 'rgba(150,80,50,.22)');
+    // the lips: a full bow, a fuller lower lip, a soft smile
+    ptShape(c, `M ${X - 21} 1067 C ${X - 14} 1063 ${X - 9} 1059 ${X - 5} 1060 C ${X - 2} 1060 ${X - 1} 1062 ${X} 1062.5 C ${X + 1} 1062 ${X + 2} 1060 ${X + 5} 1060 C ${X + 9} 1059 ${X + 14} 1063 ${X + 21} 1067 C ${X + 10} 1068.5 ${X - 10} 1068.5 ${X - 21} 1067 Z`, ptLin(c, 0, 1059, 0, 1068, [[0, '#B4323E'], [1, '#8E1C2A']]));
+    ptShape(c, `M ${X - 18} 1068 C ${X - 12} 1080 ${X + 12} 1080 ${X + 18} 1068 C ${X + 8} 1070.5 ${X - 8} 1070.5 ${X - 18} 1068 Z`, ptLin(c, 0, 1068, 0, 1080, [[0, '#B83442'], [.6, '#D0505C'], [1, '#B83E4A']]));
+    ellipse(c, X + 1, 1073.5, 7, 2.2, 'rgba(255,214,210,.65)');
+    ellipse(c, X - 7, 1062.5, 3, 1.2, 'rgba(255,214,210,.4)');
+    c.strokeStyle = '#5A0E18'; c.lineWidth = 1.8; c.beginPath(); c.moveTo(X - 23, 1064.5); c.quadraticCurveTo(X - 19, 1068, X - 14, 1068.4); c.quadraticCurveTo(X, 1070.4, X + 14, 1068.4); c.quadraticCurveTo(X + 19, 1068, X + 23, 1064.5); c.stroke();   // the parting, its corners turned up
+    for (const s of [-1, 1]) ellipse(c, X + s * 25, 1064, 1.8, 1.8, 'rgba(140,60,45,.4)');
     c.strokeStyle = DH_GOLD.base; c.lineWidth = 3; c.beginPath(); c.arc(X + 12, 1052, 12, -1.9, 1.3); c.stroke();   // the nath, through her left nostril
     dhGem(c, X + 23, 1058, 3, '#B0182C');
     dhBeads(c, [[X + 22, 1046], [X + 50, 1030], [X + 76, 1010]], 2.4, 6, ['#F4EEE2', '#FFFFFF', '#FFFFFF']);   // its chain of pearls to the ear
