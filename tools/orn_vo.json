@@ -1,0 +1,137 @@
+{
+  "name": "orn",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Why does *SHIVA* wear | such *SCARY* ornaments?"
+      ],
+      "tts": "Why does Shiva wear such scary ornaments?",
+      "hold": 0.3
+    },
+    {
+      "id": "snake",
+      "gap": 0.6,
+      "caps": [
+        "A *SNAKE:* | one bite can kill.",
+        "Yet the *KING OF SERPENTS* | is his necklace."
+      ],
+      "tts": "A snake: one bite can kill. Yet the king of serpents is his necklace.",
+      "hold": 1.0
+    },
+    {
+      "id": "poison",
+      "gap": 1.0,
+      "caps": [
+        "When the ocean was churned, | *HALAHAL* poison rose",
+        "and spread | in *ALL* directions."
+      ],
+      "tts": "When the ocean was churned, halaahal poison rose, and spread in all directions.",
+      "hold": 0.6
+    },
+    {
+      "id": "drink",
+      "gap": 0.6,
+      "caps": [
+        "Shiva *DRANK* it. | It turned his throat *BLUE,*",
+        "and that blue mark | became his *ORNAMENT.*"
+      ],
+      "tts": "Shiva drank it. It turned his throat blue, and that blue mark became his ornament.",
+      "hold": 1.0
+    },
+    {
+      "id": "moon",
+      "gap": 0.8,
+      "caps": [
+        "And the *MOON* on his head?",
+        "He wore it for *RELIEF* | from that poison."
+      ],
+      "tts": "And the moon on his head? He wore it for relief, from that poison.",
+      "hold": 1.0
+    },
+    {
+      "id": "tusk",
+      "gap": 1.0,
+      "caps": [
+        "This *TUSK* killed | the demon *HIRANYAKSHA.*",
+        "It was *VARAHA'S.* When it fell, | Shiva picked it up and *WORE* it."
+      ],
+      "tts": "This tusk killed the demon Hiranyaaksha. It was Varaaha's. When it fell, Shiva picked it up, and wore it.",
+      "hold": 1.0
+    },
+    {
+      "id": "hide",
+      "gap": 1.0,
+      "caps": [
+        "*GAJASURA,* the elephant demon, | fought Shiva and fell.",
+        "Dying, he asked Shiva | to *WEAR* his skin.",
+        "And Shiva did. | His name: *KRITTIVASA.*"
+      ],
+      "tts": "Gajaasura, the elephant demon, fought Shiva and fell. Dying, he asked Shiva to wear his skin. And Shiva did. His name: Krittivaasa.",
+      "hold": 1.0
+    },
+    {
+      "id": "ganga",
+      "gap": 1.0,
+      "caps": [
+        "The *EARTH* could not bear | *GANGA'S* fall from heaven.",
+        "She meant to sweep Shiva away. | He held her in his *JATA.*"
+      ],
+      "tts": "The earth could not bear Ganga's fall from heaven. She meant to sweep Shiva away. He held her in his jataa.",
+      "hold": 1.0
+    },
+    {
+      "id": "skulls",
+      "gap": 1.0,
+      "caps": [
+        "And the *SKULLS?*",
+        "They belong to thousands of past | *BRAHMAS* and *VISHNUS.*"
+      ],
+      "tts": "And the skulls? They belong to thousands of past Brahmas, and Vishnus.",
+      "hold": 1.0
+    },
+    {
+      "id": "tears",
+      "gap": 1.0,
+      "caps": [
+        "And *RUDRAKSHA* grew | from Shiva's own *TEARS.*"
+      ],
+      "tts": "And rudraaksha grew from Shiva's own tears.",
+      "hold": 1.0
+    },
+    {
+      "id": "devotee",
+      "gap": 1.0,
+      "caps": [
+        "*Crystal, karungali, red thread?* | Those are worn by his *DEVOTEES.*"
+      ],
+      "tts": "Crystal, karungali, red thread? Those are worn by his devotees.",
+      "hold": 0.8
+    },
+    {
+      "id": "save",
+      "gap": 0.7,
+      "y": 1420,
+      "caps": [
+        "*SAVE* this, | and send it to a Shiva *BHAKT.*"
+      ],
+      "tts": "Save this, and send it to a Shiva bhakt.",
+      "hold": 1.8
+    },
+    {
+      "id": "ask",
+      "gap": 0.7,
+      "caps": [
+        "Which one did *YOU* | not know? *Comment!*"
+      ],
+      "tts": "Which one did you not know? Comment!",
+      "hold": 1.0
+    }
+  ]
+}
