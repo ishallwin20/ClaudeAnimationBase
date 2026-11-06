@@ -1,149 +1,160 @@
-# Ad 76: "PARSHURAMA broke GANESHA'S TUSK" (Parshurama series, Part 7)
+# Ad 80: "PARSHURAMA'S 3 STUDENTS" (Parshurama series, Part 8, the finale)
 
-An 88.2 s Painted reel with Bangers captions, no voiceover and SFX: a temple bell and a low brass for the cold open, wind
-and a tanpura on Kailash, comic foley for the door fight (boing, scuffle, trunk whoosh), a whirl through the worlds
-(choir, flute and cowbells, a deep drone below, a splash), a slowed-down spinning axe, silence, then the CLANG, a thud
-and a rumble; a harp for Krishna, a soft flute for the forgiveness. It stands on its own and ends on the Navadurga card
-(no price).
+A ~97 s Painted reel with Bangers captions, no voiceover and SFX. It stands on its own and closes the series: the
+cold open names three Mahabharata legends, each gets a chapter, the twist is that all three led the same army at
+Kurukshetra and fell there, and the last beat is that Parshurama never died: he still lives on Mahendra, and his next
+student isn't born yet. Ends on the Navadurga card (no price); the caption and pinned comment point to Parts 1–7.
 
-**Pacing:** Part 6's shape (owner, 5 Nov: "pacing is good now"). A fast cold open (0–10.2 s: the hook 3.8 s, "WITH THE AXE
-SHIVA GAVE HIM." 3.6 s, "AND GANESHA LET IT STRIKE." 2.8 s), then 15 caption groups in ~74 s, two-line captions up
-≥ 3.5 s, three-liners and quotes ≥ 4.5 s.
+**Pacing:** Part 6–7's shape (owner, 5 Nov: "pacing is good now"). A fast cold open (0–11.0 s: the hook 3.8 s, then
+three names at 2.4 s each), then 16 caption groups in ~82 s, two-line captions up ≥ 3.5 s, three-liners and quotes
+≥ 4.5 s.
 
 ```
-Logline: After his wars Parshurama climbs Kailash to see his guru, Shiva. At the door stands Ganesha: "Wait, my parents
-         are resting." "I'll just bow and come back." "No." A shove, a tug, Kartikeya pulls them apart; Parshurama raises
-         his axe, and Ganesha picks him up and carries him through every world, drops him in the waters and puts him
-         back where he stood. Dizzy and soaked, Parshurama throws the axe. Ganesha knows it: his father gave it. He won't
-         let his father's gift go in vain, so he takes it on his tusk. The tusk falls; the earth shakes. Parvati is
-         furious; Shiva says nothing and calls Krishna, who names the boy EKADANTA. Parvati forgives Parshurama.
-Why it should travel: two of the most loved names in the hook (Parshurama, Ganesha), the "why does Ganesha have one
-         tusk?" question every Indian kid has asked, a cute-vs-mighty fight (a little Ganesha lifts the warrior who beat
-         21 armies), and a twist of character: Ganesha CHOSE to take the blow, out of respect for his father. The ask is a
-         name call-out ("HOW MANY OTHER NAMES OF GANESHA DO YOU KNOW?"), the format that gets the most comments.
-Hook:    Frame 0: Ganesha on the crimson sunburst, one tusk broken, the other in his hand.
-         "PARSHURAMA" (gold) / "BROKE GANESHA'S TUSK."
-World:   sunburst → blood-maroon → sunburst → Kailash by day → the palace door (snow, white stone, gold) → the worlds
-         (gold heavens, Vaikuntha's blue, Goloka's green, the violet underworlds, the waters) → the door, the sky
-         reddening → the slowed void (gold) → the door, dust → Parvati's red anger → Krishna's blue-gold light → warm
-         dusk → sunburst → card.
-Motif:   THE AXE (Shiva's gift in Part 2: it comes back to Shiva's door, and his son honours it), THE TUSK (whole in the
-         story, broken in the hook and the ask: the ending rhymes with frame 0).
+Logline: Parshurama had three famous students. BHISHMA, who refused his guru's order over princess Amba and fought him
+         for 23 days at Kurukshetra until Narada and Parshurama's own ancestors stopped it: "No warrior on earth is your
+         equal." DRONA, who came when Parshurama had given everything away: "Only my body and my weapons are left.
+         Choose." "All your weapons." KARNA, who said "I am a brahmin" and learned the Brahmastra; an insect bored into
+         his thigh while his guru slept on his lap and he didn't move; "No brahmin could bear this pain. Who are you?"
+         "Karna, son of Radha." "You learned it with a lie: when you face your equal, you will forget it. Go. But no
+         warrior on earth will be your equal." Years later all three led the same army at Kurukshetra, one after
+         another, and all three fell there. Parshurama never died. He still lives on Mahendra. His next student isn't
+         born yet (Kalki).
+Why it should travel: three of the biggest Mahabharata names in the hook (and Karna, whose fans fight in every comment
+         section), a teacher-vs-student duel, the most famous curse in the epic told from the text, a real twist (the
+         first three commanders of the Kaurava army were all his students) and a goosebump ending (he's still alive;
+         Kalki). The same words, "no warrior on earth is your equal", go to Bhishma as a blessing and to Karna with a
+         curse. The ask is a fan fight: "WHO WAS HIS GREATEST STUDENT? BHISHMA, DRONA OR KARNA?"
+Hook:    Frame 0: Parshurama on the crimson sunburst, the axe on his shoulder, looking at us.
+         "PARSHURAMA" (gold) / "HAD 3 FAMOUS STUDENTS."
+World:   sunburst → blood-red (Bhishma) → gold void (Drona) → violet night (Karna) → Kurukshetra by day and night
+         (the duel) → violet night (the sleep weapon) → dawn (the ancestors) → Mahendra by day (Drona, Karna) → dusk
+         (the curse) → Kurukshetra at dusk, the five red lakes of Part 5 (all three fall) → Mahendra at dawn → sunrise
+         (Kalki) → sunburst → card.
+Motif:   THE SAME WORDS ("no warrior on earth is your equal") said twice; THE LAMPS (three lit, three out at
+         Kurukshetra); KURUKSHETRA (Part 5's field of five lakes is where his students fight and fall).
 ```
 
 ## Characters
-- **Rama (Parshurama)**: `parshurama()`, `flip: 1`, bearded (since the 21 wars, Part 5); the axe; `quiver: false`.
-- **Ganesha**: `balBappa()`, `stand: 1`, `tusks: 1.5`; `broken: 1` from the strike on; his left tusk (screen right) is the
-  one that breaks (Brahmanda 3.42.3). He lifts Parshurama with his trunk (`balTrunkTip()`).
-- **Kartikeya** `kartikeya()` (vel and shield), **Parvati** `parvati()`, **Shiva** `shiva()` seated, **Krishna**
-  `krishna()`, **Radha** `radha7()` (Parvati's rig, a peacock-blue odhni), the devas on clouds `deva()` (Part 2).
+- **Rama (Parshurama)**: `parshurama()`, `flip: 1`, bearded (since Part 5), the axe; his bow (`plainBow()`) in the duel.
+- **Bhishma**: `bhishma()` in `parshu8_props.js`, Ram's rig (`ram()`, `crown: 'small'`) in white and silver, a silver
+  beard; a plain bow (`plainBow()`), on a chariot (`royalChariot()`, Part 6) in the duel.
+- **Amba**: `amba()`, Parvati's rig in a princess's rose and gold, teary.
+- **Narada**: `narada()` on a cloud.
+- **Rama's ancestors**: `ancestor()` (Part 5), gold ghosts.
+- **Drona**: `drona()`, Valmiki's rig, a young brahmin's black beard, a faded dhoti (he came poor).
+- **Karna**: `karna()`, Ram's rig with no crown and no bow: golden skin, the gold kundalas he was born with (glowing)
+  and the gold kavacha across his chest; a plain white dhoti (he came as a brahmin).
+- **The insect** `alarka()`: eight legs, bristles, hog-snouted (Shanti 3).
+- **Kalki** `kalki()` + `kalkiHorse()` (src/dashavatar.js), a silhouette.
 
-## Time constants (video s; shared by `src/scenes/parshu7.js` and `tools/parshu7_sfx.mjs`)
+## Time constants (video s; shared by `src/scenes/parshu8.js` and `tools/parshu8_sfx.mjs`)
 ```js
-B0 = 3.8, C0 = 7.4
-D0 = 10.2, E0 = 15.0, F0 = 19.6, REV = 22.4
-G0 = 24.6, SPLIT = 26.8, H0 = 29.2, LIFT = 31.4
-I0 = 34.0, DOWN = 36.4, SPLASH = 38.3, BACK = 39.8
-J0 = 40.6, WIND = 43.6, THROW = 44.5
-K0 = 45.2, KNOW = 46.8, L0 = 50.2, HIT = 54.2
-M0 = 55.0, LAND = 56.1, N0 = 59.6, O0 = 64.6, ARRIVE = 66.4
-Q0 = 69.2, NAME = 70.6, R0 = 74.2, S0 = 79.2, CARD = 84.2, END = 88.2
+B0 = 3.8, C0 = 6.2, D0 = 8.6
+F0 = 11.0, FREV = 15.8, G0 = 19.4, H0 = 25.0, NARADA = 26.8, J0 = 30.0, KNEEL = 31.6
+L0 = 35.6, M0 = 40.2, MREV = 43.8, GIFT = 44.4
+O0 = 46.6, P0 = 51.6, BITE = 53.4, R0 = 57.2, RREV = 60.8, S0 = 63.8, DRAIN = 66.6, T0 = 69.2
+U0 = 73.6, W0 = 79.2, X0 = 83.8, Y0 = 88.2, CARD = 92.8, END = 96.8
 ```
 
 ## Shots and reads (captions inside y 420–1500, left of x 930)
 **The cold open (fast)**
-- **A 0–3.8 · the hook.** Ganesha on the crimson sunburst, his tusk in his hand, the stump showing; he looks at the tusk,
-  then at us, calm. "PARSHURAMA" / "BROKE GANESHA'S TUSK."
-- **B 3.8–7.4 · the axe.** Parshurama on blood-maroon, the axe raised overhead and glowing. "WITH THE AXE" / "SHIVA GAVE
-  HIM."
-- **C 7.4–10.2 · he lets it.** Ganesha close; the axe's light grows on his face; he closes his eyes and smiles. "AND
-  GANESHA" / "LET IT STRIKE." Iris out.
+- **A 0–3.8 · the hook.** Parshurama on the crimson sunburst, axe on his shoulder, looking at us. "PARSHURAMA" / "HAD 3
+  FAMOUS STUDENTS."
+- **B 3.8–6.2 · Bhishma.** Bhishma close on blood-red, bow drawn. "BHISHMA" / "FOUGHT HIM."
+- **C 6.2–8.6 · Drona.** Drona close in gold, the astras circling into his open hands. "DRONA" / "GOT EVERYTHING."
+- **D 8.6–11.0 · Karna.** Karna close on violet night, his kundalas glowing, eyes down, a tear. "KARNA" / "LIED TO HIM."
+  Iris out.
 
-**The story (Part 6's pace)**
-- **D 10.2–15.0 · Kailash.** Parshurama climbs the snowy path toward the palace on the peak. "AFTER HIS WARS," /
-  "PARSHURAMA CLIMBED KAILASH" / "TO SEE HIS GURU, SHIVA."
-- **E 15.0–19.6 · the door.** The palace door, Kartikeya and Ganesha on its steps; Parshurama bows to them and steps to
-  the door; Ganesha hops in front of it, palm up. "GANESHA STOPPED HIM:" / "\"WAIT! MY PARENTS ARE RESTING.\""
-- **F 19.6–24.6 · "No."** Low angle: Parshurama, hand on heart. "\"I'LL JUST BOW TO THEM" / "AND COME RIGHT BACK.\"" 22.4
-  cut to Ganesha close: arms folded, head shaking. "\"NO.\""
-- **G 24.6–29.2 · the tug.** Parshurama strides in; Ganesha plants his feet and shoves at his belly; they push back and
-  forth; 26.8 Kartikeya jumps between and shoves them apart. "HE PUSHED IN. GANESHA PUSHED BACK." / "KARTIKEYA PULLED
-  THEM APART."
-- **H 29.2–34.0 · picked up.** Parshurama raises his axe, aura flaring; 31.4 Ganesha's trunk whips round his waist and
-  lifts him off his feet, legs kicking. "PARSHURAMA RAISED HIS AXE." / "GANESHA PICKED HIM UP."
-- **I 34.0–40.6 · the worlds.** Ganesha flies up with him dangling from his trunk: the heavens' gold isles, Vaikuntha's
-  blue, Goloka's cows; 36.4 down through the violet underworlds; 38.3 he drops him: a splash in the waters; 39.8 the
-  trunk fishes him out, whoosh. "AND CARRIED HIM THROUGH" / "EVERY WORLD, UP AND DOWN," / "THEN DROPPED HIM IN THE
-  WATERS."
-- **J 40.6–45.2 · the throw.** The door again: Parshurama soaked and dizzy (stars round his head, drips); Ganesha
-  unmoved, arms folded; Parshurama shakes it off, his anger flares; 43.6 the wind-up; 44.5 he throws. "BACK WHERE HE
-  STOOD, SOAKED AND DIZZY," / "PARSHURAMA THREW HIS AXE."
-- **K 45.2–50.2 · he knows it.** Slow motion: the axe turning through gold air; Ganesha's face in its light; 46.8 his
-  eyes widen; a memory cloud: Shiva handing young Rama the axe (Part 2). "GANESHA KNEW THAT AXE." / "HIS FATHER, SHIVA,
-  HAD GIVEN IT."
-- **L 50.2–55.0 · the choice.** Ganesha closes his eyes, smiles and turns his left tusk to the light. "HE WOULDN'T LET
-  HIS FATHER'S GIFT" / "GO IN VAIN." / "SO HE TOOK IT ON HIS TUSK." Silence, then 54.2 the CLANG: a white flash.
-- **M 55.0–59.6 · the tusk falls.** The tusk spins down and lands in the snow (56.1): the ground shakes, snow slides off
-  the peak, the devas on their clouds cry out. "THE TUSK FELL." / "THE EARTH SHOOK."
-- **N 59.6–64.6 · Parvati.** Parvati sweeps out, Shiva behind her; she sees her son with one tusk and turns on Shiva,
-  pointing at Parshurama. "\"YOUR OWN DISCIPLE BROKE OUR SON'S TUSK" / "WITH THE AXE YOU GAVE HIM!\""
-- **O 64.6–69.2 · Krishna.** Shiva closes his eyes, silent; 66.4 a blue-gold light: Krishna and Radha arrive. "SHIVA
-  SAID NOTHING." / "HE CALLED KRISHNA."
-- **Q 69.2–74.2 · the name.** Krishna, a hand on Ganesha's turban, to Parvati: "\"TODAY YOUR SON BECAME" / "EKADANTA:"
-  (huge gold) / "THE ONE-TUSKED.\""
-- **R 74.2–79.2 · forgiven.** Radha touches Ganesha's cheek (a sparkle); Parshurama kneels, palms joined; Parvati lays
-  her hand on his head. "PARVATI FORGAVE PARSHURAMA" / "AND BLESSED HIM."
-- **S 79.2–84.2 · the ask.** Ganesha on the sunburst with his tusk, as in frame 0, smiling. "EKADANTA IS ONE OF HIS
-  NAMES." / "HOW MANY OTHERS" / "DO YOU KNOW? COMMENT!"
-- **card 84.2–88.2.** `navCard()`.
+**Student 1: Bhishma**
+- **F 11.0–19.4 · the order.** Kurukshetra by day: Parshurama, Amba weeping behind him, points; 15.8 cut to Bhishma
+  close, a hand on his heart, head shaking. "STUDENT 1: BHISHMA." / "HIS GURU ORDERED HIM" / "TO TAKE BACK PRINCESS
+  AMBA." → "\"I CANNOT.\"" / "\"NOT EVEN FOR MY GURU.\""
+- **G 19.4–25.0 · 23 days.** Intercut, faster and faster: Parshurama looses (left), Bhishma on his chariot looses
+  (right), volleys clash in the middle; the sky flips day/night; a gold day count runs 1 → 23. "SO GURU AND STUDENT
+  FOUGHT" / "AT KURUKSHETRA" / "FOR 23 DAYS."
+- **H 25.0–30.0 · the sleep weapon.** Night. Bhishma draws an arrow glowing violet; 26.8 Narada drops in on his cloud,
+  palm up; Bhishma lowers it. "BHISHMA RAISED A WEAPON OF SLEEP." / "NARADA STOPPED HIM:" / "\"HE IS YOUR GURU!\""
+- **J 30.0–35.6 · the same words, first time.** Dawn: gold ancestors at Parshurama's shoulders; he lowers his bow and
+  lays it down; 31.6 Bhishma, arrows in his armour, kneels; Parshurama's hand on his head. "PARSHURAMA LAID DOWN HIS
+  BOW:" / "\"NO WARRIOR ON EARTH" / "IS YOUR EQUAL.\""
+
+**Student 2: Drona**
+- **L 35.6–40.2 · nothing left.** Mahendra: Parshurama alone on the rock, bow and axe beside him; Drona climbs in,
+  thin, in a faded dhoti, and bows. "STUDENT 2: DRONA." / "BY THEN, PARSHURAMA HAD GIVEN" / "EVERYTHING AWAY."
+- **M 40.2–46.6 · choose.** Parshurama close, one hand on his chest, the other to the weapons: "\"ONLY MY BODY AND MY
+  WEAPONS" / "ARE LEFT. CHOOSE.\"" 43.8 cut to Drona: "\"ALL YOUR WEAPONS.\"" 44.4 the astras stream into his hands.
+
+**Student 3: Karna**
+- **O 46.6–51.6 · the lie.** Mahendra: Karna bows; Parshurama lays a glowing light (the Brahmastra) in his palms.
+  "STUDENT 3: KARNA." / "\"I AM A BRAHMIN,\" HE LIED," / "AND LEARNED THE BRAHMASTRA."
+- **P 51.6–57.2 · the lap.** Under a tree: Parshurama asleep, head on Karna's lap; the insect crawls up; 53.4 close on
+  Karna: it bites, he squeezes his eyes, sweats, doesn't move; a drop of blood. "HIS GURU SLEPT ON HIS LAP." / "AN
+  INSECT BORED INTO HIS THIGH." / "KARNA DIDN'T MOVE."
+- **R 57.2–63.8 · who are you?** Parshurama wakes, sits up, sees the blood, his eyes blaze: "\"NO BRAHMIN COULD BEAR
+  THIS PAIN." / "WHO ARE YOU?\"" 60.8 Karna close, kneeling, tears: "\"KARNA," (huge gold) / "SON OF RADHA.\""
+- **S 63.8–69.2 · the curse.** Low angle, dusk, violet: Parshurama, the curse wave; 66.6 Karna's light drains out of
+  his hands. "\"YOU LEARNED IT WITH A LIE." / "WHEN YOU FACE YOUR EQUAL," / "YOU WILL FORGET IT.\""
+- **T 69.2–73.6 · the same words, second time.** Wide dusk: Parshurama turns away; Karna walks off down the mountain.
+  "\"GO. BUT NO WARRIOR ON EARTH" / "WILL BE YOUR EQUAL.\""
+
+**The twist and the ending**
+- **U 73.6–79.2 · Kurukshetra.** Dusk over the five red lakes (Part 5); three silhouettes with name tags and a lamp each
+  (BHISHMA, DRONA, KARNA) light up one after another; then the lamps go out one by one and the figures sink into the
+  dust. "AT KURUKSHETRA, ALL THREE" / "LED THE SAME ARMY, ONE BY ONE." / "ALL THREE FELL THERE."
+- **W 79.2–83.8 · still alive.** Mahendra at dawn: Parshurama in meditation, the axe and bow laid on the rock. "BUT
+  PARSHURAMA NEVER DIED." / "HE STILL LIVES ON MAHENDRA MOUNTAIN." / tag "BHAGAVATA PURANA 9.16"
+- **X 83.8–88.2 · the next student.** Sunrise: a rider on a white horse crosses the far ridge, sword raised (a
+  silhouette); Parshurama opens his eyes and smiles. "HIS NEXT STUDENT" / "ISN'T BORN YET." / tag "KALKI PURANA"
+- **Y 88.2–92.8 · the ask.** Sunburst, three portraits with name tags. "WHO WAS HIS GREATEST STUDENT?" / "BHISHMA, DRONA
+  OR KARNA?" / "COMMENT!"
+- **card 92.8–96.8.** `navCard()`.
 
 ## Facts used
-One version: **Brahmanda Purana**, Upodghata-pada (Part 2, section 3) chapters 41–43, checked against G.V. Tagare's
-translation (Motilal Banarsidass, AITM; on wisdomlib.org). The same story is told at more length in the Brahma Vaivarta
-Purana, Ganapati Khanda 40–44; the reel follows the Brahmanda.
+All Mahabharata beats from K. M. Ganguli's translation (sacred-texts numbering; read on a mirror of it), one version
+each. Parshurama's living on Mahendra is the Bhagavata Purana; Kalki's teacher is the Kalki Purana, labelled on screen.
 
 | Beat | Source |
 |---|---|
-| After slaying the kings, he worships Shiva and sets out for Kailasa to see Shiva and Uma, his guru's consort, Skanda and Vinayaka | 3.41.15-17 |
-| He enters past the ganas with Nandi's leave; Kartikeya and Vinayaka sit at the palace's eastern door; he bows to both | 3.41.26-33 |
-| Vinayaka: "wait; Mahadeva is sleeping with Uma; I will go in first and ask" | 3.41.34-37, 42-43 |
-| Parshurama: "I will go in, bow to Parvati and Shankara and come back quickly"; "they are the parents of the worlds" | 3.41.37-40, 49-50 |
-| He tries to go in; Vinayaka gets up and restrains him; it becomes a tug of war | 3.41.51-52 |
-| Skanda seizes both and pushes them apart; Parshurama raises his axe | 3.41.52-53 |
-| Ganesha lifts him and carries him through Bhur, Bhuvar, Svar, Mahar, Jana, Tapas and Satya lokas, Vaikuntha and Goloka, then the seven netherworlds; hurls him into the waters; he is frightened; Ganesha puts him back where he had stood | 3.41.54-55 |
-| Shaken, he sees Ganesha standing there and hurls his axe | 3.42.1-2 |
-| Ganesha recognises the axe as his father's gift and, not wanting it to go in vain, receives it on his left tusk | 3.42.3 |
-| The tusk falls, bloody; the earth shakes; the devas watching cry out | 3.42.4-6 |
-| Parvati and Shiva come out; Skanda tells her; she is angry | 3.42.7-10 |
-| Parvati to Shiva: your disciple, who got his armour from you and killed Kartavirya, has cut off your son's tusk with his axe | 3.42.11-13 |
-| Shiva says nothing and calls Krishna in his mind; Krishna comes with Radha (and Shridaman) | 3.42.17-23 |
-| Parshurama falls at Parvati's feet; Krishna asks her to bless him | 3.42.24-29 |
-| "Today he has been made Ekadanta" (Krishna explains Ganesha's names) | 3.42.33-41 (Ekadanta 39) |
-| Radha heals Ganesha's cheek with her touch; Parvati is appeased, takes Rama on her lap and blesses him | 3.42.52-56 |
-| Krishna makes Ganesha friendly to Rama | 3.43.18-19 |
-| The axe was Shiva's gift | MBh 13.18.10-11 (Part 2); 3.42.3 ("a gift from his father") |
+| Rama tells Amba he takes up arms only for those who know the Vedas, but promises Bhishma will obey him; comes to Kurukshetra with her | Udyoga 180 |
+| "Thou knowest me to be thy preceptor, and yet thou acceptest not, for pleasing me, this daughter of the ruler of Kasi" | Udyoga 181 |
+| Bhishma refuses: "I cannot, by any means, bestow this girl on my brother"; "I would not, even from fear of Vasava, forsake duty"; "Thou art my preceptor" | Udyoga 181 |
+| Ganga tries to make Bhishma desist; they fight at Kurukshetra | Udyoga 181 |
+| "And it lasted for three and twenty days together" | Udyoga 185 |
+| Eight Brahmanas in a dream give Bhishma the Praswapa (sleep) weapon: "asleep or dead we reckon it as the same" | Udyoga 186 |
+| A voice and the gods forbid it; Narada: "he is, again, thy preceptor! Never humiliate him." | Udyoga 188 |
+| Rama's Pitris: never fight Bhishma or any Kshatriya again, "throw thy bow aside"; "the Pitris caused [him] to place aside his weapons" | Udyoga 188 |
+| Bhishma, "though mangled exceedingly", approaches Rama and worships him | Udyoga 188 |
+| Rama: "There is no Kshatriya equal to thee on the earth! Go now, O Bhishma, for in this combat thou hast pleased me highly." | Udyoga 188 |
+| Drona hears of Rama's weapons and goes to Mahendra; Rama: gold and wealth given to Brahmanas, the earth to Kasyapa, "I have now my body alone and my various valuable weapons left… which thou wouldst have"; Drona: "all thy weapons together with the mysteries of hurling and recalling them"; Rama gives them | Adi 131 |
+| Karna to Rama on Mahendra: "I am a Brahmana of Bhrigu's race" | Shanti 2 |
+| Rama sleeps with his head on Karna's lap; a worm called Alarka, eight feet, keen teeth, needle bristles, hog-shaped, pierces his thigh; "through fear of awaking his preceptor" he doesn't move | Shanti 3 |
+| Rama wakes, wet with the blood: "no Brahmana could endure such agony… Tell me the truth" | Shanti 3 |
+| Karna: "People call me Karna the son of Radha" | Shanti 3 |
+| The curse: "Since thou hast, from avarice of weapons, behaved here with falsehood… this Brahma weapon shall not… dwell in thee when thou shalt be engaged with a warrior equal to thyself" | Shanti 3 |
+| "Go hence… On earth, no Kshatriya will be thy equal in battle." | Shanti 3 |
+| Bhishma, then Drona, then Karna commanded the Kaurava army (the Bhishma, Drona and Karna Parvas) and fell at Kurukshetra | MBh 6–8 |
+| Kurukshetra = Samantapanchaka, the five lakes (Part 5) | Adi 2 |
+| "Lord Parasurama still lives… in the mountainous country known as Mahendra… having given up all the weapons" | Bhagavata 9.16.26 |
+| Kalki is trained by Parashurama | Kalki Purana (labelled) |
 
-**On screen, honestly:** "MY PARENTS ARE RESTING" is our gentle wording of 41.35 (Shiva "sleeping in the company of
-Uma"). "I'LL JUST BOW TO THEM AND COME RIGHT BACK" is 41.38-40. "NO." condenses Vinayaka's reply (41.42-46). "GANESHA
-PUSHED BACK" is 41.51's restraint and 41.52's tug of war. "PICKED HIM UP": Tagare has "by means of his hand"; for an
-elephant-faced god the Sanskrit *kara* also means trunk, and the reel draws the trunk. "THEN DROPPED HIM IN THE WATERS"
-is 41.55. "SOAKED AND DIZZY" is ours for 42.1 ("whirled around", overwhelmed). "HIS FATHER, SHIVA, HAD GIVEN IT" and
-"WOULDN'T LET HIS FATHER'S GIFT GO IN VAIN" are 42.3. "THE EARTH SHOOK" is 42.5. Parvati's line condenses 42.11-13.
-"HE CALLED KRISHNA" is 42.18 (mentally). "TODAY YOUR SON BECAME EKADANTA" is 42.39. "FORGAVE AND BLESSED HIM" is 42.53-56
-(the reel draws a hand on his head, not the lap). Not claimed: Ganesha's age and look (the series' Bal Bappa), flying
-(the text says carried), the route drawn through the worlds, the cows of Goloka, the snow sliding off the peak. Left
-out: the blood (42.4), Parvati's threat to leave for her father's house (42.15-17), Radha's speech on Shiva and Vishnu
-being one (42.47-51), the boons of 43.
-**The memory cloud** shows Part 2's gift (Shiva handing young Rama the axe: MBh 13.18).
+**On screen, honestly:** "TO TAKE BACK PRINCESS AMBA" condenses 181 ("acceptest not… this daughter of the ruler of
+Kasi"); "I CANNOT. NOT EVEN FOR MY GURU." condenses 181 ("I cannot, by any means…", "even from fear of Vasava",
+"thou art my preceptor"). "A WEAPON OF SLEEP" is the Praswapa (186). "NO WARRIOR ON EARTH" is Ganguli's "no
+Kshatriya", in both places. "LAID DOWN HIS BOW" is 188 (the Pitris made him put his weapons aside). "STUDENT" for
+Bhishma rests on 181–182 ("thy disciple", "my preceptor"). "WHEN YOU FACE YOUR EQUAL, YOU WILL FORGET IT" joins the
+curse's two halves ("shall not dwell in thy remembrance", "engaged with a warrior equal to thyself"). "LED THE SAME
+ARMY, ONE BY ONE" is the order of the commanders. "NEVER DIED" rests on 9.16.26 (he still lives). "HIS NEXT STUDENT
+ISN'T BORN YET" is the Kalki Purana, labelled. Not claimed: Amba drawn beside Rama in the order shot, Ganga's charioteering
+(left out), the arrows drawn in Bhishma's armour (188: "mangled"), Kalki's look. Left out: the brahmin's homa-cow curse
+(the chariot wheel; in the pinned comment), Amba's vow and Shikhandi, Karna's death.
 
-**The pinned comment:** the source, and the other well-known version: Ganesha as Vyasa's scribe for the Mahabharata
-(the vulgate's opening, Adi 1; the tusk-as-pen is later tradition, not in that text), plus the names Krishna explains in
-42.33-41 (Ganesha, Lambodara, Gajanana, Bhalachandra, Shurpakarna, Vighnanashaka, Ekadanta, Vakratunda) as the answer
-key for the ask.
+**The pinned comment:** the sources by chapter, the second curse (the homa cow: "the earth shall swallow the wheel of
+thy car", Shanti 2) and how both curses came true on the 17th day, and Alarka's past life (the asura Dansa, cursed by
+Bhrigu, freed by Rama's glance).
 
 ## Cover
-`src/scenes/parshu7_cover.js` (`cover.html`): Parshurama (axe raised, glowing) left, Ganesha right, calm, the tusk in
-his hand; the orange PART 7 pill over "PARSHURAMA" (gold) / "BROKE" / "GANESHA'S TUSK" (gold).
+`src/scenes/parshu8_cover.js` (`cover.html`): Parshurama centre, Bhishma left, Karna right; the orange "PART 8 ·
+FINALE" pill over "PARSHURAMA'S" (gold) / "3 STUDENTS".
 
 ## Out
-`out/parshu7_out/` (parshu7.mp4, cover.png, captions.txt).
+`out/parshu8_out/` (parshu8.mp4, cover.png, captions.txt).
