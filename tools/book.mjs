@@ -58,19 +58,19 @@ const url = p => pathToFileURL(resolve(p)).href;
 
 // ---- crop the spreads into page images: with bleed for print (JPEG at 300 dpi), at trim for the screen (10 px/mm)
 writeFileSync(`${TMP}/blank.html`, '<!doctype html><title>crop</title>'); await page.goto(url(`${TMP}/blank.html`));   // file:// so the art loads untainted
+const SW = 2 * TW + 2 * BL;   // the spread's width with its bleed, in mm
 async function crop(src, mmBox, pxPerMM, dst, q = .93) {
-  const data = await page.evaluate(async (src, box, k, q) => {
+  const data = await page.evaluate(async (src, box, k, q, sw) => {
     const img = new Image(); img.src = src; await img.decode();
-    const s = img.naturalWidth / 286;   // art px per mm (the spread is 286 mm wide with its bleed)
+    const s = img.naturalWidth / sw;   // art px per mm
     const [x, y, w, h] = box, c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
     const g = c.getContext('2d'); g.imageSmoothingQuality = 'high';
     g.drawImage(img, x * s, y * s, w * s, h * s, 0, 0, c.width, c.height);
     return c.toDataURL('image/jpeg', q);
-  }, url(src), mmBox, pxPerMM, q);
+  }, url(src), mmBox, pxPerMM, q, SW);
   writeFileSync(dst, Buffer.from(data.split(',')[1], 'base64'));
   return dst;
 }
-const SW = 2 * TW + 2 * BL;
 const bleedBox = side => side === 'L' ? [0, 0, TW + 2 * BL, TH + 2 * BL] : [TW, 0, TW + 2 * BL, TH + 2 * BL];
 const trimBox = side => side === 'L' ? [BL, BL, TW, TH] : [BL + TW, BL, TW, TH];
 const keys = [...new Set([...pages, ...SPREADS.flat(), ...(sample ? [] : ['front', 'back'])])];
