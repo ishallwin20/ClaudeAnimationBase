@@ -20,7 +20,7 @@ const DH_GOLD = { base: '#D9A440', dk: '#8A5A16', lt: '#FFE6A0', mid: '#F2C25A' 
 const DH_PINK = { tip: '#D9497A', mid: '#F08FAE', base: '#FFE4EC' };
 const DH_BOX = [140, 580 + DH_DY, 800, 1100];
 const DH_FINE = [[DH_X, DH_FY, 135], [DH_X - 330, 1470 + DH_DY, 60], [DH_X + 300, 1530 + DH_DY, 50], [DH_X - 290, 1072 + DH_DY, 40], [DH_X + 290, 1072 + DH_DY, 40]];
-const DH_KEEP = [[DH_X, DH_FY + 4, 118, .7], [...dhHd(DH_X - 40, 988), 40, .55], [...dhHd(DH_X + 40, 988), 40, .55], [...dhHd(DH_X, 1068), 26, .5]];
+const DH_KEEP = [[DH_X, DH_FY + 4, 118, .7], [...dhHd(DH_X - 34, 991), 28, .7], [...dhHd(DH_X + 34, 991), 28, .7], [...dhHd(DH_X, 1068), 26, .5]];
 const DH_POUR = [DH_X - 342, 1512 + DH_DY];
 const DH_POT = [196, 1700];
 const DH_KALASH = [DH_X + 304, 1398 + DH_DY];
@@ -277,7 +277,7 @@ function dhLakshmi(eyes = 1) {
       ellipse(c, X + 62, 1020, 20, 70, 'rgba(150,80,50,.22)');               // the far side of the face, in shade
       ellipse(c, X - 64, 1020, 12, 60, 'rgba(150,80,50,.12)');
       for (const s of [-1, 1]) {
-        ellipse(c, X + s * 36, 970, 30, 10, 'rgba(150,80,55,.16)');         // under the brow
+        ellipse(c, X + s * 34, 980, 24, 8, 'rgba(150,80,55,.14)');          // under the brow
         ellipse(c, X + s * 42, 1036, 17, 11, 'rgba(236,128,112,.17)');      // a little colour on the cheeks
         ellipse(c, X + s * 36, 1014, 22, 7, 'rgba(255,236,220,.22)');       // the lit top of the cheekbone
       }
@@ -288,35 +288,39 @@ function dhLakshmi(eyes = 1) {
       ellipse(c, X - 2, 1093, 13, 7, 'rgba(255,236,215,.4)');                // the chin, lit
       ellipse(c, X, 1106, 30, 6, 'rgba(130,64,40,.28)');                     // under the chin
     });
-    // the eyes: long fish-shaped (meenakshi) eyes, the upper lid resting on the iris, kajal sweeping up into a wing
-    const eye = s => `M ${X + s * 13} 995 C ${X + s * 21} 983 ${X + s * 40} 976 ${X + s * 56} 983 C ${X + s * 61} 985 ${X + s * 64} 987 ${X + s * 68} 989 C ${X + s * 50} 999 ${X + s * 26} 1002 ${X + s * 13} 995 Z`;
+    // the eyes, in proportion: each about a quarter of the face's width at the eye line (36 of ~142), one eye's width
+    // apart, on the head's midline; almond-shaped with the outer corner lifted. The iris is ~0.4 of the eye's width and a
+    // little taller than the opening, so both lids cut it; the pupil is ~0.4 of the iris. The brows sit about one eye's
+    // height above.
+    const EI = 16, EO = 52, EY = 993;                                   // inner and outer corners (from the centre), the eye line
+    const eye = s => `M ${X + s * EI} ${EY + 2} C ${X + s * 21} ${EY - 7} ${X + s * 38} ${EY - 10} ${X + s * EO} ${EY - 2} C ${X + s * 40} ${EY + 7} ${X + s * 24} ${EY + 8} ${X + s * EI} ${EY + 2} Z`;
     c.lineCap = 'round'; c.lineJoin = 'round';
     for (const s of [-1, 1]) {
       // the lid: a rose-gold tint between the crease and the lashes
-      c.save(); c.globalAlpha = .38; ptShape(c, `M ${X + s * 12} 994 C ${X + s * 18} 966 ${X + s * 46} 960 ${X + s * 70} 984 C ${X + s * 50} 974 ${X + s * 24} 976 ${X + s * 12} 994 Z`, 'rgba(178,92,70,.6)'); c.restore();
-      c.strokeStyle = 'rgba(120,56,38,.5)'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(X + s * 17, 976); c.bezierCurveTo(X + s * 28, 964, X + s * 50, 963, X + s * 62, 975); c.stroke();   // the crease
+      c.save(); c.globalAlpha = .32; ptShape(c, `M ${X + s * (EI - 1)} ${EY + 1} C ${X + s * 20} ${EY - 16} ${X + s * 42} ${EY - 18} ${X + s * (EO + 6)} ${EY - 5} C ${X + s * 40} ${EY - 11} ${X + s * 22} ${EY - 8} ${X + s * (EI - 1)} ${EY + 1} Z`, 'rgba(178,92,70,.6)'); c.restore();
+      c.strokeStyle = 'rgba(120,56,38,.45)'; c.lineWidth = 1.3; c.beginPath(); c.moveTo(X + s * 20, EY - 10); c.bezierCurveTo(X + s * 28, EY - 17, X + s * 42, EY - 17, X + s * 50, EY - 10); c.stroke();   // the crease
       if (eyes) {
-        ptShape(c, eye(s), ptLin(c, X + s * 13, 0, X + s * 67, 0, [[0, '#E4CFC0'], [.25, '#F6ECE2'], [.75, '#F4E8DC'], [1, '#D8BBA8']]));
+        ptShape(c, eye(s), ptLin(c, X + s * EI, 0, X + s * EO, 0, [[0, '#E4CFC0'], [.25, '#F6ECE2'], [.75, '#F4E8DC'], [1, '#D8BBA8']]));
         inside(c, eye(s), () => {
-          ellipse(c, X + s * 37, 991, 11, 11, '#24120A');                                     // the iris's dark rim: both lids cut it
-          ellipse(c, X + s * 37, 991, 9.8, 9.8, ptRad(c, X + s * 37, 994, 2, 9.8, [[0, '#8A5426'], [.6, '#5A3216'], [1, '#3A1E0C']]));
-          ellipse(c, X + s * 37, 991, 4.3, 4.3, '#0A0402');                                       // the pupil
-          ellipse(c, X + s * 34, 987.5, 2.3, 2.1, '#FFFFFF'); ellipse(c, X + s * 39.5, 994.5, 1.1, 1, 'rgba(255,255,255,.7)');   // catchlights
-          ellipse(c, X + s * 40, 978, 32, 6, 'rgba(70,30,20,.5)');                               // the upper lid's shadow across the eye
-          ellipse(c, X + s * 15, 995, 4, 3, 'rgba(220,130,130,.6)');                             // the pink inner corner
+          const ix = X + s * 33, iy = EY - .5;
+          ellipse(c, ix, iy, 7.6, 7.6, '#24120A');                                                // the iris's dark rim
+          ellipse(c, ix, iy, 6.7, 6.7, ptRad(c, ix, iy + 2, 1, 6.7, [[0, '#8A5426'], [.6, '#5A3216'], [1, '#3A1E0C']]));
+          ellipse(c, ix, iy, 2.9, 2.9, '#0A0402');                                                // the pupil
+          ellipse(c, ix - s * 2.4, iy - 2.4, 1.6, 1.5, '#FFFFFF'); ellipse(c, ix + s * 2, iy + 2.6, .8, .8, 'rgba(255,255,255,.7)');   // catchlights
+          ellipse(c, X + s * 34, EY - 9, 22, 4, 'rgba(70,30,20,.45)');                               // the upper lid's shadow across the eye
+          ellipse(c, X + s * (EI + 2), EY + 2, 2.6, 2, 'rgba(220,130,130,.6)');                     // the pink inner corner
         });
-        // kajal: a heavy upper line that sweeps up into a wing, a softer line below meeting it at the outer corner
-        limb(c, [[X + s * 12, 995], [X + s * 22, 983], [X + s * 40, 976], [X + s * 57, 983], [X + s * 69, 988], [X + s * 83, 979]], [2, 4.4, 5, 4.8, 3.4, .8], '#120806');
-        limb(c, [[X + s * 15, 997.5], [X + s * 30, 1002.5], [X + s * 50, 999.5], [X + s * 67, 989]], [1, 2.4, 2.8, 1.6], 'rgba(22,10,8,.9)');
-        for (let k = 0; k < 5; k++) { const q = .5 + k * .11, x = X + s * lerp(40, 66, q * 1.2 - .5), y = lerp(973, 986, (q - .5) * 2); c.beginPath(); c.moveTo(x, y - 2); c.lineTo(x + s * (3 + k), y - 6 - k * .6); c.stroke(); }
+        // kajal: the upper line along the lid into a short lifted wing, a softer line below meeting it at the outer corner
+        limb(c, [[X + s * (EI - 1), EY + 2], [X + s * 22, EY - 7], [X + s * 38, EY - 10], [X + s * EO, EY - 2], [X + s * (EO + 9), EY - 7]], [1.2, 2.8, 3.2, 2.6, .6], '#120806');
+        limb(c, [[X + s * (EI + 1), EY + 3], [X + s * 28, EY + 7.5], [X + s * 42, EY + 5.5], [X + s * EO, EY - 1.5]], [.6, 1.5, 1.7, 1], 'rgba(22,10,8,.85)');
       } else {
         // shut: the lid down over the eye, the lashes curving down, the kajal wing still there
         ptShape(c, eye(s), 'rgba(196,118,92,.45)');
-        limb(c, [[X + s * 12, 995], [X + s * 30, 1001], [X + s * 50, 999], [X + s * 66, 989], [X + s * 80, 980]], [2, 4, 4.4, 3.2, .8], '#120806');
-        c.strokeStyle = '#120806'; c.lineWidth = 1.4; for (let k = 0; k < 5; k++) { const x = X + s * (24 + k * 8); c.beginPath(); c.moveTo(x, 1001); c.lineTo(x + s * 2, 1007); c.stroke(); }
+        limb(c, [[X + s * (EI - 1), EY + 2], [X + s * 28, EY + 6], [X + s * 42, EY + 4], [X + s * EO, EY - 2], [X + s * (EO + 9), EY - 7]], [1.2, 2.6, 2.8, 2.2, .6], '#120806');
+        c.strokeStyle = '#120806'; c.lineWidth = 1; for (let k = 0; k < 5; k++) { const x = X + s * (24 + k * 5.5); c.beginPath(); c.moveTo(x, EY + 6); c.lineTo(x + s * 1.4, EY + 10); c.stroke(); }
       }
-      // the brow: a long, fine, tapered arch
-      limb(c, [[X + s * 15, 961], [X + s * 30, 951], [X + s * 48, 948], [X + s * 70, 957]], [2.6, 4, 3, .8], '#2A140C');
+      // the brow: a fine tapered arch, about one eye's height above it
+      limb(c, [[X + s * 17, EY - 15], [X + s * 30, EY - 22], [X + s * 45, EY - 23], [X + s * 61, EY - 17]], [2.2, 3.2, 2.4, .7], '#2A140C');
     }
     // the nose: a soft line down its shaded side, a rounded tip, the nostril wings
     limb(c, [[X + 10, 1000], [X + 10, 1016], [X + 12, 1030]], [.6, 1.6, 1.2], 'rgba(140,66,44,.28)');
@@ -344,7 +348,7 @@ function dhLakshmi(eyes = 1) {
     ptShape(c, `M ${X - 80} 990 C ${X - 84} 930 ${X - 50} 900 ${X} 896 C ${X + 50} 900 ${X + 84} 930 ${X + 80} 990 C ${X + 70} 950 ${X + 40} 926 ${X + 2} 930 L ${X - 2} 930 C ${X - 40} 926 ${X - 70} 950 ${X - 80} 990 Z`, '#170D0A');
     for (const s of [-1, 1]) { c.save(); c.globalAlpha = .4; limb(c, [[X + s * 4, 904], [X + s * 44, 916], [X + s * 74, 962]], [3, 2.4, 1.4], '#5A3E30'); c.restore(); }
     // bindi, and the maang tikka hanging from the crown into the parting
-    dhGem(c, X, 954, 6, '#C41E32'); ellipse(c, X, 943, 2.4, 2.4, DH_GOLD.lt);
+    dhGem(c, X, 968, 5, '#C41E32'); ellipse(c, X, 959, 2.2, 2.2, DH_GOLD.lt);
     limb(c, [[X, 900], [X, 924]], [2.5, 2.5], DH_GOLD.base); dhGem(c, X, 928, 7, '#1E8A5A'); for (const dx of [-5, 0, 5]) ellipse(c, X + dx, 938 + (dx ? -2 : 0), 2.2, 2.6, '#FFFFFF');
     // ---- the kirita mukut: a tall gold crown in tiers, set with rubies and emeralds, a lotus bud on top
     // the spire: tiers narrowing to a point, each tier a row of gold scallops with a gem (squashed a little: it stays clear of the greeting)

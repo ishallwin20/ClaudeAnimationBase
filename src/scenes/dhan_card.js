@@ -69,7 +69,7 @@ SHOTS.push({
       const rate = Math.max(1, Math.round((.3 + hash(i) * .4) * DUR)) / DUR, q = frac(t * rate + hash(i + 9));
       twinkle(c, x, y, 8 + hash(i + 3) * 8, Math.pow(Math.max(0, Math.sin(q * Math.PI)), 6) * .85);
     });
-    [[...dhHd(DH_X, 832), 0], [DH_X, 1322 + DH_DY, 1.7], [...dhHd(DH_X - 80, 1092), 3.1], [...dhHd(DH_X + 80, 1092), 4.4], [...dhHd(DH_X, 954), 2.2]].forEach(([x, y, p]) =>
+    [[...dhHd(DH_X, 832), 0], [DH_X, 1322 + DH_DY, 1.7], [...dhHd(DH_X - 80, 1092), 3.1], [...dhHd(DH_X + 80, 1092), 4.4], [...dhHd(DH_X, 968), 2.2]].forEach(([x, y, p]) =>
       twinkle(c, x - 4, y - 4, 22, Math.pow(Math.max(0, Math.sin(t * DH_LP + p)), 14) * .9));
   }
 });
