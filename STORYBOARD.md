@@ -57,7 +57,7 @@ shesha   But BELOW all seven, / ANANTA SHESHA | holds the WHOLE universe / on ON
 save     SAVE this, | and send it to someone / who thinks PATAL is HELL.
 ask      Which world would YOU visit? | Comment!
 ```
-Speech-to-text (Sarvam saarika:v2.5) on every take: all lines come back right ("Sutal" hears as "Sudal", the dental t);
+Speech-to-text (Sarvam saarika:v2.5) on every take: all lines come back right ("Sutal" hears as "Sudal", the dental t). "Vital" was read as the English word (STT "वाइटल"); the voice now reads "Vithal" (a take STT hears as "विटल"; takes vary, so the take was picked);
 "who thinks Paataal" ran together as "Spartyle" until a comma went after "thinks".
 
 ## Shots (times from the voice: src/scenes/lokas_tl.js)
