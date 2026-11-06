@@ -298,10 +298,10 @@ function dhLakshmi(eyes = 1) {
       if (eyes) {
         ptShape(c, eye(s), ptLin(c, X + s * 13, 0, X + s * 67, 0, [[0, '#E4CFC0'], [.25, '#F6ECE2'], [.75, '#F4E8DC'], [1, '#D8BBA8']]));
         inside(c, eye(s), () => {
-          ellipse(c, X + s * 37, 990.5, 13, 13, '#24120A');                                     // the iris's dark rim: both lids cut it
-          ellipse(c, X + s * 37, 990.5, 11.5, 11.5, ptRad(c, X + s * 37, 994, 2, 11.5, [[0, '#8A5426'], [.6, '#5A3216'], [1, '#3A1E0C']]));
-          ellipse(c, X + s * 37, 990.5, 5, 5, '#0A0402');                                       // the pupil
-          ellipse(c, X + s * 33, 986, 2.6, 2.4, '#FFFFFF'); ellipse(c, X + s * 40, 995, 1.2, 1.1, 'rgba(255,255,255,.7)');   // catchlights
+          ellipse(c, X + s * 37, 991, 11, 11, '#24120A');                                     // the iris's dark rim: both lids cut it
+          ellipse(c, X + s * 37, 991, 9.8, 9.8, ptRad(c, X + s * 37, 994, 2, 9.8, [[0, '#8A5426'], [.6, '#5A3216'], [1, '#3A1E0C']]));
+          ellipse(c, X + s * 37, 991, 4.3, 4.3, '#0A0402');                                       // the pupil
+          ellipse(c, X + s * 34, 987.5, 2.3, 2.1, '#FFFFFF'); ellipse(c, X + s * 39.5, 994.5, 1.1, 1, 'rgba(255,255,255,.7)');   // catchlights
           ellipse(c, X + s * 40, 978, 32, 6, 'rgba(70,30,20,.5)');                               // the upper lid's shadow across the eye
           ellipse(c, X + s * 15, 995, 4, 3, 'rgba(220,130,130,.6)');                             // the pink inner corner
         });
@@ -326,13 +326,17 @@ function dhLakshmi(eyes = 1) {
     c.lineWidth = 1.5; c.beginPath(); c.moveTo(X - 6, 1043.5); c.quadraticCurveTo(X, 1046.5, X + 6, 1043.5); c.stroke();
     ellipse(c, X - 7, 1042, 2.8, 1.6, '#5E2618'); ellipse(c, X + 7, 1042, 2.8, 1.6, '#5E2618');
     ellipse(c, X, 1050, 10, 3, 'rgba(150,80,50,.22)');
-    // the lips: a full bow, a fuller lower lip, a soft smile
-    ptShape(c, `M ${X - 21} 1067 C ${X - 14} 1063 ${X - 9} 1059 ${X - 5} 1060 C ${X - 2} 1060 ${X - 1} 1062 ${X} 1062.5 C ${X + 1} 1062 ${X + 2} 1060 ${X + 5} 1060 C ${X + 9} 1059 ${X + 14} 1063 ${X + 21} 1067 C ${X + 10} 1068.5 ${X - 10} 1068.5 ${X - 21} 1067 Z`, ptLin(c, 0, 1059, 0, 1068, [[0, '#B4323E'], [1, '#8E1C2A']]));
-    ptShape(c, `M ${X - 18} 1068 C ${X - 12} 1080 ${X + 12} 1080 ${X + 18} 1068 C ${X + 8} 1070.5 ${X - 8} 1070.5 ${X - 18} 1068 Z`, ptLin(c, 0, 1068, 0, 1080, [[0, '#B83442'], [.6, '#D0505C'], [1, '#B83E4A']]));
-    ellipse(c, X + 1, 1073.5, 7, 2.2, 'rgba(255,214,210,.65)');
-    ellipse(c, X - 7, 1062.5, 3, 1.2, 'rgba(255,214,210,.4)');
-    c.strokeStyle = '#5A0E18'; c.lineWidth = 1.8; c.beginPath(); c.moveTo(X - 23, 1064.5); c.quadraticCurveTo(X - 19, 1068, X - 14, 1068.4); c.quadraticCurveTo(X, 1070.4, X + 14, 1068.4); c.quadraticCurveTo(X + 19, 1068, X + 23, 1064.5); c.stroke();   // the parting, its corners turned up
-    for (const s of [-1, 1]) ellipse(c, X + s * 25, 1064, 1.8, 1.8, 'rgba(140,60,45,.4)');
+    // the lips: a full bow, a fuller lower lip, smiling: the corners lift and the lower lip curves up with them
+    ptShape(c, `M ${X - 24} 1062 C ${X - 15} 1061 ${X - 10} 1058 ${X - 5} 1059 C ${X - 2} 1059 ${X - 1} 1061 ${X} 1061.5 C ${X + 1} 1061 ${X + 2} 1059 ${X + 5} 1059 C ${X + 10} 1058 ${X + 15} 1061 ${X + 24} 1062 C ${X + 12} 1067 ${X - 12} 1067 ${X - 24} 1062 Z`, ptLin(c, 0, 1058, 0, 1067, [[0, '#B4323E'], [1, '#8E1C2A']]));
+    ptShape(c, `M ${X - 21} 1064 C ${X - 13} 1079 ${X + 13} 1079 ${X + 21} 1064 C ${X + 10} 1069.5 ${X - 10} 1069.5 ${X - 21} 1064 Z`, ptLin(c, 0, 1066, 0, 1079, [[0, '#B83442'], [.6, '#D0505C'], [1, '#B83E4A']]));
+    ellipse(c, X + 1, 1073, 7, 2.2, 'rgba(255,214,210,.65)');
+    ellipse(c, X - 7, 1061.5, 3, 1.2, 'rgba(255,214,210,.4)');
+    c.strokeStyle = '#5A0E18'; c.lineWidth = 1.8; c.beginPath(); c.moveTo(X - 27, 1059.5); c.quadraticCurveTo(X - 22, 1064.5, X - 15, 1066.5); c.quadraticCurveTo(X, 1069.5, X + 15, 1066.5); c.quadraticCurveTo(X + 22, 1064.5, X + 27, 1059.5); c.stroke();   // the parting, its corners turned well up
+    for (const s of [-1, 1]) {
+      limb(c, [[X + s * 27, 1057], [X + s * 30, 1062], [X + s * 28, 1067]], [.6, 1.4, .6], 'rgba(140,60,45,.35)');   // the smile's crease at each corner
+      ellipse(c, X + s * 38, 1040, 15, 10, 'rgba(255,226,206,.35)');                                                 // the cheeks lifted by the smile
+      ellipse(c, X + s * 38, 1047, 14, 4, 'rgba(160,84,60,.12)');
+    }
     c.strokeStyle = DH_GOLD.base; c.lineWidth = 3; c.beginPath(); c.arc(X + 12, 1052, 12, -1.9, 1.3); c.stroke();   // the nath, through her left nostril
     dhGem(c, X + 23, 1058, 3, '#B0182C');
     dhBeads(c, [[X + 22, 1046], [X + 50, 1030], [X + 76, 1010]], 2.4, 6, ['#F4EEE2', '#FFFFFF', '#FFFFFF']);   // its chain of pearls to the ear
