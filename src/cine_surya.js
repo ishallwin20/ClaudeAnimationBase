@@ -11,7 +11,7 @@
 // suryaHead(c, o): the head alone: t, light, eyes, look. Both take, for other faces on the rig (Yama, Markandeya in
 //   cine_yama.js): pain (0..1, default 1 - eyes: the inner brows rise, the mouth falls), fierce (0..1 the brows drawn
 //   down), smile (0..1), mouth (0..1 open: a cry or a roar), tilak ('tripundra' | false), kundala ('ring' | false),
-//   crown (false), bun (with crown false: the hair in a knot with rudraksha). SUR is read live, so a palette swap
+//   crown (false), bun (with crown false: the hair in a knot with rudraksha), stache (false: no moustache, for a boy), curls (false: no locks behind the ears). SUR is read live, so a palette swap
 //   (Object.assign(SUR, …) for the length of a draw) recolours him.
 const SUR = {
   skin: '#D98A4A', skinSh: '#B0642F', skinDk: '#7A3E1C', palm: '#EDB07A', lip: '#7E3220', lipLo: '#A24A30',
@@ -31,7 +31,7 @@ function suryaHead(c, o = {}) {
     fillPath(c, 'M -46 -800 C -34 -766 -14 -754 0 -754 C 14 -754 34 -766 46 -800 L 46 -770 C 30 -742 -30 -742 -46 -770 Z', rgba(S.skinDk, .6));
   });
   // curls falling behind the ears to the shoulders
-  for (const s of [-1, 1]) for (let i = 0; i < 3; i++) limb(c, [[s * (44 + i * 4), -850], [s * (54 + i * 6), -810], [s * (60 + i * 8), -770 + Math.sin(t * 1.5 + i) * 2], [s * (66 + i * 10), -728]], [16, 17, 14, 4], i % 2 ? S.hairLt : S.hair, false);
+  if (o.curls !== false) for (const s of [-1, 1]) for (let i = 0; i < 3; i++) limb(c, [[s * (44 + i * 4), -850], [s * (54 + i * 6), -810], [s * (60 + i * 8), -770 + Math.sin(t * 1.5 + i) * 2], [s * (66 + i * 10), -728]], [16, 17, 14, 4], i % 2 ? S.hairLt : S.hair, false);
   // ears with the great kundalas (sun discs)
   for (const s of [-1, 1]) {
     fillPath(c, `M ${s * 45} -836 C ${s * 56} -840 ${s * 59} -824 ${s * 57} -811 C ${s * 56} -801 ${s * 51} -795 ${s * 45} -797 Z`, s === -L ? S.skinSh : S.skin);
@@ -73,7 +73,7 @@ function suryaHead(c, o = {}) {
   }
   // nose tip, moustache (thin), mouth
   strokePath(c, 'M -7.5 -790 C -4.5 -786.5 4.5 -786.5 7.5 -790', S.skinDk, 1.9);
-  for (const s of [-1, 1]) fillPath(c, `M 0 -777 C ${s * 8} -779 ${s * 16} -778 ${s * 20} -772 C ${s * 14} -775 ${s * 7} -775 0 -774 Z`, rgba(S.hair, .8));
+  if (o.stache !== false) for (const s of [-1, 1]) fillPath(c, `M 0 -777 C ${s * 8} -779 ${s * 16} -778 ${s * 20} -772 C ${s * 14} -775 ${s * 7} -775 0 -774 Z`, rgba(S.hair, .8));
   const m = pain * 2.5 - sm * 3, cy = -771 + m * .4;
   if (o.mouth) {   // open: a cry, a roar, a gasp (0..1)
     const mo = o.mouth * 13, mw = 12 + o.mouth * 3;

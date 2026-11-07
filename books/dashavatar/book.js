@@ -31,6 +31,15 @@ const BOOK = {
          boxes: [{ x: 112, y: 172, w: 94, kind: 'fact', text: 'Trivikrama means “he who took three steps”. Pleased with Bali, Vishnu made him king of Sutala, and guarded his door himself.' }] },
   },
   variants: {
+    // Cinematic (--page=book_cinematic.html, src/scenes/dasha_book_cine.js): cream text on the dusk and night skies
+    cine: { pages: {
+      2: { text: [{ x: 12, y: 12, w: 150, color: CREAM, lines: ['King Bali was kind and generous. But he had taken the heavens from the devas.', 'At his great yagna he promised: “Ask, and I will give!”'] }] },
+      3: { text: [{ x: 14, y: 12, w: 180, color: CREAM, lines: ['Then in walked a little boy, with an umbrella and a water pot.'] }],
+           bubbles: [{ x: 104, y: 100, w: 70, text: 'Just three steps of land, please. Measured by my own small feet!', tail: [92, 146] }] },
+      4: { text: [{ x: 12, y: 12, w: 126, color: CREAM, lines: ['“That boy is Vishnu!” warned Bali’s guru, Shukracharya.', 'But Bali had made a promise, and he kept it.'] }],
+           bubbles: [{ x: 92, y: 126, w: 62, text: 'Place your third step on my head.', tail: [138, 170] }] },
+      5: { text: [{ x: 112, y: 12, w: 94, color: CREAM, lines: ['The little boy grew… and grew… and grew!', 'With one step he covered the earth. With the second, the whole sky.'] }] },
+    } },
     painterly: { pages: {
       3: { bubbles: [{ x: 104, y: 108, w: 70, text: 'Just three steps of land, please. Measured by my own small feet!', tail: [96, 150] }] },
       4: { text: [{ x: 12, y: 12, w: 140, color: CREAM, lines: ['“That boy is Vishnu!” warned Bali’s guru, Shukracharya.', 'But Bali had made a promise, and he kept it.'] }],

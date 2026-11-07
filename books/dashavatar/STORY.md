@@ -2,7 +2,7 @@
 
 A ~100-page Dashavatar picture book for ages 3–12 is planned: square 216 × 216 mm pages (8.5″), 2:1 spreads, with
 narration, a little dialogue and short explainers over the art. Rama and Krishna get the biggest shares. Before
-choosing the art style, the same two spreads of the Vamana chapter are drawn in **Storybook** and **Painterly**.
+choosing the art style, the same two spreads of the Vamana chapter are drawn in **Storybook**, **Painterly** and **Cinematic** (the film-lit look: golden hour and the yagna fire, then the cosmos; cast in `src/cine_dashavatar.js`).
 
 | spread | pages | art | words |
 |---|---|---|---|
@@ -14,6 +14,7 @@ Render and lay out (each style into its own folder):
 ```
 node tools/book.mjs --book=books/dashavatar --pages=2,3,4,5 --render=all --page=book_storybook.html --art=out/book_dashavatar/art_sb --out=out/books/dashavatar_test_out/storybook
 node tools/book.mjs --book=books/dashavatar --pages=2,3,4,5 --render=all --page=book_painterly.html --art=out/book_dashavatar/art_pt --variant=painterly --out=out/books/dashavatar_test_out/painterly
+node tools/book.mjs --book=books/dashavatar --pages=2,3,4,5 --render=all --page=book_cinematic.html --art=out/book_dashavatar/art_cine --variant=cine --out=out/books/dashavatar_test_out/cinematic
 ```
 
 ## Facts used
