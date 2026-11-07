@@ -1,0 +1,108 @@
+{
+  "name": "toran",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Your grandmother hung | *MANGO LEAVES* over the door.",
+        "She wasn't | *DECORATING.*"
+      ],
+      "tts": "Your grandmother hung mango leaves over the door. She wasn't decorating.",
+      "hold": 0.4
+    },
+    {
+      "id": "toran",
+      "gap": 0.7,
+      "caps": [
+        "It's called a *TORAN,* | from *TORANA:*",
+        "the Sanskrit word | for a *GATEWAY.*"
+      ],
+      "tts": "It's called a toran, from torana, the Sanskrit word for a gateway.",
+      "hold": 0.9
+    },
+    {
+      "id": "leave",
+      "gap": 0.9,
+      "caps": [
+        "In the *BHAGAVATAM,* | little *DHRUVA* | left home crying."
+      ],
+      "tts": "In the Bhaagavatam, little Dhruv left home crying.",
+      "hold": 0.7
+    },
+    {
+      "id": "back",
+      "gap": 0.6,
+      "caps": [
+        "When he came back, | *EVERY GATE* in the city",
+        "had *MANGO LEAVES,* | pots of water | and burning *LAMPS.*"
+      ],
+      "tts": "When he came back, every gate in the city had mango leaves, pots of water, and burning lamps.",
+      "hold": 0.8
+    },
+    {
+      "id": "dwarka",
+      "gap": 0.9,
+      "caps": [
+        "When *KRISHNA* came home | to *DWARKA,*",
+        "every door wore | a *TORANA.*"
+      ],
+      "tts": "When Krishna came home to Dwaarka, every door wore a toranaa.",
+      "hold": 0.8
+    },
+    {
+      "id": "kalash",
+      "gap": 0.9,
+      "caps": [
+        "The same leaves | crown the *KALASH* | at every puja."
+      ],
+      "tts": "The same leaves crown the kulush at every pooja.",
+      "hold": 0.8
+    },
+    {
+      "id": "never",
+      "gap": 0.9,
+      "caps": [
+        "So it was never | decoration.",
+        "It says: | *SOMEONE WE LOVE* | is coming home."
+      ],
+      "tts": "So it was never decoration. It says, someone we love, is coming home.",
+      "hold": 0.6
+    },
+    {
+      "id": "lakshmi",
+      "gap": 0.6,
+      "caps": [
+        "This Diwali, | that's *LAKSHMI.*"
+      ],
+      "tts": "This Diwali, that's Lakshmi.",
+      "hold": 1
+    },
+    {
+      "id": "ask",
+      "gap": 1,
+      "caps": [
+        "*MANGO LEAVES,* | *MARIGOLDS* | or *BEADS?*",
+        "What's on *YOUR* door? | Comment your *STATE!*"
+      ],
+      "tts": "Mango leaves, marigolds, or beads? What's on your door? Comment your state!",
+      "y": 1380,
+      "hold": 0.5
+    },
+    {
+      "id": "send",
+      "gap": 0.6,
+      "caps": [
+        "*SEND* this | to the one who ties yours."
+      ],
+      "tts": "Send this, to the one who ties yours.",
+      "y": 1380,
+      "hold": 1.2
+    }
+  ]
+}
