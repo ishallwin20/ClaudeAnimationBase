@@ -2,7 +2,7 @@
 //   trRiver(c)        the riverbank at night (Tarapith): moon, the far bank with a chala temple, the river, the ghat,
 //                     a jaba bush, an old tree with threads tied on it, the stone seat with a tiger skin, clay lamps
 //   trSea(c)          the churning of the ocean: Mandara in the storm, Vasuki round it, the sea boiling at its foot
-//   trShore(c)        a rock ledge over the night sea (Shiva sits on it; svShiva from shiva_cast.js)
+//   trShore(c)        a rock ledge over the night sea (Shiva sits on it; svShiva from src/pt_shiva.js)
 //   trBody(o)         the Devi seated (no head): o.tara (blue-black, four arms: khadga and blue lotus, tiger skin, loose
 //                     hair, jaba garland) or Parvati (warm, two arms, red saree). Stage px; the face is at TR_FACE.
 //   trHead(o)         her head: o.tara, o.eyes 'front' | 'down' | 'shut', o.tear, o.mouth 'smile' | 'soft' | 'sad'

@@ -1,5 +1,5 @@
 // tara.js: "Maa Tara and Shiva" (Painterly; STORYBOARD.md). A collab: @shagunshrotriyaparashar_'s Hindi voiceover, our
-// picture. Night sets (tara_cast.js), seated Shiva (shiva_cast.js), the Devi rig (tara_cast.js over dhan_cast.js's parts).
+// picture. Night sets (tara_cast.js), seated Shiva (src/pt_shiva.js), the Devi rig (tara_cast.js over dhan_cast.js's parts).
 // Shots are cut on the voice (TL: word times from whisper); subtitles are the VO in Roman Hindi.
 const ZK = 2, HK = 3;   // bake resolutions: bodies, heads and the child (close-ups come near them)
 const TL = {
@@ -166,8 +166,8 @@ SHOTS.push({ a: TL.drink, b: TL.spread, xf: .3, draw(c, u, t) {
   // the poison cloud overhead, pouring down into him
   smoke(c, t + 3, 820, 520, { n: 14, rise: 120, r: 120, w: 300, rate: .15, seed: 4 });
   const s1 = 1 - seg(t, TL.gale + 1.6, TL.spread - .2);
-  stream(c, t, [[860, 500], [780, 640], [640, 780], [560, 900], MOUTH], s1);
   ptDraw(c, L.shiva());
+  stream(c, t, [[860, 500], [780, 640], [640, 780], [560, 900], MOUTH], s1);
   const g = seg(t, TL.gale - .4, TL.gale + .6), p = .7 + .3 * Math.sin(t * 7);
   glow(c, ...THROAT, 110, '#7A4AE0', .6 * g * p, 'lighter'); glow(c, ...THROAT, 40, '#C8A8FF', .5 * g * p, 'lighter');
 } });
