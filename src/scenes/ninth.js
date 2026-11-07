@@ -56,7 +56,7 @@ function candidates(t, o = {}) {
     if (n !== 'krishna') { const f = FIGHT(t) * (t < TL.C0 + .3 ? 1 : 0), s = n === 'balaram' ? 1 : -1; p[0] += T9[0] * s * .2 * f; p[2] += T9[2] * s * .2 * f; }
     e.position.set(...p); e.visible = p[1] > -1.15; e.children[0].visible = p[1] < 3;
     const toCam = Math.atan2(CAM3.position.x - p[0], CAM3.position.z - p[2]);
-    e.rotation.set(0, toCam + (n === 'krishna' ? .25 : n === 'balaram' ? .5 : 0) + .1 * Math.sin(t * .6 + p[0]), 0);
+    e.rotation.set(0, toCam + (n === 'krishna' ? .25 : 0) + .1 * Math.sin(t * .6 + p[0]), 0);
     e.scale.setScalar((o.scale ?? 1) * EK * (1 + pulse(n, t)));
   }
 }

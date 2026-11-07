@@ -115,16 +115,25 @@ const HALL = (() => {
     { const p = fe.geometry.attributes.position; for (let i = 0; i < p.count; i++) p.setZ(i, -.06 * Math.pow((p.getY(i) + .31) / .62, 2)); fe.geometry.computeVertexNormals(); }
     cyl(g, .012, .012, .14, BRD, [0, .11, 0]);
     return g; })();
-  // BALARAM: the plough (hala): the share on the ground, the beam reaching forward, the handle up behind
-  const WOOD = std3('#6A4428', .62, { envMapIntensity: .3 });
+  // BALARAM: his plough (hala) in side view, the classic Indian "hal": the iron share biting the ground, the long beam
+  // running forward low to the yoke peg, the handle angled back with its grip; his club (musala) standing behind it
+  const WOOD = std3('#7A4E2C', .6, { envMapIntensity: .3 });
   E.balaram = (() => { const g = G(); foot(g);
-    const p = G(g); p.position.set(0, .06, 0); p.scale.setScalar(1.05);
-    ext(p, outline([[-.14, .0], [.1, .0], [.2, .02], [.1, .05], [-.14, .05]], 5), .05, BR, [0, 0, 0]);                // the sole and its iron share
-    tubeP3(p, [[-.1, .04, 0], [-.14, .2, 0], [-.18, .38, 0], [-.17, .5, 0]], [.02, .016], WOOD, { segs: 24 });          // the handle
-    cyl(p, .012, .012, .12, BRD, [-.17, .51, 0], [Math.PI / 2, 0, 0], 10);                                                 // its grip
-    tubeP3(p, [[-.02, .05, 0], [.06, .16, 0], [.16, .3, 0], [.24, .46, 0]], [.018, .014], WOOD, { segs: 24 });          // the beam
-    mesh3(p, new THREE.BoxGeometry(.04, .03, .2), BRD, [.245, .47, 0]);                                                    // the yoke peg
-    [[-.13, .19], [-.17, .37], [.09, .2], [.2, .38]].forEach(([x, y]) => mesh3(p, new THREE.TorusGeometry(.021, .006, 8, 20), BR, [x, y, 0], { rot: [Math.PI / 2, 0, .3] }));
+    // the club: a long pestle-club, bronze-capped and banded, leaning back behind the plough
+    const m = G(g); m.position.set(-.02, .05, -.08); m.rotation.z = .32;
+    cyl(m, .026, .03, .5, WOOD, [0, .27, 0]);
+    mesh3(m, lathe3([[0, 0], [.036, 0], [.042, .03], [.042, .1], [.036, .13], [0, .14]], 24), BR, [0, .5, 0]);
+    mesh3(m, lathe3([[0, 0], [.034, 0], [.036, .05], [0, .06]], 24), BR, [0, .02, 0]);
+    [.16, .3, .44].forEach(y => mesh3(m, new THREE.TorusGeometry(.03, .007, 8, 24), BR, [0, y, 0], { rot: [Math.PI / 2, 0, 0] }));
+    // the plough, in front
+    const p = G(g); p.position.set(.07, .055, .05); p.scale.set(-.8, .8, .8);   // mirrored: the beam points away from its neighbour
+    ext(p, outline([[-.1, .0], [.12, .0], [.24, .015], [.13, .055], [-.1, .06]], 5), .07, BR, [0, 0, 0]);                 // the sole and its iron share, pointing forward
+    tubeP3(p, [[-.07, .05, 0], [-.14, .14, 0], [-.22, .25, 0], [-.27, .31, 0]], [.022, .017], WOOD, { segs: 20 });        // the handle, angled back
+    cyl(p, .014, .014, .14, BRD, [-.275, .315, 0], [Math.PI / 2, 0, 0], 10);                                                 // its grip
+    cyl(p, .02, .02, .14, WOOD, [-.02, .1, 0], [0, 0, .25], 12);                                                             // the upright joining sole and beam
+    tubeP3(p, [[-.05, .16, 0], [.12, .175, 0], [.3, .2, 0], [.44, .23, 0]], [.021, .016], WOOD, { segs: 24 });            // the beam, long and low
+    mesh3(p, new THREE.BoxGeometry(.035, .035, .22), BRD, [.45, .235, 0]);                                                  // the yoke peg
+    [[-.13, .13], [.08, .17], [.3, .2]].forEach(([x, y]) => mesh3(p, new THREE.TorusGeometry(.024, .006, 8, 20), BR, [x, y, 0], { rot: [Math.PI / 2, 0, 0] }));
     return g; })();
   // BUDDHA: seated in meditation, hands in his lap
   const curls = tex3('curls', 256, 256, (g, w, h) => { g.fillStyle = '#707070'; g.fillRect(0, 0, w, h); for (let y = 0; y < h; y += 12) for (let x = (y / 12) % 2 ? 6 : 0; x < w; x += 12) { const gr = g.createRadialGradient(x, y, 0, x, y, 6); gr.addColorStop(0, '#E0E0E0'); gr.addColorStop(1, '#404040'); g.fillStyle = gr; g.beginPath(); g.arc(x, y, 6, 0, TAU); g.fill(); } }, { data: true });
