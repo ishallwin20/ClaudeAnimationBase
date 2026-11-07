@@ -66,7 +66,7 @@ console.log('assets/tara_sfx.wav', END.toFixed(2), 's');
 const D = END.toFixed(3), score = 'assets/tara_score.mp3', hasScore = existsSync(score);
 const ins = ['-i', 'assets/vo/tara_vo.mp3', '-i', 'assets/tara_sfx.wav', ...(hasScore ? ['-i', score] : [])];
 const fc = hasScore
-  ? `[0:a]aresample=48000,asplit=2[v][key];[2:a]aresample=48000,volume=${process.env.SCORE ?? .22},afade=t=out:st=${(END - 3).toFixed(2)}:d=3[m];[m][key]sidechaincompress=threshold=0.03:ratio=4:attack=60:release=600[md];[1:a]volume=0.8[s];[v][s][md]amix=inputs=3:normalize=0:duration=longest,apad=whole_dur=${D},atrim=0:${D},loudnorm=I=-14:TP=-1.5:LRA=11[o]`
+  ? `[0:a]aresample=48000,asplit=2[v][key];[2:a]aresample=48000,volume=${process.env.SCORE ?? .156},afade=t=out:st=${(END - 3).toFixed(2)}:d=3[m];[m][key]sidechaincompress=threshold=0.03:ratio=4:attack=60:release=600[md];[1:a]volume=0.8[s];[v][s][md]amix=inputs=3:normalize=0:duration=longest,apad=whole_dur=${D},atrim=0:${D},loudnorm=I=-14:TP=-1.5:LRA=11[o]`
   : `[1:a]volume=0.8[s];[0:a]aresample=48000[v];[v][s]amix=inputs=2:normalize=0:duration=longest,apad=whole_dur=${D},atrim=0:${D},loudnorm=I=-14:TP=-1.5:LRA=11[o]`;
 execFileSync('ffmpeg', ['-y', '-v', 'error', ...ins, '-filter_complex', fc, '-map', '[o]', '-ar', '48000', '-ac', '2', 'assets/tara_mix.wav']);
 console.log('assets/tara_mix.wav', hasScore ? '(with score)' : '(no score)');
