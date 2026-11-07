@@ -1,0 +1,198 @@
+{
+  "name": "puja",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.3
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "*LAKSHMI PUJA* | is TOMORROW.",
+        "*SAVE* this: the whole | puja, step by step."
+      ],
+      "tts": "Lakshmi Pooja is tomorrow. Save this: the whole pooja, step by step.",
+      "hold": 0.4
+    },
+    {
+      "id": "when",
+      "gap": 0.5,
+      "caps": [
+        "After sunset, | in *PRADOSH KAAL.*",
+        "Check your city's | *MUHURAT.*"
+      ],
+      "tts": "After sunset, in Pradosh kaal. Check your city's muhoorat.",
+      "hold": 0.5
+    },
+    {
+      "id": "s1",
+      "gap": 0.7,
+      "caps": [
+        "*ONE.* *CLEAN* it all:",
+        "the mandir, every | lamp and plate.",
+        "Metal murtis | get a *BATH.*",
+        "*CLAY* murtis, | just a gentle *WIPE.*"
+      ],
+      "tts": "One. Clean it all: the mandir, every lamp and plate. Metal murtis get a bath. Clay murtis, just a gentle wipe.",
+      "hold": 0.5
+    },
+    {
+      "id": "s2",
+      "gap": 0.5,
+      "caps": [
+        "*TWO.* A *RED CLOTH* | on a clean *CHOWKI.*"
+      ],
+      "tts": "Two. A red cloth, on a clean chowki.",
+      "hold": 0.5
+    },
+    {
+      "id": "s3",
+      "gap": 0.5,
+      "caps": [
+        "*THREE.* | As you face them:",
+        "*SARASWATI,* *LAKSHMI,* | *GANESHA.*",
+        "Many homes do it | this way.",
+        "Yours may differ."
+      ],
+      "tts": "Three. As you face them: Saraswati, Lakshmi, Ganesha. Many homes do it this way. Yours may differ.",
+      "hold": 0.5
+    },
+    {
+      "id": "s4",
+      "gap": 0.5,
+      "caps": [
+        "*FOUR.* *NEW CLOTHES,* | a *MALA,*",
+        "and *FLOWERS:* a *LOTUS* | for Lakshmi."
+      ],
+      "tts": "Four. New clothes, a mala, and flowers: a lotus for Lakshmi.",
+      "hold": 0.5
+    },
+    {
+      "id": "s5",
+      "gap": 0.5,
+      "caps": [
+        "*FIVE.* The *KALASH.*",
+        "Water, a *COIN,* | supari and rice inside.",
+        "*FIVE MANGO LEAVES,* | a *COCONUT* in red cloth,",
+        "a kumkum *SWASTIK,* | a red *MAULI* thread",
+        "round its neck."
+      ],
+      "tts": "Five. The कलश. Water, a coin, soopaari and rice inside. Five mango leaves, a coconut in red cloth, a kumkum swastik, and a red mauli thread, around its neck.",
+      "hold": 0.5
+    },
+    {
+      "id": "s6",
+      "gap": 0.5,
+      "caps": [
+        "*SIX.* Sit facing | *EAST* or *NORTH.*",
+        "Sip water *THREE* times. | That's *ACHAMAN.*"
+      ],
+      "tts": "Six. Sit facing east, or north. Sip water three times. That's aachaman.",
+      "hold": 0.5
+    },
+    {
+      "id": "s7",
+      "gap": 0.5,
+      "caps": [
+        "*SEVEN.* Water, | a few grains of rice",
+        "and a flower | in your hand.",
+        "Say your *NAME,* the *DAY,* | and *WHY* you pray.",
+        "That's your *SANKALP.*"
+      ],
+      "tts": "Seven. Water, a few grains of rice, and a flower in your hand. Say your name, the day, and why you pray. That's your sankalp.",
+      "hold": 0.5
+    },
+    {
+      "id": "s8",
+      "gap": 0.5,
+      "caps": [
+        "*EIGHT.* Always begin | with *GANESHA.*",
+        "In the *SHIVA PURANA,* | the gods made him",
+        "the *FIRST* | to be worshipped."
+      ],
+      "tts": "Eight. Always begin with Ganesha. In the Shiva Puraan, the gods made him the first to be worshipped.",
+      "hold": 0.5
+    },
+    {
+      "id": "s9",
+      "gap": 0.5,
+      "caps": [
+        "*NINE.* Then each god | in turn:",
+        "*TILAK,* *AKSHAT,* | *FLOWERS,* *INCENSE,*",
+        "a *LAMP* and *BHOG,* | with their *MANTRA.*"
+      ],
+      "tts": "Nine. Then each god in turn: tilak, akshat, flowers, incense, a lamp, and bhog, with their mantra.",
+      "hold": 0.6
+    },
+    {
+      "id": "s10",
+      "gap": 0.5,
+      "caps": [
+        "*TEN.* If your family | does a *HAVAN,*",
+        "it comes now."
+      ],
+      "tts": "Ten. If your family does a havan, it comes now.",
+      "hold": 0.5
+    },
+    {
+      "id": "s11",
+      "gap": 0.5,
+      "caps": [
+        "*ELEVEN.* *AARTI.* | Ganesha first,",
+        "then *LAKSHMI.*"
+      ],
+      "tts": "Eleven. Aarti. Ganesha first, then Lakshmi.",
+      "hold": 0.5
+    },
+    {
+      "id": "s12",
+      "gap": 0.5,
+      "caps": [
+        "*TWELVE.* Flowers | in folded hands:",
+        "*PUSHPANJALI.*"
+      ],
+      "tts": "Twelve. Flowers in folded hands: pushpaanjali.",
+      "hold": 0.5
+    },
+    {
+      "id": "s13",
+      "gap": 0.5,
+      "caps": [
+        "*THIRTEEN.* | Ask *FORGIVENESS*",
+        "for every mistake.",
+        "*Mantra-heenam,* | *kriya-heenam,*",
+        "*bhakti-heenam…*",
+        "Whatever I missed, | in words,",
+        "in ritual, in love: | make it *COMPLETE.*"
+      ],
+      "tts": "Thirteen. Ask forgiveness for every mistake. मन्त्रहीनं, क्रियाहीनं, भक्तिहीनं. Whatever I missed, in words, in ritual, in love: make it complete.",
+      "hold": 0.6
+    },
+    {
+      "id": "s14",
+      "gap": 0.5,
+      "caps": [
+        "*FOURTEEN.* Light *DIYAS* | in every room,",
+        "*RANGOLI* and *FOOTPRINTS* | at the door.",
+        "Many homes keep | one lamp burning",
+        "*ALL NIGHT.*"
+      ],
+      "tts": "Fourteen. Light diyas in every room, rangoli and footprints at the door. Many homes keep one lamp burning, all night.",
+      "hold": 0.6
+    },
+    {
+      "id": "ask",
+      "gap": 0.7,
+      "caps": [
+        "Who sits where | on *YOUR* chowki?",
+        "*COMMENT* below!",
+        "And *SAVE* this | for tomorrow."
+      ],
+      "tts": "Who sits where on your chowki? Comment below! And save this for tomorrow.",
+      "y": 1380,
+      "hold": 1.2
+    }
+  ]
+}
