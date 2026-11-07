@@ -1,6 +1,6 @@
 # "Your grandmother hung MANGO LEAVES over the door. She wasn't decorating." (ad 82 · 3D)
 
-A 52 s explainer in the **3D** style (owner, 7 Nov 2026: hook ideas on why we hang torans, "direct the next viral reel";
+A 51.7 s explainer in the **3D** style (owner, 7 Nov 2026: hook ideas on why we hang torans, "direct the next viral reel";
 picked 3D with the Girish VO). Built the day before Lakshmi Puja (8 Nov 2026), when every home is tying one.
 
 **The idea:** nostalgia + a reveal. Hook 3 from the owner's list, tightened into a statement with a twist ("She wasn't
@@ -42,7 +42,7 @@ lakshmi  This Diwali, | that's LAKSHMI.
 ask      MANGO LEAVES, | MARIGOLDS | or BEADS? / What's on YOUR door? | Comment your STATE!
 send     SEND this | to the one who ties yours.
 ```
-Spoken (tts): Bhaagavatam, Dhruv, Dwaarka, "kulush" (as written, "kalash" came back as "Kailash" in speech-to-text),
+Spoken (tts): Bhaagavatam, Dhruv, Dwaarka, कलश in Devanagari (owner: "kulush" sounded wrong; "kalash", "kallash" came back as "Kailash"),
 "toranaa" (the plain spelling dropped its final vowel). Speech-to-text (Sarvam saarika:v2.5) on every take: all right.
 
 ## Shots (times from the voice: src/scenes/toran_tl.js)
@@ -62,7 +62,7 @@ Spoken (tts): Bhaagavatam, Dhruv, Dwaarka, "kulush" (as written, "kalash" came b
 - **H –35.2 Lakshmi.** Gold footprints walk in over the rangoli to the threshold, an anklet's bells on each step.
 - **I –40.3 the ask.** The toran swaps on the words: mango leaves, marigold strands, a beaded bandhanwar; YOUR STATE?
 - **J –45.3 send.** The mango toran back, a slow push to the door.
-- **Card –52.3.** The Navadurga card, no price.
+- **Card –51.7.** The Navadurga card, no price.
 
 ## Files
 `src/scenes/toran.js` (shots), `toran_sets.js` (HOME, SANCHI, CITY; `toran3()` mango / marigold / beads, `kalash3()`,

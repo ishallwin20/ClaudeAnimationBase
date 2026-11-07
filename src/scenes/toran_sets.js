@@ -154,7 +154,7 @@ function diya3(parent, pos, o = {}) {
   mesh3(g, lathe3(smooth3([[0, 0], [.03, 0], [.05, .012], [.06, .028], [.055, .03], [.04, .018], [0, .014]], 3), 28), std3('#9A4A22', .85), [0, 0, 0]);
   mesh3(g, new THREE.CircleGeometry(.042, 20), std3('#E0B040', .2, { emissive: '#5A3A08', emissiveIntensity: .4 }), [0, .022, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
   const f = flame3(g, [.03, .03, 0], o.k ?? .55, { light: o.light ?? false, power: o.power ?? 1.2, range: o.range ?? 4, seed: pos[0] * 9 });
-  return { group: g, set: (t, on) => f.set(t, on), flame: f };
+  return { group: g, set: (t, on) => { f.set(t, on); if (f.light) f.light.intensity = (o.power ?? 1.2) * clamp(on) * (.96 + .04 * Math.sin(t * 2.1 + pos[0] * 5)); }, flame: f };
 }
 // a copper kalash with five mango leaves and a coconut
 function kalash3(parent, pos, s = 1) {
@@ -216,8 +216,9 @@ const HOME = (() => {
   block3(S, (WW - dw) / 2, WH, T, wallM, [(dw / 2 + (WW - dw) / 4), 0, -T / 2]);
   block3(S, dw, WH - dh, T, wallM, [0, dh, -T / 2]);
   // a red-ochre dado band at the foot of the wall and a white border (geru and lime)
-  block3(S, WW, .55, .02, plaster3('#9A3A22', [2, .2]), [0, 0, .005]);
-  block3(S, WW, .05, .025, plaster3('#F4ECDC', [2, .1]), [0, .55, .005]);
+  for (const sd of [-1, 1]) { const x0 = dw / 2 + .22, w = WW / 2 - x0;   // left and right of the door frame, never across the doorway
+    block3(S, w, .55, .02, plaster3('#9A3A22', [1, .2]), [sd * (x0 + w / 2), 0, .01]);
+    block3(S, w, .05, .025, plaster3('#F4ECDC', [1, .1]), [sd * (x0 + w / 2), .55, .01]); }
   const borderTex = tex3('wallBorder', 1024, 128, (g, w, h) => {
     g.clearRect(0, 0, w, h); g.fillStyle = 'rgba(160,50,30,.9)'; g.fillRect(0, 34, w, 60);
     g.fillStyle = 'rgba(250,244,230,.95)';
