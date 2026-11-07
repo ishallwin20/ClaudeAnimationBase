@@ -1,0 +1,128 @@
+{
+  "name": "ninth",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.2
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "Vishnu's *NINTH* avatar: | is it *BALARAM?* Or *BUDDHA?*"
+      ],
+      "tts": "Vishnu's ninth avatar. Is it Balaraam? Or Buddha?",
+      "hold": 0.5
+    },
+    {
+      "id": "fight",
+      "gap": 0.5,
+      "caps": [
+        "Ask this at home, | and watch a *FIGHT* break out."
+      ],
+      "tts": "Ask this at home, and watch a fight break out.",
+      "hold": 0.6
+    },
+    {
+      "id": "eight",
+      "gap": 0.6,
+      "caps": [
+        "Every list agrees | on *EIGHT* of the ten."
+      ],
+      "tts": "Every list agrees, on eight of the ten.",
+      "hold": 1.6
+    },
+    {
+      "id": "three",
+      "gap": 0.5,
+      "caps": [
+        "The fight is over *TWO* places,",
+        "and *THREE* names: | *KRISHNA, BALARAM, BUDDHA.*"
+      ],
+      "tts": "The fight is over two places, and three names. Krishna, Balaraam, Buddha.",
+      "hold": 0.8
+    },
+    {
+      "id": "varaha",
+      "gap": 0.6,
+      "caps": [
+        "The *VARAHA PURANA* | picks *KRISHNA* and *BUDDHA.*"
+      ],
+      "tts": "The Varaah Puraan picks Krishna, and Buddha.",
+      "hold": 0.9
+    },
+    {
+      "id": "jaya",
+      "gap": 0.6,
+      "caps": [
+        "Jaydev's *GEET GOVIND* | picks *BALARAM* and *BUDDHA.*",
+        "But where is *KRISHNA?*",
+        "For Jaydev, he is the one | who *TAKES* all ten forms."
+      ],
+      "tts": "Jaydev's Geet Govind picks Balaraam, and Buddha. But where is Krishna? For Jaydev, he is the one, who takes all ten forms.",
+      "hold": 0.9
+    },
+    {
+      "id": "desika",
+      "gap": 0.6,
+      "caps": [
+        "In the South, | *VEDANTA DESIKA'S* hymn",
+        "picks *BALARAM* and *KRISHNA,* | with no Buddha at all."
+      ],
+      "tts": "In the South, Vedaant Deshik's hymn picks Balaraam, and Krishna, with no Buddha at all.",
+      "hold": 0.9
+    },
+    {
+      "id": "mbh",
+      "gap": 0.6,
+      "caps": [
+        "And the *MAHABHARAT'S* own list?",
+        "*NEITHER* of them. | It counts a *SWAN.*"
+      ],
+      "tts": "And the Mahaabhaarat's own list? Neither of them. It counts a swan.",
+      "hold": 1.0
+    },
+    {
+      "id": "bhag",
+      "gap": 0.7,
+      "caps": [
+        "So who is right?",
+        "The *BHAGAVATA PURANA* | counts all *THREE.*",
+        "Balaram 19th, Krishna 20th, | Buddha 21st."
+      ],
+      "tts": "So who is right? The Bhaagavat Puraan counts all three. Balaraam, nineteenth. Krishna, twentieth. Buddha, twenty first.",
+      "hold": 0.6
+    },
+    {
+      "id": "countless",
+      "gap": 0.5,
+      "caps": [
+        "And it says Vishnu's avatars | are *COUNTLESS,*",
+        "like streams | from an endless lake."
+      ],
+      "tts": "And it says, Vishnu's avatars are countless, like streams from an endless lake.",
+      "hold": 1.2
+    },
+    {
+      "id": "save",
+      "gap": 0.6,
+      "caps": [
+        "*SAVE* this | for the next family debate."
+      ],
+      "tts": "Save this, for the next family debate.",
+      "y": 1420,
+      "hold": 0.5
+    },
+    {
+      "id": "ask",
+      "gap": 0.5,
+      "caps": [
+        "Which two did *YOUR* family | teach you?",
+        "Comment, | with your *STATE!*"
+      ],
+      "tts": "Which two did your family teach you? Comment, with your state!",
+      "hold": 1.4
+    }
+  ]
+}
