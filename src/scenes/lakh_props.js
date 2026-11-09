@@ -14,7 +14,7 @@
 //   lakhDiya(x, y, s, lit, key)          a brass-and-clay diya
 //   speedLines(x, y, ang, len, k, key)   comet streaks behind a flier
 //   photoBorder()                        the cream photo border (screen space)
-//   lakhCard(t, C)                       the end card: the free wallpaper, the 1 lakh sale on both sets, follow
+//   lakhCard(t, C)                       the end card: the free wallpapers, the 1 lakh followers sale on both sets, follow
 const LK = {
   peach: '#FBE0CF', peachDk: '#F2C6AC', teal: '#2E5F5A', tealDk: '#1F4541', tealLt: '#4E847C', tealHi: '#6FA49A',
   orange: '#F15A24', marigold: '#F2A23A', marigoldDk: '#D9771E', marigoldLt: '#FFC85A', gold: '#F5C542', goldDk: '#C8962A',
@@ -238,7 +238,7 @@ function photoBorder() {
   inkLine([[b, top], [W - b, top], [W - b, bot], [b, bot], [b, top]], 1.5, LK.grey, 'inkfine', 0);
 }
 
-// ---------- the card: the free wallpaper, the 1 lakh sale on both sets (no price), follow ----------
+// ---------- the card: the free wallpapers, the 1 lakh followers sale on both sets (no price), follow ----------
 // C: { cap, gift, phone, free, pill, grab, sale, covers, follow } (video times)
 function lakhCard(t, C) {
   boilSeed('cardbg');
@@ -247,31 +247,32 @@ function lakhCard(t, C) {
   const X = 470, pk = t0 => Math.max(0, t - t0) * 5, br = Math.sin(t * 1.3) * .01;
   if (t > C.cap) picture(PICS.logo, X, 500, 110, 110, { pop: pk(C.cap) });
   if (t > C.gift) letter('Thank you for 1 lakh! Our gift to you:', X, 604, 46, LK.teal, { screen: true, font: '46px Marcellus', ink: false, pop: pk(C.gift), maxW: 860 });
-  // the phone with the wallpaper, tilted, with a ribbon
-  if (t > C.phone) {
-    const k = backOut(clamp(pk(C.phone))), bob = Math.sin(t * 2) * 6;
-    boilSeed('phone');
-    push(); translate(310, 885 + bob); rotate(-.08); scale(k);
-    paint(rrPts(-104, -205, 208, 410, 30), { wash: '#2A2430', ink: LK.ink, sw: 1.2 });
+  // two phones with the free wallpapers, tilted apart
+  [[PICS.wallA, 205, -.1, 0], [PICS.wallB, 375, .07, .15]].forEach(([img, x, rot, d], j) => {
+    if (t <= C.phone + d) return;
+    const k = backOut(clamp(pk(C.phone + d))), bob = Math.sin(t * 2 + j * 1.7) * 6, y = 885 + bob + (j ? 18 : 0);
+    boilSeed('phone' + j);
+    push(); translate(x, y); rotate(rot); scale(k);
+    paint(rrPts(-92, -182, 184, 364, 26), { wash: '#2A2430', ink: LK.ink, sw: 1.2 });
     pop();
-    picture(PICS.wall, 310, 885 + bob, 184, 384, { rot: -.08, pop: pk(C.phone), r: 20 });
-  }
+    picture(img, x, y, 162, 340, { rot, pop: pk(C.phone + d), r: 18 });
+  });
   if (t > C.free) {
-    letter('FREE', 640, 800, 120, LK.orange, { screen: true, font: '700 120px Poppins', ink: false, pop: pk(C.free), rot: -.04 });
-    letter('WALLPAPER', 640, 880, 56, LK.brown, { screen: true, font: '700 56px Poppins', ink: false, pop: pk(C.free + .12), rot: -.04 });
-    letter('for your phone', 640, 940, 34, LK.grey, { screen: true, font: '500 34px Poppins', ink: false, pop: pk(C.free + .24), rot: -.04 });
+    letter('FREE', 690, 800, 120, LK.orange, { screen: true, font: '700 120px Poppins', ink: false, pop: pk(C.free), rot: -.04 });
+    letter('WALLPAPERS', 690, 880, 52, LK.brown, { screen: true, font: '700 52px Poppins', ink: false, pop: pk(C.free + .12), rot: -.04, maxW: 360 });
+    letter('for your phone', 690, 940, 34, LK.grey, { screen: true, font: '500 34px Poppins', ink: false, pop: pk(C.free + .24), rot: -.04 });
   }
   if (t > C.pill) {
     const k = backOut(clamp(pk(C.pill))) * (1 + .03 * pulse(t, 4));
     boilSeed('pill');
-    push(); translate(640, 1030); scale(k); paint(rrPts(-200, -40, 400, 80, 40), { wash: LK.orange, ink: null }); pop();
-    letter('rishikatha.com', 640, 1032, 44, LK.cream, { screen: true, font: '700 44px Poppins', ink: false, pop: pk(C.pill) });
+    push(); translate(690, 1030); scale(k); paint(rrPts(-190, -40, 380, 80, 40), { wash: LK.orange, ink: null }); pop();
+    letter('rishikatha.com', 690, 1032, 44, LK.cream, { screen: true, font: '700 44px Poppins', ink: false, pop: pk(C.pill) });
   }
   if (t > C.grab) letter('Grab yours at our site (link in bio)', X, 1122, 38, LK.brown, { screen: true, font: '500 38px Poppins', ink: false, maxW: 820, pop: pk(C.grab) });
   // the sale: both sets, six small covers
   if (t > C.sale) {
     boilSeed('card rule'); inkLine([[150, 1180], [790, 1180]], 1.2, LK.peachDk, 'ink', 0);
-    letter('1 LAKH SALE on both book sets', X, 1232, 46, LK.teal, { screen: true, font: '700 46px Poppins', ink: false, maxW: 840, pop: pk(C.sale) });
+    letter('1 LAKH FOLLOWERS SALE on both book sets', X, 1232, 42, LK.teal, { screen: true, font: '700 42px Poppins', ink: false, maxW: 840, pop: pk(C.sale) });
   }
   [1, 2, 3, 4, 5, 6].forEach((b, j) => {
     const t0 = C.covers + j * .1; if (t < t0) return;
