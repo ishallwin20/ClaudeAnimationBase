@@ -1,0 +1,21 @@
+A SHORT film-score cue for an 83-second reel: tempo 84 BPM in 4/4, exactly 29 bars, 83 seconds, then silence.
+Do not extend it, do not repeat sections, no intro, no outro beyond 1:23. Every section below is short; keep moving.
+Epic, devotional Indian mythological film score, like the best scene of a blockbuster: a whole army lies fallen at
+night, and Lord Hanuman flies to the Himalaya and tears out a mountain to save them. Nagada, dhol and taiko drums, a
+deep temple bell, low brass, cellos and full strings, a tanpura drone, a sarangi, a bansuri, a shehnai, a santoor, a
+solo female voice (wordless), a huge male choir. Grief, then wonder, then explosive triumph, then devotion.
+Instrumental, except the male choir chanting "Jai Hanuman" where asked.
+
+0:00-0:12  One deep drum HIT on the very first beat, then grief: a mournful sarangi and a wordless female voice over a dark tanpura drone. A battlefield after the war. Slow, heavy, no rhythm.
+0:12-0:21  A hush: almost nothing, a single held low note and a slow heartbeat drum; at 0:16 one fragile bansuri phrase of hope.
+0:21-0:26  Resolve: a low string ostinato and war drums building fast, a rising whoosh into 0:26.
+0:26-0:33  A huge HIT at 0:26.0, then flight: fast soaring strings, galloping dhol, heroic brass.
+0:33-0:43  Wonder: the drums fall away; shimmering santoor and high strings, soft choir pads, majestic and still, a snow mountain glowing at night. It grows darker and thinner toward 0:43.
+0:43-0:50  Anger: low brass swells, a deep male choir, a string tremolo crescendo; it stops dead at 0:50.0 into total SILENCE.
+0:50-0:51  Silence.
+0:51-1:01  The DROP at 0:51.0: the biggest hit of the cue, then a triumphant heroic theme, full orchestra, nagada and dhol, a fierce shehnai lead, the male choir chanting "Jai Hanuman" at full power.
+1:01-1:07  A radiant rising major-key swell, strings and choir like a sunrise.
+1:07-1:17  Devotion: warm and gentle, a bansuri melody over soft strings and tanpura, the choir humming.
+1:17-1:23  A soft tanpura and one last temple bell; fading out completely by 1:23.
+
+Total length: 83 seconds, 29 bars at 84 BPM. End at 1:23.
