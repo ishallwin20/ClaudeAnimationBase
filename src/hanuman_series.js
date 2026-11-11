@@ -96,9 +96,10 @@ function diya(x, y, s, lit, key) {
 
 // ---------- the series marks ----------
 // the small part pill, bottom left of the safe band (screen space: call it after camEnd())
+// Show it and the source line in the opening only (about the first 9 s), then fade them out with `a` (owner, 11 Nov 2026).
 function hsPill(part, a = 1) {
   boilSeed('hspill');
-  paint(rrPts(64, 1440, 268, 52, 26), { wash: HSK.orange, washOp: 255 * a, ink: HSK.ink, sw: 1 });
+  paint(rrPts(64, 1440, 268, 52, 26), { wash: HSK.orange, washOp: 255 * a, ink: a < 1 ? null : HSK.ink, sw: 1 });
   letter('HANUMAN · PART ' + part, 198, 1468, 32, HSK.cream, { screen: true, ink: false, rot: 0, alpha: a, maxW: 240 });
 }
 // the source line, to the right of the pill
