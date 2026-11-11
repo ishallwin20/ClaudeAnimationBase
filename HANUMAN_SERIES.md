@@ -22,7 +22,9 @@ Bhima's tail, pearls). The series does not retell them; where the life story pas
 - **Shape (Parshurama Part 6 pacing):** frame-0 hook with one subject → cold open (≤10 s) → about 15 caption groups
   (≥3.5 s for 2 lines, ≥4.5 s for 3) → twist → ask → card. 60–90 s.
 - **Standalone:** no cliffhangers. A small "HANUMAN · PART N" pill and the cover's big PART N are the only series
-  marks; the last caption before the card teases the next part in one line.
+  marks; the last caption before the card teases the next part in one line. The pill and the source line beside it
+  show in the opening only (about the first 9 s), then fade out: they are not kept up through the reel (owner, 11 Nov,
+  on Part 1). A text other than Valmiki is then named in a caption.
 - **Sources:** one named text per part (two only where the hook is the difference between them, Part 1). The source
   is named on screen in a small line when it is not Valmiki (Shiva Purana, Ramcharitmanas, Mahabharata, Bhagavata).
   Step 1 of every build is re-reading the chapter in a verse-numbered edition and writing "Facts used" with verse
