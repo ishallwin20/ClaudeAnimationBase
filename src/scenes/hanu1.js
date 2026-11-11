@@ -51,12 +51,12 @@
     ['WHICH NAME DOES', 470, I0 + .1, 4.3, 86], ['YOUR FAMILY USE?', 580, I0 + .35, 4.05, 96, GOLDC], ['COMMENT IT!', 695, I0 + .9, 3.5, 80],
     ['NEXT: THE DAY HE GOT', 470, J0 + .1, 3.4, 78], ['8 SUPERPOWERS!', 590, J0 + .35, 3.15, 118, GOLDC],
   ];
-  // the source lines: [text, t0, t1]
-  const SRC = [['VALMIKI RAMAYAN · KISHKINDHA 66', B0 + .3, ST2 + 1.9], ['SHIVA PURANA · SHATARUDRA 20', F0 + .3, ST3 + 2.1],
-    ['VALMIKI · SHIVA PURANA', G0 + .2, CH0 - .1], ['HANUMAN CHALISA 2, 6', CH0 + .2, I0 - .1]];
+  // the series marks (the part pill and the source line beside it) are up for the opening only and fade out before the
+  // heaven shot ends (owner, 11 Nov: not through the whole reel); the captions name the Shiva Purana and the Chalisa
+  const MARKS = C0 - .2, SRC = [['VALMIKI RAMAYAN · SHIVA PURANA', B0 + .3, MARKS]];
   const caps = t => {
     for (const [txt, y, t0, life, size, color] of CAPS) caption(txt, y, t - t0, { life, size, color });
-    if (t < CARD) { hsPill(1); for (const [txt, a, b] of SRC) hsSource(txt, t - a, b - a); }
+    if (t < MARKS) { hsPill(1, 1 - seg(t, MARKS - .3, MARKS)); for (const [txt, a, b] of SRC) hsSource(txt, t - a, b - a); }
   };
   // a stamp's thump: a little zoom kick at t0
   const kick = (t, t0) => t > t0 ? .05 * Math.exp(-(t - t0) * 6) * Math.cos((t - t0) * 20) : 0;

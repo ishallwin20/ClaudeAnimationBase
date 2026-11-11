@@ -42,7 +42,9 @@ CARD = 85.4, END = 89.4
 ```
 
 ## Shots and reads (captions inside y 420–1500, left of x 930; 2-liners ≥ 3.5 s, the stamps ~1.9 s)
-The small "HANUMAN · PART 1" pill sits bottom left of the safe band for the whole reel, the source line beside it.
+The small "HANUMAN · PART 1" pill sits bottom left of the safe band for the opening only (0–8.8 s), the source line
+("VALMIKI RAMAYAN · SHIVA PURANA") beside it from 4.7 s; both fade out before the curse (owner, 11 Nov). After that the
+captions name the texts ("THE SHIVA PURANA TELLS ONE MORE SECRET…", "YOU SING IT IN THE CHALISA").
 
 - **A 0–4.4 · the hook.** The baby on warm gold; "HANUMAN JI HAS" / "THREE FATHERS" up from frame 0 to 4.25. 1.6, 2.0,
   2.4: three question marks pop, he looks at each. 3.2 he shrugs and grins. [out: rose wipe]
@@ -64,7 +66,7 @@ The small "HANUMAN · PART 1" pill sits bottom left of the safe band for the who
   33.6 a blue wisp leaves his brow (the text: "by my mind") and floats to her; 34.8 she lights up, glad. **37.2
   stamp:** punch in on Vayu: "FATHER NO. 2" / "VAYU DEV". [out: night wipe]
 - **F1 39.2–43.4 · Kailash.** Shiva in meditation, snow falling. 39.3–43.3 "BUT THE SHIVA PURANA" / "TELLS ONE MORE
-  SECRET…" (the source line changes to the Shiva Purana).
+  SECRET…".
 - **F2 43.4–48.0 · the energy.** 43.9 his eyes open, 44.6 a golden light forms between his hands, 46.6 it floats away.
   43.5–47.8 "LORD SHIVA SENT HIS OWN ENERGY" / "TO HELP SHRI RAM." [out: dawn wipe]
 - **F3 48.0–53.2 · the seven sages.** Seven little rishis march along a dawn ridge holding one long leaf over their
