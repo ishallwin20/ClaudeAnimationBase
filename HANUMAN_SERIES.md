@@ -65,7 +65,7 @@ when the reel is delivered, and adds the owner's result when it is known.
 
 | Part | Ad | Branch | Built | Result |
 |---|---|---|---|---|
-| 1 Three fathers | 85 | | | |
+| 1 Three fathers | 85 | `ad/85-books123-hanuman-1-three-fathers` | 11 Nov 2026 (89.4 s; kit `src/hanuman_series.js`; twist = the Chalisa sings all three names; card line used: "The Navadurga Set · OUT NOW") | |
 | 2 Eight superpowers | | | | |
 | 3 Met Ram in disguise | | | | |
 | 4 Almost gave up | | | | |
