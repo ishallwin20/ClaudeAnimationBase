@@ -7,6 +7,11 @@
 //   varuna, kubera, vishvakarma           three gods on Shani's rig through yama() (load after yama.js): Varuna in sea
 //                                         colours with his noose, Kubera in gold and emerald with his mace and a purse,
 //                                         Vishvakarma, white-bearded, with a hammer; every shani() / yama() option works
+//   sugriva, bhikshu, vanRam, vanLakshman  Part 3 (Kishkindha 2–4): Sugriva on Hanuman's rig (tawny fur, a teal dhoti, his
+//                                         mukut); Hanuman as the wandering monk he turned into (Narad's rig with a human
+//                                         face: saffron robes, a tawny jata, a rudraksha mala, his sindoor tilak, no
+//                                         tail); Ram and Lakshman as they were in the forest (jata, bark cloth, a
+//                                         rudraksha mala, no crown or gold; the bows stay). Load after ram.js
 //   hsPill(part)                          the small "HANUMAN · PART N" pill, bottom left of the safe band
 //   hsSource(txt, age, life)              the small source line beside it (name the text when it is not Valmiki)
 //   hsCard(t, C)                          the no-price Navadurga card; C = hsCardTimes(t0)
@@ -88,6 +93,20 @@ function vishvakarma(x, y, u, o = {}) {
       if (prev) prev(uu, sw);
     } });
 }
+
+// Part 3 (Kishkindha 2–4). Sugriva: Hanuman's rig, tawnier, in teal, crowned (the text calls him king even in exile).
+const SUG_PAL = { skin: '#C89A4A', skinDk: '#9A702A', skinLt: '#E8BC6A', fur: '#C89A4A', furDk: '#9A702A', furLt: '#E8BC6A', dhoti: '#2E6A5A', dhotiDk: '#1E4A3E', dhotiLt: '#4E8A7A' };
+function sugriva(x, y, u, o = {}) { return hanuman(x, y, u, { gada: 0, ...o, pal: { ...SUG_PAL, ...(o.pal || {}) } }); }
+// Hanuman as a bhikshu (3.2: he put off his monkey form): a human monk on Narad's rig, so no tail and no fur; his own
+// warm colouring, a tawny jata and his sindoor tilak keep him recognisable. Every narada() option works.
+const BHIKSHU_PAL = { skin: '#F2C08A', skinDk: '#D4975E', skinLt: '#FFDDB4', ink: '#4A2A18', dhoti: '#F08A2E', dhotiDk: '#C4621A', dhotiLt: '#FFB870', border: '#B8202E',
+  shawl: '#F6A63C', shawlDk: '#CC7A1E', hair: '#7A4A22', hairLt: '#A87440', bead: '#7A4426', beadDk: '#52290F', tulsi: '#A86A3A', tilak: '#E2452B', red: '#E2452B', flower: '#F6A63C' };
+function bhikshu(x, y, u, o = {}) { return narada(x, y, u, { veena: false, blush: .35, ...o, pal: { ...BHIKSHU_PAL, ...(o.pal || {}) } }); }
+// Ram and Lakshman in the forest (3.8, 3.12–15: bark cloth, jata, arms that wear no ornaments): no crown, no gold.
+const VAN_PAL = { dhoti: '#C99A5E', dhotiDk: '#9A7040', dhotiLt: '#E6C08C', border: '#7A5230', bead: '#7A4426', beadDk: '#52290F', tulsi: '#A86A3A',
+  gold: '#1E1B2E', goldDk: '#1E1B2E', goldLt: '#46426A', gem: '#1E1B2E', flower: '#46426A' };
+function vanRam(x, y, u, o = {}) { return ram(x, y, u, { crown: false, topknot: true, shawl: false, ...o, pal: { ...VAN_PAL, ...(o.pal || {}) } }); }
+function vanLakshman(x, y, u, o = {}) { return ram(x, y, u, { crown: false, topknot: true, shawl: false, ...o, pal: { ...LAKSHMAN_PAL, ...VAN_PAL, dhoti: '#B8A46A', dhotiDk: '#8C7A44', dhotiLt: '#D8C894', ...(o.pal || {}) } }); }
 
 // ---------- small props ----------
 function cloudPuff(x, y, s, key, a = 255, col = '#FFF6EC', dk = '#E8D6CC') {
