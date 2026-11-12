@@ -64,8 +64,13 @@ function sadhu3(parent, o = {}) {
     lapCloth();
     // a rudraksha mala on the chest, a second, shorter one at the neck
     const bead = std3('#5A2C18', .6), bg = new THREE.SphereGeometry(.0125, 10, 8);
-    for (let i = 0; i < 46; i++) { const a = i / 46 * TAU; mesh3(G, bg, bead, [.125 * Math.sin(a), .615 - .2 * (1 + Math.cos(a)) / 2, -.01 + .135 * Math.cos(a) + .012 * Math.cos(a) * Math.cos(a)], { cast: false }); }
-    for (let i = 0; i < 30; i++) { const a = i / 30 * TAU; mesh3(G, bg, bead, [.075 * Math.sin(a), .64 - .05 * (1 + Math.cos(a)) / 2, .072 * Math.cos(a)], { cast: false, scale: .85 }); }
+    // each bead sits on the body's surface: the torso's radius at its height (the lathe's profile, z squashed by .68)
+    const PROF = [[.17, .05], [.19, .13], [.172, .26], [.186, .4], [.214, .5], [.2, .565], [.105, .605], [.058, .63], [.054, .7]];
+    const rAt = (y) => { for (let i = 1; i < PROF.length; i++) if (y <= PROF[i][1]) return lerp(PROF[i - 1][0], PROF[i][0], clamp((y - PROF[i - 1][1]) / (PROF[i][1] - PROF[i - 1][1]))); return .054; };
+    const mala = (n, top, drop, w, k = 1) => { for (let i = 0; i < n; i++) {
+      const a = i / n * TAU, ca = Math.cos(a), x = w * Math.sin(a), y = top - (ca > 0 ? drop * Math.pow(ca, 1.2) : 0), r = rAt(y) + .008, d = .68 * Math.sqrt(Math.max(r * r - x * x, .0004)) + .011 * k;
+      mesh3(G, bg, bead, [x, y, ca >= 0 ? d : -d], { cast: false, scale: k }); } };
+    mala(54, .598, .2, .1); mala(30, .628, .065, .066, .85);
   } else {
     // the robe: the lap, the knees under it, a wrap to the chest, a fold over the left shoulder
     lapCloth();
