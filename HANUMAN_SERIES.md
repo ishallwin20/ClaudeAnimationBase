@@ -68,7 +68,7 @@ when the reel is delivered, and adds the owner's result when it is known.
 | Part | Ad | Branch | Built | Result |
 |---|---|---|---|---|
 | 1 Three fathers | 85 | `ad/85-books123-hanuman-1-three-fathers` | 11 Nov 2026 (89.4 s; kit `src/hanuman_series.js`; twist = the Chalisa sings all three names; card line used: "The Navadurga Set · OUT NOW") | |
-| 2 Eight superpowers | | | | |
+| 2 Eight superpowers | 86 | `ad/86-books123-hanuman-2-eight-boons` | 12 Nov 2026 (91.6 s; read in Sanskrit, verse-numbered, at heritage.iitk.ac.in/VRAM/7.36.N; the text's order is Brahma 7th, Vishvakarma 8th; Yama's boon is no illness, his staff, never downcast in battle; kit gained `varuna()`, `kubera()`, `vishvakarma()`; a power bar of 8 numbered slots; Indra names him Hanuman, 36.11) | |
 | 3 Met Ram in disguise | | | | |
 | 4 Almost gave up | | | | |
 | 5 Sita said no | | | | |

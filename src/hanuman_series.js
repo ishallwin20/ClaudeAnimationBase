@@ -1,9 +1,12 @@
 // hanuman_series.js: the Hanuman Ji series kit (Painted; plan in HANUMAN_SERIES.md). Shared by every part's scene.
-// Load after hanuman.js, parvati.js, ramayan.js (valmiki()) and src/scenes/rk_images.js (PICS, for the card).
+// Load after hanuman.js, parvati.js, yama.js, ramayan.js (valmiki()) and src/scenes/rk_images.js (PICS, for the card).
 //   HSK                                    the series palette (ink, cream, gold, the brand colours)
 //   anjana, kesari, rishi                 Hanuman's mother (Parvati's rig, a forest-green saree, a saffron odhni, a
 //                                         vanari's tail: tail: false hides it), his father Kesari (Hanuman's rig in
 //                                         bronze, a gold band), a rishi in bark cloth (Valmiki's rig; k 0..2 picks one)
+//   varuna, kubera, vishvakarma           three gods on Shani's rig through yama() (load after yama.js): Varuna in sea
+//                                         colours with his noose, Kubera in gold and emerald with his mace and a purse,
+//                                         Vishvakarma, white-bearded, with a hammer; every shani() / yama() option works
 //   hsPill(part)                          the small "HANUMAN · PART N" pill, bottom left of the safe band
 //   hsSource(txt, age, life)              the small source line beside it (name the text when it is not Valmiki)
 //   hsCard(t, C)                          the no-price Navadurga card; C = hsCardTimes(t0)
@@ -49,6 +52,41 @@ const RISHI_BEARD = ['#F4F0E8', '#D2CCC6', '#8E848E'];
 const BARK_DHOTI = { dhoti: HSK.bark, dhotiDk: HSK.barkDk, dhotiLt: HSK.barkLt, border: '#5A3A20' };
 function rishi(x, y, u, k = 0, o = {}) {
   return valmiki(x, y, u, { beard: RISHI_BEARD[k], ...o, pal: { ...BARK_DHOTI, ...RISHI_PAL[k], ...(o.pal || {}) } });
+}
+
+// The three boon-givers of Part 2 (Uttara 36.15–21) who had no rig: Shani's body through yama() (the noose, the mace).
+const VARUNA_PAL = { skin: '#9ADCD8', skinDk: '#62B0B0', skinLt: '#D2F4F0', dhoti: '#2E7FB8', dhotiDk: '#1E5A8A', dhotiLt: '#6EB4E0',
+  sash: '#F4F7FB', sashDk: '#B9D3EA', gem: '#FFFFFF', gemLt: '#E0F4FF', hair: '#23304F', hairLt: '#4A5A80', iris: '#1E4A6E', lip: '#3A6A78', ash: '#FFFFFF' };
+function varuna(x, y, u, o = {}) { return yama(x, y, u, { gada: false, stache: 'thin', ...o, pal: { ...VARUNA_PAL, ...(o.pal || {}) } }); }
+const KUBERA_PAL = { skin: '#F2C58A', skinDk: '#D09A5A', skinLt: '#FFE2B8', dhoti: '#2E8A5A', dhotiDk: '#1E6440', dhotiLt: '#62B888',
+  sash: '#C8362E', sashDk: '#96221E', gem: '#3FB67A', gemLt: '#A8F0C8', hair: '#2A1E1A', hairLt: '#4A3A32', iris: '#7A4A12', lip: '#8E3A36', ash: '#D2283A' };
+function kubera(x, y, u, o = {}) {
+  const prev = o.armL;
+  return yama(x, y, u, { pasha: false, ...o, pal: { ...KUBERA_PAL, ...(o.pal || {}) },
+    armL: o.purse === false ? prev : (uu, sw) => {   // a purse of coins hanging from his left hand
+      boilSeed('kubera purse');
+      paint(U([[-.5, .2], [-1.5, 1.4], [-1.6, 2.8], [-.7, 3.6], [.7, 3.6], [1.6, 2.8], [1.5, 1.4], [.5, .2]], uu), { wash: '#C8362E', fill: '#96221E', fillOp: 50, tex: .4, ink: HSK.ink, sw: sw * .6, curv: .5 });
+      paint(rrPts(-.75 * uu, -.1 * uu, 1.5 * uu, .55 * uu, .2 * uu), { wash: HSK.gold, ink: HSK.ink, sw: sw * .5 });
+      paint(ellPts(0, 2.2 * uu, .5 * uu, .5 * uu, 10), { wash: HSK.gold, ink: HSK.ink, sw: sw * .4 });
+      if (prev) prev(uu, sw);
+    } });
+}
+const VISHVA_PAL = { skin: '#E2A878', skinDk: '#BC8052', skinLt: '#F8CCA2', dhoti: '#C8862E', dhotiDk: '#96601A', dhotiLt: '#EAB060',
+  sash: '#8A4A2E', sashDk: '#62301C', gem: '#F28A2E', gemLt: '#FFD0A0', hair: '#EDE8E0', hairLt: '#FFFFFF', iris: '#3A2418', lip: '#8E4A3A', ash: '#F2C230' };
+function vishvakarma(x, y, u, o = {}) {
+  const prev = o.armR;
+  return yama(x, y, u, { pasha: false, gada: false, ...o, pal: { ...VISHVA_PAL, ...(o.pal || {}) },
+    stache: (uu, sw) => {   // a full white beard
+      boilSeed('vishva beard');
+      paint(U([[-1.75, -19.5], [-1.95, -18.3], [-1.2, -16.8], [0, -16.1], [1.2, -16.8], [1.95, -18.3], [1.75, -19.5], [.7, -19.0], [0, -18.9], [-.7, -19.0]], uu), { wash: '#F4F0E8', fill: '#CFC8BC', fillOp: 40, tex: .3, ink: HSK.ink, sw: sw * .55, curv: .5 });
+    },
+    armR: o.hammer === false ? prev : (uu, sw) => {   // his hammer, head up
+      boilSeed('vishva hammer');
+      paint(ribbon(U([[0, 2.2], [0, -3.8]], uu), .42 * uu, .36 * uu), { wash: '#8A5A32', fill: '#62401E', fillOp: 50, ink: HSK.ink, sw: sw * .6 });
+      paint(rrPts(-1.7 * uu, -5.3 * uu, 3.4 * uu, 1.7 * uu, .3 * uu), { wash: '#B8C0CC', fill: '#7E8898', fillOp: 60, tex: .4, ink: HSK.ink, sw: sw * .7 });
+      paint(rrPts(-1.5 * uu, -5.15 * uu, 1.1 * uu, .45 * uu, .15 * uu), { wash: '#FFFFFF', washOp: 150, ink: null });
+      if (prev) prev(uu, sw);
+    } });
 }
 
 // ---------- small props ----------
