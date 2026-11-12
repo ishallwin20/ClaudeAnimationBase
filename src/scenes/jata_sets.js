@@ -92,7 +92,7 @@ function sadhu3(parent, o = {}) {
   for (let l = 0; l < 3; l++) { const p = []; for (let i = 0; i <= 12; i++) p.push(onHead((i / 12 * 2 - 1) * .62, .4 + l * .11, .0012)); tubeP3(head, p, .0045, ashM, { segs: 24, radial: 6, cast: false }); }
   mesh3(head, new THREE.SphereGeometry(.0085, 12, 8), std3('#B02A1A', .7), onHead(0, .29, .002), { cast: false });   // a dot of kumkum
   // ---- the hair
-  const hairM = new THREE.MeshStandardMaterial({ map: hairTex3().rep(4, 1), roughness: .78, bumpMap: streakTex3('hairB', 1400, { len: 260, wave: 4, wd: 1.6, seed: 21 }).rep(4, 1), bumpScale: 2, envMapIntensity: .4, color: jata ? '#FFFFFF' : '#6A6460' });
+  const hairM = new THREE.MeshStandardMaterial({ map: hairTex3().rep(4, 1), roughness: .78, bumpMap: streakTex3('hairB', 1400, { len: 260, wave: 4, wd: 1.6, seed: 21 }).rep(4, 1), bumpScale: 1, envMapIntensity: .4, color: jata ? '#FFFFFF' : '#6A6460' });
   const hairM2 = hairM.clone(); hairM2.color.set('#C8B49C');
   const cap = mesh3(head, new THREE.SphereGeometry(1, 40, 28), hairM, [0, HY + .016, -.024], { scale: [rx * 1.07, ry * 1.05, rz * 1.1] });
   const locks = [];
@@ -114,7 +114,7 @@ function sadhu3(parent, o = {}) {
     // the beard and the moustache
     for (let l = 0; l < 34; l++) {
       const row = l % 2, a = lerp(-1.05, 1.05, (l >> 1) / 16) + (R() - .5) * .08, c = 1 - Math.abs(a) / 1.05, s0 = onHead(a, -.42 - .3 * c - row * .08, -.006), dz = row ? .012 : 0;
-      lock([s0, [Math.sin(a) * .08, HY - .125 - .03 * c, .028 + .072 * Math.cos(a) + dz], [Math.sin(a) * .062 + (R() - .5) * .014, HY - .2 - .08 * c - R() * .03, .07 + .06 * Math.cos(a) + dz], [Math.sin(a) * .04 + (R() - .5) * .02, HY - .25 - .13 * c - R() * .04, .1 + .05 * Math.cos(a) + dz]], [.014, .004], (l + row) % 3 ? hairM : hairM2, 30, 8, head, [.1, .8]);
+      lock([s0, [Math.sin(a) * .08, HY - .125 - .03 * c, .028 + .072 * Math.cos(a) + dz], [Math.sin(a) * .066 + (R() - .5) * .014, HY - .2 - .06 * c - R() * .02, .118 + .058 * Math.cos(a) + dz], [Math.sin(a) * .045 + (R() - .5) * .02, HY - .25 - .11 * c - R() * .04, .15 + .04 * Math.cos(a) + dz]], [.014, .004], (l + row) % 3 ? hairM : hairM2, 30, 8, head, [.1, .8]);
     }
     for (const s of [-1, 1]) lock([[s * .004, HY - .052, rz + .004], [s * .03, HY - .06, rz - .006], [s * .058, HY - .085, rz - .028]], [.011, .004], hairM, 20, 8);
   } else {
@@ -151,7 +151,7 @@ function dhuni3(parent, pos) {
   mesh3(G, new THREE.CylinderGeometry(.17, .19, .03, 24), ash, [0, .015, 0]);
   for (let i = 0; i < 3; i++) mesh3(G, new THREE.CylinderGeometry(.022, .026, .3, 8), std3('#1E1612', .9), [0, .06, 0], { rot: [Math.PI / 2 - .25, i * 2.1, 0] });
   const fl = flame3(G, [0, .07, 0], 1.1, { light: true, power: .7, range: 3 });
-  G.set = (t, on) => fl.set(t, on);
+  G.set = (t, on) => { fl.set(t, on); if (fl.light) fl.light.intensity = .7 * clamp(on) * (1 + .05 * Math.sin(t * 2.3) + .03 * Math.sin(t * 3.7 + 1)); };
   return G;
 }
 // a kamandalu: a dark water pot with a spout and a hoop handle
@@ -193,20 +193,20 @@ const GHAT = (() => {
   const bgDawn = backdrop3(S, '#3E6EB0', '#E8A870', '#B08A64', 60), bgDusk = backdrop3(S, '#2A2A52', '#F28A4A', '#7A3A2A', 59), bgForest = backdrop3(S, '#A8C8B8', '#E8E4C0', '#A8B890', 58);
   const sunDisc = glow3(S, [6, 5.5, -52], 16, '#FFB060', 0), sunCore = glow3(S, [6, 5.5, -52], 5, '#FFE2B0', 0);
   // the ground, the two tiers of the platform, the bank's edge, the river, the far bank
-  mesh3(S, new THREE.PlaneGeometry(40, 16), stone3({ col: '#8E7C66', rows: 2, cols: 2, seed: 21, rep: [7, 3], mottle: 1.4 }), [0, 0, 3.6], { rot: [-Math.PI / 2, 0, 0], cast: false });
-  const slabM = stone3({ col: '#9A866C', dark: '#4A3A2A', rows: 1, cols: 2, seed: 8, rep: [2, 1], mottle: 1.4 }), slabT = stone3({ col: '#94806A', dark: '#4A3A2A', rows: 1, cols: 2, seed: 5, rep: [2.5, 1], mottle: 1.5 });
+  mesh3(S, new THREE.PlaneGeometry(40, 16), stone3({ col: '#8E7C66', rows: 2, cols: 2, seed: 21, rep: [7, 3], mottle: 1.4, speck: .25, bumpK: .5 }), [0, 0, 3.6], { rot: [-Math.PI / 2, 0, 0], cast: false });
+  const slabM = stone3({ col: '#9A866C', dark: '#4A3A2A', rows: 1, cols: 2, seed: 8, rep: [2, 1], mottle: 1.4, speck: .25, bumpK: .5 }), slabT = stone3({ col: '#94806A', dark: '#4A3A2A', rows: 1, cols: 2, seed: 5, rep: [2.5, 1], mottle: 1.5, speck: .25, bumpK: .5 });
   const L1 = .32, L2 = .86;
-  block3(S, 6.4, L1, 4.6, slabT, [0, 0, -2.1]); block3(S, 6.5, .06, 4.7, slabM, [0, L1 - .06, -2.1]);
-  block3(S, 6.0, L2 - L1, 3.6, slabT, [0, L1, -2.75]); block3(S, 6.1, .06, 3.7, slabM, [0, L2 - .06, -2.75]);
+  block3(S, 6.4, L1 - .02, 4.6, slabT, [0, 0, -2.1]); block3(S, 6.5, .06, 4.7, slabM, [0, L1 - .06, -2.1]);
+  block3(S, 6.0, L2 - L1 - .02, 3.6, slabT, [0, L1 - .005, -2.75]); block3(S, 6.1, .06, 3.7, slabM, [0, L2 - .06, -2.75]);
   block3(S, 40, .5, .5, slabM, [0, -.3, -4.6]);
-  const waterM = new THREE.MeshStandardMaterial({ color: '#7896A8', roughness: .16, metalness: 0, envMapIntensity: 1.3, bumpMap: streakTex3('ripple', 900, { len: 90, wave: 3, wd: 1.2, seed: 13 }).rep(30, 60), bumpScale: .5 });
+  const waterM = new THREE.MeshStandardMaterial({ color: '#7896A8', roughness: .16, metalness: 0, envMapIntensity: 1.3, bumpMap: streakTex3('ripple', 900, { len: 90, wave: 3, wd: 1.2, seed: 13 }).rep(12, 24), bumpScale: .25 });
   const water = mesh3(S, new THREE.PlaneGeometry(160, 60), waterM, [0, -.55, -34], { rot: [-Math.PI / 2, 0, 0], cast: false });
   const hillM = std3('#5A6E84', 1), hr = lcg(3);
   for (let i = 0; i < 16; i++) mesh3(S, new THREE.SphereGeometry(1, 20, 12), hillM, [-48 + i * 6.5 + hr() * 3, -.6, -54 - hr() * 3], { scale: [6 + hr() * 5, 2.5 + hr() * 5, 3], cast: false, receive: false });
   for (const [x, k] of [[3, 1], [7.5, .7], [-9, .85], [14, .6]]) mesh3(S, lathe3(smooth3([[.001, 6.2], [.25, 5.9], [.5, 5.2], [1.0, 3.4], [1.35, 1.2], [1.5, 0]], 4), 20), hillM, [x, -.6, -50], { scale: k, cast: false, receive: false });
   // ---- the banyan: a trunk of twisted stems, boughs, aerial roots, a canopy
   const TX = -2.5, TZ = -3.4, tree = new THREE.Group(); tree.position.set(TX, L2, TZ); S.add(tree);
-  const bark = new THREE.MeshStandardMaterial({ color: '#6E543E', roughness: .95, bumpMap: streakTex3('bark', 1600, { len: 200, wave: 10, wd: 3, seed: 2 }).rep(1, 6), bumpScale: 6 }), bark2 = bark.clone(); bark2.color.set('#5C4634');
+  const bark = new THREE.MeshStandardMaterial({ color: '#6E543E', roughness: .95, bumpMap: streakTex3('bark', 1600, { len: 200, wave: 10, wd: 3, seed: 2 }).rep(1, 2), bumpScale: 1.4 }), bark2 = bark.clone(); bark2.color.set('#5C4634');
   mesh3(tree, new THREE.CylinderGeometry(.42, .6, 4.2, 20), bark2, [0, 2.1, 0]);
   const tr = lcg(11);
   for (let i = 0; i < 11; i++) { const a = i / 11 * TAU + tr() * .3, tw = (tr() - .5) * 1.6, pts = []; for (let k = 0; k <= 8; k++) { const u = k / 8, aa = a + tw * u, rad = lerp(.72, .42, Math.pow(u, .6)) + .05 * Math.sin(u * 7 + i); pts.push([Math.cos(aa) * rad, u * 4.3 - .05, Math.sin(aa) * rad]); } tubeP3(tree, pts, [.2 + tr() * .08, .13], i % 2 ? bark : bark2, { segs: 40, radial: 10 }); }
@@ -216,13 +216,13 @@ const GHAT = (() => {
     for (let k = 0; k < 5; k++) { const u = .3 + tr() * .65, x = ux * len * u + (tr() - .5) * .3, z = uz * len * u + (tr() - .5) * .3, drop = 1.0 + tr() * 2.2, sw = (tr() - .5) * .12;
       if (TX + x > -1.4 && TZ + z > -3.0) continue;
       roots.push(tubeP3(tree, [[x, 3.6, z], [x + sw, 3.6 - drop * .5, z + sw], [x + sw * 1.4, 3.6 - drop, z - sw]], [.022, .008], bark2, { segs: 16, radial: 6 })); } }
-  const leafM = ['#3E6A2C', '#4E7A30', '#2E5A28', '#5E8A3A'].map(col => std3(col, .85, { bumpMap: stoneTex({ seed: 30, rows: 1, cols: 1, speck: 2.5 }).bump.rep(4, 4), bumpScale: 8 })), lg = new THREE.IcosahedronGeometry(1, 2);
+  const leafM = ['#3E6A2C', '#4E7A30', '#2E5A28', '#5E8A3A'].map(col => std3(col, .85, { bumpMap: stoneTex({ seed: 30, rows: 1, cols: 1, speck: 2.5 }).bump.rep(2, 2), bumpScale: 1.5 })), lg = new THREE.IcosahedronGeometry(1, 2);
   for (let i = 0; i < 150; i++) { const a = tr() * TAU, d = Math.sqrt(tr()) * 5.6, s = .55 + tr() * .75; mesh3(tree, lg, leafM[i % 4], [Math.cos(a) * d, 4.2 + tr() * 1.7 - d * .06, Math.sin(a) * d], { scale: [s * 1.25, s * .62, s * 1.25], rot: [tr(), tr() * 3, tr()], receive: false, cast: false }); }
   // ---- the two sadhus on their mats
-  const matM = std3('#8A6A3A', .95, { bumpMap: streakTex3('kusha', 1800, { len: 80, wave: 3, wd: 1.4, seed: 6 }).rep(3, 3), bumpScale: 3 });
+  const matM = std3('#8A6A3A', .95, { bumpMap: streakTex3('kusha', 1800, { len: 80, wave: 3, wd: 1.4, seed: 6 }).rep(3, 3), bumpScale: 1 });
   const JP = [-.3, L1, -.48], MP = [.42, L2, -1.5];
   mesh3(S, new THREE.BoxGeometry(.98, .018, .86), matM, [JP[0], L1 + .009, JP[2] + .14]);
-  mesh3(S, new THREE.BoxGeometry(.98, .018, .86), std3('#7A4A2A', .95, { bumpMap: matM.bumpMap, bumpScale: 3 }), [MP[0], L2 + .009, MP[2] + .14]);
+  mesh3(S, new THREE.BoxGeometry(.98, .018, .86), std3('#7A4A2A', .95, { bumpMap: matM.bumpMap, bumpScale: 1 }), [MP[0], L2 + .009, MP[2] + .14]);
   const J = sadhu3(S, { kind: 'jata' }); J.position.set(JP[0], L1 + .018, JP[2]); J.rotation.y = .16;
   const M = sadhu3(S, { kind: 'mundi' }); M.position.set(MP[0], L2 + .018, MP[2]); M.rotation.y = -.14;
   const danda = danda3(S, [MP[0] + .44, L2, MP[2] + .2], { rot: [-.06, 0, .1] });
@@ -265,10 +265,8 @@ const GHAT = (() => {
     sunDisc.material.opacity = du ? .8 : fo ? 0 : .5; sunCore.material.opacity = du ? 1 : fo ? 0 : .55;
     waterM.color.set(du ? '#C8744A' : '#7896A8'); waterM.bumpMap.offset.y = t * .012;
     J.hair(o.hairJ ?? 1); M.hair(o.hairM ?? 0); M.shikha(o.shikha ?? 0);
-    J.head.rotation.x = .015 * Math.sin(t * .7); M.head.rotation.x = .012 * Math.sin(t * .6 + 1);
-    J.scale.y = 1 + .006 * Math.sin(t * 1.3); M.scale.y = 1 + .006 * Math.sin(t * 1.2 + 2);
+    J.scale.setScalar(1 + .004 * Math.sin(t * 1.3)); M.scale.setScalar(1 + .004 * Math.sin(t * 1.2 + 2));
     dhuni.set(t, o.fire ?? .0); dhuni.visible = (o.dhuni ?? 1) > 0; tri.visible = (o.tri ?? 1) > 0;
-    roots.forEach((r, i) => { r.rotation.z = .012 * Math.sin(t * .8 + i); });
     ram.visible = !!o.ram;
     if (o.ram) {
       const k = clamp(o.milk ?? 0); bead.visible = k > .01; bead.scale.setScalar(.4 + .6 * clamp(k * 6));
