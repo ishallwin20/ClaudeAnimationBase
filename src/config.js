@@ -1,6 +1,7 @@
-// config.js: project settings.
-//   duration: the video's length in seconds.
-//   bpm:      the rhythm that bounces, dances and pulse() follow. Clawd always moves to some beat; if the video has music,
-//             set this to the song's tempo, and set offset to the time in seconds of its first downbeat.
-//   w, h:     canvas size in pixels (default 1920×1080). This project is a 9:16 Instagram reel.
-const PROJECT = { duration: 11, bpm: 120, offset: 0, w: 1080, h: 1920 };
+// config.js: project settings for "Lakshmi was born as BRAHMA'S sister" (ad 91, the 3D style).
+//   duration: the video's length in seconds (the card ends at TL.END); w, h: 9:16; fonts: loaded before the first frame.
+const PROJECT = { duration: 84.6, w: 1080, h: 1920, audio: 'assets/tridevi_mix.wav',
+  fonts: ['700 56px Cinzel', '700 150px Cinzel', '700 130px Cinzel', '700 120px Cinzel', '700 110px Cinzel', '700 100px Cinzel', '700 96px Cinzel', '700 92px Cinzel', '700 86px Cinzel', '700 80px Cinzel', '700 76px Cinzel', '700 70px Cinzel', '700 66px Cinzel', '700 64px Cinzel', '700 60px Cinzel', '700 54px Cinzel', '700 50px Cinzel', '700 48px Cinzel', '700 46px Cinzel', '700 44px Cinzel', '700 42px Cinzel', '700 40px Cinzel', '700 38px Cinzel', '700 36px Cinzel', '700 34px Cinzel', '700 32px Cinzel', '700 30px Cinzel', '700 28px Cinzel', '700 26px Cinzel', '700 24px Cinzel',
+    '42px Marcellus', '34px Marcellus', '32px Marcellus', '30px Marcellus', '28px Marcellus', 'italic 26px Marcellus', 'italic 30px Marcellus', 'italic 32px Marcellus', 'italic 34px Marcellus', 'italic 36px Marcellus', 'italic 40px Marcellus', 'italic 46px Marcellus', 'italic 42px Marcellus', 'italic 58px Marcellus', 'italic 66px Marcellus',
+    '110px "Tiro Devanagari Sanskrit"', '100px "Tiro Devanagari Sanskrit"', '46px "Tiro Devanagari Sanskrit"', '44px "Tiro Devanagari Sanskrit"', '48px "Tiro Devanagari Sanskrit"', '52px "Tiro Devanagari Sanskrit"', '60px "Tiro Devanagari Sanskrit"',
+    '700 54px Poppins', '500 36px Poppins', '700 52px Poppins'] };
