@@ -13,7 +13,7 @@
   const B0 = 4.4, C0 = 9.0, QM = 11.4, D0 = 13.4, BOLT = 14.0, ARROW = 15.0, MACE = 16.0, E0 = 17.8;
   const F1 = 22.6, SHRINK = 23.5, F2 = 26.8, GROW = 27.6, F3 = 31.0, SG = [31.4, 32.0, 32.6], THUMB = 33.3, INTO = 33.7, OUT = 34.3;
   const F4 = 35.6, PRESS = 36.3, SINK = 36.5, LEAP = 36.7, F5 = 40.0, F6 = 44.0, F7 = 48.6, PAIR = 2.2;
-  const G0 = 53.2, H0 = 57.6, I0 = 62.4, K0 = 67.0, BLESS = 68.2, L0 = 71.8, M0 = 76.4, N0 = 80.8, CARD = 84.4;
+  const G0 = 53.2, H0 = 57.6, I0 = 62.4, K0 = 67.0, BLESS = 68.2, L0 = 71.8, M0 = 76.4, CARD = 80.8;
   const CARDC = hsCardTimes(CARD);
   const SFILL = [SHRINK, GROW, PRESS, F5 + .6, F6 + .5, F6 + PAIR + .9, F7 + .5, F7 + PAIR + .6];   // each siddhi's slot fills
   const NFILL = [.4, .9, 1.4, 1.9, 2.4, 2.9, 3.4, 3.8, 4.2].map(d => H0 + d);                        // each nidhi's, with its name
@@ -59,7 +59,6 @@
     ...three('AND WHO GAVE HIM THAT BOON?', '"AS BAR DEEN JANAKI MATA."', 'SITA MATA HERSELF.', K0, 4.7, [64, 66, 84], [0, 0, 1], [.1, .5, 1.6]),
     ...three('BOONS: HIS SHIELD.', 'SIDDHIS: HIS POWERS.', 'NIDHIS: HIS GIFTS TO GIVE.', L0, 4.5, [80, 80, 72], [0, 0, 1], [.1, 1.2, 2.4]),
     ...three('WHICH CHALISA LINE DO YOU', 'KNOW BY HEART?', 'COMMENT IT!', M0, 4.3, [70, 96, 80], [0, 1, 0], [.1, .35, .9]),
-    ['NEXT: HANUMAN OFFERED', 466, N0 + .1, 3.5, 66], ['TO CARRY SITA HOME.', 552, N0 + .25, 3.35, 66], ['SHE SAID NO.', 666, N0 + .5, 3.1, 112, GOLDC],
   ];
   // the series marks: the part pill and the source line show in the opening only, then fade out (owner, 11 Nov)
   const MARKS = C0 - .2;
@@ -411,22 +410,10 @@
     hearts(540, 1080, t, M0 + 1.4, 'askh');
     camEnd();
     caps(t);
-    wipeOut(lt, dur, GROVEW);
-  }
-  // ================= N · next: Sita said no (Part 5) =================
-  function shotNext(t, lt, dur) {
-    camBegin(540, 1340, 1.0 + .012 * lt);
-    h4Grove(t, 'gS', 160, 640);
-    const g = t - N0, no = g > 1.1;
-    sita(380, 2000, 21, { boilKey: 'sitaS', eyes: 'normal', mouth: no ? 'flat' : 'smile', lookX: .8, hx: no ? .5 * Math.sin((g - 1.1) * 12) * (1 - seg(t, N0 + 2, N0 + 2.4)) + .2 : .3, handR: no ? [4.2, -18.6] : undefined, bendR: -.5 });
-    hanuman(760, 1760, 20, { ...HN, crown: false, eyes: no ? 'wide' : 'happy', mouth: no ? 'O' : 'grin', lookX: -.8, hx: -.3, handR: no ? [5.4, -13] : [1.2, -17.4], bendR: 1, handL: no ? [-5.4, -13] : undefined, tailSway: t * 2,
-      emote: no ? '?' : null, emoteK: popk(t, N0 + 1.3, 6), emoteAge: g - 1.3 });
-    camEnd();
-    caps(t);
-    wipeIn(lt, GROVEW);
+    wipeOut(lt, dur, PEACH);
   }
   function shotCard(t, lt, dur) { hsCard(t, CARDC); }
 
   shots([[0, shotHook], [B0, shotChalisa], [C0, shotBabyQ], [D0, shotShield], [E0, shotYogi], [F1, shotAnima], [F2, shotMahima], [F3, shotSurasa], [F4, shotGarima], [F5, shotLaghima],
-    [F6, shotPowers], [F7, shotPowers], [G0, shotKubera], [H0, shotKubera], [I0, shotGiver], [K0, shotSitaBoon], [L0, shotSummary], [M0, shotAsk], [N0, shotNext], [CARD, shotCard]]);
+    [F6, shotPowers], [F7, shotPowers], [G0, shotKubera], [H0, shotKubera], [I0, shotGiver], [K0, shotSitaBoon], [L0, shotSummary], [M0, shotAsk], [CARD, shotCard]]);
 })();

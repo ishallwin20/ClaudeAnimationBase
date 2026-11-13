@@ -12,7 +12,7 @@ const LOOK = 1.2, SCRATCH = 2.6;
 const B0 = 4.4, C0 = 9.0, QM = 11.4, D0 = 13.4, BOLT = 14.0, ARROW = 15.0, MACE = 16.0, E0 = 17.8;
 const F1 = 22.6, SHRINK = 23.5, F2 = 26.8, GROW = 27.6, F3 = 31.0, SG = [31.4, 32.0, 32.6], THUMB = 33.3, INTO = 33.7, OUT = 34.3;
 const F4 = 35.6, PRESS = 36.3, SINK = 36.5, LEAP = 36.7, F5 = 40.0, F6 = 44.0, F7 = 48.6, PAIR = 2.2;
-const G0 = 53.2, H0 = 57.6, I0 = 62.4, K0 = 67.0, BLESS = 68.2, L0 = 71.8, M0 = 76.4, N0 = 80.8, CARD = 84.4, END = 88.4;
+const G0 = 53.2, H0 = 57.6, I0 = 62.4, K0 = 67.0, BLESS = 68.2, L0 = 71.8, M0 = 76.4, CARD = 80.8, END = 84.8;
 const SFILL = [SHRINK, GROW, PRESS, F5 + .6, F6 + .5, F6 + PAIR + .9, F7 + .5, F7 + PAIR + .6];
 const NFILL = [.4, .9, 1.4, 1.9, 2.4, 2.9, 3.4, 3.8, 4.2].map(d => H0 + d);
 const ALLS = F7 + PAIR + 1.4;
@@ -175,19 +175,14 @@ T.at(L0, pad(4.6, [57, 64, 69, 73], 1, .4, .8), .05, 0);
 [L0 + .15, L0 + 1.3, L0 + 2.5].forEach((t, i) => { T.at(t, mixb(pop(800 + i * 200, .9), drum(70, .5, .4)), .16, [-.5, 0, .5][i]); T.at(t + .05, chime(note(76 + i * 4), .7, 1.2), .1, [-.5, 0, .5][i]); });
 T.at(L0 + 3.2, giggle(HANU, .9, 4), .1, 0);
 
-// ================= ask, next, card =================
+// ================= ask, card =================
 {
   const TUNE = [2, 2, 4, 6, 6, 4, 2, 4, 6, 9, 6, 4];
   let i = 0;
-  for (let t = M0 + .2; t < N0 - .2; t += .34) { const m = TUNE[i++ % TUNE.length]; T.at(t, musicBox(note(74 + m)), .08, i % 2 ? -.25 : .25); }
-  T.at(M0, pad(N0 - M0, [50, 57, 62, 66], 1, .6, .8), .06, 0);
+  for (let t = M0 + .2; t < CARD - .2; t += .34) { const m = TUNE[i++ % TUNE.length]; T.at(t, musicBox(note(74 + m)), .08, i % 2 ? -.25 : .25); }
+  T.at(M0, pad(CARD - M0, [50, 57, 62, 66], 1, .6, .8), .06, 0);
 }
 T.at(M0 + .9, mixb(pop(900, .7), pop(1100, .6)), .1, 0);
-T.at(N0, mixb(whoosh(.5, 3000, 400), slide(.6, 600, 200, .5)), .14, 0);
-T.at(N0, pad(CARD - N0, [50, 57, 62, 65], 1, .6, .6), .06, 0);
-T.at(N0 + .4, giggle(HANU, .8, 4), .1, .4);
-T.at(N0 + 1.1, voice([[0, .3, 1, .3], [.36, .3, .9, .3]], SITAF, { fall: .2 }), .12, -.4);   // "no, no"
-T.at(N0 + 1.3, mixb(pop(1100, .8), huh(HANU, 1)), .14, .4);
 T.at(CARD, whoosh(.4, 3000, 600), .14, 0);
 [.3, .45, .6].forEach((d, i) => T.at(CARD + d, pop(600 + i * 100, .8), .14, -.4 + i * .4));
 T.at(CARD + 1.0, chime(note(81), 1, 1.6), .14, 0); T.at(CARD + 1.6, mixb(pop(900, .8), plink(note(88), .8)), .14, 0);

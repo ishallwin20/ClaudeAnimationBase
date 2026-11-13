@@ -1,6 +1,6 @@
 # Ad 90: "8 BOONS. 8 SIDDHIS. 9 NIDHIS." (Hanuman series, Part 2.1)
 
-An 88.4 s Painted reel with Bangers captions, no voiceover, retro cartoon SFX and music only as mild beds. A bonus
+An 84.8 s Painted reel with Bangers captions, no voiceover, retro cartoon SFX and music only as mild beds. A bonus
 part of the Hanuman Ji series (`HANUMAN_SERIES.md` on `main`), between Part 2 (the eight boons, ad 86) and Part 3; it
 stands alone, and ends on the no-price Navadurga card. Owner, 13 Nov 2026: "use the popular source but quote it; if
 it's Valmiki, perfect."
@@ -37,11 +37,11 @@ LOOK = 1.2, SCRATCH = 2.6
 B0 = 4.4, C0 = 9.0, QM = 11.4, D0 = 13.4, BOLT = 14.0, ARROW = 15.0, MACE = 16.0, E0 = 17.8
 F1 = 22.6, SHRINK = 23.5, F2 = 26.8, GROW = 27.6, F3 = 31.0, SG = [31.4, 32.0, 32.6], THUMB = 33.3, INTO = 33.7, OUT = 34.3
 F4 = 35.6, PRESS = 36.3, SINK = 36.5, LEAP = 36.7, F5 = 40.0, F6 = 44.0, F7 = 48.6, PAIR = 2.2
-G0 = 53.2, H0 = 57.6, I0 = 62.4, K0 = 67.0, BLESS = 68.2, L0 = 71.8, M0 = 76.4, N0 = 80.8, CARD = 84.4, END = 88.4
+G0 = 53.2, H0 = 57.6, I0 = 62.4, K0 = 67.0, BLESS = 68.2, L0 = 71.8, M0 = 76.4, CARD = 80.8, END = 84.8
 ```
 
 ## Shots and reads (captions inside y 420–1500, left of x 930; 2-liners ≥ 3.5 s, 3-liners ≥ 4.5 s)
-19 caption groups in 84 s (≤ 15 a minute). The "HANUMAN · PART 2.1" pill and the source line ("HANUMAN CHALISA")
+18 caption groups in 81 s (≤ 15 a minute). The "HANUMAN · PART 2.1" pill and the source line ("HANUMAN CHALISA")
 show in B only (4.4–9.0), then fade out (owner's rule, 11 Nov).
 
 | time | shot | caption | small source line |
@@ -64,8 +64,7 @@ show in B only (4.4–9.0), then fade out (owner's rule, 11 Nov).
 | 67.0–71.8 | the Ashoka grove: Sita raises her hand in blessing (68.2); gold light settles on him; he bows, palms joined | AND WHO GAVE HIM THAT BOON? / "AS BAR DEEN JANAKI MATA." / SITA MATA HERSELF. | |
 | 71.8–76.4 | warm gold: three badges pop in turn under him (a shield 8, a violet 8, a green 9) | BOONS: HIS SHIELD. / SIDDHIS: HIS POWERS. / NIDHIS: HIS GIFTS TO GIVE. | |
 | 76.4–80.8 | he sits singing by the diya, notes, hearts | WHICH CHALISA LINE DO YOU / KNOW BY HEART? / COMMENT IT! | |
-| 80.8–84.4 | the grove: Hanuman offers, Sita shakes her head, "?" | NEXT: HANUMAN OFFERED / TO CARRY SITA HOME. / SHE SAID NO. | |
-| 84.4–88.4 | `hsCard()` (no-price Navadurga card); ends on the full card | | |
+| 80.8–84.8 | `hsCard()` (no-price Navadurga card); ends on the full card | | |
 
 ## Sound (tools/hanu21_sfx.mjs → assets/hanu21_sfx.wav → assets/hanu21_mix.wav at about −16 LUFS)
 Part 2's palette: pops for the badges and the "?"; a sung "ashta siddhi" phrase as a hummed tune over a tanpura-like
@@ -76,7 +75,7 @@ against his three "hup"s, the poof, a zip in, a zip out and her laugh; a heavy t
 mountain sinks, a boing for the leap; a soft breeze and harp for the feather; a twinkle for the star, a "pop!" for
 the laddoo; a shimmer for the crown, a gust for the wind; coins-and-bells shimmer for Kubera and nine plinks up a
 scale for the nidhis; a warm swell for the giver; a harp and a soft chord for Sita's blessing; three pops for the
-badges; a music box under the ask; card pops.
+badges; a music box under the ask; card pops. No tease of the next part: 2.1 posts before Parts 3 and 4 (owner, 13 Nov).
 
 ## Facts used
 **Hanuman Chalisa (Tulsidas), chaupai 31:** "अष्ट सिद्धि नौ निधि के दाता । अस बर दीन जानकी माता ॥" — "Giver of the eight
