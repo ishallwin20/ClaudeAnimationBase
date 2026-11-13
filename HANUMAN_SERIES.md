@@ -70,7 +70,7 @@ when the reel is delivered, and adds the owner's result when it is known.
 | 1 Three fathers | 85 | `ad/85-books123-hanuman-1-three-fathers` | 11 Nov 2026 (89.4 s; kit `src/hanuman_series.js`; twist = the Chalisa sings all three names; card line used: "The Navadurga Set · OUT NOW") | |
 | 2 Eight superpowers | 86 | `ad/86-books123-hanuman-2-eight-boons` | 12 Nov 2026 (91.6 s; read in Sanskrit, verse-numbered, at heritage.iitk.ac.in/VRAM/7.36.N; the text's order is Brahma 7th, Vishvakarma 8th; Yama's boon is no illness, his staff, never downcast in battle; kit gained `varuna()`, `kubera()`, `vishvakarma()`; a power bar of 8 numbered slots; Indra names him Hanuman, 36.11) | |
 | 3 Met Ram in disguise | 88 | `ad/88-books123-hanuman-3-disguise` | 12 Nov 2026 (89.2 s; read at valmikiramayan.net/utf8/kish/sarga2–4; kit gained `sugriva()`, `bhikshu()` (the monk disguise, no tail), `vanRam()`, `vanLakshman()`; twist = Ram's first praise was for his words (3.28–33), not his strength; ask = comment JAI SHRI RAM) | |
-| 4 Almost gave up | | | | |
+| 4 Almost gave up | 89 | `ad/89-books123-hanuman-4-almost-gave-up` | 13 Nov 2026 (90.2 s; read at valmikiramayan.net/utf8/sundara/sarga10–17 and utf8/yuddha/sarga1; the Mandodari cold open kept short (Ramayan Part 9 showed it); two searches, 12.10 in gold Devanagari, the griefs as falling dominoes (13.23–37), a lamp that gutters and flares at 13.47; Sita is "below that tree" at 17.18; "this embrace is all I have" is close to literal (1.13, sarvasva-bhūta); Lanka sets copied into the scene's props, not main; ask = what kept you from giving up, one word) | |
 | 5 Sita said no | | | | |
 | 6 Ravana couldn't lift Lakshman | | | | |
 | 7 Bharat shot Hanuman | | | | |
