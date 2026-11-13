@@ -1,0 +1,33 @@
+{
+  "name": "palm",
+  "defaults": { "speaker": "girish_en_devotional", "lang": "en-IN", "pace": 1.15 },
+  "lines": [
+    { "id": "hook", "t": 0.15,
+      "caps": ["Your *PALM* has | *FOUR* holy places.", "*ONE* of them | belongs to the *DEAD.*"],
+      "tts": "Your palm has four holy places. One of them belongs to the dead.", "hold": 0.6 },
+    { "id": "src", "gap": 0.7,
+      "caps": ["Not palm reading. | Each one is a *TIRTHA,*", "named in the old law books: | *MANU,* *YAJNAVALKYA,* *VISHNU.*"],
+      "tts": "Not palm reading. Each one is a teertha, named in the old law books: Manu, Yaagyavalkya, Vishnu.", "hold": 0.7 },
+    { "id": "one", "gap": 0.8,
+      "caps": ["*ONE:* the fingertips. | The *GODS'* tirtha.", "Water offered to the gods | flows off *HERE.*"],
+      "tts": "One: the fingertips. The gods' teertha. Water offered to the gods flows off here.", "hold": 0.7 },
+    { "id": "two", "gap": 0.7,
+      "caps": ["*TWO:* below the little finger. | *PRAJAPATI'S,* the Creator's."],
+      "tts": "Two: below the little finger. Prajaapati's, the Creator's.", "hold": 0.7 },
+    { "id": "three", "gap": 0.7,
+      "caps": ["*THREE:* the base of the thumb. | *BRAHMA'S* tirtha.", "The *FIRST* choice | to *SIP* from."],
+      "tts": "Three: the base of the thumb. Brahmaa's teertha. The first choice, to sip from.", "hold": 0.7 },
+    { "id": "four", "gap": 0.8,
+      "caps": ["And *FOUR:* | between thumb and first finger.", "The *PITRI* tirtha. | The *ANCESTORS'.*", "Water for the *DEAD* | is poured from *HERE.*"],
+      "tts": "And four: between thumb, and first finger. The Pitri teertha. The ancestors'. Water for the dead, is poured from here.", "hold": 0.9 },
+    { "id": "rule", "gap": 0.8,
+      "caps": ["So when you *SIP:* | use *THREE,* | the thumb's base.", "*ONE* or *TWO* | only if you must.", "But *FOUR?* | *NEVER.* Not *ONCE.*"],
+      "tts": "So when you sip: use three, the thumb's base. One, or two, only if you must. But four? Never. Not once.", "hold": 0.9 },
+    { "id": "how", "gap": 0.8,
+      "caps": ["Sip *THREE* times | from the thumb's base,", "water not hot, | not *FOAMING,*", "then wipe your lips *TWICE.*"],
+      "tts": "Sip three times from the thumb's base, water not hot, not foaming, then wipe your lips twice.", "hold": 0.8 },
+    { "id": "ask", "gap": 0.9,
+      "caps": ["Which one have *YOU* | been sipping from?", "Comment | *1,* *2,* *3* or *4!*", "And *SAVE* this | for your next puja."],
+      "tts": "Which one have you been sipping from? Comment: one, two, three, or four! And save this, for your next pooja.", "hold": 0.6 }
+  ]
+}
