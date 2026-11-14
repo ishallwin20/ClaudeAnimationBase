@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Wallpaper studio (Scribble)</title>
+<!-- The Scribble wallpapers: scribble.html at an iPhone Pro Max's 1290×2796, each wallpaper a 6 s loop in LOOPS
+     (src/scenes/wall_sc.js). Render one with  node render.mjs --page=studio_wall_sc.html --loop=<name> ... -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Poppins:wght@500;700&display=block">
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="1290" height="2796"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="6" step="0.0333" value="0"><span id="tt">loading…</span></div>
+</main>
+<script>const PROJECT = { duration: 6, w: 1290, h: 2796, fonts: ['700 40px Kalam', '700 250px Poppins', '500 46px Poppins'] };</script>
+<script src="src/cine.js"></script>
+<script src="src/scribble.js"></script>
+<script src="src/sc_cast.js"></script>
+<script src="src/sc_ganesha.js"></script>
+<script src="src/sc_nandi.js"></script>
+<script src="src/sc_kumbha.js"></script>
+<script src="src/sc_kanha.js"></script>
+<script src="src/scenes/wall_sc.js"></script>
+</body>
+</html>

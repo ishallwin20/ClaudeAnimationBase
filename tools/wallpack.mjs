@@ -13,6 +13,7 @@
 // Usage: node tools/wallpack.mjs [--batch=3] [--only=shiva,owl] [--ios] [--keep]     (--ios: only the iPhone files)      (MAKELIVE=<path> if makelive isn't on PATH)
 // --batch=3: the Storybook and 3D packs (studio_wall_sb.html, studio_wall_3d.html) into out/wallpapers3/; each loop has
 // a <name>_wake twin, 2 s long, landing on the still at 1.5 s.
+// --batch=5: the Scribble packs (studio_wall_sc.html, src/scenes/wall_sc.js) into out/wallpapers5/.
 // --batch=4: the Painterly packs (studio_wall_pt.html, src/scenes/wall_pt.js) into out/wallpapers4/, the same way.
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, rmSync, existsSync, readdirSync, copyFileSync, linkSync } from 'node:fs';
@@ -45,9 +46,17 @@ const WALLS4 = [
   ['02-hanuman-sanjeevani', 'pt_sanjeevani', 'studio_wall_pt.html', true],   // the herbs on the peak light up; a 12 s loop, played once
   ['03-shiva-karpur-gauram', 'pt_shiva', 'studio_wall_pt.html'],   // his halo rises, the mantra rings open, the Ganga starts to run
 ].map(([f, l, page, once]) => [f, l, [l + '_wake', 1.5], page, once]);
+// batch 5: the Scribble packs (studio_wall_sc.html, src/scenes/wall_sc.js), from the "Breathe with…" reels
+const WALLS5 = [
+  ['01-hanuman-breathe', 'sc_hanuman'],        // the prana motes rush in to him
+  ['02-ganesha-bees', 'sc_ganesha'],           // the bees fly in to their circles round him
+  ['03-nandi-diyas', 'sc_nandi'],              // the two diyas catch and their flames rise
+  ['04-kumbhakarna-asleep', 'sc_kumbha'],      // the myna hops up from his foot onto his belly
+  ['05-kanha-calf', 'sc_kanha'],               // the fireflies light up one after another
+].map(([f, l]) => [f, l, [l + '_wake', 1.5], 'studio_wall_sc.html']);
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const B3 = String(args.batch) === '3', B4 = String(args.batch) === '4', LIST = B4 ? WALLS4 : B3 ? WALLS3 : WALLS;
-const only = args.only ? String(args.only).split(',') : null, FPS = 30, ROOT = B4 ? 'out/wallpapers4' : B3 ? 'out/wallpapers3' : 'out/wallpapers2', TMP = `${ROOT}/_work`;
+const B3 = String(args.batch) === '3', B4 = String(args.batch) === '4', B5 = String(args.batch) === '5', LIST = B5 ? WALLS5 : B4 ? WALLS4 : B3 ? WALLS3 : WALLS;
+const only = args.only ? String(args.only).split(',') : null, FPS = 30, ROOT = B5 ? 'out/wallpapers5' : B4 ? 'out/wallpapers4' : B3 ? 'out/wallpapers3' : 'out/wallpapers2', TMP = `${ROOT}/_work`;
 const run = (cmd, a) => { const r = spawnSync(cmd, a, { stdio: ['ignore', 'ignore', 'inherit'] }); if (r.error || r.status) { console.error(`${cmd} ${a.slice(0, 3).join(' ')} failed`); process.exit(1); } };
 const ff = a => run('ffmpeg', ['-y', '-loglevel', 'error', ...a]);
 const pngs = d => readdirSync(d).filter(f => f.endsWith('.png')).sort().map(f => `${d}/${f}`);
