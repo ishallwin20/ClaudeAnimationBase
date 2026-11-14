@@ -138,7 +138,7 @@ Then launch, ~10 days of numbers, the gate. If go: an issue every ~2 weeks betwe
 | # | Issue | Branch | Script | Art look | Built | Launched | Results |
 |---|---|---|---|---|---|---|---|
 | 0 | The Eight (IG carousel) | | | | | | |
-| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | **Inked** (owner, 14 Nov); thumbnails of all 41 pages 14 Nov, read and approved by the owner; art: pp. 1–14 and 39–41 drawn (14 Nov), pp. 15–38 next | | | |
+| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | **Inked** (owner, 14 Nov); thumbnails of all 41 pages 14 Nov, read and approved by the owner; art: all 44 pages drawn in colour (14 Nov; three pages split for clarity); owner review next | | | |
 | 2 | Hanuman | | | | | | |
 | 3 | Bali | | | | | | |
 | 4 | Vibhishana | | | | | | |

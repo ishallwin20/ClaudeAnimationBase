@@ -26,7 +26,7 @@ caption boxes, sound effects.
 |---|---|
 | [src/comic.js](src/comic.js) | pages on cine.js: `CK` (the look, the scale), `ART` (panel drawings by name), `lit(L, o)` (a LIGHTS entry in device px; in the Inked look its edge becomes an ink outline), `inkPass()` (the ink, bands and halftone on one panel), `drawPage()`, `thumbPanel()` (a grey panel with its art note, for the thumbnail pass), `comicSetup()` (one SHOT per page) |
 | [tools/comic.mjs](tools/comic.mjs) | renders the art from the studio page and letters it: PNG masters, 1080 × 1350 IG JPEGs, the PDF, the CBZ |
-| [src/cine_mbh.js](src/cine_mbh.js) | the Mahabharata cast: `mbhBust()` / `mbhHead()` (Drona, Kripa, Krishna, Arjuna, Bhima, Yudhishthira, Duryodhana, Dhrishtadyumna on the Surya rig; `CAST.<who>` holds each look), `manSil()` (a man in profile, one colour, nine poses, bow / mace / sword / spear), `womanSil()`, `wanderer()`, `babyHead()`, `wheel()`, `kalash()` |
+| [src/cine_mbh.js](src/cine_mbh.js) | the Mahabharata cast: `mbhBust()` / `mbhHead()` (Drona, Kripa, Krishna, Arjuna, Bhima, Yudhishthira, Duryodhana, Dhrishtadyumna on the Surya rig; `CAST.<who>` holds each look), `manSil()` (a man in profile, one colour, nine poses, bow / mace / sword / spear), `womanSil()`, `wanderer()`, `babyHead()`, `wheel()`, `kalash()`; `mbhFigure()`: a whole person in colour (front view, standing, wide or seated, arm presets `down hip point up forward bow namaste draw reach shoulder`, props bow / mace / sword / spear / pot, `boy` proportions) |
 | `comics/<slug>/SCRIPT.md` | the script, page by page and panel by panel, with every beat's verse |
 | `comics/<slug>/comic.js` | `COMIC`: the pages, panel rects (`rows()` / `pg()`), the words, the art names and art notes |
 | `src/scenes/<slug>_cast.js`, `src/scenes/<slug>_comic.js` | the issue's characters and its panel drawings (`ART.name = (c, P) => …`) |
@@ -88,4 +88,13 @@ caption boxes, sound effects.
 - `mbhHead()` draws the kirita at .58 of Surya's height: the full crown is taller than the face and steals every panel.
 - A figure lying down reads only against something brighter: put Duryodhana's outline on the lit lake, not on the
   dark bank.
+- **Characters in colour, silhouettes only where they help** (owner, 14 Nov: "lets not silhouettes everywhere"). Use
+  `mbhFigure()` / `mbhBust()` for anyone who acts or speaks; keep silhouettes for night crowds, far figures and the
+  odd dramatic backlit beat (Drona's death against the sun, the firelit raid).
+- **Clarity over page count** (owner: "we can increase pages"). A page with four or five panels under 460 units tall
+  crowds the faces under the balloons: split it into two pages. Issue 1 went from 41 to 44 pages this way.
+  `comic.js` lists the pages in order (`numbered([...])`), so a split is just two entries.
+- A close-up's gem or light glow scales with the head: keep `ashGemGlow` at .4–.6 when the head is k > 2, or it
+  blots out the forehead.
+- `deviHead()` draws the Devi's mukut unless `crown: false`: women of the story (Draupadi, Kripi) need it off.
 
