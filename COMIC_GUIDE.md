@@ -79,8 +79,15 @@ caption boxes, sound effects.
   before it read as a predator; crows needed a lit sky behind them and their own outline.
 - The Surya head rig (`suryaHead`, with `crown: false, bun: true, curls: false`) plus a beard makes a strong adult male
   face; `withSur(PAL, …)` recolours it.
-- PDF size: the halftone doesn't compress well (~1.9 MB a page in the Inked look). Lower the art JPEG quality in
-  `comic.mjs` for the reader edition if needed.
+- PDF size: the halftone doesn't compress well (~1.8 MB a page at full size). So `comic.mjs` writes two PDFs: the
+  master (`<slug>.pdf`, art at 2160 × 2700, ~86 MB for 48 pages) and the reader (`<slug>_reader.pdf`, art at
+  1440 × 1800, JPEG quality 6, ~16 MB), the one people download. The words are vector text in both, so they stay
+  sharp. The EPUB (fixed layout, one page at a time, the lettered page as a 1440 × 1800 JPEG with its words as alt
+  text) passes epubcheck 5.1 clean.
+- **A trailer reel from the issue's own panels** (`trailer_ashwatthama.html` on the issue's branch): each shot is a
+  panel's Inked art (no lettering) moved like a camera, framed with an ink border over a dark blur of itself (or full
+  bleed for full-page art), under Cinematic `say()` captions; flash cuts on the hits; an end card with the lettered
+  cover. The same page renders the reel cover and the story frames as stills past the reel's end.
 - **Scale silhouettes to the panel.** `manSil()` stands ~960 units tall, so in a 400–700-unit panel use k .25–.45 (a
   chariot with its horses ~1100 wide: k .3–.4). The first pass at k .5–.6 filled the panels with giants.
 - **Talking heads go in wide rows, the balloon beside the face** (owner's phone review, 14 Nov: "dialogue box

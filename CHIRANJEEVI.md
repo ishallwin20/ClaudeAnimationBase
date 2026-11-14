@@ -18,8 +18,9 @@ Play Books / Kindle), a web reader on rishikatha.com (with read-through analytic
 measure for ~10 days, then commit to the season (or not). Don't build 12 before the market says yes.
 
 **Owner's decisions (14 Nov 2026):** Season 1 = CHIRANJEEVI. Art look: **Inked** (owner, 14 Nov, after the style test;
-see COMIC_GUIDE.md). After the thumbnail read (14 Nov): **no Season Pass**; each issue is priced on its own and Issue 1
-is complimentary (the owner makes deals and bundles later, on the website). **English only**; Hindi later.
+see COMIC_GUIDE.md). After the thumbnail read (14 Nov): **no Season Pass**; each issue is priced on its own (the owner
+makes deals and bundles later, on the website). Issue 1 was to be complimentary; after the drawn issue (14 Nov) the
+owner is leaning to **₹21** for it instead (to confirm before the launch copy names a price). **English only**; Hindi later.
 
 ---
 
@@ -138,7 +139,7 @@ Then launch, ~10 days of numbers, the gate. If go: an issue every ~2 weeks betwe
 | # | Issue | Branch | Script | Art look | Built | Launched | Results |
 |---|---|---|---|---|---|---|---|
 | 0 | The Eight (IG carousel) | | | | | | |
-| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | **Inked** (owner, 14 Nov); thumbnails of all 41 pages 14 Nov, read and approved by the owner; art: all 44 pages drawn in colour (14 Nov); owner's phone review (14 Nov): all notes fixed, dialogue re-laid as wide rows, now 48 pages, subtitle "The night he became a killer"; owner's second read next | | | |
+| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | **Inked** (owner, 14 Nov); thumbnails of all 41 pages 14 Nov, read and approved by the owner; art: all 44 pages drawn in colour (14 Nov); owner's phone review (14 Nov): all notes fixed, dialogue re-laid as wide rows, now 48 pages, subtitle "The night he became a killer"; reader PDF (16 MB) and EPUB (epubcheck clean), trailer reel, cover, two story frames and captions in `out/ashwatthama_trailer_out/` (14 Nov); owner's second read next | | | |
 | 2 | Hanuman | | | | | | |
 | 3 | Bali | | | | | | |
 | 4 | Vibhishana | | | | | | |
