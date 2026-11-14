@@ -28,12 +28,22 @@ Instagram example (a hand-painted Hanuman cinemagraph) and wanted it without AI 
   and anything that drifts (dust, rays) is drawn at t and at t − DUR and crossfaded across the loop (`looped()` in the
   scenes). Instagram replays a reel, and a wallpaper loops, without a seam.
 
+## AI label: a warning (29 Oct 2026)
+
+The Painterly reels were not labelled as AI on Instagram. But a brush-painted anime-style snowy landscape (the Cel
+style's snowfield through `ptLayer`) was. In silent, metadata-free test posts, the painted snowfield alone was
+labelled, while the same scene left as its clean design was not. Meta's classifier judges the look, and a soft, dreamy
+painted landscape is a common AI-image genre. Before posting a new painted set (especially sky, clouds, snow or water
+filling the frame), post a short silent test to a test account. If it's labelled, render with `window.PT_RAW = 1`
+(the clean design) or make the set less dreamy.
+
 ## Files
 
 | file | what |
 |---|---|
 | `src/painterly.js` | the engine, over `src/cine.js`: `ptLayer`, `ptDraw`, `ptPaint`, `ptRim`, `twinkle`, `nameRing`, `PT.k`, and the design helpers |
 | `src/pt_cast.js` | the cast and sets, as designs: `ptForest`, `ptHanuman`, `ptTail`, `ptGada` (constants `PT_SUN`, `PT_HX`, `PT_HY`, `PT_TAIL_BOX`, `PT_SKIN`, `PT_GOLD`) |
+| `src/pt_shiva.js` | Shiva in meditation, white as camphor with the blue throat (`svShiva`, bake with `SV_BOX`/`SV_FINE`/`SV_KEEP`), Vasuki's hood (`svVasuki`), the dhuni (`svFire`), the trishul and damru (`svTrishul`), the night ledge under Kailash (`svNight`) and the whole cinemagraph (`svScene(c, t, { len, wake, top })`). Load after `pt_cast.js`. The jata knot is drawn at 0.72 × 0.66 about the hairline (`SV_KNOT_S`; the first design looked too big for his face) |
 | `painterly.html` | the studio; on main it plays `src/scenes/pt_demo.js`, the cast as a 6 s loop |
 | `docs/painterly_sheet.jpg` | the design next to its painting |
 

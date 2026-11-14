@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cel studio</title>
+<!-- The Cel style's studio (see CEL_GUIDE.md): chibi Shiva's tandav, calm on the snowfield (0–4 s) and as the Rudra
+     tandav in the storm (4–8 s). A Cel reel copies this page to studio.html, loads src/config.js instead of the inline
+     PROJECT, and swaps in its scene. render.mjs --page=cel.html; open it with ?design to see the sets unpainted. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Poppins:wght@500;600;700&family=Tiro+Devanagari+Sanskrit&display=block">
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="1080" height="1920"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="41" step="0.0333" value="0"><span id="tt">loading…</span></div>
+</main>
+<!-- The sets are left as their clean designs, not repainted in brush strokes: Instagram labelled the painted snowfield as
+     AI content (tested 29 Oct 2026: the painted snowfield alone was labelled; the unpainted reel was not). -->
+<script>window.PT_RAW = 1;</script>
+<script>const PROJECT = { duration: 8, bpm: 120, offset: 0, w: 1080, h: 1920, fonts: ['84px "Tiro Devanagari Sanskrit"', '600 30px Poppins'] };</script>
+<script src="src/cine.js"></script>
+<script src="src/painterly.js"></script>
+<script src="src/cel.js"></script>
+<script src="src/cel_cast.js"></script>
+<script src="src/scenes/cel_demo.js"></script>
+</body>
+</html>

@@ -174,8 +174,8 @@ function ptHanuman(c) {
     ptLin(c, 0, 1040, 0, 1092, [[0, PT_SKIN.dk], [1, PT_SKIN.base]]));
   // hair in front: two locks over each shoulder
   for (const s of [-1, 1]) for (let k = 0; k < 2; k++) ptLock(c, [[PT_HX + s * (50 + k * 8), 975], [PT_HX + s * (66 + k * 10), 1040], [PT_HX + s * (92 + k * 14), 1110], [PT_HX + s * (100 + k * 18), 1172]], 20 - k * 4, R);
-  // sacred thread
-  c.strokeStyle = '#F7EED0'; c.lineWidth = 4; c.beginPath(); c.moveTo(PT_HX - 112, 1100); c.quadraticCurveTo(PT_HX - 20, 1240, PT_HX + 112, 1342); c.stroke();
+  // sacred thread, over his left shoulder (screen right)
+  c.strokeStyle = '#F7EED0'; c.lineWidth = 4; c.beginPath(); c.moveTo(PT_HX + 112, 1100); c.quadraticCurveTo(PT_HX + 20, 1240, PT_HX - 112, 1342); c.stroke();
   // gold necklaces
   c.strokeStyle = PT_GOLD.dk; c.lineWidth = 9; c.beginPath(); c.ellipse(PT_HX, 1086, 50, 30, 0, .15, Math.PI - .15); c.stroke();
   c.strokeStyle = PT_GOLD.base; c.lineWidth = 6; c.beginPath(); c.ellipse(PT_HX, 1084, 50, 30, 0, .15, Math.PI - .15); c.stroke();

@@ -193,7 +193,7 @@ function markHug(c, o = {}) {
   if (!one) inside(c, TOR, () => {
     fillPath(c, 'M -280 -420 L -230 -420 C -236 -340 -222 -280 -200 -220 L -280 -220 Z', rgba(P.skinSh, .85));
     for (const s of [-1, 1]) strokePath(c, `M ${-146 + s * 70} ${-352 + br} C ${-146 + s * 40} ${-334 + br} ${-146 + s * 12} ${-334 + br} ${-146 + s * 4} ${-344 + br}`, rgba(P.skinSh, .7), 3);
-    strokePath(c, `M -240 ${-390 + br} C -190 -330 -140 -270 -96 -228`, rgba('#F2EADA', .9), 3.2);   // the sacred thread
+    strokePath(c, `M -52 ${-390 + br} C -102 -330 -152 -270 -196 -228`, rgba('#F2EADA', .9), 3.2);   // the sacred thread, over his left shoulder (screen right)
     for (let i = 0; i < 3; i++) strokePath(c, `M -250 ${-344 + i * 9} L -214 ${-346 + i * 9}`, rgba(P.ash, .8), 3);   // ash on the shoulder
   });
   // a rudraksha mala

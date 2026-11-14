@@ -15,10 +15,12 @@ const MAX_ANISO = GL3.capabilities.getMaxAnisotropy();
 window.gpuInfo = () => { const gl = GL3.getContext(), e = gl.getExtension('WEBGL_debug_renderer_info'); return e ? gl.getParameter(e.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER); };
 
 // render3(c, scene, cam, o): render the scene and lay it on the 2D canvas c (full frame, ignoring c's transform).
-// o.exposure (tone-mapping exposure, 1), o.alpha.
+// o.exposure (tone-mapping exposure, 1), o.alpha; o.fx: the film look's post chain (src/cine3d_fx.js: depth of field,
+// HDR bloom, light shafts, grade), else a direct render.
 function render3(c, scene, cam, o = {}) {
   GL3.toneMappingExposure = o.exposure ?? 1;
-  GL3.render(scene, cam);
+  if (o.fx && typeof FX3 !== 'undefined') FX3.run(scene, cam, o.fx, o.exposure ?? 1);
+  else { GL3.setRenderTarget(null); GL3.render(scene, cam); }
   c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = o.alpha ?? 1; c.drawImage(GL3.domElement, 0, 0, W, H); c.restore();
 }
 

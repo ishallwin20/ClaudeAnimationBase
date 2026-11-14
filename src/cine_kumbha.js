@@ -72,7 +72,7 @@ function brahma(c, o = {}) {
   // crossed legs, the dhoti, the torso
   fillPath(c, 'M -230 -110 C -230 -190 -120 -220 0 -218 C 120 -220 230 -190 230 -110 C 150 -96 -150 -96 -230 -110 Z', col);
   fillPath(c, 'M -80 -200 C -90 -300 -110 -380 -120 -430 C -80 -452 -40 -458 0 -460 C 40 -458 80 -452 120 -430 C 110 -380 90 -300 80 -200 Z', col);
-  strokePath(c, 'M -100 -420 C -40 -380 40 -300 90 -210', rgba(gold, .7), 6);   // the sacred thread
+  strokePath(c, 'M 100 -420 C 40 -380 -40 -300 -90 -210', rgba(gold, .7), 6);   // the sacred thread, over his left shoulder (screen right)
   // four arms: the upper pair raised (the Vedas, a rosary), the lower pair (the kamandalu, a blessing)
   limb(c, [[-110, -420], [-210, -470], [-240, -560]], [44, 36, 30], col); fillPath(c, 'M -290 -560 L -190 -560 L -196 -620 L -284 -620 Z', gold);
   limb(c, [[110, -420], [210, -470], [240, -560]], [44, 36, 30], col); for (let i = 0; i < 9; i++) ellipse(c, 240 + Math.cos(i / 9 * TAU) * 30, -600 + Math.sin(i / 9 * TAU) * 40, 6, 6, gold);

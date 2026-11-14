@@ -243,7 +243,8 @@ function surya(x, y, u, o = {}) {
 // suryaHorse(x, y, u, o): a horse in side view, galloping across the sky, facing screen right (flip: left). (x, y) is
 // the middle of the belly line; u is the size unit (about 13u from tail to muzzle, 9u from hoof to ear).
 // o: gallop (phase 0..1: the legs cycle), mane (a colour), coat / coatDk, rot, flip, eyes ('normal' | 'happy'),
-// harness (false: no gold harness), boilKey.
+// harness (false: no gold harness), ear (a colour for the ear we see: Gadhi's bride price, white horses with one black
+// ear), boilKey.
 const HORSE = { coat: '#FFF4E4', coatDk: '#E2CDB2', hoof: '#B98C5A', ink: '#3A1F22', eye: '#2A1418', gold: '#F2BE3E', goldDk: '#B97F1C', red: '#D2402E' };
 function suryaHorseBit(x, y, u, o = {}) { return [x + (o.flip ? -1 : 1) * 6.7 * u, y - 5.9 * u]; }   // where the reins meet the bridle
 function suryaHorse(x, y, u, o = {}) {
@@ -281,7 +282,7 @@ function suryaHorse(x, y, u, o = {}) {
   rs('neck');
   paint(P([[2.3, -4.5], [3.6, -6.6], [5, -8.3], [6.1, -8.5], [7.3, -7.2], [8.3, -5.9], [8.1, -5.2], [7.3, -5], [6.4, -5.5], [5.6, -5], [4.9, -3.8], [3.6, -3.6]]),
     { wash: coat, fill: cdk, fillOp: 50, tex: .6, ink: INK, sw: sw * .9, curv: .5 });
-  paint(P([[5.3, -8.2], [5.7, -9.6], [6.3, -8.4]]), { wash: coat, ink: INK, sw: sw * .6 });   // ear
+  paint(P([[5.3, -8.2], [5.7, -9.6], [6.3, -8.4]]), { wash: o.ear || coat, ink: INK, sw: sw * .6 });   // ear
   rs('forelock'); paint(P([[5.4, -8.6], [6.4, -8], [5.9, -7.2], [5.1, -7.8]]), { wash: mane, ink: INK, sw: sw * .5, curv: .5 });
   if (o.harness !== false) { rs('bridle'); inkLine(P([[5.8, -7.8], [6.7, -6.1], [7.9, -5.4]]), sw * 1.2, HORSE.gold, 'ink', .4); paint(ellPts(5.6 * u, -8.8 * u, .32 * u, .32 * u, 8), { wash: HORSE.red, ink: INK, sw: sw * .4 }); }
   rs('eye');
