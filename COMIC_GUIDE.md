@@ -26,6 +26,7 @@ caption boxes, sound effects.
 |---|---|
 | [src/comic.js](src/comic.js) | pages on cine.js: `CK` (the look, the scale), `ART` (panel drawings by name), `lit(L, o)` (a LIGHTS entry in device px; in the Inked look its edge becomes an ink outline), `inkPass()` (the ink, bands and halftone on one panel), `drawPage()`, `thumbPanel()` (a grey panel with its art note, for the thumbnail pass), `comicSetup()` (one SHOT per page) |
 | [tools/comic.mjs](tools/comic.mjs) | renders the art from the studio page and letters it: PNG masters, 1080 × 1350 IG JPEGs, the PDF, the CBZ |
+| [src/cine_mbh.js](src/cine_mbh.js) | the Mahabharata cast: `mbhBust()` / `mbhHead()` (Drona, Kripa, Krishna, Arjuna, Bhima, Yudhishthira, Duryodhana, Dhrishtadyumna on the Surya rig; `CAST.<who>` holds each look), `manSil()` (a man in profile, one colour, nine poses, bow / mace / sword / spear), `womanSil()`, `wanderer()`, `babyHead()`, `wheel()`, `kalash()` |
 | `comics/<slug>/SCRIPT.md` | the script, page by page and panel by panel, with every beat's verse |
 | `comics/<slug>/comic.js` | `COMIC`: the pages, panel rects (`rows()` / `pg()`), the words, the art names and art notes |
 | `src/scenes/<slug>_cast.js`, `src/scenes/<slug>_comic.js` | the issue's characters and its panel drawings (`ART.name = (c, P) => …`) |
@@ -80,3 +81,11 @@ caption boxes, sound effects.
   face; `withSur(PAL, …)` recolours it.
 - PDF size: the halftone doesn't compress well (~1.9 MB a page in the Inked look). Lower the art JPEG quality in
   `comic.mjs` for the reader edition if needed.
+- **Scale silhouettes to the panel.** `manSil()` stands ~960 units tall, so in a 400–700-unit panel use k .25–.45 (a
+  chariot with its horses ~1100 wide: k .3–.4). The first pass at k .5–.6 filled the panels with giants.
+- **Busts under balloons:** the words sit at the top of a panel, so put the head low (its centre at ~.7 of the panel
+  height, k 1.3–1.5) and let the shoulders run off the bottom. Move a caption to the top rather than over a face.
+- `mbhHead()` draws the kirita at .58 of Surya's height: the full crown is taller than the face and steals every panel.
+- A figure lying down reads only against something brighter: put Duryodhana's outline on the lit lake, not on the
+  dark bank.
+
