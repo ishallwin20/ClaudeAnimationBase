@@ -1,5 +1,8 @@
 # CHIRANJEEVI · Issue 1 · ASHWATTHAMA: *The Night He Didn't Sleep*
 
+> Page numbers here are the first draft's. The comic now runs to 44 pages: Day 15 (p7), Kripa's counsel (p15) and the
+> Ganga (p29) were each split into two pages for clarity (owner, 14 Nov). `comic.js` lists the pages in order.
+
 Season plan: [CHIRANJEEVI.md](../../CHIRANJEEVI.md). Swipe pages are 4:5 (1080 × 1350 design units, made at 2160 × 2700).
 Every beat below comes from the Mahabharata, critical edition (BORI; text from GRETIL), cited as book.chapter.verse.
 Ganguli's translation (Gutenberg) follows the vulgate, so his section numbers differ; the verses were matched in Sanskrit.

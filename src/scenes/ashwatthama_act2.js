@@ -247,3 +247,142 @@ ART.ashAnswer = (c, P) => {
   bust(c, P.w * .74, 370, 1.9, { ash: true, eyes: 1, fierce: 1, pain: 0, look: [-.6, .6], glow: .55 }, { tint: ['#0A0610', .35], edge: { col: '#FFD9A0', w: 2, a: .5 }, rim: { col: '#9FE4FF', dx: 0, dy: 8, a: .9, blur: 1 } }, { k: 1.5 });
 };
 ART.black = (c, P) => { c.fillStyle = '#000'; c.fillRect(0, 0, P.w, P.h); };
+
+// ---------- women: Draupadi and the women of the camp ----------
+const DRAUPADI = { skin: '#6E4630', skinSh: '#54321F', skinDk: '#3A2014', palm: '#8A5A40', sari: '#8A1A2A', sariSh: '#5A0E1A', sariLt: '#B03A44', border: '#E3A93B', borderSh: '#A6731F', blouse: '#2A5A3A' };
+const CAMPWOMAN = [{ skin: '#A8704C', skinSh: '#86563A', sari: '#2E5A8A', sariSh: '#1E3A5A', blouse: '#8A1A2A' }, { skin: '#C08A60', skinSh: '#96663E', sari: '#C88A2A', sariSh: '#8A5A14', blouse: '#2A5A3A' }];
+// a woman's head and shoulders: deviHead with a blouse and the sari's pallu over one shoulder (o.veil: over the head)
+function womanBust(c, o = {}) {
+  const S = { ...DEVI, ...(o.pal || {}) };
+  const TOR = 'M -200 -360 C -206 -470 -190 -600 -140 -650 C -106 -684 -64 -700 -30 -706 L 30 -706 C 64 -700 106 -684 140 -650 C 190 -600 206 -470 200 -360 Z';
+  fillPath(c, TOR, S.skin);
+  inside(c, TOR, () => {
+    fillPath(c, 'M -220 -620 C -100 -560 100 -560 220 -620 L 220 -360 L -220 -360 Z', S.blouse);
+    const PL = 'M 40 -706 C 120 -700 190 -650 210 -560 L 210 -360 L -120 -360 C -40 -440 20 -560 40 -706 Z';
+    fillPath(c, PL, S.sari); inside(c, PL, () => { for (let i = 0; i < 5; i++) strokePath(c, `M ${60 + i * 30} -700 C ${40 + i * 30} -600 ${-20 + i * 30} -480 ${-100 + i * 30} -370`, rgba(S.sariSh, .7), 5); strokePath(c, 'M 40 -706 C 20 -560 -40 -440 -120 -360', S.border, 12); });
+  });
+  for (let r = 0; r < 2; r++) for (let i = 0; i <= 14; i++) { const u = i / 14, x = lerp(-34 - r * 12, 34 + r * 12, u), y = -712 + Math.pow(Math.sin(u * Math.PI), .8) * (30 + r * 22); ellipse(c, x, y, 4, 4, S.gold); }
+  if (o.veil) fillPath(c, 'M -70 -700 C -84 -800 -70 -900 0 -912 C 70 -900 84 -800 70 -700 L 56 -700 C 64 -790 50 -870 0 -876 C -50 -870 -64 -790 -56 -700 Z', S.sari);
+  deviHead(c, { eyes: 1, crown: false, ...o, pal: S });
+  if (o.veil) { fillPath(c, 'M -62 -840 C -60 -900 60 -900 62 -840 C 40 -880 -40 -880 -62 -840 Z', S.sari); strokePath(c, 'M -62 -842 C -40 -882 40 -882 62 -842', S.border, 4); }
+}
+const wbust = (c, x, y, k, o, L, lo = {}) => figure(c, (f) => { at(f, x, y, k, -815); womanBust(f, o); }, lit(L, lo));
+function withSita(pal, draw) { const keep = { ...SITA }; Object.assign(SITA, pal); try { return draw(); } finally { Object.assign(SITA, keep); } }
+// a man's bust lying on his back, the top of his head toward screen left, the face up; (x, y) the face's centre
+const lyingBust = (c, x, y, k, o, L, lo = {}) => figure(c, (f) => { f.save(); f.translate(x, y); f.rotate(-Math.PI / 2 + (o.tilt || 0)); f.scale(k, k); f.translate(0, 815); mbhBust(f, o); f.restore(); }, lit(L, lo));
+const DAWNL = { tint: ['#2A1A20', .15], edge: { col: '#FFD9B0', w: 2, a: .5 }, rim: { col: '#FFE8C8', dx: 6, dy: -4, a: .8, blur: 1 } };
+
+// ---------- p24 · the camp ----------
+ART.women = (c, P) => {
+  sky(c, [[0, '#2A1608'], [P.h, '#0A0604']]);
+  glow(c, P.w * .5, P.h * .2, 360, '#FFB060', .35);
+  wbust(c, 150, 440, 1.5, { pal: CAMPWOMAN[0], veil: true, look: [.6, -.2] }, LAMP, { k: 1.2 });
+  wbust(c, 370, 470, 1.5, { pal: CAMPWOMAN[1], look: [-.6, -.2] }, LAMP, { k: 1.2 });
+};
+ART.guardsFall = (c, P) => {
+  sky(c, [[0, '#04060E'], [P.h, '#0A0C18']]);
+  rays(c, P.w * .62, P.h * .55, { n: 14, dir: Math.PI, spread: 6.2, len: 600, w: 120, col: '#CFE8FF', a: .6, t: 2, seed: 8 });
+  glow(c, P.w * .62, P.h * .55, 160, '#FFFFFF', .9);
+  figure(c, (f) => { for (const [x, r, k] of [[120, -.6, .22], [230, -1.1, .2], [70, -1.4, .2], [400, .9, .2]]) sil(f, x, P.h * .96, k, x > 300, (g) => { g.rotate(r); manSil(g, { pose: 'raise', head: 'turban', prop: 'sword' }); }); }, lit(NIGHTSIL));
+};
+ART.campWide = (c, P) => {
+  nightSky(c, P.w, P.h, { stops: [[0, '#04060E'], [P.h * .6, '#141E3A'], [P.h, '#06070C']] });
+  moon(c, 160, 120, 40, 1);
+  for (let i = 0; i < 9; i++) tent(c, 60 + i * 120, P.h * (.62 + (i % 3) * .1), .5 + (i % 3) * .14, '#0C1020');
+  figure(c, (f) => sil(f, P.w * .56, P.h * .96, .3, false, (g) => manSil(g, { pose: 'walk', head: 'knot', prop: 'sword' })), lit(NIGHTSIL));
+  c.save(); c.translate(P.w * .56, P.h * .96); c.scale(.3, .3); glow(c, -10, -900, 50, '#7FD8FF', .8); c.restore();
+};
+
+// ---------- p25 · Draupadi's sons ----------
+ART.fiveBows = (c, P) => {
+  sky(c, [[0, '#2A1608'], [P.h, '#0A0604']]);
+  glow(c, P.w * .5, P.h * .3, 480, '#FFB060', .3);
+  const pals = [MBH.dhrish, MBH.arjuna, MBH.yudhi, MBH.bhima, MBH.duryo];
+  for (let i = 0; i < 5; i++) person(c, 120 + i * 200, P.h * 1.1, .48, { who: 'dhrish', pal: pals[i], dress: 'bare', skirt: '#E8E0CC', crown: false, bun: true, eyes: 1, fierce: .7, pain: .1, look: [.2, 0], arms: { l: 'bow', r: 'draw' }, props: { l: 'bow' }, drawTo: [70, -706] }, LAMP);
+};
+ART.droppedBows = (c, P) => {
+  sky(c, [[0, '#1A0E06'], [P.h, '#0A0604']]);
+  fillPath(c, `M 0 ${P.h * .45} L ${P.w} ${P.h * .4} L ${P.w} ${P.h} L 0 ${P.h} Z`, '#3A2A1C');
+  glow(c, P.w * .7, P.h * .2, 300, '#FFB060', .3);
+  figure(c, (f) => { for (let i = 0; i < 5; i++) { f.save(); f.translate(80 + i * 80 + hash(i) * 40, P.h * (.5 + i * .09)); f.rotate(-.4 + hash(i + 3) * .8); strokePath(f, 'M -160 0 C -80 -40 80 -40 160 0', '#5A3418', 12); strokePath(f, 'M -160 0 L 160 0', '#E8E0CC', 2); f.restore(); } }, lit(LAMP));
+};
+ART.shikhandi = (c, P) => {
+  sky(c, [[0, '#3A0A06'], [P.h, '#0A0202']]);
+  glow(c, P.w * .5, P.h * .4, 300, '#FF6A3A', .5);
+  figure(c, (f) => { sil(f, 360, P.h * .98, .5, true, (g) => manSil(g, { pose: 'raise', head: 'knot', prop: 'sword', propA: -.6 })); }, lit(SILW));
+  strokePath(c, `M ${P.w * .15} ${P.h * .2} Q ${P.w * .55} ${P.h * .3} ${P.w * .85} ${P.h * .75}`, rgba('#FFE0C0', .8), 6);
+};
+
+// ---------- p26 · fire ----------
+ART.gateKill = (c, P) => {
+  sky(c, [[0, '#06070E'], [P.h, '#1A1010']]);
+  glow(c, P.w * .5, P.h, 400, '#FF7A2A', .35);
+  figure(c, (f) => { for (const [x, r] of [[80, -.3], [420, .4], [470, 1.2]]) sil(f, x, P.h * .98, .26, x > 250, (g) => { g.rotate(r); manSil(g, { pose: 'walk', head: 'turban' }); }); }, lit(SILW));
+  person(c, 250, P.h * 1.14, .62, { ...CAST.kripa, dress: 'armor', fierce: 1, pain: 0, eyes: 1, arms: { l: 'down', r: 'up' }, props: { r: 'sword' } }, FIRELIT);
+};
+ART.fireThree = (c, P) => {
+  sky(c, [[0, '#1A0604'], [P.h * .6, '#5A1A08'], [P.h, '#0A0302']]);
+  for (const [x, k] of [[100, .5], [270, .6], [430, .5]]) { tent(c, x, P.h * .85, k, '#1A0A08'); pyre(c, x, P.h * .85, 240 * k, 1 + x, 1.5); }
+  for (let i = 0; i < 20; i++) ellipse(c, hash(i) * P.w, hash(i + 5) * P.h * .6, 3, 3, rgba('#FFD08A', .8));
+};
+ART.firelight = (c, P) => {
+  sky(c, [[0, '#2A0804'], [P.h * .7, '#C8441A'], [P.h, '#2A0A04']]);
+  for (let i = 0; i < 5; i++) pyre(c, 100 + i * 220, P.h * .8, 260, 2 + i, 1.6);
+  for (let i = 0; i < 6; i++) tent(c, 60 + i * 190, P.h * .82, .5, '#140604');
+  c.fillStyle = '#100402'; c.fillRect(0, P.h * .8, P.w, P.h);
+  figure(c, (f) => sil(f, P.w * .5, P.h * .98, .62, false, (g) => manSil(g, { pose: 'walk', head: 'knot', prop: 'sword', propA: .9 })), lit({ ...SILW, rim: { ...SILW.rim, dx: 0, dy: -4 } }));
+};
+
+// ---------- p27 · Duryodhana dies ----------
+ART.dawnLake = (c, P) => {
+  sky(c, [[0, '#3A4A6A'], [P.h * .4, '#E8A878'], [P.h * .55, '#F8D8A8'], [P.h, '#2A1A14']]);
+  fillPath(c, `M 0 ${P.h * .5} L ${P.w} ${P.h * .5} L ${P.w} ${P.h * .62} L 0 ${P.h * .62} Z`, '#A8B8C8');
+  c.fillStyle = '#4A3424'; c.fillRect(0, P.h * .62, P.w, P.h);
+  bust(c, 120, 470, 1.3, { ...CAST.krita, dress: 'armor', eyes: .6, look: [.6, .8], pain: .2 }, DAWNL);
+  bust(c, 300, 480, 1.4, { ...CAST.kripa, dress: 'armor', eyes: .6, look: [.6, .8], pain: .4 }, DAWNL);
+  lyingBust(c, 820, 600, 1.4, { ...CAST.duryo, dress: 'armor', eyes: .8, look: [-1, 0], pain: .4, tilt: .25 }, DAWNL);
+  bust(c, 500, 540, 1.6, { ash: true, fierce: .5, pain: 0, smile: .2, look: [.8, .6], glow: .5 }, DAWNL);
+};
+ART.duryoSmile = (c, P) => {
+  sky(c, [[0, '#4A3424'], [P.h, '#2A1A14']]);
+  lyingBust(c, P.w * .5, P.h * .68, 2.1, { ...CAST.duryo, dress: 'armor', eyes: .7, look: [0, -1], pain: .3, smile: .7, tilt: .5 }, DAWNL, { k: 1.3 });
+};
+ART.duryoDies = (c, P) => {
+  sky(c, [[0, '#4A3424'], [P.h, '#2A1A14']]);
+  lyingBust(c, P.w * .5, P.h * .62, 2.1, { ...CAST.duryo, dress: 'armor', eyes: 0, pain: 0, smile: .2, tilt: .2 }, { ...DAWNL, tint: ['#2A2030', .3] }, { k: 1.3 });
+};
+
+// ---------- p28 · Draupadi ----------
+ART.draupadiGrief = (c, P) => {
+  sky(c, [[0, '#6A7A8A'], [P.h * .6, '#B8A898'], [P.h, '#3A2E28']]);
+  for (let i = 0; i < 6; i++) { glow(c, 100 + i * 180, P.h * .3, 120, '#2A2420', .4, 'source-over'); tent(c, 80 + i * 180, P.h * .7, .45, '#2A201C'); }
+  c.fillStyle = '#4A3A30'; c.fillRect(0, P.h * .7, P.w, P.h);
+  figure(c, (f) => { for (const [x, y, k, fl] of [[160, .86, .3, 0], [820, .92, .34, 1], [950, .8, .26, 0]]) sil(f, x, P.h * y, k, fl, (g) => sleeper(g, { who: 'krita', col: '#1A1410' })); }, lit({ tint: ['#1A1410', .8], edge: { col: '#E8D8C0', w: 1.2, a: .4 }, rim: { col: '#F0E0C8', dx: 2, dy: -2, a: .5 } }));
+  figure(c, (f) => { f.save(); f.translate(P.w * .48, P.h * 1.12); f.scale(.72, .72); withSita(DRAUPADI, () => sita(f, { pose: 'stand', eyes: .6, tears: 1, wind: .5, t: 2 })); f.restore(); }, lit(DAWNL));
+};
+ART.draupadiFast = (c, P) => {
+  sky(c, [[0, '#6A6A72'], [P.h, '#2A2420']]);
+  wbust(c, P.w * .5, 420, 1.6, { pal: DRAUPADI, look: [-.3, 0], tears: .8 }, DAWNL, { k: 1.3 });
+};
+ART.draupadiGem = (c, P) => {
+  sky(c, [[0, '#4A3A3A'], [P.h, '#1A1416']]);
+  wbust(c, P.w * .5, 420, 1.65, { pal: DRAUPADI, look: [0, 0], fire: .3 }, { ...DAWNL, rim: { ...DAWNL.rim, dx: -6 } }, { k: 1.3 });
+};
+
+// ---------- p29 · after him ----------
+ART.bhimaGoes = (c, P) => {
+  sky(c, [[0, '#7A9AB8'], [P.h * .6, '#E8C8A0'], [P.h, '#4A3424']]);
+  c.fillStyle = '#6A5038'; c.fillRect(0, P.h * .78, P.w, P.h);
+  for (let i = 0; i < 10; i++) glow(c, 60 + hash(i) * 300, P.h * .8 - hash(i + 2) * 60, 70, '#C8A880', .45, 'source-over');
+  figure(c, (f) => sil(f, 330, P.h * .82, .78, false, (g) => chariot(g, { gallop: 2.1, t: 5, col: '#4A2E1C' })), lit(DAWNL));
+  person(c, 290, P.h * .82 - 16, .5, { ...CAST.bhima, dress: 'armor', fierce: 1, pain: 0, look: [.9, 0], arms: { l: 'down', r: 'shoulder' }, props: { r: 'mace' }, maceA: 2.8 }, DAWNL);
+};
+ART.krishnaFollows = (c, P) => {
+  sky(c, [[0, '#7A9AB8'], [P.h * .7, '#E8C8A0'], [P.h, '#4A3424']]);
+  // Garuda on the flag
+  strokePath(c, `M 120 ${P.h} L 110 60`, '#3A2414', 8); fillPath(c, 'M 110 60 L 230 76 L 210 110 L 230 150 L 110 140 Z', '#C8A030');
+  c.save(); c.translate(168, 104); c.scale(.6, .6); fillPath(c, 'M 0 -40 C 20 -40 30 -20 24 0 L 60 -20 L 40 10 L 20 14 L 0 50 L -20 14 L -40 10 L -60 -20 L -24 0 C -30 -20 -20 -40 0 -40 Z', '#2A1A0A'); c.restore();
+  bust(c, 800, 520, 1.25, { ...CAST.yudhi, dress: 'armor', eyes: .9, pain: .4, look: [-.4, 0] }, DAWNL);
+  bust(c, 640, 540, 1.3, { ...CAST.arjuna, dress: 'armor', eyes: 1, fierce: .4, look: [-.6, 0] }, DAWNL);
+  bust(c, 270, 470, 1.75, { ...CAST.krishna, eyes: 1, fierce: .3, pain: .2, look: [.5, 0] }, DAWNL, { k: 1.3 });
+};
