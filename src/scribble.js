@@ -155,3 +155,30 @@ function scDot(c, x, y, r, col, rnd) {
   c.beginPath(); c.ellipse(x + (rnd() - .5), y + (rnd() - .5), r * (.85 + rnd() * .3), r * (1 + rnd() * .35), (rnd() - .5) * .8, 0, TAU); c.fill();
   c.globalAlpha = .5; c.beginPath(); c.ellipse(x + (rnd() - .5) * 1.5, y, r * 1.2, r * 1.3, rnd() * 3, 0, TAU); c.stroke(); c.restore();
 }
+
+// a breath word: Kalam, white, a soft dark glow, centred on (x, y). o: { weight, col, glow: [col, blur], alpha,
+// wave (px: each letter bobs on its own phase), t, font }
+function scWord(c, txt, x, y, size, o = {}) {
+  if ((o.alpha ?? 1) <= .005) return;
+  c.save(); c.globalAlpha *= o.alpha ?? 1;
+  c.font = `${o.weight || 400} ${Math.round(size)}px ${o.font || 'Kalam'}`; c.textAlign = 'left'; c.textBaseline = 'middle';
+  const g = o.glow || ['rgba(30,60,80,.35)', 18]; c.shadowColor = g[0]; c.shadowBlur = g[1]; c.fillStyle = o.col || '#FFFFFF';
+  if (!o.wave) { c.textAlign = 'center'; c.fillText(txt, x, y); c.restore(); return; }
+  const chars = [...txt], ws = chars.map(ch => c.measureText(ch).width), tw = ws.reduce((a, b) => a + b, 0);
+  let cx = x - tw / 2;
+  chars.forEach((ch, i) => { c.fillText(ch, cx, y + o.wave * Math.sin((o.t || 0) * TAU * 2.2 - i * .7)); cx += ws[i]; });
+  c.restore();
+}
+// anything that drifts (motes), made seamless over a loop of len s: draw(t, w) at t and at t - len, crossfaded
+function scLooped(t, len, draw) { const m = ((t % len) + len) % len, u = m / len; draw(m, 1 - u); draw(m - len, u); }
+// fireflies on closed paths (whole cycles per loop), blinking: o: { n, seed, box: [x0, y0, x1, y1], r, col, a, len }
+function scFireflies(c, t, o) {
+  const [x0, y0, x1, y1] = o.box, L = o.len;
+  for (let i = 0; i < o.n; i++) {
+    const s = i * 7.3 + (o.seed || 0), n1 = 1 + Math.floor(hash(s) * 3), n2 = 1 + Math.floor(hash(s + 1) * 3), nb = 3 + Math.floor(hash(s + 2) * 5);
+    const x = lerp(x0, x1, .5 + .45 * Math.sin(TAU * n1 * t / L + hash(s + 3) * TAU)), y = lerp(y0, y1, .5 + .45 * Math.sin(TAU * n2 * t / L + hash(s + 4) * TAU));
+    const on = Math.pow(Math.max(0, Math.sin(TAU * nb * t / L + hash(s + 5) * TAU)), 3);
+    glow(c, x, y, (o.r || 14) * 2.6, o.col || '#E8FF9A', (o.a ?? .9) * (.15 + .85 * on), 'screen');
+    glow(c, x, y, (o.r || 14) * .5, '#FFFFF0', (o.a ?? .9) * on, 'screen');
+  }
+}

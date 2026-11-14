@@ -158,53 +158,61 @@ function scNoise2(x, y, s = 0) {
 }
 const scFbm2 = (x, y, s = 0, o = 4) => { let a = 0, f = 1, m = .5, t = 0; for (let i = 0; i < o; i++) { a += scNoise2(x * f, y * f, s + i * 13) * m; t += m; f *= 2.03; m *= .5; } return a / t; };
 
-// the valley, far out of focus
-function scHimalaya(c) {
-  const cv = sprite('sc-himalaya', W, H, x => {
-    const raw = scCanvas(W, H), r = raw.getContext('2d');
-    const g = r.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#4F9AC8'); g.addColorStop(.2, '#86C0DE'); g.addColorStop(.4, '#BFE0EC'); g.addColorStop(1, '#BFD8DF');
-    r.fillStyle = g; r.fillRect(0, 0, W, H);
+// the valley, far out of focus. o: { w, h (the frame, default W × H), dy (the scene moved down: a wallpaper grows the
+// sky up behind the clock) }
+function scHimalaya(c, o = {}) {
+  const w = o.w || W, h = o.h || H, dy = o.dy || 0;
+  const cv = sprite(`sc-himalaya${w}x${h}+${dy}`, w, h, x => {
+    const raw = scCanvas(w, h), r = raw.getContext('2d');
+    const g = r.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#4F9AC8'); g.addColorStop(.2 * 1920 / h, '#86C0DE'); g.addColorStop(clamp((.4 * 1920 + dy) / h), '#BFE0EC'); g.addColorStop(1, '#BFD8DF');
+    r.fillStyle = g; r.fillRect(0, 0, w, h);
+    r.translate(0, dy);
     const ridged = (xx, sc, seed) => { let a = 0, f = 1, m = .55; for (let i = 0; i < 5; i++) { a += Math.pow(1 - Math.abs(scNoise2(xx / sc * f, .5, seed + i * 7)), 2) * m; f *= 2.1; m *= .48; } return a; };
     const edge = (base, amp, sc, seed, xx) => base - amp * ridged(xx, sc, seed) + (seed === 3 ? 230 * Math.exp(-Math.pow((xx - 520) / 240, 2)) : 0);
-    const ridgePath = (cx, base, amp, sc, seed) => { cx.beginPath(); cx.moveTo(-60, H); for (let xx = -60; xx <= W + 60; xx += 6) cx.lineTo(xx, edge(base, amp, sc, seed, xx)); cx.lineTo(W + 60, H); cx.closePath(); };
+    const B = h - dy;
+    const ridgePath = (cx, base, amp, sc, seed) => { cx.beginPath(); cx.moveTo(-60, B); for (let xx = -60; xx <= w + 60; xx += 6) cx.lineTo(xx, edge(base, amp, sc, seed, xx)); cx.lineTo(w + 60, B); cx.closePath(); };
     // the far snow range: blue rock, and snowfields picked out by noise, thickest near the crests
     r.fillStyle = '#5A7E9E'; ridgePath(r, 980, 780, 420, 3); r.fill();
-    const q = 4, snow = scCanvas(W / q, H / q), sn = snow.getContext('2d'), id = sn.createImageData(W / q, H / q), d = id.data;
-    for (let yy = 0; yy < H / q; yy++) for (let xx = 0; xx < W / q; xx++) {
-      const X = xx * q, Y = yy * q, crest = edge(980, 780, 420, 3, X), n = scFbm2(X / 50, Y / 30, 9, 4) * 1.1 + (crest + 300 - Y) / 220, i = (yy * W / q + xx) * 4;
+    const q = 4, snow = scCanvas(w / q, h / q), sn = snow.getContext('2d'), id = sn.createImageData(Math.ceil(w / q), Math.ceil(h / q)), d = id.data, sw = Math.ceil(w / q);
+    for (let yy = 0; yy < h / q; yy++) for (let xx = 0; xx < sw; xx++) {
+      const X = xx * q, Y = yy * q - dy, crest = edge(980, 780, 420, 3, X), n = scFbm2(X / 50, Y / 30, 9, 4) * 1.1 + (crest + 300 - Y) / 220, i = (yy * sw + xx) * 4;
       d[i] = 242; d[i + 1] = 246; d[i + 2] = 248; d[i + 3] = clamp((n + .1) * 3) * 255;
     }
     sn.putImageData(id, 0, 0);
-    const rm = scCanvas(W, H), rmc = rm.getContext('2d'); rmc.fillStyle = '#000'; ridgePath(rmc, 980, 780, 420, 3); rmc.fill();
-    rmc.globalCompositeOperation = 'source-in'; rmc.drawImage(snow, 0, 0, W, H); r.drawImage(rm, 0, 0);
+    const rm = scCanvas(w, h), rmc = rm.getContext('2d'); rmc.translate(0, dy); rmc.fillStyle = '#000'; ridgePath(rmc, 980, 780, 420, 3); rmc.fill();
+    rmc.setTransform(1, 0, 0, 1, 0, 0); rmc.globalCompositeOperation = 'source-in'; rmc.drawImage(snow, 0, 0, w, h); r.drawImage(rm, 0, -dy);
     // the sunlit side of the snow, the shadowed side blue
     r.save(); ridgePath(r, 980, 780, 420, 3); r.clip();
-    const sh = r.createLinearGradient(0, 0, W, 0); sh.addColorStop(0, 'rgba(255,248,232,.25)'); sh.addColorStop(.6, 'rgba(255,255,255,0)'); sh.addColorStop(1, 'rgba(60,90,130,.25)');
-    r.fillStyle = sh; r.fillRect(0, 0, W, H); r.restore();
+    const sh = r.createLinearGradient(0, 0, w, 0); sh.addColorStop(0, 'rgba(255,248,232,.25)'); sh.addColorStop(.6, 'rgba(255,255,255,0)'); sh.addColorStop(1, 'rgba(60,90,130,.25)');
+    r.fillStyle = sh; r.fillRect(0, -dy, w, h); r.restore();
     // haze, the forested slopes in blue-green, a dark treeline, a sunny green spur on the right
-    const hz = r.createLinearGradient(0, 560, 0, 1100); hz.addColorStop(0, 'rgba(200,226,236,0)'); hz.addColorStop(1, 'rgba(200,226,236,.45)'); r.fillStyle = hz; r.fillRect(0, 560, W, 700);
+    const hz = r.createLinearGradient(0, 560, 0, 1100); hz.addColorStop(0, 'rgba(200,226,236,0)'); hz.addColorStop(1, 'rgba(200,226,236,.45)'); r.fillStyle = hz; r.fillRect(0, 560, w, 700);
     r.fillStyle = '#3E7290'; ridgePath(r, 1330, 340, 300, 7); r.fill();
     r.fillStyle = '#2D5C79'; ridgePath(r, 1420, 220, 260, 11); r.fill();
-    r.fillStyle = 'rgba(190,220,232,.14)'; r.fillRect(0, 1000, W, 700);
-    r.fillStyle = '#82A25A'; r.beginPath(); r.moveTo(W + 40, 1250); r.quadraticCurveTo(900, 1380, 660, 1720); r.lineTo(W + 40, 1720); r.closePath(); r.fill();
-    r.fillStyle = '#B2C470'; r.globalAlpha = .6; r.beginPath(); r.moveTo(W + 40, 1300); r.quadraticCurveTo(960, 1390, 830, 1560); r.lineTo(W + 40, 1560); r.closePath(); r.fill(); r.globalAlpha = 1;
+    r.fillStyle = 'rgba(190,220,232,.14)'; r.fillRect(0, 1000, w, B - 1000);
+    r.fillStyle = '#82A25A'; r.beginPath(); r.moveTo(w + 40, 1250); r.quadraticCurveTo(900, 1380, 660, 1720); r.lineTo(660, B); r.lineTo(w + 40, B); r.closePath(); r.fill();
+    r.fillStyle = '#B2C470'; r.globalAlpha = .6; r.beginPath(); r.moveTo(w + 40, 1300); r.quadraticCurveTo(960, 1390, 830, 1560); r.lineTo(w + 40, 1560); r.closePath(); r.fill(); r.globalAlpha = 1;
     r.fillStyle = '#22394A'; r.beginPath(); r.moveTo(-40, 1420);
     for (let xx = -40; xx <= 520; xx += 10) r.lineTo(xx, 1450 + scFbm2(xx / 40, 1, 4) * 60 + xx * .22);
-    r.lineTo(520, 1760); r.lineTo(-40, 1760); r.closePath(); r.fill();
+    r.lineTo(520, B); r.lineTo(-40, B); r.closePath(); r.fill();
     // bokeh: a few bright blobs (snow and cloud catching the sun)
     const rb = scRnd(21);
-    for (let i = 0; i < 6; i++) { const bx = 60 + rb() * (W - 120), by = 900 + rb() * 420, br = 26 + rb() * 34; r.fillStyle = `rgba(240,246,244,${.45 + rb() * .35})`; r.beginPath(); r.ellipse(bx, by, br, br * 1.1, 0, 0, TAU); r.fill(); }
+    for (let i = 0; i < 6; i++) { const bx = 60 + rb() * (w - 120), by = 900 + rb() * 420, br = 26 + rb() * 34; r.fillStyle = `rgba(240,246,244,${.45 + rb() * .35})`; r.beginPath(); r.ellipse(bx, by, br, br * 1.1, 0, 0, TAU); r.fill(); }
     // throw it all out of focus
-    x.filter = window.SC_SHARP ? 'none' : 'blur(24px)'; x.drawImage(raw, -40, -40, W + 80, H + 80); x.filter = 'none';
+    x.filter = window.SC_SHARP ? 'none' : 'blur(24px)'; x.drawImage(raw, -40, -40, w + 80, h + 80); x.filter = 'none';
   });
   c.drawImage(cv, 0, 0);
 }
 
 // the boulder he sits on: sharp, granite, lit from the upper left; scRockTop(x) is its top edge
 const scRockTop = x => 1642 + Math.pow((x - 520) / 560, 2) * 60 + Math.pow(Math.max(0, x - 900) / 180, 2) * 70 + scFbm2(x / 160, 4, 2, 3) * 10;
-function scRock(c) {
-  const Y0 = 1600, h = H - Y0;
-  const cv = sprite('sc-rock', W, h, x => {
+// o: { w, h (the frame), dy (moved down), top (x → its top edge, before dy), y0 (the sprite's top), key, pal: { base: [r, g, b],
+// lichen (0..1), shade: [top face, front face] }, near (the out-of-focus band at the bottom, px) }
+function scRock(c, o = {}) {
+  const Wf = o.w || W, dy = o.dy || 0, Y0 = (o.y0 ?? 1600) + dy, h = (o.h || H) - Y0, topF = o.top || scRockTop, scRockTop_ = X => topF(X) + dy;
+  const pal = o.pal || {}, base = pal.base || [146, 138, 126], lichA = pal.lichen ?? 1, [shTop, shFront] = pal.shade || [.98, .84];
+  const cv = sprite('sc-rock' + (o.key || '') + Wf + 'x' + h + '+' + dy, Wf, h, x => {
+    const W = Wf, scRockTop = scRockTop_;
     const id = x.createImageData(W, h), d = id.data;
     // the height: broad lumps, vertical facets on the front, a fine grain
     const hf = (X, Y) => scFbm2(X / 220, Y / 140, 1, 3) + scFbm2(X / 70, Y / 260, 21, 3) * .5 + scFbm2(X / 14, Y / 14, 5, 2) * .08;
@@ -216,15 +224,15 @@ function scRock(c) {
         const h0 = hf(X, Y), hx = hf(X + 2, Y) - h0, hy = hf(X, Y + 2) - h0;
         const relief = clamp(1 + (-hx * 1.2 - hy * .7) * 6, .7, 1.3);
         const mott = scFbm2(X / 260, Y / 150, 3, 3), fine = scNoise2(X / 2.2, Y / 2.2, 17) * .6 + scNoise2(X / 5, Y / 5, 19) * .4, lich = scFbm2(X / 90, Y / 45, 7, 4);
-        let r = 146 + mott * 22 + fine * 16, g = 138 + mott * 20 + fine * 15, b = 126 + mott * 18 + fine * 14;
-        if (lich > .24) { const k = clamp((lich - .24) * 4) * .55; r = lerp(r, 176, k); g = lerp(g, 148, k); b = lerp(b, 84, k); }
-        if (lich < -.34) { const k = clamp((-.34 - lich) * 4) * .45; r = lerp(r, 112, k); g = lerp(g, 122, k); b = lerp(b, 94, k); }
+        let r = base[0] + mott * 22 + fine * 16, g = base[1] + mott * 20 + fine * 15, b = base[2] + mott * 18 + fine * 14;
+        if (lich > .24) { const k = clamp((lich - .24) * 4) * .55 * lichA; r = lerp(r, 176, k); g = lerp(g, 148, k); b = lerp(b, 84, k); }
+        if (lich < -.34) { const k = clamp((-.34 - lich) * 4) * .45 * lichA; r = lerp(r, 112, k); g = lerp(g, 122, k); b = lerp(b, 94, k); }
         const mica = scNoise2(X / 2.6, Y / 2.6, 31);
         if (mica > .72) { const k = clamp((mica - .72) * 6); r *= 1 - .6 * k; g *= 1 - .6 * k; b *= 1 - .58 * k; }
         else if (mica < -.8) { const k = clamp((-.8 - mica) * 8) * .45; r = lerp(r, 232, k); g = lerp(g, 228, k); b = lerp(b, 218, k); }
         let shade;
-        if (Y < lip) shade = .98 + (Y - top) / 40 * .04;                                    // the top face, in the sun
-        else shade = .84 - clamp((Y - lip) / 280) * .4;                                     // the front face, turning away
+        if (Y < lip) shade = shTop + (Y - top) / 40 * .04;                                    // the top face, in the sun
+        else shade = shFront - clamp((Y - lip) / 280) * .4;                                     // the front face, turning away
         if (Y >= lip && Y < lip + 10) shade *= .8 + (Y - lip) / 10 * .2;                    // a soft shadow under the worn lip
         shade *= relief;
         d[i] = clamp(r * shade, 0, 255); d[i + 1] = clamp(g * shade, 0, 255); d[i + 2] = clamp(b * shade * .98, 0, 255);
@@ -248,7 +256,7 @@ function scRock(c) {
     const sf = scCanvas(W, h), sfc = sf.getContext('2d'); sfc.filter = 'blur(.8px)'; sfc.drawImage(x.canvas, 0, 0);
     x.clearRect(0, 0, W, h); x.drawImage(sf, 0, 0);
     const bl = scCanvas(W, h), b = bl.getContext('2d'); b.filter = 'blur(6px)'; b.drawImage(x.canvas, 0, 0);
-    const m = scCanvas(W, h), mc = m.getContext('2d'); const gg = mc.createLinearGradient(0, h - 150, 0, h); gg.addColorStop(0, 'rgba(0,0,0,0)'); gg.addColorStop(1, '#000');
+    const m = scCanvas(W, h), mc = m.getContext('2d'); const gg = mc.createLinearGradient(0, h - (o.near ?? 150), 0, h); gg.addColorStop(0, 'rgba(0,0,0,0)'); gg.addColorStop(1, '#000');
     mc.fillStyle = gg; mc.fillRect(0, 0, W, h); mc.globalCompositeOperation = 'source-in'; mc.drawImage(bl, 0, 0);
     x.drawImage(m, 0, 0);
   });
