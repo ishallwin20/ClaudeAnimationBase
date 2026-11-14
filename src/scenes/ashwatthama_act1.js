@@ -88,16 +88,14 @@ ART.coldTurn = (c, P) => {
 // ---------- p4 · the birth ----------
 ART.birthHut = (c, P) => {
   sky(c, [[0, '#1A1E3A'], [P.h * .45, '#7A4A5A'], [P.h * .72, '#F0A060'], [P.h, '#3A1A12']]);
-  glow(c, 760, P.h * .74, 360, '#FFD090', .6); ellipse(c, 760, P.h * .76, 40, 40, '#FFF0C8');
-  ridge(c, P.h * .74, 50, 6, '#3A2030', { freq: .006, x0: -20, x1: P.w + 20, bottom: P.h + 20 });
-  haze(c, P.h * .76, 90, '#F8C090', .4);
-  c.fillStyle = '#140A0C'; c.fillRect(0, P.h * .82, P.w, P.h);
-  hut(c, 230, P.h * .84, 1.05, { col: '#1A0E12', lit: .8 });
-  forestTree(c, 1000, P.h * .86, .5, { col: '#140A0E' });
-  figure(c, (f) => {
-    sil(f, 560, P.h * .84, .4, false, (g) => womanSil(g));
-    sil(f, 740, P.h * .84, .42, false, (g) => manSil(g, { pose: 'stand', head: 'knot', beard: 'long', joints: { fa: [[-70, -620], [-130, -580]] } }));
-  }, lit(DAWNSIL));
+  glow(c, 880, P.h * .7, 360, '#FFD090', .6); ellipse(c, 880, P.h * .72, 40, 40, '#FFF0C8');
+  ridge(c, P.h * .72, 50, 6, '#3A2030', { freq: .006, x0: -20, x1: P.w + 20, bottom: P.h + 20 });
+  haze(c, P.h * .74, 90, '#F8C090', .4);
+  c.fillStyle = '#2A140E'; c.fillRect(0, P.h * .8, P.w, P.h);
+  hut(c, 170, P.h * .82, 1.15, { col: '#2A1810', lit: .8 });
+  const DAWN = { tint: ['#3A1A20', .18], edge: { col: '#FFD9A0', w: 2, a: .5 }, rim: { col: '#FFE8B8', dx: 6, dy: -3, a: .85, blur: 1 } };
+  figure(c, (f) => { f.save(); f.translate(470, 900); f.scale(.74, .74); kripiWithBaby(f); f.restore(); }, lit(DAWN));
+  person(c, 760, 905, .76, { ...CAST.drona, dress: 'bare', longHair: true, look: [-.7, .3], smile: .35, pain: 0, arms: { l: [[200, -580], [150, -520]], r: 'down' } }, DAWN);
 };
 ART.babyCry = (c, P) => {
   sky(c, [[0, '#3A2018'], [P.h, '#1A0C0A']]);
@@ -155,18 +153,15 @@ ART.gemStrip = (c, P) => { c.fillStyle = '#05060B'; c.fillRect(0, 0, P.w, P.h); 
 // ---------- p6 · the teacher's son ----------
 ART.dronaTeach = (c, P) => {
   sky(c, [[0, '#F0C890'], [P.h * .55, '#E89A50'], [P.h * .8, '#B8602A'], [P.h, '#3A1C0E']]);
-  glow(c, 820, P.h * .62, 300, '#FFF0C0', .6);
-  ridge(c, P.h * .7, 40, 2, '#9A5030', { freq: .005, x0: -20, x1: P.w + 20, bottom: P.h + 20 });
-  haze(c, P.h * .72, 100, '#FFD8A0', .45);
-  c.fillStyle = '#4A2210'; c.fillRect(0, P.h * .82, P.w, P.h);
-  forestTree(c, 960, P.h * .84, .45, { col: '#2A1208' });
-  // a straw target on a post, far off
-  strokePath(c, `M 900 ${P.h * .84} L 900 ${P.h * .7}`, '#2A1208', 6); ellipse(c, 900, P.h * .68, 22, 26, '#2A1208');
-  figure(c, (f) => {
-    sil(f, 200, P.h * .9, .46, true, (g) => manSil(g, { pose: 'stand', head: 'knot', beard: 'long', joints: { fa: [[-130, -690], [-250, -700]] } }));
-    sil(f, 290, P.h * .9, .3, true, (g) => manSil(g, { pose: 'stand', head: 'knot' }));
-    for (const [x, k] of [[470, .36], [610, .34], [740, .35]]) sil(f, x, P.h * .9, k, true, (g) => manSil(g, { pose: 'draw', head: 'kirita', prop: 'bow', quiver: true }));
-  }, lit({ tint: ['#2A1208', .88], edge: { col: '#FFE0A8', w: 1.6, a: .6 }, rim: { col: '#FFF0C8', dx: -3, dy: -3, a: .9 } }));
+  glow(c, 160, P.h * .62, 300, '#FFF0C0', .6);
+  ridge(c, P.h * .66, 40, 2, '#9A5030', { freq: .005, x0: -20, x1: P.w + 20, bottom: P.h + 20 });
+  haze(c, P.h * .68, 100, '#FFD8A0', .45);
+  c.fillStyle = '#6A3A1A'; c.fillRect(0, P.h * .74, P.w, P.h);
+  strokePath(c, `M 40 ${P.h * .76} L 40 ${P.h * .62}`, '#2A1208', 6); ellipse(c, 40, P.h * .6, 22, 26, '#2A1208');   // a straw target
+  figure(c, (f) => { for (const [x, k] of [[200, .26], [300, .25], [400, .26]]) sil(f, x, P.h * .8, k, false, (g) => manSil(g, { pose: 'draw', head: 'kirita', prop: 'bow', quiver: true })); }, lit({ tint: ['#3A1A0A', .85], edge: { col: '#FFE0A8', w: 1.4, a: .6 }, rim: { col: '#FFF0C8', dx: -3, dy: -3, a: .9 } }));
+  const SUN = { ...WARM, rim: { ...WARM.rim, dx: -6, dy: -3 } };
+  person(c, 700, 980, .7, { ...CAST.drona, dress: 'bare', longHair: true, look: [-.8, 0], pain: 0, fierce: .3, arms: { l: 'point', r: 'hip' } }, SUN);
+  person(c, 900, 960, .48, { who: 'ash', pal: ASH, dress: 'bare', boy: true, head: ashBoyHead, arms: { l: 'down', r: 'down' }, props: { r: 'bow' } }, SUN);
 };
 ART.warRanks = (c, P) => {
   battleSky(c, P, { hy: P.h * .7, sx: P.w * .5, seed: 6 });
@@ -176,47 +171,50 @@ ART.warRanks = (c, P) => {
 
 // ---------- p7 · day 15 ----------
 ART.dronaRage = (c, P) => {
-  battleSky(c, P, { hy: P.h * .72, sx: P.w * .2, seed: 11, stops: [[0, '#2A0C08'], [P.h * .5, '#8A2A14'], [P.h * .72, '#E87A3A'], [P.h, '#1A0806']] });
-  for (let i = 0; i < 16; i++) { const x = hash(i) * P.w, y = 60 + hash(i + 3) * 220; strokePath(c, `M ${x} ${y} l -80 18`, rgba('#1A0806', .9), 3); }   // arrows in the air
-  figure(c, (f) => {
-    sil(f, 300, P.h * .84, .3, false, (g) => chariot(g, { gallop: 1.3, t: 7 }));
-    sil(f, 284, P.h * .84 - 6, .27, true, (g) => manSil(g, { pose: 'draw', head: 'knot', beard: 'long', prop: 'bow', quiver: true }));
-    for (const [x, r] of [[700, 1.45], [860, 1.5], [960, 1.4]]) sil(f, x, P.h * .9, .16, false, (g) => { g.rotate(r); manSil(g, { pose: 'stand', head: 'turban' }); });
-  }, lit(SILW));
+  battleSky(c, P, { hy: P.h * .74, sx: P.w * .15, seed: 11, stops: [[0, '#2A0C08'], [P.h * .5, '#8A2A14'], [P.h * .74, '#E87A3A'], [P.h, '#1A0806']] });
+  for (let i = 0; i < 16; i++) { const x = hash(i) * P.w, y = 60 + hash(i + 3) * 260; strokePath(c, `M ${x} ${y} l -80 18`, rgba('#1A0806', .9), 3); }
+  figure(c, (f) => { for (const [x, r] of [[80, 1.45], [180, 1.5], [960, -1.4]]) sil(f, x, P.h * .93, .2, false, (g) => { g.rotate(r); manSil(g, { pose: 'stand', head: 'turban' }); }); }, lit(SILW));
+  figure(c, (f) => sil(f, 470, P.h * .84, 1, false, (g) => chariot(g, { gallop: 1.3, t: 7, col: '#3A2214' })), lit(DUSTL));
+  person(c, 400, P.h * .84 - 20, .5, { ...CAST.drona, dress: 'armor', longHair: true, look: [-.9, 0], fierce: 1, pain: 0, arms: { l: 'bow', r: 'draw' }, props: { l: 'bow' }, drawTo: [70, -706] }, DUSTL);
 };
 ART.krishnaPlan = (c, P) => {
   sky(c, [[0, '#5A2410'], [P.h, '#1A0A06']]);
   glow(c, P.w * .7, 120, 360, '#FFB070', .45);
-  bust(c, P.w * .5, 370, 1.35, { ...CAST.krishna, look: [-.3, .1], smile: .15, pain: 0 }, DUSTL);
+  bust(c, P.w * .5, 440, 1.6, { ...CAST.krishna, look: [-.3, .1], smile: .15, pain: 0 }, DUSTL);
 };
 ART.arjunaNo = (c, P) => {
   sky(c, [[0, '#4A1A0C'], [P.h, '#140806']]);
   glow(c, 60, 80, 380, '#FFB070', .4);
-  bust(c, P.w * .5, 330, 1.4, { ...CAST.arjuna, eyes: .12, pain: .7, look: [.8, .3] }, DUSTL);
+  bust(c, P.w * .5, 420, 1.65, { ...CAST.arjuna, eyes: .12, pain: .7, look: [.8, .3] }, DUSTL);
 };
 ART.elephant = (c, P) => {
-  battleSky(c, P, { hy: P.h * .78, sx: P.w * .85, seed: 13, stops: [[0, '#3A160A'], [P.h * .6, '#C8662A'], [P.h, '#2A0E06']] });
+  battleSky(c, P, { hy: P.h * .8, sx: P.w * .85, seed: 13, stops: [[0, '#3A160A'], [P.h * .6, '#C8662A'], [P.h, '#2A0E06']] });
   figure(c, (f) => {
-    sil(f, 700, P.h * .9, .5, true, (g) => { g.rotate(-.24); elephantSide(g, { col: '#140806', run: 0, trunk: .8 }); });
-    sil(f, 400, P.h * .9, .3, true, (g) => manSil(g, { pose: 'smash', head: 'knot', prop: 'mace', propLen: 180 }));
-  }, lit(SILW));
-  for (let i = 0; i < 8; i++) glow(c, 600 + hash(i) * 260, P.h * .86 + hash(i + 2) * 30, 60, '#E8A060', .3, 'source-over');
+    f.save(); f.translate(960, P.h * 1.04); f.scale(-1.55, 1.55); f.rotate(.1);
+    elephantSide(f, { run: 0, trunk: 1, pal: 0 });
+    // a war elephant: a red cloth with a gold border over its back, a bell
+    const CL = 'M -170 -330 C -60 -362 80 -360 160 -330 L 150 -190 C 60 -176 -60 -176 -170 -196 Z';
+    fillPath(f, CL, '#8A1A1A'); strokePath(f, 'M 150 -190 C 60 -176 -60 -176 -170 -196', '#D9A441', 10); for (let i = 0; i < 6; i++) ellipse(f, -140 + i * 54, -270, 10, 10, '#D9A441');
+    f.restore();
+  }, lit(DUSTL));
+  for (let i = 0; i < 10; i++) glow(c, 560 + hash(i) * 380, P.h * .92 + hash(i + 2) * 30, 70, '#E8A060', .35, 'source-over');
+  person(c, 230, P.h * .99, .64, { ...CAST.bhima, dress: 'armor', legs: 'wide', fierce: 1, pain: 0, mouth: .5, look: [.9, .2], arms: { l: [[-80, -620], [-250, -610]], r: [[240, -660], [300, -600]] }, props: { r: 'mace' }, maceA: -.3 }, DUSTL);
 };
 
 // ---------- p8 · "Ashwatthama is dead" ----------
 ART.bhimaShout = (c, P) => {
   battleSky(c, P, { hy: P.h * .8, sx: P.w * .9, seed: 17 });
-  bust(c, 250, 330, 1.45, { ...CAST.bhima, mouth: .9, fierce: .7, pain: .3, look: [-.9, .3] }, DUSTL);
+  bust(c, 290, 420, 1.9, { ...CAST.bhima, mouth: 1, fierce: .7, pain: .3, look: [-.9, .3] }, DUSTL);
 };
 ART.dronaAsks = (c, P) => {
   sky(c, [[0, '#6A2A12'], [P.h, '#1A0A06']]);
   glow(c, P.w, 60, 380, '#FFB070', .45);
-  bust(c, P.w * .45, 345, 1.35, { ...CAST.drona, dress: 'armor', longHair: true, pain: .75, eyes: 1, look: [.7, 0] }, DUSTL);
+  bust(c, P.w * .46, 470, 1.65, { ...CAST.drona, dress: 'armor', longHair: true, pain: .75, eyes: 1, look: [.7, 0] }, DUSTL);
 };
 ART.yudhiLies = (c, P) => {
   sky(c, [[0, '#5A2410'], [P.h, '#140806']]);
   glow(c, 0, 60, 380, '#FFB070', .4);
-  bust(c, P.w * .36, 350, 1.35, { ...CAST.yudhi, eyes: .35, look: [-.2, 1], pain: .55 }, DUSTL);
+  bust(c, P.w * .4, 480, 1.65, { ...CAST.yudhi, eyes: .35, look: [-.2, 1], pain: .55 }, DUSTL);
 };
 ART.chariotTouches = (c, P) => {
   sky(c, [[0, '#7A3A18'], [P.h * .8, '#C87A3A'], [P.h, '#3A1A0A']]);
@@ -326,3 +324,17 @@ ART.backPage = (c, P) => {
   }), lit({ tint: ['#1A0C04', .8], edge: { col: '#FFE7A6', w: 2, a: .9 }, rim: { col: '#FFF4D0', dx: 0, dy: -5, a: 1 } }));
   c.fillStyle = '#05060B'; c.fillRect(0, y, P.w, P.h);
 };
+
+// a person in colour, placed with the feet at (x, y), k the scale, lit
+const person = (c, x, y, k, o, L, lo = {}) => figure(c, (f) => { f.save(); f.translate(x, y); f.scale(k * (o.flip ? -1 : 1), k); mbhFigure(f, o); f.restore(); }, lit(L, lo));
+// Ashwatthama as a boy: the Surya rig in his colours, no beard, the gem
+const ashBoyHead = (c) => { mbhHead(c, { pal: ASH, bun: true, kundala: 'ring', look: [-.4, 0], smile: .2 }); ashGem(c, 1); };
+// Kripi: Sita's figure in Kripi's colours is not needed; Sita's rig with a baby in her arms
+function kripiWithBaby(c) {
+  sita(c, { pose: 'stand', look: [.6, .3], eyes: .7, wind: .1 });
+  // the swaddled baby across her chest, her forearms round it
+  ellipse(c, 20, -600, 120, 62, '#EDE2CC', -.15); for (let i = 0; i < 4; i++) strokePath(c, `M ${-80 + i * 40} -630 q 20 30 0 64`, rgba('#B8A888', .8), 3);
+  c.save(); c.translate(110, -628); c.scale(.32, .32); babyHead(c, { cry: 0 }); c.restore();
+  limb(c, [[-96, -560], [0, -548], [96, -580]], [38, 34, 30], SITA.skin); limb(c, [[96, -560], [20, -640], [-60, -660]], [36, 32, 28], SITA.skinSh);
+  for (const [x, y] of [[80, -578], [-50, -655]]) ellipse(c, x, y, 7, 18, SITA.gold, .3);
+}

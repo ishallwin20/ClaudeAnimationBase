@@ -71,6 +71,10 @@ function mbhHead(c, o = {}) {
   }
   if (o.beard || o.stache === 'full') for (const k of [-1, 1]) fillPath(c, `M 0 -781 C ${k * 10} -785 ${k * 22} -783 ${k * 27} -768 C ${k * 20} -774 ${k * 10} -776 0 -775 Z`, P.hair);
   if (o.stache === 'full' && !o.beard) for (const k of [-1, 1]) fillPath(c, `M ${k * 24} -772 C ${k * 30} -768 ${k * 33} -760 ${k * 31} -754 C ${k * 28} -760 ${k * 25} -764 ${k * 20} -768 Z`, P.hair);
+  if (o.mouth && (o.beard || o.stache)) {   // an open mouth shows through the beard
+    const m = o.mouth; ellipse(c, 0, -764 + m * 2, 11 + m * 4, 3 + m * 7, '#1A0A0A'); strokePath(c, `M ${-11 - m * 4} ${-764 + m * 2} Q 0 ${-768 - m * 3} ${11 + m * 4} ${-764 + m * 2}`, P.lip, 2.2);
+    ellipse(c, 0, -770 + m * 2, 8 + m * 3, 1.6, rgba('#F2E8D8', .85));
+  }
   if (o.tilak === 'namam') {   // Krishna's: a white U and a red line
     strokePath(c, 'M -9 -862 C -9 -846 -6 -838 0 -836 C 6 -838 9 -846 9 -862', '#F4EEE2', 3.4);
     strokePath(c, 'M 0 -864 L 0 -842', '#D02A20', 3);
@@ -260,5 +264,103 @@ function kalash(c, x, y, k = 1, o = {}) {
   fillPath(c, POT, B);
   inside(c, POT, () => { fillPath(c, 'M -100 -140 L -40 -140 C -60 -90 -60 -20 -30 20 L -100 20 Z', D); ellipse(c, 30, -60, 14, 34, rgba(L, .8), -.3); strokePath(c, 'M -76 -60 Q 0 -44 76 -60', rgba(D, .9), 3); });
   ellipse(c, 0, -130, 36, 9, D); ellipse(c, 0, -132, 28, 6, '#1A120A');
+  c.restore();
+}
+
+// ---------- full figures in colour (front view) ----------
+// mbhFigure(c, o): a whole person in colour, front view, feet at (0, 0), the face at (0, -815) as the busts.
+//   o: who / CAST look (palette, head), dress 'armor' | 'bare' | 'royal', legs 'stand' | 'wide' | 'sit' (cross-legged),
+//   arms { l, r } each a preset (down | hip | point | up | forward | bow | namaste | draw | reach | shoulder) or
+//   [[ex, ey], [hx, hy]] (screen-right side's coordinates; l is mirrored), props { l, r }: 'bow' | 'mace' | 'sword' |
+//   'spear' | 'pot', head (a function drawing the head), boy (a child's proportions), plus mbhHead's options.
+const MBH_ARM = {
+  down: [[178, -560], [194, -440]], hip: [[214, -580], [124, -500]], point: [[276, -684], [400, -696]],
+  up: [[206, -830], [214, -966]], forward: [[200, -566], [96, -612]], bow: [[236, -620], [306, -612]],
+  namaste: [[150, -566], [12, -640]], draw: [[250, -700], [70, -706]], reach: [[250, -640], [350, -560]],
+  shoulder: [[214, -560], [150, -690]],
+};
+const MBH_SKIRT = { drona: '#E8E0CC', kripa: '#D8CCAE', krishna: '#F0C030', arjuna: '#E8E2D2', bhima: '#8A6A2A', yudhi: '#E8DDC0', duryo: '#8A1E2E', dhrish: '#C84A1E', ash: '#6A1F1C' };
+function mbhFigure(c, o = {}) {
+  const who = o.who || 'drona', P = { ...SUR, ...(MBH[who] || {}), ...(MBH_DRESS[who] || {}), ...(o.pal || {}) }, dress = o.dress || 'armor';
+  const SK = o.skirt || MBH_SKIRT[who] || '#E8E0CC', SKd = mixCol(SK, '#000000', .3), sit = o.legs === 'sit', wide = o.legs === 'wide';
+  c.save(); if (o.broad) c.scale(o.broad, 1);
+  const up = sit ? 300 : 0;   // seated: the body sits 300 lower, on crossed legs
+  // ---- legs and the dhoti
+  if (sit) {
+    const LEGS = 'M -250 -10 C -270 -90 -200 -170 -60 -190 L 60 -190 C 200 -170 270 -90 250 -10 C 160 6 -160 6 -250 -10 Z';
+    fillPath(c, LEGS, SK); inside(c, LEGS, () => { fillPath(c, 'M -300 -60 C -100 -100 100 -100 300 -60 L 300 20 L -300 20 Z', rgba(SKd, .6)); strokePath(c, 'M -240 -30 C -100 -70 100 -70 240 -30', P.gold, 6); });
+    for (const s of [-1, 1]) { fillPath(c, `M ${s * 40} -70 C ${s * 70} -90 ${s * 130} -84 ${s * 150} -60 C ${s * 120} -46 ${s * 70} -44 ${s * 40} -50 Z`, P.skin); }   // the soles turned up
+  } else {
+    const fx = wide ? 120 : 52;
+    for (const s of [-1, 1]) {
+      limb(c, [[s * 46, -300], [s * (fx * .7 + 14), -160], [s * fx, -40]], [64, 50, 36], s < 0 ? P.skinSh : P.skin);
+      fillPath(c, `M ${s * fx - 20} -40 C ${s * fx - 22} -20 ${s * fx - 24} -6 ${s * fx - 20} 0 L ${s * fx + s * 46} 0 C ${s * fx + s * 50} -10 ${s * fx + s * 30} -20 ${s * fx + 14} -40 Z`, P.skin);
+      ellipse(c, s * fx, -46, 18, 5, P.gold);
+    }
+    const w2 = wide ? 150 : 124, DH = `M -90 -500 C -102 -430 -118 -360 ${-w2} -280 C ${-w2 - 2} -230 ${-w2 + 10} -190 ${-w2 + 24} -160 L -24 -170 L 0 -150 L 24 -170 L ${w2 - 24} -160 C ${w2 - 10} -190 ${w2 + 2} -230 ${w2} -280 C 118 -360 102 -430 90 -500 Q 0 -488 -90 -500 Z`;
+    fillPath(c, DH, SK);
+    inside(c, DH, () => {
+      fillPath(c, 'M -160 -500 C -110 -420 -96 -300 -100 -150 L -160 -150 Z', rgba(SKd, .7));
+      for (let i = -2; i <= 2; i++) strokePath(c, `M ${i * 12} -480 C ${i * 14} -360 ${i * 16} -260 ${i * 20} -160`, rgba(SKd, .8), 2.4);
+      strokePath(c, `M ${-w2 + 24} -168 L -24 -178 L 0 -158 L 24 -178 L ${w2 - 24} -168`, P.gold, 7);
+    });
+  }
+  c.translate(0, up);
+  // ---- the torso
+  const TORSO = 'M -84 -478 C -92 -540 -114 -600 -124 -642 C -132 -668 -140 -690 -150 -700 C -116 -720 -64 -722 -27 -728 L 27 -728 C 64 -722 116 -720 150 -700 C 140 -690 132 -668 124 -642 C 114 -600 92 -540 84 -478 Z';
+  fillPath(c, TORSO, P.skin);
+  inside(c, TORSO, () => {
+    fillPath(c, 'M -170 -740 L -110 -740 C -100 -660 -80 -560 -60 -470 L -170 -470 Z', rgba(P.skinSh, .8));
+    for (const s of [-1, 1]) strokePath(c, `M ${s * 108} -640 C ${s * 80} -612 ${s * 40} -606 ${s * 8} -618`, rgba(P.skinDk, .5), 3.5);
+    strokePath(c, 'M 0 -600 L 0 -500', rgba(P.skinDk, .4), 2.4);
+  });
+  if (dress === 'armor') {
+    const KAV = 'M -100 -540 C -112 -600 -126 -660 -132 -700 C -100 -716 -60 -720 -26 -724 L 26 -724 C 60 -720 100 -716 132 -700 C 126 -660 112 -600 100 -540 C 60 -520 -60 -520 -100 -540 Z';
+    fillPath(c, KAV, P.armor);
+    inside(c, KAV, () => {
+      fillPath(c, 'M -140 -540 L -140 -720 L -100 -720 C -90 -650 -76 -590 -64 -530 Z', P.armorSh);
+      for (let r = 0; r < 5; r++) for (let i = -3; i <= 3; i++) { const x = i * 30 + (r % 2) * 15, y = -680 + r * 30; strokePath(c, `M ${x - 14} ${y} Q ${x} ${y + 12} ${x + 14} ${y}`, rgba(P.armorLt, .7), 2.6); }
+      strokePath(c, 'M -100 -540 C -60 -520 60 -520 100 -540', P.gold, 5);
+    });
+    ellipse(c, 0, -640, 22, 22, P.goldSh); ellipse(c, 0, -640, 16, 16, P.gold);
+    for (const s of [-1, 1]) { fillPath(c, `M ${s * 104} -724 C ${s * 140} -734 ${s * 178} -716 ${s * 190} -680 C ${s * 168} -690 ${s * 136} -694 ${s * 112} -690 Z`, P.armorLt); strokePath(c, `M ${s * 112} -692 C ${s * 140} -696 ${s * 166} -690 ${s * 188} -682`, P.goldSh, 3); }
+  } else {
+    if (dress === 'bare') strokePath(c, 'M 108 -712 C 60 -640 0 -560 -80 -480', '#F2EADA', 4);   // the sacred thread, over the left shoulder
+    for (let r = 0; r < (dress === 'royal' ? 2 : 0); r++) for (let i = 0; i <= 18; i++) { const u = i / 18, x = lerp(-44 - r * 14, 44 + r * 14, u), y = -722 + Math.pow(Math.sin(u * Math.PI), .8) * (40 + r * 26); ellipse(c, x, y, 4.5, 4.5, r ? P.goldLt : P.gold); }
+    if (dress === 'royal') for (let i = 0; i <= 30; i++) { const u = i / 30, x = lerp(-110, 110, u), y = -706 + Math.pow(Math.sin(u * Math.PI), .7) * 280; ellipse(c, x, y, 9, 9, i % 3 === 0 ? '#E8E0C8' : i % 3 === 1 ? '#C8302A' : '#3A8A3A'); }
+  }
+  // the uttariya over the left shoulder, its end hanging behind the arm
+  if (P.cloth && dress !== 'royal') { const UT = 'M 60 -726 C 120 -720 160 -700 170 -660 C 140 -600 60 -540 -40 -490 L -70 -500 C 20 -560 90 -620 60 -726 Z'; fillPath(c, UT, P.cloth); inside(c, UT, () => { for (let i = 0; i < 3; i++) strokePath(c, `M ${80 + i * 24} -716 C ${60 + i * 20} -640 ${10 + i * 16} -560 ${-50 + i * 14} -500`, rgba(P.clothSh, .8), 4); }); }
+  else if (dress === 'royal') for (const s of [-1, 1]) limb(c, [[s * 130, -700], [s * 196, -600], [s * 226, -470], [s * 246, -330]], [40, 34, 30, 26], s > 0 ? P.cloth : P.clothSh, false);
+  // the belt
+  fillPath(c, 'M -90 -506 Q 0 -494 90 -506 L 88 -480 Q 0 -468 -88 -480 Z', P.gold); strokePath(c, 'M -88 -492 Q 0 -480 88 -492', P.goldSh, 2.4);
+  // ---- arms
+  const arm = (s, spec) => {
+    const A = typeof spec === 'string' ? MBH_ARM[spec] : spec, E = [s * A[0][0], A[0][1]], Hd = [s * A[1][0], A[1][1]], S = [s * 140, -684];
+    ellipse(c, s * 146, -680, 34, 40, P.skin, s * -.2);
+    limb(c, [S, E], [60, 50], s < 0 ? P.skinSh : P.skin);
+    limb(c, [E, Hd], [48, 36], s < 0 ? P.skinSh : P.skin);
+    ellipse(c, lerp(S[0], E[0], .4), lerp(S[1], E[1], .4), 30, 8, P.gold, Math.atan2(E[1] - S[1], E[0] - S[0]) + Math.PI / 2);
+    if (dress === 'armor') limb(c, [[lerp(E[0], Hd[0], .25), lerp(E[1], Hd[1], .25)], [lerp(E[0], Hd[0], .85), lerp(E[1], Hd[1], .85)]], [44, 38], P.armorSh);
+    else ellipse(c, lerp(E[0], Hd[0], .85), lerp(E[1], Hd[1], .85), 22, 7, P.gold, Math.atan2(Hd[1] - E[1], Hd[0] - E[0]) + Math.PI / 2);
+    const a = Math.atan2(Hd[1] - E[1], Hd[0] - E[0]), prop = (o.props || {})[s < 0 ? 'l' : 'r'];
+    if (prop === 'mace') gadaC(c, Hd[0], Hd[1], a + Math.PI / 2 + (o.maceA || 0), { gold: P.gold, goldSh: P.goldSh, goldLt: P.goldLt || '#FFE08A', ruby: P.ruby || '#C81E2A' });
+    if (prop === 'sword') { c.save(); c.translate(Hd[0], Hd[1]); c.rotate(o.swordA ?? (a - Math.PI / 2)); fillPath(c, 'M -9 -10 L 9 -10 L 7 -330 L 0 -360 L -7 -330 Z', '#C8CED8'); strokePath(c, 'M 2 -20 L 2 -330', '#F2F6FF', 2); fillPath(c, 'M -34 -16 L 34 -16 L 30 -4 L -30 -4 Z', P.gold); fillPath(c, 'M -8 -4 L 8 -4 L 7 40 L -7 40 Z', '#3A2014'); c.restore(); }
+    if (prop === 'spear') { strokePath(c, `M ${Hd[0]} ${Hd[1] + 400} L ${Hd[0]} ${Hd[1] - 560}`, '#5A3A20', 9); fillPath(c, `M ${Hd[0] - 14} ${Hd[1] - 556} L ${Hd[0]} ${Hd[1] - 650} L ${Hd[0] + 14} ${Hd[1] - 556} Z`, '#C8CED8'); }
+    if (prop === 'bow') { const bx = Hd[0]; strokePath(c, `M ${bx} ${Hd[1] - 430} C ${bx + s * 110} ${Hd[1] - 250} ${bx + s * 110} ${Hd[1] + 250} ${bx} ${Hd[1] + 430}`, '#5A3418', 14); strokePath(c, `M ${bx} ${Hd[1] - 430} C ${bx + s * 110} ${Hd[1] - 250} ${bx + s * 110} ${Hd[1] + 250} ${bx} ${Hd[1] + 430}`, rgba(P.gold, .6), 3); const sx = o.drawTo ? o.drawTo[0] : bx; strokePath(c, `M ${bx} ${Hd[1] - 430} L ${sx} ${o.drawTo ? o.drawTo[1] : Hd[1]} L ${bx} ${Hd[1] + 430}`, '#E8E0CC', 2.4); if (o.drawTo) { strokePath(c, `M ${o.drawTo[0]} ${o.drawTo[1]} L ${bx + s * 160} ${Hd[1]}`, '#6A4A2A', 5); fillPath(c, `M ${bx + s * 160} ${Hd[1] - 9} L ${bx + s * 196} ${Hd[1]} L ${bx + s * 160} ${Hd[1] + 9} Z`, '#C8CED8'); } }
+    if (prop === 'pot') kalash(c, Hd[0], Hd[1] + 60, 1, { tip: o.potTip || 0 });
+    ellipse(c, Hd[0] + Math.cos(a) * 12, Hd[1] + Math.sin(a) * 12, 24, 22, P.skin);   // the hand
+    strokePath(c, `M ${Hd[0] + Math.cos(a) * 4 - Math.sin(a) * 12} ${Hd[1] + Math.sin(a) * 4 + Math.cos(a) * 12} l ${Math.cos(a) * 18} ${Math.sin(a) * 18}`, rgba(P.skinDk, .5), 2);
+  };
+  const AR = o.arms || {};
+  arm(-1, AR.l || 'down'); 
+  c.restore();
+  // ---- the head (not stretched by broad)
+  c.save(); c.translate(0, up);
+  if (o.boy) { c.translate(0, -720); c.scale(1.22, 1.22); c.translate(0, 720); }
+  if (o.head) o.head(c); else mbhHead(c, o);
+  c.restore();
+  c.save(); if (o.broad) c.scale(o.broad, 1); c.translate(0, up);
+  arm(1, AR.r || 'down');
   c.restore();
 }
