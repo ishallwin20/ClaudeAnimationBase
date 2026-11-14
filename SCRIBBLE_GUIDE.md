@@ -15,8 +15,15 @@ for the engine. This guide covers what Scribble adds.
 - **Reference reel:** `reel/breathe-hanuman`, "Breathe with Bal Hanuman" (32 s seamless loop, two rounds of box
   breathing, Kalam words with the Sanskrit term under them, synthesized tanpura + breath + bowls). Start a new
   Scribble reel by reading its `STORYBOARD.md` and `src/scenes/breathe.js`.
-- **Files:** `src/scribble.js` (the engine; its header is the API), `src/sc_cast.js` (Bal Hanuman in four parts, the
-  blurred Himalaya, the granite boulder), `scribble.html` + `src/scenes/sc_demo.js` (the demo: one 16 s breath). The
+- **More reels** (14 Nov 2026), the "Breathe with…" set: `reel/bee-breath-ganesha` (Bhramari: 4 in, 8 humming; bees
+  circling), `reel/breathe-nandi` (5 in, 5 out; dusk courtyard, diyas), `reel/breathe-kumbhakarna` (a comedy: 4 in, 4
+  held, 6 out; snore, myna, lamp, z's), `reel/sleep-kanha` (4 in, 6 out; a bansuri lullaby, fireflies). Their wallpapers
+  are batch 5 on `wall/5-scribble` (`src/scenes/wall_sc.js`, `studio_wall_sc.html`, `wallpack.mjs --batch=5`).
+- **Files:** `src/scribble.js` (the engine; its header is the API, plus `scWord` for the breath words, `scLooped`,
+  `scFireflies`), `src/sc_cast.js` (Bal Hanuman in four parts, the blurred Himalaya, the granite boulder; both sets take
+  `{ w, h, dy }` so a wallpaper can grow the sky up behind the clock, and `scRock` a palette and a top edge), one file
+  per further cast (`sc_ganesha.js`, `sc_nandi.js`, `sc_kumbha.js`, `sc_kanha.js`: each a character in parts, its
+  pivots, and its blurred set), `tools/sc_audio.mjs` (tanpura, hum, breath, a timeline whose tail folds onto its start), `scribble.html` + `src/scenes/sc_demo.js` (the demo: one 16 s breath). The
   sheet is [docs/scribble_sheet.jpg](docs/scribble_sheet.jpg). Open any Scribble page with `?design` to see the
   clean designs under the strokes.
 
@@ -70,12 +77,21 @@ for the engine. This guide covers what Scribble adds.
 
 1. Branch `reel/<idea>` off `main`. Copy `scribble.html` to `studio.html`, replace the inline `PROJECT` with
    `<script src="src/config.js"></script>` and swap `sc_demo.js` for your scene.
-2. New characters and sets go in `src/sc_cast.js` on `main` (a design function per part, its pivots in a constant like
+2. New characters and sets go on `main`, in `src/sc_cast.js` or a file of their own (`src/sc_<name>.js`) (a design function per part, its pivots in a constant like
    `SCH`). Check the designs with `?design` first: if the design reads, the strokes will.
 3. A loop: make the last frame land on the first (the breath is a 16 s cycle; the reel is two of them). Frame 0
    already shows the first word.
 4. Check stills (`node render.mjs --stills=0`) at phone size: the strokes should read as fur, not noise. Too noisy:
    longer `len`, lower `dens`, more `under`. Too clean: more `hair` and `outline`.
+
+## Skin, fur and faces (14 Nov)
+
+- Fur (Hanuman, Nandi, the calf) wants long strokes (40–86), `hair` .4–1 and some `outline`. Skin (Ganesha, Kanha,
+  Kumbhakarna) wants short strokes (~26–28), `hair` ~.12, `under` ~.9, low `dk`, and a flow running AROUND the form
+  (`atan2(…) + π/2`): with fur settings and a radial flow, Ganesha's head read as a hairy ball.
+- A face turned on its side (Kumbhakarna lying down) is drawn upright and laid down by a rotation (`scKumbhaHead`);
+  its mouth and moustache are their own parts, scaled about their own centres for the snore and the whistle.
+- Thin dark features on dark hair vanish: give a moustache width and a colour a step lighter than the hair.
 
 ## What worked (first reel)
 
