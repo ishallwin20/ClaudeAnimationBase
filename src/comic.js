@@ -78,6 +78,17 @@ function inkPass(c, x, y, w, h, o = {}) {
 }
 
 // ---------- a page ----------
+// a panel with no art yet (the thumbnail pass): grey, with its art note, so the pacing and the words can be read
+function thumbPanel(c, w, h, pn) {
+  const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#3A3A42'); g.addColorStop(1, '#26262C'); c.fillStyle = g; c.fillRect(0, 0, w, h);
+  c.fillStyle = 'rgba(255,255,255,.07)'; for (let x = -h; x < w; x += 40) { c.beginPath(); c.moveTo(x, h); c.lineTo(x + h, 0); c.lineTo(x + h + 3, 0); c.lineTo(x + 3, h); c.fill(); }
+  c.font = '600 22px system-ui, sans-serif'; c.fillStyle = 'rgba(255,255,255,.35)'; c.fillText((pn.art || '') + '  (not drawn yet)', 16, h - 16);
+  if (!pn.note) return;
+  c.font = 'italic 25px system-ui, sans-serif'; c.fillStyle = 'rgba(235,235,240,.62)';
+  const words = pn.note.split(' '), lines = [''], mw = Math.min(w - 60, 640);
+  for (const wd of words) { const t = lines[lines.length - 1] ? lines[lines.length - 1] + ' ' + wd : wd; if (c.measureText(t).width > mw && lines[lines.length - 1]) lines.push(wd); else lines[lines.length - 1] = t; }
+  const y0 = h / 2 - (lines.length - 1) * 16; lines.forEach((l, i) => { const tw = c.measureText(l).width; c.fillText(l, (w - tw) / 2, y0 + i * 32); });
+}
 function panelVignette(c, w, h, a) {
   const g = c.createRadialGradient(w / 2, h / 2, Math.min(w, h) * .3, w / 2, h / 2, Math.hypot(w, h) * .62);
   g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${a})`); c.fillStyle = g; c.fillRect(0, 0, w, h);
@@ -91,10 +102,10 @@ function drawPage(c, n, t) {
     c.beginPath(); c.rect(0, 0, w, h); c.clip();
     c.fillStyle = '#000'; c.fillRect(0, 0, w, h);
     if (draw) { c.save(); draw(c, { w, h, t, ink: CK.ink_, n, ...(pn.o || {}) }); c.restore(); }
-    else { c.fillStyle = '#222'; c.fillRect(0, 0, w, h); c.fillStyle = '#888'; c.font = '28px sans-serif'; c.fillText(pn.art || '?', 20, 40); }
+    else thumbPanel(c, w, h, pn);
     if (!CK.ink_ && pn.vig !== 0) panelVignette(c, w, h, pn.vig ?? .55);
     c.restore();
-    if (CK.ink_ && pn.inkPass !== false) inkPass(c, x * CK.s, y * CK.s, w * CK.s, h * CK.s, pn.ink || {});
+    if (CK.ink_ && draw && pn.inkPass !== false) inkPass(c, x * CK.s, y * CK.s, w * CK.s, h * CK.s, pn.ink || {});
     if (CK.ink_) { c.save(); c.setTransform(CK.s, 0, 0, CK.s, 0, 0); c.strokeStyle = CK.ink; c.lineWidth = 4; c.strokeRect(x, y, w, h); c.restore(); }
   }
 }

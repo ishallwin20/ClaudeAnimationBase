@@ -18,7 +18,7 @@ Play Books / Kindle), a web reader on rishikatha.com (with read-through analytic
 measure for ~10 days, then commit to the season (or not). Don't build 12 before the market says yes.
 
 **Owner's decisions (14 Nov 2026):** Season 1 = CHIRANJEEVI; Issue 1 is free, with a Season Pass pre-order; Issue 1
-launches in English and Hindi on the same day. Still open: the art look (decided by the style test in step 2).
+launches in English and Hindi on the same day. Art look: **Inked** (owner, 14 Nov, after the style test; see COMIC_GUIDE.md).
 
 ---
 
@@ -137,7 +137,7 @@ Then launch, ~10 days of numbers, the gate. If go: an issue every ~2 weeks betwe
 | # | Issue | Branch | Script | Art look | Built | Launched | Results |
 |---|---|---|---|---|---|---|---|
 | 0 | The Eight (IG carousel) | | | | | | |
-| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | style test pp. 11–14 in A and B (14 Nov), owner to pick | | | |
+| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | **Inked** (owner, 14 Nov); thumbnails of all 41 pages 14 Nov, pp. 11–14 drawn | | | |
 | 2 | Hanuman | | | | | | |
 | 3 | Bali | | | | | | |
 | 4 | Vibhishana | | | | | | |
