@@ -178,9 +178,11 @@ ART.dronaRage = (c, P) => {
   person(c, 400, P.h * .84 - 20, .5, { ...CAST.drona, dress: 'armor', longHair: true, look: [-.9, 0], fierce: 1, pain: 0, arms: { l: 'bow', r: 'draw' }, props: { l: 'bow' }, drawTo: [70, -706] }, DUSTL);
 };
 ART.krishnaPlan = (c, P) => {
+  // Krishna (left) speaks; Arjuna (right) turns away from it
   sky(c, [[0, '#5A2410'], [P.h, '#1A0A06']]);
-  glow(c, P.w * .7, 120, 360, '#FFB070', .45);
-  bust(c, P.w * .5, 440, 1.6, { ...CAST.krishna, look: [-.3, .1], smile: .15, pain: 0 }, DUSTL);
+  glow(c, P.w * .5, 120, 460, '#FFB070', .4);
+  bust(c, 850, 430, 1.45, { ...CAST.arjuna, eyes: .12, pain: .7, look: [.8, .3] }, DUSTL);
+  bust(c, 230, 410, 1.5, { ...CAST.krishna, look: [.5, .1], fierce: .25, pain: 0 }, DUSTL);
 };
 ART.arjunaNo = (c, P) => {
   sky(c, [[0, '#4A1A0C'], [P.h, '#140806']]);
@@ -209,34 +211,47 @@ ART.bhimaShout = (c, P) => {
 ART.dronaAsks = (c, P) => {
   sky(c, [[0, '#6A2A12'], [P.h, '#1A0A06']]);
   glow(c, P.w, 60, 380, '#FFB070', .45);
-  bust(c, P.w * .46, 470, 1.65, { ...CAST.drona, dress: 'armor', longHair: true, pain: .75, eyes: 1, look: [.7, 0] }, DUSTL);
+  bust(c, 270, 370, 2.05, { ...CAST.drona, dress: 'armor', longHair: true, pain: .75, eyes: 1, look: [.7, 0] }, DUSTL, { k: 1.2 });
 };
 ART.yudhiLies = (c, P) => {
   sky(c, [[0, '#5A2410'], [P.h, '#140806']]);
   glow(c, 0, 60, 380, '#FFB070', .4);
-  bust(c, P.w * .4, 480, 1.65, { ...CAST.yudhi, eyes: .35, look: [-.2, 1], pain: .55 }, DUSTL);
+  bust(c, 770, 400, 2.05, { ...CAST.yudhi, eyes: .35, look: [-.2, 1], pain: .55 }, DUSTL, { k: 1.2 });
 };
 ART.chariotTouches = (c, P) => {
-  sky(c, [[0, '#7A3A18'], [P.h * .8, '#C87A3A'], [P.h, '#3A1A0A']]);
-  c.fillStyle = '#3A1C0C'; c.fillRect(0, P.h * .86, P.w, P.h); fillPath(c, `M 0 ${P.h * .86} L ${P.w} ${P.h * .86} L ${P.w} ${P.h * .88} L 0 ${P.h * .88} Z`, '#5A2E14');
-  // the car's floor above the wheel
-  fillPath(c, `M -20 ${P.h * .86 - 470} L ${P.w * .9} ${P.h * .86 - 470} L ${P.w * .9} ${P.h * .86 - 420} L -20 ${P.h * .86 - 420} Z`, '#3A2014');
-  figure(c, (f) => wheel(f, P.w * .55, P.h * .86 - 230, 236, { col: '#5A3420' }), lit(DUSTL, { k: .9 }));
-  for (let i = 0; i < 14; i++) { const s = hash(i) < .5 ? -1 : 1; glow(c, P.w * .55 + s * (40 + hash(i + 1) * 260), P.h * .84 - hash(i + 3) * 60, 40 + hash(i + 5) * 50, '#D89A5A', .5, 'source-over'); }
+  // the wheel slams down into the ground: the earth cracks, the dust bursts out both ways
+  const G = P.h * .72, wx = P.w * .52, wy = G - 196, R = 236;
+  sky(c, [[0, '#5A2410'], [G, '#C8703A'], [P.h, '#3A1A0A']]);
+  c.fillStyle = '#3A1C0C'; c.fillRect(0, G, P.w, P.h);
+  fillPath(c, `M 0 ${G} L ${P.w} ${G} L ${P.w} ${G + 12} L 0 ${G + 12} Z`, '#5A2E14');
+  c.save(); c.translate(wx, G); c.rotate(-.04);
+  fillPath(c, `M -560 ${-196 - R - 60} L 520 ${-196 - R - 60} L 520 ${-196 - R} L -560 ${-196 - R} Z`, '#3A2014');   // the car's floor
+  strokePath(c, `M -540 ${-196 - R - 60} L 500 ${-196 - R - 60}`, '#C8902E', 6);
+  c.restore();
+  figure(c, (f) => wheel(f, wx, wy, R, { col: '#5A3420' }), lit(DUSTL, { k: .9 }));
+  // the crater and the cracks, dark
+  fillPath(c, `M ${wx - 250} ${G} C ${wx - 180} ${G + 30} ${wx + 180} ${G + 30} ${wx + 250} ${G} Z`, '#1E0C04');
+  const rc = lcg(12);
+  for (let i = 0; i < 9; i++) { let x = wx + (rc() - .5) * 200, y = G + 10; const s = i % 2 ? 1 : -1, pts = [[x, y]]; for (let j = 0; j < 5; j++) { x += s * (50 + rc() * 70); y += 8 + rc() * 22; pts.push([x, y]); } strokePath(c, 'M ' + pts.map(q => q.join(' ')).join(' L '), '#160802', 5 - i * .3); }
+  // the dust thrown out both ways, and clods in the air
+  for (let i = 0; i < 26; i++) { const s = hash(i) < .5 ? -1 : 1, d = 120 + hash(i + 1) * 380; glow(c, wx + s * d, G - 20 - hash(i + 3) * 120 * (1 - d / 600), 50 + hash(i + 5) * 70, '#D89A5A', .55, 'source-over'); }
+  for (let i = 0; i < 16; i++) { const s = hash(i + 40) < .5 ? -1 : 1; ellipse(c, wx + s * (160 + hash(i + 41) * 300), G - 60 - hash(i + 42) * 200, 6 + hash(i) * 8, 5 + hash(i + 1) * 6, '#2A1408', hash(i)); }
+  for (const s of [-1, 1]) for (let i = 0; i < 4; i++) strokePath(c, `M ${wx + s * (270 + i * 30)} ${G - 20 - i * 30} q ${s * 60} -30 ${s * 140} -20`, rgba('#FFE0B0', .6), 3);   // the shock
+  for (const s of [-1, 1]) for (let i = 0; i < 3; i++) strokePath(c, `M ${wx + s * (R + 30 + i * 26)} ${wy - 150 - i * 40} C ${wx + s * (R + 50 + i * 26)} ${wy - 60} ${wx + s * (R + 40 + i * 26)} ${wy + 40} ${wx + s * (R + 16 + i * 20)} ${wy + 120}`, rgba('#FFF0D0', .75 - i * .2), 6 - i);   // it came down hard
 };
 
 // ---------- p9 · Drona falls ----------
 ART.dronaDown = (c, P) => {
   sky(c, [[0, '#4A160C'], [P.h * .6, '#C85A28'], [P.h, '#2A0C06']]);
   glow(c, P.w * .5, P.h * .55, 300, '#FFC070', .5);
-  bust(c, P.w * .5, 400, 1.35, { ...CAST.drona, dress: 'armor', longHair: true, eyes: 0, pain: 0 }, DUSTL);
+  bust(c, 300, 330, 1.8, { ...CAST.drona, dress: 'armor', longHair: true, eyes: 0, pain: 0 }, DUSTL, { k: 1.2 });
   // his bow, laid down across the chariot's floor in front of him
-  figure(c, (f) => { f.save(); f.translate(P.w * .5, P.h - 40); f.rotate(-.18); strokePath(f, 'M -300 0 C -150 -70 150 -70 300 0', '#3A2414', 16); strokePath(f, 'M -300 0 L 300 0', '#D8C8A0', 2.5); for (const s of [-1, 1]) ellipse(f, s * 300, 0, 10, 10, '#C8902E'); f.restore(); }, lit(DUSTL));
+  figure(c, (f) => { f.save(); f.translate(P.w * .52, P.h - 40); f.rotate(-.18); strokePath(f, 'M -300 0 C -150 -70 150 -70 300 0', '#3A2414', 16); strokePath(f, 'M -300 0 L 300 0', '#D8C8A0', 2.5); for (const s of [-1, 1]) ellipse(f, s * 300, 0, 10, 10, '#C8902E'); f.restore(); }, lit(DUSTL));
 };
 ART.arjunaShout = (c, P) => {
   sky(c, [[0, '#5A2410'], [P.h, '#140806']]);
-  glow(c, P.w, 120, 360, '#FFB070', .4);
-  bust(c, P.w * .5, 440, 1.5, { ...CAST.arjuna, mouth: .8, pain: .7, look: [-.5, 0] }, DUSTL);
+  glow(c, 0, 120, 420, '#FFB070', .4);
+  bust(c, 790, 310, 1.75, { ...CAST.arjuna, mouth: .8, pain: .7, look: [-.6, 0] }, DUSTL, { k: 1.2 });
 };
 ART.dronaDeath = (c, P) => {
   sky(c, [[0, '#1A0606'], [P.h * .5, '#8A1E10'], [P.h * .72, '#E86A2A'], [P.h, '#1A0606']]);
@@ -267,30 +282,36 @@ ART.lakeDusk = (c, P) => {
 ART.ashVow = (c, P) => {
   sky(c, [[0, '#2A1430'], [P.h, '#0E0810']]);
   glow(c, P.w, P.h * .5, 400, '#E8885A', .4);
-  bust(c, P.w * .48, 385, 1.45, { ash: true, fierce: 1, pain: .1, mouth: .25, look: [-.2, .4], glow: .7 }, { ...WARM, tint: ['#2A1020', .3], rim: { ...WARM.rim, dx: 7, dy: 0 } });
+  lyingBust(c, 840, 560, 1.35, { ...CAST.duryo, dress: 'armor', eyes: .8, look: [-1, -.3], pain: .5, tilt: .25 }, { ...WARM, tint: ['#2A1020', .35] });
+  bust(c, 290, 360, 2, { ash: true, fierce: 1, pain: .1, mouth: .25, look: [.6, .3], glow: .7 }, { ...WARM, tint: ['#2A1020', .3], rim: { ...WARM.rim, dx: 7, dy: 0 } }, { k: 1.2 });
 };
 ART.anoint = (c, P) => {
-  sky(c, [[0, '#2A1430'], [P.h, '#0E0810']]);
-  glow(c, P.w, 60, 360, '#E8885A', .4);
-  bust(c, P.w * .4, 320, 1.4, { ash: true, eyes: 0, pain: 0, look: [0, 1], glow: .6 }, { ...WARM, tint: ['#2A1020', .3], rim: { ...WARM.rim, dx: 7, dy: -2 } });
-  // the pot, tipped, and the water falling on his head
-  const hx = P.w * .4, hy = 320 - 130 * 1.4;
-  strokePath(c, `M ${P.w * .82} 112 C ${P.w * .7} 120 ${hx + 30} 140 ${hx + 6} ${hy}`, rgba('#BFE0FF', .8), 12);
-  strokePath(c, `M ${P.w * .82} 112 C ${P.w * .7} 120 ${hx + 30} 140 ${hx + 6} ${hy}`, rgba('#FFFFFF', .7), 4);
-  for (let i = 0; i < 10; i++) ellipse(c, hx - 60 + hash(i) * 130, hy + hash(i + 3) * 60, 4, 6, rgba('#CFE8FF', .8));
-  figure(c, (f) => { kalash(f, P.w * .9, 120, 1.1, { tip: -2.2 }); limb(f, [[P.w + 40, 40], [P.w * .92, 60]], [56, 48], '#B88660'); }, lit(WARM));
+  // Duryodhana, on the ground at the left, gives the order; Kripa's arm (right) pours the water over the bowed head
+  const W2 = { ...WARM, tint: ['#2A1020', .3], rim: { ...WARM.rim, dx: 7, dy: -2 } };
+  sky(c, [[0, '#2A1430'], [P.h * .7, '#3A1A2A'], [P.h, '#0E0810']]);
+  glow(c, P.w, 60, 420, '#E8885A', .4);
+  c.fillStyle = '#140A10'; c.fillRect(0, P.h * .84, P.w, P.h);
+  const hx = 680, hy0 = 400, k = 1.95, hy = hy0 - 120 * k;
+  bust(c, hx, hy0, k, { ash: true, eyes: 0, pain: 0, look: [0, 1], glow: .6 }, W2, { k: 1.2 });
+  strokePath(c, `M ${P.w * .86} 132 C ${P.w * .78} 140 ${hx + 40} 150 ${hx + 8} ${hy}`, rgba('#BFE0FF', .8), 12);
+  strokePath(c, `M ${P.w * .86} 132 C ${P.w * .78} 140 ${hx + 40} 150 ${hx + 8} ${hy}`, rgba('#FFFFFF', .7), 4);
+  for (let i = 0; i < 12; i++) ellipse(c, hx - 80 + hash(i) * 170, hy + hash(i + 3) * 80, 4, 6, rgba('#CFE8FF', .8));
+  figure(c, (f) => { kalash(f, P.w * .93, 136, 1.15, { tip: -2.2 }); limb(f, [[P.w + 40, 50], [P.w * .95, 76]], [58, 50], MBH.kripa.skin); }, lit(W2));
+  // mirrored, so his body runs off the panel's left edge and his head (top toward Ashwatthama) is all we see of him
+  c.save(); c.translate(2 * 300, 0); c.scale(-1, 1); lyingBust(c, 300, P.h * .8, 1.45, { ...CAST.duryo, dress: 'armor', eyes: 1, look: [-.4, -.8], pain: .4, mouth: .5, tilt: -.3 }, W2, { k: 1.2 }); c.restore();
 };
 ART.riders = (c, P) => {
   sky(c, [[0, '#0A0C1A'], [P.h * .7, '#3A2838'], [P.h, '#0A080E']]);
   glow(c, P.w, P.h * .7, 300, '#C87050', .35);
-  for (const [x, k] of [[60, .5], [180, .42], [-30, .62]]) forestTree(c, x, P.h, k, { col: '#05060B' });
+  for (const [x, k] of [[30, .5], [-40, .62]]) forestTree(c, x, P.h, k, { col: "#05060B" });
   c.fillStyle = '#05060B'; c.fillRect(0, P.h * .88, P.w, P.h);
+  // three riders, apart, galloping to screen left into the forest; each sits astride, leaning toward the horse's head
   figure(c, (f) => {
-    for (const [x, ph, k] of [[420, 0, .4], [640, 1.1, .38], [860, 2.2, .36]]) sil(f, x, P.h * .94, k, true, (g) => {
+    for (const [x, ph, k] of [[230, 0, .5], [560, 1.3, .48], [880, 2.4, .46]]) sil(f, x, P.h * .95, k, true, (g) => {
       horse(g, { gallop: ph, t: 3 });
-      g.save(); g.translate(-10, -290); manSil(g, { pose: 'ride', head: 'knot' }); g.restore();
+      g.save(); g.translate(10, -300); g.scale(-1, 1); manSil(g, { pose: 'ride', head: 'knot' }); g.restore();
     });
-  }, lit({ tint: ['#08080E', .86], edge: { col: '#E8A890', w: 1.4, a: .5 }, rim: { col: '#FFC8A8', dx: 3, dy: -3, a: .8 } }));
+  }, lit({ tint: ['#08080E', .86], edge: { col: '#E8A890', w: 1.6, a: .6 }, rim: { col: '#FFC8A8', dx: -3, dy: -3, a: .9 } }));
 };
 
 // ---------- p40 · facts, p41 · the back page ----------
@@ -331,10 +352,12 @@ const person = (c, x, y, k, o, L, lo = {}) => figure(c, (f) => { f.save(); f.tra
 const ashBoyHead = (c) => { mbhHead(c, { pal: ASH, bun: true, kundala: 'ring', look: [-.4, 0], smile: .2 }); ashGem(c, 1); };
 // Kripi: Sita's figure in Kripi's colours is not needed; Sita's rig with a baby in her arms
 function kripiWithBaby(c) {
-  sita(c, { pose: 'stand', look: [.6, .3], eyes: .7, wind: .1 });
-  // the swaddled baby across her chest, her forearms round it
-  ellipse(c, 20, -600, 120, 62, '#EDE2CC', -.15); for (let i = 0; i < 4; i++) strokePath(c, `M ${-80 + i * 40} -630 q 20 30 0 64`, rgba('#B8A888', .8), 3);
-  c.save(); c.translate(110, -628); c.scale(.32, .32); babyHead(c, { cry: 0 }); c.restore();
-  limb(c, [[-96, -560], [0, -548], [96, -580]], [38, 34, 30], SITA.skin); limb(c, [[96, -560], [20, -640], [-60, -660]], [36, 32, 28], SITA.skinSh);
-  for (const [x, y] of [[80, -578], [-50, -655]]) ellipse(c, x, y, 7, 18, SITA.gold, .3);
+  // the swaddled baby lies across her chest, his head in the crook of her arm (screen right), his face up to us
+  sita(c, { pose: 'stand', cradle: true, look: [.5, .7], eyes: .6, wind: .1, inArms: (g) => {
+    const B = 'M -130 -600 C -140 -652 -70 -684 20 -680 C 100 -676 150 -654 160 -614 C 166 -570 120 -546 30 -544 C -60 -544 -122 -558 -130 -600 Z';
+    fillPath(g, B, '#EDE2CC'); inside(g, B, () => { for (let i = 0; i < 5; i++) strokePath(g, `M ${-100 + i * 40} -680 q 16 64 -2 134`, rgba('#B8A888', .7), 3); });
+    ellipse(g, 122, -632, 76, 72, '#F4EBD8');   // the cloth round his head
+    g.save(); g.translate(124, -628); g.rotate(-.45); g.scale(.52, .52); babyHead(g, { cry: 0, eyes: 0 }); g.restore();
+    strokePath(g, 'M 56 -676 C 96 -716 176 -706 200 -646', '#D8CCB2', 7);   // the hood's edge
+  } });
 }

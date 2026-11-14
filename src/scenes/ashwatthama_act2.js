@@ -97,18 +97,20 @@ ART.wakeThem = (c, P) => {
 };
 ART.kripaAdvice = (c, P) => {
   BANYAN_NIGHT(c, P);
-  bust(c, P.w * .3, 420, 2, { ...CAST.kripa, dress: 'armor', eyes: .9, look: [.4, 0], pain: .45, smile: 0 }, NIGHTFACE, { k: 1.3 });
+  bust(c, 250, 400, 2, { ...CAST.kripa, dress: 'armor', eyes: .9, look: [.5, 0], pain: .45, smile: 0 }, NIGHTFACE, { k: 1.3 });
 };
 ART.ashRefuse = (c, P) => {
-  sky(c, [[0, '#04050A'], [P.h, '#0C1224']]);
-  glow(c, 200, 80, 420, '#5E76AE', .3);
-  bust(c, 300, 420, 2.5, { ash: true, eyes: 1, fierce: 1, pain: .45, mouth: .25, look: [.3, 0], glow: .45 }, NIGHTFACE, { k: 1.5 });
-  for (const s of [-1, 1]) { c.save(); at(c, 300, 420, 2.5, -815); ellipse(c, s * 19, -812, 9, 2, rgba('#DDEEFF', .7)); c.restore(); }   // the eyes wet
+  // the answer, close and hard: a red glow of rage behind him, the moon's edge on his face
+  const x = 290, y = 400, k = 2.75;
+  sky(c, [[0, '#0A0610'], [P.h * .6, '#1A0A14'], [P.h, '#06040A']]);
+  glow(c, x, y - 40, 520, '#8A1A2A', .55); glow(c, x, y - 40, 260, '#C8303A', .3);
+  rays(c, x, y - 60, { n: 14, dir: -Math.PI / 2, spread: 6.2, len: 760, w: 90, col: '#5A1020', a: .35, t: 1, seed: 4 });
+  bust(c, x, y, k, { ash: true, eyes: 1, fierce: 1, pain: .55, mouth: .45, look: [.35, 0], glow: .5 }, { ...NIGHTFACE, rim: { col: '#FFB8A8', dx: -7, dy: -3, a: .85, blur: 1 } }, { k: 1.5 });
+  for (const s of [-1, 1]) { c.save(); at(c, x, y, k, -815); ellipse(c, s * 19, -812, 9, 2, rgba('#DDEEFF', .7)); c.restore(); }   // the eyes wet
 };
 ART.kripaWarn = (c, P) => {
   BANYAN_NIGHT(c, P);
-  bust(c, 230, 420, 1.8, { ...CAST.kripa, dress: 'armor', eyes: 1, look: [.9, 0], pain: .7 }, NIGHTFACE, { k: 1.2 });
-  figure(c, (f) => { sil(f, 820, P.h * .98, .3, true, (g) => manSil(g, { pose: 'walk', head: 'knot', prop: 'bow', quiver: true })); sil(f, 700, P.h * .98, .29, true, (g) => manSil(g, { pose: 'walk', head: 'knot' })); }, lit(NIGHTSIL));
+  bust(c, 250, 330, 1.95, { ...CAST.kripa, dress: 'armor', eyes: 1, look: [.7, 0], pain: .7 }, NIGHTFACE, { k: 1.2 });
 };
 
 // ---------- p17 · the being at the gate ----------
@@ -191,16 +193,16 @@ ART.shivaAppears = (c, P) => {
 };
 ART.shivaTime = (c, P) => {
   sky(c, [[0, '#1A0604'], [P.h, '#0A0204']]);
-  glow(c, P.w * .5, P.h * .7, 340, '#FF8A2A', .4);
-  figure(c, (f) => { at(f, P.w * .5, 430, 2.2, -815); shivaHead(f, { eyes: .8, look: [0, 0], third: .3 }); }, lit(FIRELIT, { k: 1.4 }));
+  glow(c, 770, P.h * .7, 340, '#FF8A2A', .4);
+  figure(c, (f) => { at(f, 770, 340, 2.2, -815); shivaHead(f, { eyes: .8, look: [-.4, 0], third: .3 }); }, lit(FIRELIT, { k: 1.4 }));
 };
 ART.swordGiven = (c, P) => {
   sky(c, [[0, '#2A0A04'], [P.h, '#0A0204']]);
-  glow(c, P.w * .5, P.h * .55, 380, '#FFD27A', .7);
-  rays(c, P.w * .5, P.h * .55, { n: 12, dir: -Math.PI / 2, spread: 3, len: 520, w: 140, col: '#FFE7A6', a: .5, t: 1, seed: 6 });
-  // the sword held up before him, blazing
-  c.save(); c.translate(P.w * .76, P.h * .98); c.rotate(-.1); fillPath(c, 'M -12 0 L 12 0 L 10 -440 L 0 -480 L -10 -440 Z', '#E8EEF8'); glow(c, 0, -240, 120, '#FFFFFF', .5); fillPath(c, 'M -46 -6 L 46 -6 L 40 10 L -40 10 Z', '#D9A441'); c.restore();
-  bust(c, P.w * .42, 470, 1.6, { ash: true, eyes: 1, fierce: .8, pain: 0, look: [0, -.3], glow: 1.4 }, { ...FIRELIT, tint: ['#5A3006', .25], rim: { col: '#FFF4D0', dx: 0, dy: -7, a: 1, blur: 1 } }, { k: 1.3 });
+  glow(c, 330, P.h * .5, 460, '#FFD27A', .7);
+  rays(c, 330, P.h * .5, { n: 14, dir: -Math.PI / 2, spread: 3, len: 700, w: 150, col: '#FFE7A6', a: .5, t: 1, seed: 6 });
+  // the sword held up beside him, blazing
+  c.save(); c.translate(620, P.h * 1.02); c.rotate(.08); fillPath(c, 'M -14 0 L 14 0 L 12 -520 L 0 -566 L -12 -520 Z', '#E8EEF8'); glow(c, 0, -280, 140, '#FFFFFF', .5); fillPath(c, 'M -52 -6 L 52 -6 L 46 12 L -46 12 Z', '#D9A441'); c.restore();
+  bust(c, 330, 380, 2.1, { ash: true, eyes: 1, fierce: .8, pain: 0, look: [.3, -.3], glow: 1.4 }, { ...FIRELIT, tint: ['#5A3006', .25], rim: { col: '#FFF4D0', dx: 0, dy: -7, a: 1, blur: 1 } }, { k: 1.3 });
 };
 
 // ---------- p21 · into the camp ----------
@@ -212,26 +214,51 @@ ART.noGate = (c, P) => {
   for (let x = 0; x < P.w; x += 26) { if (x > 610 && x < 760) continue; fillPath(c, `M ${x} ${P.h} L ${x} ${P.h * .7 + hash(x) * 20} L ${x + 9} ${P.h * .68 + hash(x) * 20} L ${x + 18} ${P.h * .7 + hash(x) * 20} L ${x + 18} ${P.h} Z`, '#0A0C14'); }
   ashPerson(c, 690, P.h * .98, .46, { arms: { l: 'down', r: [[200, -600], [230, -480]] }, props: { r: 'sword' }, swordA: .4 }, { eyes: 1, fierce: .7, look: [-.6, 0] }, NIGHTFACE);
 };
+// Dhrishtadyumna asleep on his back, seen from above: the head at (hx, hy) with its top toward screen left, the body
+// under a white silk sheet out to screen right, so the neck is never bare
+function dhrInBed(c, P, hx, hy, k, h, L, lo) {
+  figure(c, (f) => {
+    f.save(); f.translate(hx, hy); f.rotate(-Math.PI / 2 + .12); f.scale(k, k); f.translate(0, 815); mbhHead(f, { ...CAST.dhrish, crown: false, bun: true, ...h }); f.restore();
+    const n = hx + 62 * k;   // where the sheet starts, under the chin: the shoulders round out, then the body tapers
+    const SH = `M ${n} ${hy - 70 * k} C ${n + 20 * k} ${hy - 130 * k} ${n + 70 * k} ${hy - 140 * k} ${n + 130 * k} ${hy - 138 * k} C ${n + 300 * k} ${hy - 130 * k} ${n + 520 * k} ${hy - 110 * k} ${P.w + 40} ${hy - 100 * k} L ${P.w + 40} ${hy + 110 * k} C ${n + 520 * k} ${hy + 120 * k} ${n + 300 * k} ${hy + 140 * k} ${n + 130 * k} ${hy + 146 * k} C ${n + 70 * k} ${hy + 148 * k} ${n + 20 * k} ${hy + 136 * k} ${n} ${hy + 76 * k} C ${n - 8 * k} ${hy + 30 * k} ${n - 8 * k} ${hy - 30 * k} ${n} ${hy - 70 * k} Z`;
+    fillPath(f, SH, '#ECE4D4');
+    inside(f, SH, () => {
+      fillPath(f, `M ${n} ${hy + 40 * k} C ${n + 200 * k} ${hy + 90 * k} ${n + 500 * k} ${hy + 80 * k} ${P.w + 40} ${hy + 70 * k} L ${P.w + 40} ${hy + 200 * k} L ${n} ${hy + 200 * k} Z`, '#D6CCB8');   // the side in shadow
+      for (let i = 0; i < 5; i++) strokePath(f, `M ${n + (90 + i * 110) * k} ${hy - 140 * k} C ${n + (130 + i * 110) * k} ${hy - 40 * k} ${n + (110 + i * 120) * k} ${hy + 40 * k} ${n + (160 + i * 120) * k} ${hy + 150 * k}`, rgba('#BCAE96', .7), 2.5);
+    });
+    strokePath(f, `M ${n} ${hy - 70 * k} C ${n - 8 * k} ${hy - 30 * k} ${n - 8 * k} ${hy + 30 * k} ${n} ${hy + 76 * k}`, '#F8F4EA', 5);   // the sheet's hem at his chin
+  }, lit(L, lo));
+}
 ART.dhrSleep = (c, P) => {
   sky(c, [[0, '#2A1608'], [P.h, '#120A04']]);
   glow(c, P.w * .85, P.h * .2, 300, '#FFB060', .4);
   // white silk, seen from above, a pillow, flowers scattered
-  fillPath(c, `M 40 ${P.h * .36} L ${P.w - 20} ${P.h * .32} L ${P.w + 40} ${P.h} L -40 ${P.h} Z`, '#EEE8DC');
-  for (let i = 0; i < 6; i++) strokePath(c, `M ${60 + i * 80} ${P.h * .4} C ${80 + i * 80} ${P.h * .6} ${40 + i * 90} ${P.h * .8} ${30 + i * 100} ${P.h}`, rgba('#C8BCA8', .7), 3);
-  ellipse(c, 230, P.h * .52, 170, 90, '#F6F2EA');
-  for (let i = 0; i < 12; i++) { const x = 60 + hash(i) * (P.w - 100), y = P.h * .4 + hash(i + 7) * P.h * .55; for (let k = 0; k < 5; k++) ellipse(c, x + Math.cos(k * 1.26) * 7, y + Math.sin(k * 1.26) * 7, 6, 4, i % 2 ? '#F2C8D0' : '#F8E8A0', k * 1.26); ellipse(c, x, y, 3, 3, '#D8A030'); }
-  figure(c, (f) => {
-    f.save(); f.translate(240, P.h * .54); f.rotate(-Math.PI / 2 + .25); f.scale(1.25, 1.25); f.translate(0, 815); mbhHead(f, { ...CAST.dhrish, eyes: 0, pain: 0, crown: false, bun: true }); f.restore();
-    fillPath(f, `M 290 ${P.h * .4} C 400 ${P.h * .36} ${P.w} ${P.h * .44} ${P.w + 20} ${P.h * .6} L ${P.w + 20} ${P.h * .9} C 400 ${P.h * .86} 330 ${P.h * .7} 290 ${P.h * .62} Z`, '#E6DCC8');   // his body under the silk
-  }, lit(LAMP, { k: 1.2 }));
-  for (let i = 0; i < 3; i++) strokePath(c, `M ${P.w - 60 + i * 10} ${P.h * .3} C ${P.w - 80} ${P.h * .2} ${P.w - 40} ${P.h * .14} ${P.w - 70 + i * 12} 30`, rgba('#D8D0C0', .35), 3);   // incense
+  fillPath(c, `M -20 ${P.h * .18} L ${P.w + 20} ${P.h * .14} L ${P.w + 20} ${P.h} L -20 ${P.h} Z`, '#F2EDE2');
+  ellipse(c, 210, P.h * .58, 190, 150, '#F8F4EC');
+  for (let i = 0; i < 16; i++) { const x = 40 + hash(i) * (P.w - 80), y = P.h * .22 + hash(i + 7) * P.h * .74; if (Math.abs(x - 500) < 380 && Math.abs(y - P.h * .58) < 170) continue; for (let k = 0; k < 5; k++) ellipse(c, x + Math.cos(k * 1.26) * 7, y + Math.sin(k * 1.26) * 7, 6, 4, i % 2 ? '#F2C8D0' : '#F8E8A0', k * 1.26); ellipse(c, x, y, 3, 3, '#D8A030'); }
+  dhrInBed(c, P, 250, P.h * .58, 1.3, { eyes: 0, pain: 0 }, LAMP, { k: 1.2 });
+  for (let i = 0; i < 3; i++) strokePath(c, `M ${P.w - 60 + i * 10} ${P.h * .5} C ${P.w - 80} ${P.h * .36} ${P.w - 40} ${P.h * .26} ${P.w - 70 + i * 12} ${P.h * .12}`, rgba('#D8D0C0', .45), 3);   // incense
 };
+// a bare foot from the side, the sole flat on y = 0, the toes toward -x, the shin rising to the ankle at (6, -70)
+function bareFoot(c, S, o = {}) {
+  if (o.cloth) limb(c, [[14, -640], [10, -330]], [150, 118], o.cloth);   // the dhoti's hem over the shin
+  limb(c, [[12, -380], [6, -70]], [76, 60], S.skin);
+  const F = 'M 46 -96 C 58 -50 60 -10 40 8 C 20 18 -40 16 -120 16 C -170 16 -196 8 -198 -8 C -198 -22 -180 -30 -150 -38 C -96 -52 -50 -74 -26 -104 Z';
+  fillPath(c, F, S.skin);
+  inside(c, F, () => { fillPath(c, 'M 60 -120 L 60 20 L 20 20 C 30 -20 30 -70 14 -120 Z', S.skinSh); strokePath(c, 'M -40 -70 C -80 -50 -130 -40 -170 -34', rgba(S.skinSh, .8), 3); });
+  for (let i = 0; i < 4; i++) ellipse(c, -186 + i * 17, 2 - i * 4, 15 - i * 1.5, 12, S.skin);   // the toes
+  for (let i = 0; i < 4; i++) strokePath(c, `M ${-178 + i * 17} -10 l 0 14`, rgba(S.skinDk, .6), 1.6);
+  ellipse(c, 2, -92, 40, 12, S.gold || '#E2AE45');   // an anklet
+  for (let i = 0; i < 7; i++) ellipse(c, -32 + i * 11, -84, 4, 4, '#F0D080');
+}
 ART.kickWake = (c, P) => {
   sky(c, [[0, '#2A1608'], [P.h, '#120A04']]);
-  fillPath(c, `M 0 0 L ${P.w} 0 L ${P.w} ${P.h} L 0 ${P.h} Z`, '#E6DCC8');
-  figure(c, (f) => { f.save(); f.translate(P.w * .42, P.h * .62); f.rotate(-Math.PI / 2 + .25); f.scale(2.2, 2.2); f.translate(0, 815); mbhHead(f, { ...CAST.dhrish, eyes: 1, look: [0, -1], pain: .3, fierce: .2, crown: false, bun: true }); f.restore(); }, lit(LAMP, { k: 1.3 }));
-  // a foot pressing his shoulder, from above
-  figure(c, (f) => { f.save(); f.translate(P.w * .62, -30); f.rotate(.15); limb(f, [[60, -40], [40, 220]], [96, 74], '#0C0A10'); fillPath(f, 'M 0 200 C -10 250 -60 280 -150 290 C -180 292 -190 270 -170 258 C -110 240 -60 220 -40 190 Z', '#0C0A10'); fillPath(f, 'M -6 196 C 20 230 60 260 80 250 L 84 200 Z', '#0C0A10'); f.restore(); }, lit({ tint: ['#0C0604', .9], edge: { col: '#FFD9A0', w: 1.6, a: .6 }, rim: { col: '#9FE4FF', dx: 0, dy: 3, a: .8 } }));
+  fillPath(c, `M 0 0 L ${P.w} 0 L ${P.w} ${P.h} L 0 ${P.h} Z`, '#F2EDE2');
+  const hx = 300, hy = P.h * .68, k = 1.8;
+  dhrInBed(c, P, hx, hy, k, { eyes: 1, look: [.3, -1], pain: .4, fierce: .2 }, LAMP, { k: 1.3 });
+  // Ashwatthama's bare foot, from above, pressing down on the shoulder under the sheet
+  figure(c, (f) => { f.save(); f.translate(hx + 62 * k + 200, hy - 132 * k); f.rotate(-.1); f.scale(1.15, 1.15); bareFoot(f, ASH, { cloth: ASH.cloth }); f.restore(); }, lit(LAMP, { k: 1.2 }));
+  glow(c, P.w * .8, 40, 220, '#9FE4FF', .25);
 };
 
 // ---------- p22 · "kill me with a weapon" ----------
@@ -240,11 +267,11 @@ ART.dhrPinned = (c, P) => {
   glow(c, 260, P.h * .4, 380, '#7FD8FF', .25);
   figure(c, (f) => { f.save(); f.translate(280, P.h * .62); f.rotate(.35); f.scale(2.3, 2.3); f.translate(0, 815); mbhHead(f, { ...CAST.dhrish, eyes: 1, look: [.6, -1], pain: .9, mouth: .8, crown: false, bun: true }); f.restore(); }, lit({ ...LAMP, rim: { col: '#CFF0FF', dx: 4, dy: -6, a: .8, blur: 1 } }, { k: 1.4 }));
   // a fist in his hair
-  figure(c, (f) => { f.save(); f.translate(356, 92); f.rotate(.35); limb(f, [[-40, -40], [-180, -220]], [90, 80], ASH.armor); fillPath(f, 'M -60 -40 C -66 -80 -20 -96 30 -80 C 70 -66 80 -20 60 10 C 30 30 -40 26 -60 -40 Z', ASH.skin); for (let i = 0; i < 4; i++) { const x = -40 + i * 26; limb(f, [[x, 0], [x + 4, 34], [x - 6, 54]], [22, 19, 15], ASH.skin); strokePath(f, `M ${x + 10} 6 l 2 26`, ASH.skinDk, 2); } f.restore(); }, lit(LAMP));
+  figure(c, (f) => { f.save(); f.translate(356, P.h * .62 - 217); f.rotate(.35); limb(f, [[-40, -40], [-180, -220]], [90, 80], ASH.armor); fillPath(f, 'M -60 -40 C -66 -80 -20 -96 30 -80 C 70 -66 80 -20 60 10 C 30 30 -40 26 -60 -40 Z', ASH.skin); for (let i = 0; i < 4; i++) { const x = -40 + i * 26; limb(f, [[x, 0], [x + 4, 34], [x - 6, 54]], [22, 19, 15], ASH.skin); strokePath(f, `M ${x + 10} 6 l 2 26`, ASH.skinDk, 2); } f.restore(); }, lit(LAMP));
 };
 ART.ashAnswer = (c, P) => {
   sky(c, [[0, '#06040A'], [P.h, '#1A0E06']]);
-  bust(c, P.w * .74, 370, 1.9, { ash: true, eyes: 1, fierce: 1, pain: 0, look: [-.6, .6], glow: .55 }, { tint: ['#0A0610', .35], edge: { col: '#FFD9A0', w: 2, a: .5 }, rim: { col: '#9FE4FF', dx: 0, dy: 8, a: .9, blur: 1 } }, { k: 1.5 });
+  bust(c, P.w * .76, 380, 2.15, { ash: true, eyes: 1, fierce: 1, pain: 0, look: [-.6, .6], glow: .55 }, { tint: ['#0A0610', .35], edge: { col: '#FFD9A0', w: 2, a: .5 }, rim: { col: '#9FE4FF', dx: 0, dy: 8, a: .9, blur: 1 } }, { k: 1.5 });
 };
 ART.black = (c, P) => { c.fillStyle = '#000'; c.fillRect(0, 0, P.w, P.h); };
 
@@ -276,8 +303,8 @@ const DAWNL = { tint: ['#2A1A20', .15], edge: { col: '#FFD9B0', w: 2, a: .5 }, r
 ART.women = (c, P) => {
   sky(c, [[0, '#2A1608'], [P.h, '#0A0604']]);
   glow(c, P.w * .5, P.h * .2, 360, '#FFB060', .35);
-  wbust(c, 150, 440, 1.5, { pal: CAMPWOMAN[0], veil: true, look: [.6, -.2] }, LAMP, { k: 1.2 });
-  wbust(c, 370, 470, 1.5, { pal: CAMPWOMAN[1], look: [-.6, -.2] }, LAMP, { k: 1.2 });
+  wbust(c, 150, 470, 1.4, { pal: CAMPWOMAN[0], veil: true, look: [.6, -.2] }, LAMP, { k: 1.2 });
+  wbust(c, 370, 490, 1.4, { pal: CAMPWOMAN[1], look: [-.6, -.2] }, LAMP, { k: 1.2 });
 };
 ART.guardsFall = (c, P) => {
   sky(c, [[0, '#04060E'], [P.h, '#0A0C18']]);
@@ -345,11 +372,11 @@ ART.dawnLake = (c, P) => {
 };
 ART.duryoSmile = (c, P) => {
   sky(c, [[0, '#4A3424'], [P.h, '#2A1A14']]);
-  lyingBust(c, P.w * .5, P.h * .68, 2.1, { ...CAST.duryo, dress: 'armor', eyes: .7, look: [0, -1], pain: .3, smile: .7, tilt: .5 }, DAWNL, { k: 1.3 });
+  lyingBust(c, P.w * .5, P.h * .76, 2.1, { ...CAST.duryo, dress: 'armor', eyes: .7, look: [0, -1], pain: .3, smile: .7, tilt: .5 }, DAWNL, { k: 1.3 });
 };
 ART.duryoDies = (c, P) => {
   sky(c, [[0, '#4A3424'], [P.h, '#2A1A14']]);
-  lyingBust(c, P.w * .5, P.h * .62, 2.1, { ...CAST.duryo, dress: 'armor', eyes: 0, pain: 0, smile: .2, tilt: .2 }, { ...DAWNL, tint: ['#2A2030', .3] }, { k: 1.3 });
+  lyingBust(c, P.w * .5, P.h * .72, 2.1, { ...CAST.duryo, dress: 'armor', eyes: 0, pain: 0, smile: .2, tilt: .2 }, { ...DAWNL, tint: ['#2A2030', .3] }, { k: 1.3 });
 };
 
 // ---------- p28 · Draupadi ----------
@@ -362,7 +389,9 @@ ART.draupadiGrief = (c, P) => {
 };
 ART.draupadiFast = (c, P) => {
   sky(c, [[0, '#6A6A72'], [P.h, '#2A2420']]);
-  wbust(c, P.w * .5, 420, 1.6, { pal: DRAUPADI, look: [-.3, 0], tears: .8 }, DAWNL, { k: 1.3 });
+  for (let i = 0; i < 4; i++) tent(c, 80 + i * 150, P.h * .62, .4, '#4A4248');
+  c.fillStyle = '#3A3230'; c.fillRect(0, P.h * .62, P.w, P.h);
+  wbust(c, 770, 350, 1.95, { pal: DRAUPADI, look: [-.5, 0], tears: .6, fire: .3 }, { ...DAWNL, rim: { ...DAWNL.rim, dx: -6 } }, { k: 1.3 });
 };
 ART.draupadiGem = (c, P) => {
   sky(c, [[0, '#4A3A3A'], [P.h, '#1A1416']]);
@@ -382,7 +411,7 @@ ART.krishnaFollows = (c, P) => {
   // Garuda on the flag
   strokePath(c, `M 120 ${P.h} L 110 60`, '#3A2414', 8); fillPath(c, 'M 110 60 L 230 76 L 210 110 L 230 150 L 110 140 Z', '#C8A030');
   c.save(); c.translate(168, 104); c.scale(.6, .6); fillPath(c, 'M 0 -40 C 20 -40 30 -20 24 0 L 60 -20 L 40 10 L 20 14 L 0 50 L -20 14 L -40 10 L -60 -20 L -24 0 C -30 -20 -20 -40 0 -40 Z', '#2A1A0A'); c.restore();
-  bust(c, 800, 520, 1.25, { ...CAST.yudhi, dress: 'armor', eyes: .9, pain: .4, look: [-.4, 0] }, DAWNL);
-  bust(c, 640, 540, 1.3, { ...CAST.arjuna, dress: 'armor', eyes: 1, fierce: .4, look: [-.6, 0] }, DAWNL);
-  bust(c, 270, 470, 1.75, { ...CAST.krishna, eyes: 1, fierce: .3, pain: .2, look: [.5, 0] }, DAWNL, { k: 1.3 });
+  bust(c, 900, 600, 1.25, { ...CAST.yudhi, dress: 'armor', eyes: .9, pain: .4, look: [-.4, 0] }, DAWNL);
+  bust(c, 730, 620, 1.3, { ...CAST.arjuna, dress: 'armor', eyes: 1, fierce: .4, look: [-.6, 0] }, DAWNL);
+  bust(c, 270, 480, 1.75, { ...CAST.krishna, eyes: 1, fierce: .3, pain: .2, look: [.5, 0] }, DAWNL, { k: 1.3 });
 };

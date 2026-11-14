@@ -1,7 +1,9 @@
-# CHIRANJEEVI · Issue 1 · ASHWATTHAMA: *The Night He Didn't Sleep*
+# CHIRANJEEVI · Issue 1 · ASHWATTHAMA: *The Night He Became a Killer*
 
-> Page numbers here are the first draft's. The comic now runs to 44 pages: Day 15 (p7), Kripa's counsel (p15) and the
-> Ganga (p29) were each split into two pages for clarity (owner, 14 Nov). `comic.js` lists the pages in order.
+> Page numbers here are the first draft's. The comic now runs to 48 pages: crowded pages were split for clarity and,
+> after the owner's phone review (14 Nov), every speaker with a balloon got a full-width row; Kripa's warning now
+> comes before Ashwatthama's answer (10.5.15, then 10.5.17–26), the gem's powers are spoken in their own scene
+> (10.15.28) and the chariot "crashes" to the earth (7.164.107: it touched the earth). `comic.js` lists the pages.
 
 Season plan: [CHIRANJEEVI.md](../../CHIRANJEEVI.md). Swipe pages are 4:5 (1080 × 1350 design units, made at 2160 × 2700).
 Every beat below comes from the Mahabharata, critical edition (BORI; text from GRETIL), cited as book.chapter.verse.
@@ -28,7 +30,7 @@ no gold at all.
 
 Ashwatthama from the chest up, head bowed, eyes up at us; the gem on his forehead the only bright thing; behind him
 the banyan full of crows, the owl's two eyes in it. Title: **ASHWATTHAMA**; above it, small, **CHIRANJEEVI · 1**;
-below, *The night he didn't sleep*.
+below, *The night he became a killer*.
 
 ## Cold open (p2–3)
 

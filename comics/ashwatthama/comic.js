@@ -31,7 +31,7 @@ const COMIC = {
   pages: numbered([
     // ---------- cover and cold open ----------
     pg(FULL, [{ art: 'cover', ink: FACE, note: 'Ashwatthama from the chest up, head bowed, eyes up at us; the gem the only bright thing. Behind him the banyan full of crows, the owl\'s two eyes in it.',
-      title: [{ text: 'CHIRANJEEVI · 1', y: .07, size: 40 }, { text: 'ASHWATTHAMA', y: .8, size: 116, col: '#FFE7A6' }, { text: 'The night he didn\'t sleep', y: .875, size: 46, font: 'Kalam' }] }]),
+      title: [{ text: 'CHIRANJEEVI · 1', y: .07, size: 40 }, { text: 'ASHWATTHAMA', y: .8, size: 116, col: '#FFE7A6' }, { text: 'The night he became a killer', y: .875, size: 46, font: 'Kalam' }] }]),
     pg(FULL, [{ art: 'coldWalk', note: 'A forest at night, any century. A cloaked figure walks away from us between the trees, alone.',
       box: [{ text: 'There is a prayer Hindus have recited for centuries. It names eight people who never die.', w: 520 },
         { text: 'अश्वत्थामा बलिर्व्यासो हनूमांश्च विभीषणः ।\nकृपः परशुरामश्च सप्तैते चिरजीविनः ॥', y: .7, w: 760 },
@@ -53,7 +53,7 @@ const COMIC = {
       { art: 'gemWeapon', note: 'Symbol: arrows snapping against a blue light.', box: [{ text: 'No weapon.', x: 16, y: .8, w: 300 }] },
       { art: 'gemHunger', note: 'Symbol: an empty bowl, a dry field, and the blue light.', box: [{ text: 'No hunger.', x: 16, y: .8, w: 300 }] },
       { art: 'gemDisease', note: 'Symbol: a fever\'s red haze held off by the light.', box: [{ text: 'No disease.', x: 16, y: .8, w: 300 }] },
-      { art: 'gemStrip', note: 'Black strip, the gem glowing.', box: [{ text: '"Whoever wears it fears no weapon, no disease, no hunger. Not even gods, demons or nagas," he would say one day.', x: 24, y: 18, w: 900 }] },
+      { art: 'gemStrip', note: 'Black strip, the gem glowing.', box: [{ text: 'As long as he wore it, he had nothing to fear: not weapons, not disease, not hunger. Not even gods, demons or nagas.', x: 24, y: 18, w: 900 }] },
     ]),
     pg([[1.3, [1]], [1, [1]]], [
       { art: 'dronaTeach', note: 'Drona teaching archery to the young Kuru princes; the boy Ashwatthama at his side.',
@@ -61,11 +61,11 @@ const COMIC = {
       { art: 'warRanks', ink: FACE, note: 'Years later: Drona and his grown son in armour, in the Kaurava ranks at Kurukshetra.',
         box: [{ text: 'When the great war came, father and son fought for the Kauravas.', w: 480 }] },
     ]),
-    pg([[1.25, [1]], [1, [1, 1]]], [
+    pg([[1.25, [1]], [1, [1]]], [
       { art: 'dronaRage', note: 'Day 15. Drona\'s chariot cutting through the Pandava army.', box: [{ text: 'Day 15 of the war. No one could stop Drona.', w: 460 }] },
-      { art: 'krishnaPlan', ink: FACE, note: 'Krishna speaking to the Pandavas.',
-        say: [{ text: 'Put dharma aside and win. If Ashwatthama falls, Drona won\'t fight. Let someone tell him so.', x: .5, y: .3, w: 380, tail: [.4, .95] }] },
-      { art: 'arjunaNo', ink: FACE, note: 'Arjuna turning away.', box: [{ text: 'Arjuna refused. The others agreed. Yudhishthira, only just.', x: 16, y: 16, w: 380 }] },
+      { art: 'krishnaPlan', ink: FACE, note: 'Krishna (left) speaking; Arjuna (right) turning away.',
+        say: [{ text: 'Put dharma aside and win. If Ashwatthama falls, Drona won\'t fight. Let someone tell him so.', x: .53, y: .27, w: 400, tail: [.3, .74] }],
+        box: [{ text: 'Arjuna refused. The others agreed. Yudhishthira, only just.', x: .52, y: .78, w: 470 }] },
     ]),
     pg([[1.3, [1]], [1, [1]]], [
       { art: 'elephant', note: 'Bhima\'s mace coming down; an elephant falls. Dust.',
@@ -73,28 +73,35 @@ const COMIC = {
       { art: 'bhimaShout', ink: FACE, note: 'Bhima shouting across the field, not meeting anyone\'s eye.',
         box: [{ text: 'Ashamed, he shouted it at Drona.', w: 400 }], say: [{ text: 'ASHWATTHAMA IS DEAD!', x: .62, y: .55, w: 560, size: 50, tail: [.25, .9] }] },
     ]),
-    pg([[1, [1, 1]], [1, [1]]], [
-      { art: 'dronaAsks', ink: FACE, note: 'Drona, shaken, turns to Yudhishthira: the one man who never lies.', say: [{ text: 'Yudhishthira. Is my son dead?', x: .5, y: .3, w: 340, tail: [.45, .8] }] },
-      { art: 'yudhiLies', ink: FACE, note: 'Yudhishthira, eyes down.',
-        say: [{ text: 'Ashwatthama is dead.', x: .5, y: .2, w: 320, tail: [.36, .75] }, { text: '…the elephant.', x: .78, y: .6, w: 190, kind: 'whisper', size: 24, tail: [.45, .85] }] },
-      { art: 'chariotTouches', note: 'Close on Yudhishthira\'s chariot wheels touching the earth, dust rising.',
-        box: [{ text: 'His chariot had always run four fingers above the ground. Now its wheels touched the earth.', w: 620 }] },
+    pg([[1, [1]], [1, [1]]], [
+      { art: 'dronaAsks', ink: FACE, note: 'Drona (left), shaken, turns to Yudhishthira: the one man who never lies.',
+        say: [{ text: 'Yudhishthira. Is my son dead?', x: .68, y: .3, w: 380, size: 38, tail: [.34, .62] }] },
+      { art: 'yudhiLies', ink: FACE, note: 'Yudhishthira (right), eyes down.',
+        say: [{ text: 'Ashwatthama is dead.', x: .3, y: .22, w: 360, size: 40, tail: [.66, .6] }, { text: '…the elephant.', x: .44, y: .72, w: 220, kind: 'whisper', size: 24, tail: [.68, .66] }] },
     ]),
-    pg([[1, [1, 1]], [1.25, [1]]], [
-      { art: 'dronaDown', note: 'Drona lays down his bow on the chariot floor.', box: [{ text: 'Drona put down his weapons.', w: 380 }] },
-      { art: 'arjunaShout', ink: FACE, note: 'Arjuna, far off, shouting, hand out.', say: [{ text: 'Bring him alive! Don\'t kill him!', x: .5, y: .35, w: 360, tail: [.5, .85] }] },
+    pg([[1.2, [1]], [1, [1]]], [
+      { art: 'chariotTouches', note: 'Yudhishthira\'s chariot wheel slams into the ground: cracks, a burst of dust.',
+        box: [{ text: 'Yudhishthira had never told a lie. His chariot had always run four fingers above the ground.', w: 600 },
+          { text: 'The moment he lied, it crashed down onto the earth.', x: .44, y: .86, w: 540 }],
+        sfx: [{ text: 'KRRUMMP', x: .8, y: .4, size: 84, rot: .12 }] },
+      { art: 'dronaDown', ink: FACE, note: 'Drona, eyes shut, lays down his bow.', box: [{ text: 'Drona put down his weapons.', x: .6, y: 22, w: 380 }] },
+    ]),
+    pg([[.85, [1]], [1.25, [1]]], [
+      { art: 'arjunaShout', ink: FACE, note: 'Arjuna (right), far off, shouting.', say: [{ text: 'Bring him alive! Don\'t kill him!', x: .34, y: .38, w: 400, size: 38, tail: [.64, .6] }] },
       { art: 'dronaDeath', note: 'Dhrishtadyumna on Drona\'s chariot, sword raised against the sky. Cut before the stroke. Far across the field, a small figure: Ashwatthama.',
-        box: [{ text: 'Dhrishtadyumna cut off his head.', w: 440 }, { text: 'His son was across the field. He never forgot that name.', x: .5, y: .8, w: 460 }] },
+        box: [{ text: 'Dhrishtadyumna cut off his head.', w: 440 }, { text: 'His son was across the field. He never forgot that name.', x: .5, y: .82, w: 460 }] },
     ]),
-    pg([[1, [1]], [1, [1, 1]], [.6, [1]]], [
+    pg([[1, [1]], [1, [1]]], [
       { art: 'lakeDusk', note: 'Dusk by a lake. Duryodhana on the ground, thighs broken, his mace beside him.',
         box: [{ text: 'Day 18. The war is lost. Duryodhana lies by a lake, his thighs broken by Bhima.', w: 560 }] },
-      { art: 'ashVow', ink: FACE, note: 'Ashwatthama kneeling by him, fist clenched.',
-        say: [{ text: 'Tonight I will send every Panchala to Yama, with Krishna watching. Give me your leave.', x: .5, y: .34, w: 380, tail: [.5, .85] }] },
-      { art: 'anoint', ink: FACE, note: 'Kripa pours water from a pot over Ashwatthama\'s head; Duryodhana watching from the ground.',
-        say: [{ text: 'Kripa, bring water. Make Drona\'s son my commander.', x: .5, y: .26, w: 340, tail: [.2, .9] }],
-        box: [{ text: 'Commander of an army that no longer existed.', x: 16, y: .86, w: 380, small: true }] },
-      { art: 'riders', note: 'Three silhouettes riding into the dark forest.',
+      { art: 'ashVow', ink: FACE, note: 'Ashwatthama (left) kneeling by him, fierce; Duryodhana lying at the right.',
+        say: [{ text: 'Tonight I will send every Panchala to Yama, with Krishna watching. Give me your leave.', x: .66, y: .27, w: 440, tail: [.36, .6] }] },
+    ]),
+    pg([[1.15, [1]], [1, [1]]], [
+      { art: 'anoint', ink: FACE, note: 'Duryodhana on the ground (left) gives the order; Kripa pours water over Ashwatthama\'s bowed head.',
+        say: [{ text: 'Kripa, bring water. Make Drona\'s son my commander.', x: .27, y: .22, w: 380, tail: [.2, .68] }],
+        box: [{ text: 'Commander of an army that no longer existed.', x: .56, y: .88, w: 420, small: true }] },
+      { art: 'riders', note: 'Three riders galloping into the dark forest, all three clear.',
         box: [{ text: 'Three men were left: Ashwatthama, his uncle Kripa, and Kritavarma. They fled into a forest.', w: 760 }] },
     ]),
 
@@ -132,14 +139,15 @@ const COMIC = {
     ] },
     pg([[1, [1]], [1, [1]]], [
       { art: 'wakeThem', ink: FACE, note: 'He shakes Kripa and Kritavarma awake under the banyan.', box: [{ text: 'He woke them and told them his plan. They were too ashamed to answer.', w: 440 }] },
-      { art: 'kripaAdvice', ink: FACE, note: 'Kripa, old and gentle, sitting up.', say: [{ text: 'Let us go to Dhritarashtra, Gandhari and Vidura, and ask them what to do.', x: .5, y: .36, w: 380, tail: [.4, .9] }] },
+      { art: 'kripaAdvice', ink: FACE, note: 'Kripa (left), old and gentle, sitting up.', say: [{ text: 'Let us go to Dhritarashtra, Gandhari and Vidura, and ask them what to do.', x: .68, y: .34, w: 420, tail: [.34, .62] }] },
     ]),
-    pg([[1.1, [1]], [1, [1]]], [
-      { art: 'ashRefuse', ink: FACE, note: 'Ashwatthama close, eyes wet with rage, the gem bright.',
-        say: [{ text: 'My father had laid down his weapons when Dhrishtadyumna killed him. How can I sleep?', x: .7, y: .4, w: 440, tail: [.35, .55] }] },
-      { art: 'kripaWarn', ink: FACE, note: 'Kripa\'s hand on his arm; he is already turning away.',
-        say: [{ text: 'Killing men in their sleep is never honoured in this world.', x: .3, y: .36, w: 420, tail: [.15, .9] }],
-        box: [{ text: 'He went anyway. They followed him.', x: .62, y: .62, w: 360 }] },
+    pg([[1, [1]], [1.35, [1]]], [
+      { art: 'kripaWarn', ink: FACE, note: 'Kripa (left) warns him.',
+        say: [{ text: 'Killing men in their sleep is never honoured in this world. It will stain you like a red spot on a white cloth.', x: .66, y: .4, w: 470, tail: [.34, .62] }] },
+      { art: 'ashRefuse', ink: FACE, note: 'Ashwatthama, close, eyes wet with rage, the gem bright; red behind him.',
+        say: [{ text: 'My father had laid down his weapons when Dhrishtadyumna killed him. Why don\'t you blame them?', x: .73, y: .16, w: 440, size: 30, tail: [.46, .36] },
+          { text: 'I will kill them in their sleep, even if I am born a worm in my next life. HOW CAN I SLEEP?', x: .7, y: .53, w: 470, size: 38, tail: [.47, .6] }],
+        box: [{ text: 'He went anyway. They followed him.', x: .52, y: .88, w: 460 }] },
     ]),
     pg(FULL, [{ art: 'gateBeing', note: 'Splash: at the camp gate stands a being bright as sun and moon, in a tiger skin dripping blood, a black antelope skin, a great snake for a sacred thread, many arms raised with weapons, a mouth of flames, a thousand eyes; out of the flames pour countless Krishnas with conch, discus and mace. Ashwatthama small before it.',
       box: [{ text: 'At the gate of the Pandava camp, something stood guard.', w: 460 },
@@ -156,27 +164,28 @@ const COMIC = {
       { art: 'intoFire', note: 'A golden fire altar; strange beings crowding in the dark; he climbs into the flames, arms up.',
         say: [{ text: 'I offer myself to you. Accept me, if I cannot beat them.', x: .7, y: .3, w: 400, tail: [.45, .55] }] },
     ]),
-    pg([[1.15, [1]], [1, [1, 1]]], [
+    pg([[1.15, [1]], [1, [1]]], [
       { art: 'shivaAppears', note: 'Shiva appears in the fire, half smiling.',
         say: [{ text: 'Krishna has worshipped me with truth, purity and devotion. No one is dearer to me. For him, I protected the Panchalas.', x: .7, y: .38, w: 440, tail: [.32, .3] }] },
-      { art: 'shivaTime', ink: FACE, note: 'Close on Shiva\'s eyes.', say: [{ text: 'But time has overtaken them. Tonight their lives are over.', x: .5, y: .3, w: 360, tail: [.5, .8] }] },
+      { art: 'shivaTime', ink: FACE, note: 'Close on Shiva (right).', say: [{ text: 'But time has overtaken them. Tonight their lives are over.', x: .3, y: .4, w: 420, tail: [.6, .58] }] },
+    ]),
+    pg([[1, [1]], [1, [1]]], [
       { art: 'swordGiven', ink: FACE, note: 'Shiva hands him a shining sword and enters his body. He blazes.',
-        box: [{ text: 'Shiva gave him a sword and entered his body. Unseen beings ran with him into the camp.', w: 420 }] },
-    ]),
-    pg([[1, [1]], [1, [1, 1]]], [
+        box: [{ text: 'Shiva gave him a sword and entered his body. Unseen beings ran with him into the camp.', x: .52, y: 22, w: 460 }] },
       { art: 'noGate', note: 'He slips into the sleeping camp at a place with no gate.', box: [{ text: 'He went in where there was no gate, and walked softly to one tent.', w: 480 }] },
-      { art: 'dhrSleep', ink: FACE, note: 'Dhrishtadyumna asleep on white silk, flowers and incense.', box: [{ text: 'Dhrishtadyumna, asleep on white silk.', w: 360 }] },
-      { art: 'kickWake', ink: FACE, note: 'A foot nudges him. His eyes open: he knows who it is.', box: [{ text: 'He woke him with his foot.', w: 340 }] },
     ]),
-    pg([[1, [1]], [1, [1]], [.55, [1]]], [
+    pg([[1, [1]], [1, [1]]], [
+      { art: 'dhrSleep', ink: FACE, note: 'Dhrishtadyumna asleep on white silk, flowers and incense.', box: [{ text: 'Dhrishtadyumna, asleep on white silk.', x: .6, y: 22, w: 380 }] },
+      { art: 'kickWake', ink: FACE, note: 'A bare foot presses his shoulder. His eyes open: he knows who it is.', box: [{ text: 'He woke him with his foot.', x: .64, y: 22, w: 340 }] },
+    ]),
+    pg([[1, [1]], [1, [1]]], [
       { art: 'dhrPinned', ink: FACE, note: 'Dhrishtadyumna pinned by the hair, gasping.',
-        say: [{ text: 'Son of my teacher, kill me with a weapon. Don\'t delay. Let me go to the worlds of the brave.', x: .66, y: .4, w: 460, tail: [.3, .6] }] },
-      { art: 'ashAnswer', ink: FACE, note: 'Ashwatthama above him, lit from below, the gem blazing.',
-        say: [{ text: 'There are no worlds for men who kill their teacher. You don\'t deserve a weapon.', x: .34, y: .4, w: 460, tail: [.7, .55] }] },
-      { art: 'black', note: 'Black panel.' },
+        say: [{ text: 'Son of my teacher, kill me with a weapon. Don\'t delay. Let me go to the worlds of the brave.', x: .66, y: .36, w: 460, tail: [.34, .56] }] },
+      { art: 'ashAnswer', ink: FACE, note: 'Ashwatthama (right) above him, lit from below, the gem blazing.',
+        say: [{ text: 'There are no worlds for men who kill their teacher. You don\'t deserve a weapon.', x: .32, y: .38, w: 460, tail: [.64, .56] }] },
     ]),
     pg([[1, [1, 1]], [1.2, [1]]], [
-      { art: 'women', ink: FACE, note: 'Women of the tent in terror.', say: [{ text: 'Is it a rakshasa or a man? We don\'t know!', x: .5, y: .3, w: 330, tail: [.4, .8] }] },
+      { art: 'women', ink: FACE, note: 'Women of the tent in terror.', say: [{ text: 'Is it a rakshasa or a man? We don\'t know!', x: .5, y: .17, w: 330, size: 28, tail: [.3, .55] }] },
       { art: 'guardsFall', note: 'Warriors rushing in, falling to a burst of light.', box: [{ text: 'The warriors who rushed at him fell to the weapon of Rudra.', w: 380 }] },
       { art: 'campWide', note: 'Wide: the camp in silhouette, tents; one figure moving through it.', box: [{ text: 'He moved through the camp like Death sent by Time.', w: 460 }] },
     ]),
@@ -193,19 +202,20 @@ const COMIC = {
     pg([[1, [1]], [1, [1, 1]]], [
       { art: 'dawnLake', ink: FACE, note: 'Dawn by the lake. The three kneel by the dying Duryodhana.',
         say: [{ text: 'The Pandavas have no sons now. Their camp is gone. I killed Dhrishtadyumna like an animal.', x: .62, y: .32, w: 480, tail: [.3, .8] }] },
-      { art: 'duryoSmile', ink: FACE, note: 'Duryodhana, almost smiling.', say: [{ text: 'Not Bhishma, not Karna, not your father did for me what you did tonight.', x: .5, y: .32, w: 380, tail: [.5, .85] }] },
-      { art: 'duryoDies', ink: FACE, note: 'His head falls back.', say: [{ text: 'Farewell. We will meet in heaven.', x: .5, y: .28, w: 320, tail: [.5, .8] }],
+      { art: 'duryoSmile', ink: FACE, note: 'Duryodhana, almost smiling.', say: [{ text: 'Not Bhishma, not Karna, not your father did for me what you did tonight.', x: .5, y: .24, w: 400, tail: [.56, .5] }] },
+      { art: 'duryoDies', ink: FACE, note: 'His head falls back.', say: [{ text: 'Farewell. We will meet in heaven.', x: .5, y: .2, w: 320, tail: [.52, .44] }],
         box: [{ text: 'Then the king of the Kurus died.', x: 16, y: .88, w: 380, small: true }] },
     ]),
-    pg([[1.1, [1]], [1, [1, 1]]], [
+    pg([[1.1, [1]], [1, [1]]], [
       { art: 'draupadiGrief', ink: FACE, note: 'Morning. Draupadi among the dead of the camp.', box: [{ text: 'In one night, Draupadi had lost her five sons.', w: 440 }] },
-      { art: 'draupadiFast', ink: FACE, note: 'Draupadi to Yudhishthira, sitting down on the ground.', say: [{ text: 'If he is not punished, I will sit here and fast until I die.', x: .5, y: .3, w: 360, tail: [.5, .85] }] },
-      { art: 'draupadiGem', ink: FACE, note: 'Draupadi, eyes hard.', say: [{ text: 'He was born with a gem on his head. Bring it to me.', x: .5, y: .3, w: 340, tail: [.5, .85] }] },
+      { art: 'draupadiFast', ink: FACE, note: 'Draupadi (right) to Yudhishthira, eyes hard.',
+        say: [{ text: 'If he is not punished, I will sit here and fast until I die.', x: .3, y: .24, w: 400, tail: [.62, .48] },
+          { text: 'He was born with a gem on his head. Bring it to me.', x: .32, y: .7, w: 400, tail: [.62, .58] }] },
     ]),
     pg([[1, [1]], [1, [1]]], [
       { art: 'bhimaGoes', note: 'Bhima\'s chariot racing out alone.', box: [{ text: 'Bhima set out alone to kill him.', w: 380 }] },
       { art: 'krishnaFollows', ink: FACE, note: 'Krishna\'s chariot with Arjuna and Yudhishthira, Garuda on the flag.',
-        say: [{ text: 'Bhima has gone alone. And Drona\'s son knows the Brahmashira: a weapon that could burn the earth.', x: .62, y: .35, w: 480, tail: [.3, .75] }] },
+        say: [{ text: 'Bhima has gone alone. And Drona\'s son knows the Brahmashira: a weapon that could burn the earth.', x: .6, y: .25, w: 520, tail: [.33, .6] }] },
     ]),
 
     // ---------- Act 3: the weapon and the curse ----------
@@ -220,44 +230,53 @@ const COMIC = {
         box: [{ text: 'They found him by the Ganga, sitting near Vyasa: in a cloth of kusha grass, his hair full of dust.', w: 560 }] },
       { art: 'bhimaStop', ink: FACE, note: 'Bhima, bow drawn, arrow on the string.', say: [{ text: 'Stop! Stop!', x: .5, y: .3, w: 260, size: 44, tail: [.5, .8] }] },
     ]),
-    pg([[1, [1, 1]], [1, [1]]], [
+    pg([[.8, [1]], [1.1, [1]], [1, [1]]], [
       { art: 'grass', note: 'His left hand closing on a blade of grass.', box: [{ text: 'He picked up a blade of grass.', w: 340 }] },
-      { art: 'apandavaya', ink: FACE, note: 'Close on his mouth, shouting.', say: [{ text: 'APANDAVAYA! For a world without Pandavas!', x: .5, y: .17, w: 420, size: 38, tail: [.5, .72] }] },
+      { art: 'apandavaya', ink: FACE, note: 'Ashwatthama (left), shouting.', say: [{ text: 'APANDAVAYA! For a world without Pandavas!', x: .68, y: .42, w: 460, size: 42, tail: [.4, .64] }] },
       { art: 'grassFire', note: 'The grass bursts into fire.', box: [{ text: 'A fire was born in the grass, as if to burn the three worlds.', w: 560 }] },
     ]),
-    pg([[1, [1]], [1, [1, 1]]], [
+    pg([[1, [1]], [1, [1]]], [
       { art: 'krishnaNow', ink: FACE, note: 'Krishna turns to Arjuna.', say: [{ text: 'Arjuna, now. The weapon Drona taught you.', x: .62, y: .4, w: 420, tail: [.3, .7] }] },
-      { art: 'arjunaPeace', ink: FACE, note: 'Arjuna steps down from the chariot and bows.', say: [{ text: 'Peace to my teacher\'s son. Peace to me. Peace to my brothers.', x: .5, y: .3, w: 360, tail: [.5, .85] }] },
-      { art: 'arjunaRelease', ink: FACE, note: 'Arjuna releases his arrow.', say: [{ text: 'Let this weapon quiet that weapon.', x: .5, y: .3, w: 340, tail: [.5, .85] }] },
+      { art: 'arjunaPeace', ink: FACE, note: 'Arjuna (left) steps down from the chariot, hands joined.', say: [{ text: 'Peace to my teacher\'s son. Peace to me. Peace to my brothers.', x: .66, y: .32, w: 440, tail: [.36, .46] }] },
     ]),
-    pg(FULL, [{ art: 'twoFires', note: 'Splash: two spheres of fire facing each other across the river; meteors falling; the earth shaking with its mountains and trees.',
-      sfx: [{ text: 'KRRRAAAKK', x: .5, y: .12, size: 96, rot: -.05 }] }]),
+    pg([[.8, [1]], [1.5, [1]]], [
+      { art: 'arjunaRelease', ink: FACE, note: 'Arjuna (right) releases his arrow.', say: [{ text: 'Let this weapon quiet that weapon.', x: .22, y: .3, w: 320, tail: [.6, .42] }] },
+      { art: 'twoFires', ink: FACE, note: 'Wide: Ashwatthama on the bank at the left, Arjuna at the right, each weapon a sphere of fire; the two meet over the river. Meteors; the earth shaking.',
+        box: [{ text: 'The two weapons blazed up and rushed at each other over the river.', w: 520 },
+          { text: 'Meteors fell. The earth shook, with its mountains and its trees.', x: .44, y: .87, w: 540 }],
+        sfx: [{ text: 'KRRRAAAKK', x: .5, y: .3, size: 96, rot: -.05 }] },
+    ]),
     pg([[1.2, [1]], [1, [1]]], [
       { art: 'sagesBetween', ink: FACE, note: 'Narada and Vyasa standing between the two fires, blazing like fires themselves.',
         box: [{ text: 'Then two sages appeared and stood between the weapons: Narada, and Vyasa.', w: 520 }] },
       { art: 'sagesSpeak', ink: FACE, note: 'The two sages, calm, facing both warriors.',
         say: [{ text: 'The great warriors who died here knew such weapons. Not one of them ever used it on human beings. What have you done?', x: .5, y: .45, w: 640, tail: [.5, .95] }] },
     ]),
-    pg([[1, [1]], [1, [1, 1]]], [
+    pg([[1, [1]], [1, [1]]], [
       { art: 'arjunaWithdraws', ink: FACE, note: 'Arjuna\'s fire folding back into his arrow.', box: [{ text: 'Arjuna called his weapon back. Only a man who had kept his vows could do that.', w: 560 }] },
-      { art: 'ashStrains', ink: FACE, note: 'Ashwatthama straining; his fire does not return.' },
-      { art: 'ashCant', ink: FACE, note: 'Ashwatthama to Vyasa, desperate.', say: [{ text: 'I can\'t take it back. I let it go to destroy the Pandavas.', x: .5, y: .3, w: 340, tail: [.5, .85] }] },
+      { art: 'ashCant', ink: FACE, note: 'Ashwatthama (left) straining; his fire does not return. To Vyasa, desperate.',
+        box: [{ text: 'Ashwatthama could not.', x: .56, y: 22, w: 380 }],
+        say: [{ text: 'I can\'t take it back. I let it go to destroy the Pandavas.', x: .68, y: .52, w: 420, tail: [.37, .62] }] },
     ]),
-    pg([[1, [1, 1]], [1, [1, 1]]], [
-      { art: 'vyasaGem', ink: FACE, note: 'Vyasa, stern.', say: [{ text: 'Give them the gem on your head, and they will give you your life.', x: .5, y: .3, w: 340, tail: [.5, .85] }] },
-      { art: 'ashGemHand', ink: FACE, note: 'His hand on the gem.', say: [{ text: 'This gem is worth more than all the wealth of the Kurus and the Pandavas.', x: .5, y: .3, w: 340, tail: [.5, .85] }] },
-      { art: 'ashTurns', ink: FACE, note: 'He holds out the gem in one hand; the burning grass in the other.', say: [{ text: 'Here is the gem. Here am I. But the grass will fall on the wombs of the Pandava women.', x: .5, y: .32, w: 360, tail: [.5, .85] }] },
-      { art: 'fireTurns', note: 'The fire swerves away from the men, downward.', box: [{ text: 'And he sent it into the unborn.', w: 340 }] },
+    pg([[1, [1]], [1, [1]]], [
+      { art: 'vyasaGem', ink: FACE, note: 'Vyasa (left), stern.', say: [{ text: 'Give them the gem on your head, and they will give you your life.', x: .66, y: .34, w: 440, tail: [.34, .6] }] },
+      { art: 'ashGemHand', ink: FACE, note: 'Ashwatthama (right), his hand on the gem.',
+        say: [{ text: 'This gem is worth more than all the wealth of the Kurus and the Pandavas. Whoever wears it fears no weapon, no disease, no hunger.', x: .32, y: .36, w: 470, tail: [.62, .66] }] },
+    ]),
+    pg([[1, [1]], [1, [1]]], [
+      { art: 'ashTurns', ink: FACE, note: 'He holds out the gem in one hand, the burning grass in the other.',
+        say: [{ text: 'Here is the gem. Here am I. But this grass will fall on the wombs of the Pandava women.', x: .22, y: .26, w: 360, size: 30, tail: [.42, .5] }] },
+      { art: 'fireTurns', note: 'The fire swerves away from the men, downward.', box: [{ text: 'And he sent it into the unborn.', w: 380 }] },
     ]),
     pg([[1, [1]], [1, [1]]], [
       { art: 'krishnaProphecy', ink: FACE, note: 'Krishna, calm, almost cheerful.',
         say: [{ text: 'A brahmin once told Uttara: when the Kurus are all but gone, a son will be born to you. He will be Parikshit.', x: .62, y: .42, w: 520, tail: [.25, .75] }] },
       { art: 'ashDefy', ink: FACE, note: 'Ashwatthama, furious.', say: [{ text: 'It won\'t happen, Keshava. My weapon will fall on the child you want to save.', x: .38, y: .42, w: 520, tail: [.75, .75] }] },
     ]),
-    pg([[1, [1]], [1, [1, 1]]], [
-      { art: 'krishnaCalm', ink: FACE, note: 'Krishna, close.', say: [{ text: 'Your weapon will fall. The child will be born dead. And he will live, a long life.', x: .62, y: .4, w: 480, tail: [.25, .7] }] },
-      { art: 'curse1', ink: FACE, note: 'Krishna\'s eyes, hard.', say: [{ text: 'Every wise man knows you now: a coward, a killer of children.', x: .5, y: .3, w: 360, tail: [.5, .85] }] },
-      { art: 'curse2', ink: FACE, note: 'Ashwatthama hearing it.', say: [{ text: 'For three thousand years you will wander this earth, and no one will talk to you.', x: .5, y: .3, w: 360, tail: [.3, -.05] }] },
+    pg([[1, [1]], [.8, [1]], [1, [1]]], [
+      { art: 'krishnaCalm', ink: FACE, note: 'Krishna (left), close.', say: [{ text: 'Your weapon will fall. The child will be born dead. And he will live, a long life.', x: .64, y: .42, w: 480, tail: [.34, .62] }] },
+      { art: 'curse1', ink: FACE, note: 'Krishna\'s eyes, hard (right).', say: [{ text: 'Every wise man knows you now: a coward, a killer of children.', x: .22, y: .5, w: 330, tail: [.42, .55] }] },
+      { art: 'curse2', ink: FACE, note: 'Ashwatthama (right) hearing it.', say: [{ text: 'For three thousand years you will wander this earth, and no one will talk to you.', x: .32, y: .42, w: 440, tail: [.05, -.05] }] },
     ]),
     pg(FULL, [{ art: 'curseSplash', note: 'Splash: Ashwatthama alone in a dark, empty land, the gem still on his forehead but dimming; Krishna\'s words over him.',
       say: [{ text: 'You will have no place among people. You will smell of pus and blood. You will live in the wild, carrying every disease.', x: .5, y: .18, w: 640, size: 36 }] }]),
@@ -277,7 +296,7 @@ const COMIC = {
       box: [{ list: true, x: 30, y: .1, w: 970, text: 'Every scene is from the Mahabharata (critical edition), book.chapter.verse:\n' +
         '• Neighs at birth, named by a voice from the sky: Adi 1.121.12–14\n• The elephant, "Ashwatthama is dead", the chariot touches the ground: Drona 7.164.68–109\n' +
         '• Drona killed, Arjuna shouts "bring him alive": Drona 7.165.46–52\n• Made commander: Shalya 9.64.35–40\n• The banyan, the owl and the crows: Sauptika 10.1.30–55\n' +
-        '• Kripa\'s counsel: 10.2.31, 10.5.9   • "How can I sleep?": 10.5.17–26\n• The being at the gate: 10.6.3–18   • Shiva enters him: 10.7.2–66\n' +
+        '• Kripa\'s counsel: 10.2.31, 10.5.9–15   • "How can I sleep?": 10.5.17–26\n• The being at the gate: 10.6.3–18   • Shiva enters him: 10.7.2–66\n' +
         '• Dhrishtadyumna: 10.8.10–21   • The camp: 10.8.29–104\n• Duryodhana\'s last words: 10.9.50–55   • Draupadi and the gem: 10.11.14–20\n' +
         '• The discus in Dwaraka: 10.12.2–23   • The blade of grass: 10.13.13–20\n• Arjuna, Narada and Vyasa: 10.14.1–16, 10.15.1–17\n• The gem, the unborn, the curse: 10.15.27–33, 10.16.1–26' },
         { list: true, x: 30, y: .66, w: 970, text: 'What the texts don\'t say\n' +

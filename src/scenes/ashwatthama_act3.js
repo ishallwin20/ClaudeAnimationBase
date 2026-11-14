@@ -66,18 +66,19 @@ ART.bhimaStop = (c, P) => {
 ART.grass = (c, P) => {
   sky(c, [[0, '#B8A888'], [P.h, '#6A5A44']]);
   for (let i = 0; i < 40; i++) { const x = hash(i) * P.w; strokePath(c, `M ${x} ${P.h} q ${(hash(i + 1) - .5) * 30} -${80 + hash(i + 2) * 120} ${(hash(i + 3) - .5) * 60} -${120 + hash(i + 4) * 160}`, i % 2 ? '#7A8A3A' : '#5A6A2A', 4); }
-  strokePath(c, `M ${P.w * .5} ${P.h * .62} q 10 -120 -20 -260`, '#9AAA4A', 7);
-  figure(c, (f) => hand(f, P.w * .5, P.h * .6, 1.6, -Math.PI / 2 - .1, ASH.skin, { arm: ASH.skinSh }), lit(DAY));
+  strokePath(c, `M ${P.w * .5} ${P.h * .74} q 8 -100 -16 -210`, '#9AAA4A', 7);
+  figure(c, (f) => hand(f, P.w * .5, P.h * .76, 1.25, -Math.PI / 2 - .1, ASH.skin, { arm: ASH.skinSh }), lit(DAY));
 };
 ART.apandavaya = (c, P) => {
   sky(c, [[0, '#E8C8A0'], [P.h, '#8A5A3A']]);
-  bust(c, P.w * .5, 330, 3.6, { who: 'ash', pal: ASHG, dress: 'bare', head: (g) => ashHead(g, { eyes: 1, fierce: 1, mouth: 1, look: [0, 0] }) }, DAY, { k: 1.8 });
+  rays(c, 330, 330, { n: 16, dir: 0, spread: 6.2, len: 900, w: 80, col: '#FFF0D0', a: .35, t: 1, seed: 9 });
+  bust(c, 300, 285, 2.5, { who: 'ash', pal: ASHG, dress: 'bare', head: (g) => ashHead(g, { eyes: 1, fierce: 1, mouth: 1, look: [0, 0] }) }, DAY, { k: 1.8 });
 };
 ART.grassFire = (c, P) => {
   sky(c, [[0, '#3A1406'], [P.h, '#0A0302']]);
-  glow(c, P.w * .5, P.h * .4, 520, '#FF7A22', .7); glow(c, P.w * .5, P.h * .4, 200, '#FFF0B0', .8);
-  beingFlames(c, P.w * .5, P.h * .5, .9, 4);
-  figure(c, (f) => hand(f, P.w * .5, P.h * .62, 1.2, -Math.PI / 2, ASH.skin, { arm: ASH.skinSh }), lit(FIRELIT));
+  glow(c, P.w * .5, P.h * .45, 560, '#FF7A22', .7); glow(c, P.w * .5, P.h * .5, 200, '#FFF0B0', .8);
+  beingFlames(c, P.w * .5, P.h * .66, .72, 4);
+  figure(c, (f) => hand(f, P.w * .5, P.h * .78, 1.1, -Math.PI / 2, ASH.skin, { arm: ASH.skinSh }), lit(FIRELIT));
 };
 
 // ---------- p33 · Arjuna answers ----------
@@ -88,20 +89,35 @@ ART.krishnaNow = (c, P) => {
 };
 ART.arjunaPeace = (c, P) => {
   riverBank(c, P);
-  person(c, P.w * .5, P.h * 1.7, .8, { ...CAST.arjuna, dress: 'armor', eyes: 0, pain: 0, arms: { l: 'namaste', r: 'namaste' } }, DAY);
+  person(c, 300, 315 + 815, 1, { ...CAST.arjuna, dress: 'armor', eyes: 0, pain: 0, arms: { l: 'namaste', r: 'namaste' } }, DAY, { k: 1.2 });
 };
 ART.arjunaRelease = (c, P) => {
   sky(c, [[0, '#3A2A4A'], [P.h, '#C87A3A']]);
-  glow(c, P.w * .2, P.h * .62, 200, '#FFF0B0', .8);
-  person(c, P.w * .5, P.h * 1.7, .8, { ...CAST.arjuna, dress: 'armor', eyes: 1, fierce: .8, pain: 0, look: [-.8, 0], arms: { l: 'bow', r: 'draw' }, props: { l: 'bow' }, drawTo: [70, -706] }, BLAZE);
+  glow(c, P.w * .12, P.h * .62, 220, '#FFF0B0', .8);
+  person(c, 770, 210 + 815 * .95, .95, { ...CAST.arjuna, dress: 'armor', eyes: 1, fierce: .8, pain: 0, look: [-.8, 0], arms: { l: 'bow', r: 'draw' }, props: { l: 'bow' }, drawTo: [70, -706] }, BLAZE);
 };
 ART.twoFires = (c, P) => {
-  sky(c, [[0, '#0A0204'], [P.h * .5, '#3A0A06'], [P.h, '#0A0204']]);
-  ridge(c, P.h * .7, 160, 7, '#1A0806', { freq: .004, x0: -20, x1: P.w + 20, bottom: P.h + 20 });
-  for (const [x, y] of [[P.w * .26, P.h * .44], [P.w * .74, P.h * .44]]) { glow(c, x, y, 420, '#FF5A1A', .7); glow(c, x, y, 220, '#FFB040', .9); glow(c, x, y, 100, '#FFFFFF', 1); }
-  for (let i = 0; i < 14; i++) { const x = hash(i) * P.w, y = hash(i + 4) * P.h * .4; strokePath(c, `M ${x} ${y} l ${-80 - hash(i) * 60} ${-120}`, rgba('#FFD08A', .8), 4); glow(c, x, y, 18, '#FFF0C0', .9); }
-  fillPath(c, `M 0 ${P.h * .78} L ${P.w} ${P.h * .76} L ${P.w} ${P.h * .84} L 0 ${P.h * .86} Z`, '#5A2010');   // the river, burning
-  cracks(c, P.w * .5, P.h * .92, 1, 1, 9);
+  // the whole scene: Ashwatthama on the bank at the left, Arjuna at the right; each one's weapon a ball of fire on a
+  // trail from his hand; the two meet over the river. Meteors, the hills shaking.
+  const gy = P.h * .86, cy = P.h * .4, A = [140, gy], B = [P.w - 150, gy], LF = [P.w * .36, cy], RF = [P.w * .64, cy];
+  sky(c, [[0, '#120406'], [P.h * .45, '#5A1408'], [P.h * .7, '#2A0A06'], [P.h, '#0A0204']]);
+  for (const dx of [-8, 0]) ridge(c, P.h * .62 + (dx ? 6 : 0), 120, 7, dx ? rgba('#2A0C08', .6) : '#1A0806', { freq: .004, x0: -20 + dx, x1: P.w + 20 + dx, bottom: P.h + 20 });   // the hills, shaking
+  fillPath(c, `M 0 ${P.h * .7} L ${P.w} ${P.h * .68} L ${P.w} ${P.h * .78} L 0 ${P.h * .8} Z`, '#6A2410');   // the river, lit red
+  for (let i = 0; i < 8; i++) strokePath(c, `M ${hash(i) * P.w} ${P.h * (.71 + hash(i + 1) * .06)} l ${60 + hash(i + 2) * 90} 0`, rgba('#FFB070', .7), 4);
+  c.fillStyle = '#140604'; c.beginPath(); c.moveTo(0, P.h * .8); c.lineTo(P.w, P.h * .78); c.lineTo(P.w, P.h); c.lineTo(0, P.h); c.fill();
+  // meteors: thick streaks, so the ink doesn't turn them into dots
+  for (let i = 0; i < 7; i++) { const x = 80 + hash(i * 5) * (P.w - 160), y = 40 + hash(i + 9) * P.h * .18, L = 90 + hash(i) * 70;
+    const g = c.createLinearGradient(x, y, x + L, y - L * 1.2); g.addColorStop(0, rgba('#FFF0C0', 1)); g.addColorStop(1, rgba('#FF7A3A', 0));
+    c.save(); c.strokeStyle = g; c.lineWidth = 12; c.lineCap = 'round'; c.beginPath(); c.moveTo(x, y); c.lineTo(x + L, y - L * 1.2); c.stroke(); c.restore(); ellipse(c, x, y, 9, 9, '#FFF6D8'); }
+  // the trails from each hand to its fire, then the fires, then the burst where they meet
+  const trail = (H, F) => { for (const [w, col] of [[46, rgba('#FF5A1A', .55)], [20, rgba('#FFD27A', .8)], [7, '#FFF6E0']]) strokePath(c, `M ${H[0]} ${H[1]} Q ${(H[0] + F[0]) / 2} ${F[1] - 60} ${F[0]} ${F[1]}`, col, w); };
+  trail([A[0] + 60, A[1] - 300], LF); trail([B[0] - 120, B[1] - 250], RF);
+  for (const [x, y] of [LF, RF]) { glow(c, x, y, 260, '#FF5A1A', .8); glow(c, x, y, 140, '#FFB040', .9); glow(c, x, y, 60, '#FFFFFF', 1); }
+  rays(c, P.w * .5, cy, { n: 16, dir: 0, spread: 6.2, len: 420, w: 60, col: '#FFE7A6', a: .55, t: 1, seed: 3 });
+  glow(c, P.w * .5, cy, 120, '#FFFFFF', .9);
+  // the two men, small, on the bank
+  person(c, A[0], A[1], .3, { who: 'ash', pal: ASHG, dress: 'bare', skirt: '#A8A060', flip: true, arms: { l: 'down', r: 'up' }, head: (g) => ashHead(g, { eyes: 1, fierce: 1, look: [.6, -.4] }) }, FIRELIT);
+  person(c, B[0], B[1], .3, { ...CAST.arjuna, dress: 'armor', eyes: 1, fierce: .8, pain: 0, look: [-.8, 0], arms: { l: 'bow', r: 'draw' }, props: { l: 'bow' }, drawTo: [70, -706] }, FIRELIT);
 };
 ART.sagesBetween = (c, P) => {
   sky(c, [[0, '#1A0604'], [P.h, '#3A1006']]);
@@ -124,30 +140,32 @@ ART.arjunaWithdraws = (c, P) => {
   for (let i = 0; i < 6; i++) { const a = i * .5; strokePath(c, `M ${900 - i * 40} ${120 + i * 50} C ${700} ${200 + i * 40} ${560} ${300} ${430} ${P.h * .45}`, rgba('#FFC060', .7 - i * .08), 14 - i * 1.5); }
   glow(c, 430, P.h * .45, 90, '#FFF0B0', .9);
 };
-ART.ashStrains = (c, P) => {
+ART.ashStrains = (c, P) => {   // (unused since the pages were re-laid; ashCant has both beats)
   sky(c, [[0, '#3A0A06'], [P.h, '#0A0202']]);
   beingFlames(c, P.w * .5, 40, .6, 5);
   ashG(c, P.w * .5, 430, 1.75, { eyes: .5, fierce: 1, pain: .9, mouth: .4, look: [0, -1] }, FIRELIT, { k: 1.3 });
 };
 ART.ashCant = (c, P) => {
-  riverBank(c, P);
-  ashG(c, P.w * .5, 450, 1.7, { eyes: 1, pain: 1, fierce: 0, mouth: .3, look: [.4, -.2] }, DAY, { k: 1.3 });
+  // he strains to call his fire back; it hangs over the river, and won't come
+  riverBank(c, P, { stops: [[0, '#6A2A1A'], [P.h * .5, '#C8885A'], [P.h, '#5A3A2A']] });
+  glow(c, 120, 60, 320, '#FF7A22', .6); beingFlames(c, 140, 150, .45, 5);
+  ashG(c, 300, 380, 2.05, { eyes: 1, pain: 1, fierce: .4, mouth: .4, look: [.5, -.2] }, { ...DAY, rim: { col: '#FFD8A0', dx: -6, dy: -4, a: .85, blur: 1 } }, { k: 1.3 });
 };
 ART.vyasaGem = (c, P) => {
   riverBank(c, P);
-  bust(c, P.w * .5, 450, 1.7, { ...CAST.vyasa, eyes: 1, fierce: .7, pain: 0, look: [-.4, 0] }, DAY, { k: 1.3 });
+  bust(c, 270, 370, 2.05, { ...CAST.vyasa, eyes: 1, fierce: .7, pain: 0, look: [.5, 0] }, DAY, { k: 1.3 });
 };
 ART.ashGemHand = (c, P) => {
   riverBank(c, P);
-  ashG(c, P.w * .5, 440, 1.75, { eyes: .6, pain: .6, look: [0, -1], glow: .9 }, DAY, { k: 1.3 });
-  figure(c, (f) => hand(f, P.w * .5 + 70, 440 - 70 * 1.75, .9, Math.PI + .5, ASH.skin, { arm: ASH.skinSh }), lit(DAY));
+  ashG(c, 770, 380, 2.05, { eyes: .6, pain: .6, look: [-.3, -1], glow: .9 }, DAY, { k: 1.3 });
+  figure(c, (f) => hand(f, 770 + 80, 380 - 70 * 2.05, 1.05, Math.PI + .5, ASH.skin, { arm: ASH.skinSh }), lit(DAY));
 };
 ART.ashTurns = (c, P) => {
   sky(c, [[0, '#5A3A2A'], [P.h, '#2A1A14']]);
-  ashG(c, P.w * .5, 420, 1.6, { gem: false, eyes: 1, fierce: 1, pain: .2, look: [0, 0] }, DAY, { k: 1.3 });
-  for (const [x, a] of [[110, -.3], [P.w - 110, Math.PI + .3]]) figure(c, (f) => hand(f, x, P.h * .86, 1, a - Math.PI / 2, ASH.skin, { arm: ASH.skinSh }), lit(DAY));
-  gemLight(c, 110, P.h * .74, 30);
-  glow(c, P.w - 110, P.h * .7, 120, '#FF7A22', .8); beingFlames(c, P.w - 110, P.h * .76, .25, 6);
+  ashG(c, 560, 330, 1.8, { gem: false, eyes: 1, fierce: 1, pain: .2, look: [0, 0] }, DAY, { k: 1.3 });
+  for (const [x, a] of [[300, -.3], [P.w - 160, Math.PI + .3]]) figure(c, (f) => hand(f, x, P.h * .86, 1.1, a - Math.PI / 2, ASH.skin, { arm: ASH.skinSh }), lit(DAY));
+  gemLight(c, 300, P.h * .74, 34);
+  glow(c, P.w - 160, P.h * .7, 140, '#FF7A22', .8); beingFlames(c, P.w - 160, P.h * .76, .3, 6);
 };
 ART.fireTurns = (c, P) => {
   sky(c, [[0, '#2A0A06'], [P.h, '#0A0202']]);
@@ -167,15 +185,15 @@ ART.ashDefy = (c, P) => {
 };
 ART.krishnaCalm = (c, P) => {
   sky(c, [[0, '#6A7A9A'], [P.h, '#2A2A3A']]);
-  bust(c, 260, 450, 2, { ...CAST.krishna, eyes: .8, pain: 0, fierce: .2, look: [.5, 0] }, DAWNL, { k: 1.3 });
+  bust(c, 250, 340, 1.75, { ...CAST.krishna, eyes: .8, pain: 0, fierce: .2, look: [.5, 0] }, DAWNL, { k: 1.3 });
 };
 ART.curse1 = (c, P) => {
   sky(c, [[0, '#1A1A2A'], [P.h, '#0A0A14']]);
-  bust(c, P.w * .5, 560, 3.2, { ...CAST.krishna, eyes: .7, fierce: 1, pain: 0, look: [0, 0] }, DAWNL, { k: 1.6 });
+  bust(c, 650, 200, 3.4, { ...CAST.krishna, eyes: .7, fierce: 1, pain: 0, look: [-.2, 0] }, DAWNL, { k: 1.6 });
 };
 ART.curse2 = (c, P) => {
   sky(c, [[0, '#2A2A3A'], [P.h, '#0A0A14']]);
-  ashG(c, P.w * .5, 450, 1.8, { gem: false, eyes: 1, pain: 1, fierce: 0, look: [-.2, -1] }, { ...DAWNL, tint: ['#1A2030', .25] }, { k: 1.3 });
+  ashG(c, 770, 280, 1.85, { gem: false, eyes: 1, pain: 1, fierce: 0, look: [-.4, -1] }, { ...DAWNL, tint: ['#1A2030', .25] }, { k: 1.3 });
 };
 ART.curseSplash = (c, P) => {
   sky(c, [[0, '#0A0A10'], [P.h * .6, '#2A2830'], [P.h, '#0A0A0C']]);
