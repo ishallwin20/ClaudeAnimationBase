@@ -6,7 +6,7 @@
 //   ashBust(c, o)       his head and shoulders in dark armour with a red uttariya (draw inside figure()).
 //   ashGemGlow(c, a)    the gem's light, drawn AFTER figure() with the same transform (glows aren't tinted).
 //   ashSit(c, o)        a small seated silhouette, back to a trunk, knees up, the bow leaning (feet at 0, 0).
-//   sleeper(c, o)       a man asleep on his side on the ground, head to the left (o.who 'kripa' | 'krita'), ~700 long.
+//   sleeper(c, o)       a man asleep on his side on the ground, head to the left (o.who 'kripa' | 'krita' | 'king'), ~700 long.
 //   crow(c, x, y, k, o) a crow asleep on a perch (side view facing o.dir), or o.fly (wings up, startled).
 //   owlDive(c, o)       the owl front view, wings spread, talons forward (body centre at 0, 0; ~1100 wing to wing).
 //   owlPerch(c, o)      the owl perched, wings folded, facing us (feet at 0, 0; ~420 tall).
@@ -102,6 +102,9 @@ function sleeper(c, o = {}) {
   if (who === 'kripa') {   // an old teacher: a knot of hair behind, a long beard over the throat
     ellipse(c, -420, -48, 30, 24, col);
     fillPath(c, 'M -300 -86 C -280 -84 -250 -70 -236 -46 C -250 -50 -270 -50 -286 -40 C -292 -60 -298 -70 -300 -86 Z', col);
+  } else if (who === 'king') {   // Duryodhana: a crown, pointing away past the top of his head
+    fillPath(c, 'M -404 -40 L -470 -50 L -520 -64 C -536 -70 -540 -90 -526 -98 L -470 -102 L -400 -96 Z', col);
+    fillPath(c, 'M -300 -86 C -290 -80 -280 -74 -276 -66 L -296 -60 Z', col);
   } else {   // Kritavarma: a warrior's turban; his helmet set down by his head
     fillPath(c, 'M -414 -70 C -420 -110 -380 -126 -346 -112 C -370 -104 -392 -92 -404 -60 Z', col);
     fillPath(c, 'M -520 0 C -526 -50 -470 -74 -440 -40 C -432 -22 -436 -8 -440 0 Z', col);

@@ -22,31 +22,32 @@ function rows(spec) {
 }
 const pg = (spec, panels, o = {}) => { const R = rows(spec); return { ...o, panels: panels.map((p, i) => ({ r: R[i], ...p })) }; };
 const FULL = [[1, [1]]];
+const FACE = { edge0: .14, edge1: .3 };   // gentler ink on faces (COMIC_GUIDE.md)
 
 const COMIC = {
   slug: 'ashwatthama', title: 'Ashwatthama', series: 'CHIRANJEEVI', issue: 1, lang: 'en',
   pages: {
     // ---------- cover and cold open ----------
-    1: pg(FULL, [{ art: 'cover', note: 'Ashwatthama from the chest up, head bowed, eyes up at us; the gem the only bright thing. Behind him the banyan full of crows, the owl\'s two eyes in it.',
+    1: pg(FULL, [{ art: 'cover', ink: FACE, note: 'Ashwatthama from the chest up, head bowed, eyes up at us; the gem the only bright thing. Behind him the banyan full of crows, the owl\'s two eyes in it.',
       title: [{ text: 'CHIRANJEEVI · 1', y: .07, size: 40 }, { text: 'ASHWATTHAMA', y: .8, size: 116, col: '#FFE7A6' }, { text: 'The night he didn\'t sleep', y: .875, size: 46, font: 'Kalam' }] }]),
     2: pg(FULL, [{ art: 'coldWalk', note: 'A forest at night, any century. A cloaked figure walks away from us between the trees, alone.',
       box: [{ text: 'There is a prayer Hindus have recited for centuries. It names eight people who never die.', w: 520 },
         { text: 'अश्वत्थामा बलिर्व्यासो हनूमांश्च विभीषणः ।\nकृपः परशुरामश्च सप्तैते चिरजीविनः ॥', y: .7, w: 760 },
         { text: 'The first name in it is his.', x: .55, y: .86, w: 420 }] }]),
-    3: pg(FULL, [{ art: 'coldTurn', note: 'Splash. The figure turns his head: a cloth wound round his forehead, one eye.',
+    3: pg(FULL, [{ art: 'coldTurn', ink: FACE, note: 'Splash. The figure turns his head: a cloth wound round his forehead, one eye.',
       box: [{ text: 'This is how it began.', w: 380 }], title: [{ text: 'ASHWATTHAMA', y: .86, size: 110, col: '#FFE7A6' }] }]),
 
     // ---------- Act 1: who he was ----------
     4: pg([[1.1, [1]], [1, [1, 1]]], [
       { art: 'birthHut', note: 'Dawn at Drona\'s ashram hut. Kripi holds a newborn; Drona beside her.',
         box: [{ text: 'Long before the war: the ashram of Drona, a teacher of archery, and his wife Kripi.', w: 520 }] },
-      { art: 'babyCry', note: 'Close: the baby\'s mouth wide open.', sfx: [{ text: 'HIIIEEEHH!', x: .5, y: .45, size: 70, rot: -.14 }] },
-      { art: 'skyVoice', note: 'Drona looks up; light falls from the sky.',
+      { art: 'babyCry', ink: FACE, note: 'Close: the baby\'s mouth wide open.', sfx: [{ text: 'HIIIEEEHH!', x: .5, y: .45, size: 70, rot: -.14 }] },
+      { art: 'skyVoice', ink: FACE, note: 'Drona looks up; light falls from the sky.',
         say: [{ text: 'He neighs like a horse, and the sound has reached every direction. Let him be called Ashwatthama.', x: .5, y: .42, w: 380, kind: 'sky', size: 28 }],
         box: [{ text: 'Ashwa means horse.', x: 20, y: .84, w: 300, small: true }] },
     ]),
     5: pg([[1.2, [1]], [.9, [1, 1, 1]], [.45, [1]]], [
-      { art: 'gemBaby', note: 'Close on the baby\'s forehead: a small blue gem, part of him.', box: [{ text: 'He was born with a gem on his forehead.', w: 460 }] },
+      { art: 'gemBaby', ink: FACE, note: 'Close on the baby\'s forehead: a small blue gem, part of him.', box: [{ text: 'He was born with a gem on his forehead.', w: 460 }] },
       { art: 'gemWeapon', note: 'Symbol: arrows snapping against a blue light.', box: [{ text: 'No weapon.', x: 16, y: .8, w: 300 }] },
       { art: 'gemHunger', note: 'Symbol: an empty bowl, a dry field, and the blue light.', box: [{ text: 'No hunger.', x: 16, y: .8, w: 300 }] },
       { art: 'gemDisease', note: 'Symbol: a fever\'s red haze held off by the light.', box: [{ text: 'No disease.', x: 16, y: .8, w: 300 }] },
@@ -55,40 +56,40 @@ const COMIC = {
     6: pg([[1.3, [1]], [1, [1]]], [
       { art: 'dronaTeach', note: 'Drona teaching archery to the young Kuru princes; the boy Ashwatthama at his side.',
         box: [{ text: 'His father Drona became the teacher of every Kuru prince, the Pandavas and the Kauravas alike.', w: 520 }] },
-      { art: 'warRanks', note: 'Years later: Drona and his grown son in armour, in the Kaurava ranks at Kurukshetra.',
+      { art: 'warRanks', ink: FACE, note: 'Years later: Drona and his grown son in armour, in the Kaurava ranks at Kurukshetra.',
         box: [{ text: 'When the great war came, father and son fought for the Kauravas.', w: 480 }] },
     ]),
     7: pg([[1, [1]], [1, [1, 1]], [.9, [1]]], [
       { art: 'dronaRage', note: 'Day 15. Drona\'s chariot cutting through the Pandava army.', box: [{ text: 'Day 15 of the war. No one could stop Drona.', w: 460 }] },
-      { art: 'krishnaPlan', note: 'Krishna speaking to the Pandavas.',
-        say: [{ text: 'Put dharma aside and win. If Ashwatthama falls, Drona won\'t fight. Let someone tell him so.', x: .5, y: .38, w: 380, tail: [.4, .95] }] },
-      { art: 'arjunaNo', note: 'Arjuna turning away.', box: [{ text: 'Arjuna refused. The others agreed. Yudhishthira, only just.', x: 16, y: .62, w: 380 }] },
+      { art: 'krishnaPlan', ink: FACE, note: 'Krishna speaking to the Pandavas.',
+        say: [{ text: 'Put dharma aside and win. If Ashwatthama falls, Drona won\'t fight. Let someone tell him so.', x: .5, y: .3, w: 380, tail: [.4, .95] }] },
+      { art: 'arjunaNo', ink: FACE, note: 'Arjuna turning away.', box: [{ text: 'Arjuna refused. The others agreed. Yudhishthira, only just.', x: 16, y: 16, w: 380 }] },
       { art: 'elephant', note: 'Bhima\'s mace coming down; an elephant falls. Dust.',
         box: [{ text: 'Bhima killed an elephant from his own army. Its name was Ashwatthama.', w: 560 }], sfx: [{ text: 'THOOM', x: .78, y: .55, size: 80, rot: .1 }] },
     ]),
     8: pg([[.95, [1]], [1, [1, 1]], [1, [1]]], [
-      { art: 'bhimaShout', note: 'Bhima shouting across the field, not meeting anyone\'s eye.',
+      { art: 'bhimaShout', ink: FACE, note: 'Bhima shouting across the field, not meeting anyone\'s eye.',
         box: [{ text: 'Ashamed, he shouted it at Drona.', w: 400 }], say: [{ text: 'ASHWATTHAMA IS DEAD!', x: .62, y: .55, w: 560, size: 50, tail: [.25, .9] }] },
-      { art: 'dronaAsks', note: 'Drona, shaken, turns to Yudhishthira: the one man who never lies.', say: [{ text: 'Yudhishthira. Is my son dead?', x: .5, y: .3, w: 340, tail: [.45, .8] }] },
-      { art: 'yudhiLies', note: 'Yudhishthira, eyes down.',
-        say: [{ text: 'Ashwatthama is dead.', x: .45, y: .25, w: 320, tail: [.5, .75] }, { text: '…the elephant.', x: .7, y: .62, w: 220, kind: 'whisper', size: 24, tail: [.55, .8] }] },
+      { art: 'dronaAsks', ink: FACE, note: 'Drona, shaken, turns to Yudhishthira: the one man who never lies.', say: [{ text: 'Yudhishthira. Is my son dead?', x: .5, y: .3, w: 340, tail: [.45, .8] }] },
+      { art: 'yudhiLies', ink: FACE, note: 'Yudhishthira, eyes down.',
+        say: [{ text: 'Ashwatthama is dead.', x: .5, y: .2, w: 320, tail: [.36, .75] }, { text: '…the elephant.', x: .78, y: .6, w: 190, kind: 'whisper', size: 24, tail: [.45, .85] }] },
       { art: 'chariotTouches', note: 'Close on Yudhishthira\'s chariot wheels touching the earth, dust rising.',
         box: [{ text: 'His chariot had always run four fingers above the ground. Now its wheels touched the earth.', w: 620 }] },
     ]),
     9: pg([[1, [1, 1]], [1.25, [1]]], [
       { art: 'dronaDown', note: 'Drona lays down his bow on the chariot floor.', box: [{ text: 'Drona put down his weapons.', w: 380 }] },
-      { art: 'arjunaShout', note: 'Arjuna, far off, shouting, hand out.', say: [{ text: 'Bring him alive! Don\'t kill him!', x: .5, y: .35, w: 360, tail: [.5, .85] }] },
+      { art: 'arjunaShout', ink: FACE, note: 'Arjuna, far off, shouting, hand out.', say: [{ text: 'Bring him alive! Don\'t kill him!', x: .5, y: .35, w: 360, tail: [.5, .85] }] },
       { art: 'dronaDeath', note: 'Dhrishtadyumna on Drona\'s chariot, sword raised against the sky. Cut before the stroke. Far across the field, a small figure: Ashwatthama.',
         box: [{ text: 'Dhrishtadyumna cut off his head.', w: 440 }, { text: 'His son was across the field. He never forgot that name.', x: .5, y: .8, w: 460 }] },
     ]),
     10: pg([[1, [1]], [1, [1, 1]], [.6, [1]]], [
       { art: 'lakeDusk', note: 'Dusk by a lake. Duryodhana on the ground, thighs broken, his mace beside him.',
         box: [{ text: 'Day 18. The war is lost. Duryodhana lies by a lake, his thighs broken by Bhima.', w: 560 }] },
-      { art: 'ashVow', note: 'Ashwatthama kneeling by him, fist clenched.',
+      { art: 'ashVow', ink: FACE, note: 'Ashwatthama kneeling by him, fist clenched.',
         say: [{ text: 'Tonight I will send every Panchala to Yama, with Krishna watching. Give me your leave.', x: .5, y: .34, w: 380, tail: [.5, .85] }] },
-      { art: 'anoint', note: 'Kripa pours water from a pot over Ashwatthama\'s head; Duryodhana watching from the ground.',
+      { art: 'anoint', ink: FACE, note: 'Kripa pours water from a pot over Ashwatthama\'s head; Duryodhana watching from the ground.',
         say: [{ text: 'Kripa, bring water. Make Drona\'s son my commander.', x: .5, y: .26, w: 340, tail: [.2, .9] }],
-        box: [{ text: 'Commander of an army that no longer existed.', x: 16, y: .78, w: 380, small: true }] },
+        box: [{ text: 'Commander of an army that no longer existed.', x: 16, y: .86, w: 380, small: true }] },
       { art: 'riders', note: 'Three silhouettes riding into the dark forest.',
         box: [{ text: 'Three men were left: Ashwatthama, his uncle Kripa, and Kritavarma. They fled into a forest.', w: 760 }] },
     ]),
@@ -276,8 +277,8 @@ const COMIC = {
         '• It describes no bleeding wound on his forehead. It says he would smell of pus and blood and carry every disease (10.16.12).\n' +
         '• Sightings, at Asirgarh fort, by the Narmada and elsewhere, are local legends, not scripture.\n' +
         '• Some retellings say he cut the gem out; the epic says he gave it (10.16.19).' }] }]),
-    41: pg(FULL, [{ art: 'backPage', note: 'The Season 1 line-up: eight silhouettes, the next (Hanuman) lit. RK logo.',
+    41: pg(FULL, [{ art: 'backPage', note: 'The Season 1 line-up: seven silhouettes in a row, Hanuman leaping over them, lit.',
       title: [{ text: 'CHIRANJEEVI', y: .12, size: 84, col: '#FFE7A6' }, { text: 'Season 1: the eight who never died', y: .19, size: 40, font: 'Kalam' }, { text: 'Next: HANUMAN', y: .7, size: 64 }],
-      box: [{ text: 'Get the Season Pass at rishikatha.com\nFollow @therishikatha', x: .27, y: .8, w: 520, size: 34 }] }]),
+      box: [{ text: 'Issue 2 is coming soon.\nrishikatha.com\nFollow @therishikatha', x: .27, y: .79, w: 520, size: 34 }] }]),
   },
 };
