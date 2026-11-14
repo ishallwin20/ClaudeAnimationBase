@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Comic studio</title>
+<!-- A comic's studio page (src/comic.js over cine.js): page n is rendered at t = n + .5. comic.html is look A (the
+     Cinematic style as it is); comic_ink.html is the same with window.COMIC_LOOK = 'ink' (look B, Inked).
+     tools/comic.mjs renders the art from here and letters it. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=block">
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 900px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 900px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="2160" height="2700"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="42" step="1" value="11.5"><span id="tt">loading…</span></div>
+</main>
+<script>const PROJECT = { duration: 42, w: 2160, h: 2700, fonts: [] }; window.COMIC_LOOK = 'ink';</script>
+<script src="src/cine.js"></script>
+<script src="src/cine_surya.js"></script>
+<script src="src/cine_yama.js"></script>
+<script src="src/cine_jatayu.js"></script>
+<script src="src/cine_sets.js"></script>
+<script src="src/comic.js"></script>
+<script src="comics/ashwatthama/comic.js"></script>
+<script src="src/scenes/ashwatthama_cast.js"></script>
+<script src="src/scenes/ashwatthama_comic.js"></script>
+<script>comicSetup();</script>
+</body>
+</html>
