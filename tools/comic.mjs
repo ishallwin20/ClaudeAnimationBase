@@ -10,7 +10,12 @@
 // Writes into --out (default out/comics/<slug>_out/<look>):
 //   pages/p<NN>.png     each page lettered, 2160 × 2700 (the master)
 //   ig/p<NN>.jpg        1080 × 1350 JPEGs for an Instagram carousel
-//   <slug>.pdf          one 4:5 page per swipe page (1080 × 1350 px pages), fonts embedded
+//   <slug>.pdf          one 4:5 page per swipe page (1080 × 1350 px pages), fonts embedded; the art at full size
+//                       (2160 × 2700): the master, for print or zooming in (~1.7 MB a page)
+//   <slug>_reader.pdf   the same, the art at 1440 × 1800 and JPEG quality 6: what readers download and share on a
+//                       phone (~0.4 MB a page). The words stay vector text in both, so they're sharp at any zoom.
+//   <slug>.epub         fixed-layout EPUB 3 (pre-paginated, one page at a time, no spreads): each page a lettered
+//                       1440 × 1800 JPEG with its words as the image's alt text; for Apple Books, Google Play Books
 //   <slug>.cbz          the PNG pages zipped, for comic-reader apps
 // Fonts: assets/fonts (Kalam for the words, Bangers for sound effects, Marcellus for titles; all SIL OFL).
 import puppeteer from 'puppeteer-core';
@@ -38,7 +43,10 @@ if (todo.length) {
   if (r.status) process.exit(r.status);
 }
 // JPEG copies for the PDF (Chrome embeds a JPEG as it is; a PNG would be re-compressed losslessly and be huge)
-for (const n of pages) spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', artOf(n), '-q:v', '2', `${TMP}/a${n}.jpg`]);
+for (const n of pages) {
+  spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', artOf(n), '-q:v', '2', `${TMP}/a${n}.jpg`]);
+  spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', artOf(n), '-vf', 'scale=1440:1800:flags=lanczos', '-q:v', '6', `${TMP}/r${n}.jpg`]);
+}
 
 // ---- the lettering
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -139,7 +147,54 @@ for (const n of pages) {
   console.log(png);
 }
 await page.pdf({ path: `${OUT}/${S}.pdf`, width: `${PW}px`, height: `${PH}px`, printBackground: true, preferCSSPageSize: true });
+// the reader PDF: the same pages over the smaller art
+await page.evaluate(() => Promise.all([...document.querySelectorAll('img.art')].map(i => new Promise(r => { i.onload = i.onerror = r; i.src = i.getAttribute('src').replace(/^a(\d+)\.jpg$/, 'r$1.jpg'); }))));
+await page.pdf({ path: `${OUT}/${S}_reader.pdf`, width: `${PW}px`, height: `${PH}px`, printBackground: true, preferCSSPageSize: true });
 await browser.close();
 rmSync(`${OUT}/${S}.cbz`, { force: true });
 spawnSync('zip', ['-q', '-j', '-0', resolve(`${OUT}/${S}.cbz`), ...pages.map(n => resolve(`${OUT}/pages/p${pad(n)}.png`))]);
-console.log(`${OUT}/${S}.pdf\n${OUT}/${S}.cbz`);
+console.log(`${OUT}/${S}.pdf\n${OUT}/${S}_reader.pdf\n${OUT}/${S}.cbz`);
+
+// ---- EPUB 3, fixed layout: one page at a time
+if (!args.pages) {
+  const E = `${TMP}/epub`; rmSync(E, { recursive: true, force: true });
+  mkdirSync(`${E}/META-INF`, { recursive: true }); mkdirSync(`${E}/OEBPS/img`, { recursive: true });
+  writeFileSync(`${E}/mimetype`, 'application/epub+zip');
+  writeFileSync(`${E}/META-INF/container.xml`, `<?xml version="1.0" encoding="UTF-8"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>`);
+  const VW = 1440, VH = 1800, lang = COMIC.lang || 'en', title = `${COMIC.series} ${COMIC.issue}: ${COMIC.title}`;
+  writeFileSync(`${E}/OEBPS/page.css`, `html, body { margin: 0; padding: 0; } body { width: ${VW}px; height: ${VH}px; overflow: hidden; background: #000; } img { position: absolute; left: 0; top: 0; width: ${VW}px; height: ${VH}px; }`);
+  // the words of a page, in reading order, for the image's alt text (screen readers, search)
+  const words = n => COMIC.pages[n].panels.flatMap(p => [...(p.title || []), ...(p.box || []), ...(p.say || []), ...(p.sfx || [])].map(w => w.text)).join(' / ').replace(/\s+/g, ' ');
+  for (const n of pages) {
+    spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', `${OUT}/pages/p${pad(n)}.png`, '-vf', `scale=${VW}:${VH}:flags=lanczos`, '-q:v', '3', `${E}/OEBPS/img/p${pad(n)}.jpg`]);
+    writeFileSync(`${E}/OEBPS/p${pad(n)}.xhtml`, `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="${lang}" xml:lang="${lang}"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=${VW}, height=${VH}"/><title>${esc(title)}, page ${n}</title><link rel="stylesheet" href="page.css"/></head>
+<body><img src="img/p${pad(n)}.jpg" alt="${esc(words(n) || 'Page ' + n)}"/></body></html>`);
+  }
+  writeFileSync(`${E}/OEBPS/nav.xhtml`, `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="${lang}" xml:lang="${lang}"><head><meta charset="utf-8"/><title>${esc(title)}</title></head><body>
+<nav epub:type="toc" id="toc"><ol><li><a href="p01.xhtml">${esc(title)}</a></li><li><a href="p${pad(pages[pages.length - 2])}.xhtml">Facts used</a></li></ol></nav>
+<nav epub:type="page-list" hidden=""><ol>${pages.map(n => `<li><a href="p${pad(n)}.xhtml">${n}</a></li>`).join('')}</ol></nav></body></html>`);
+  const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z'), id = COMIC.uuid || `urn:uuid:3c6a1e52-9b0f-4d8e-a7c1-${S.padEnd(12, '0').slice(0, 12).replace(/[^0-9a-f]/g, 'a')}`;
+  writeFileSync(`${E}/OEBPS/content.opf`, `<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="bookid" xml:lang="${lang}" prefix="rendition: http://www.idpf.org/vocab/rendition/#">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dc:identifier id="bookid">${id}</dc:identifier><dc:title>${esc(title)}</dc:title><dc:language>${lang}</dc:language>
+<dc:creator>Rishi Katha</dc:creator><dc:publisher>Rishi Katha</dc:publisher>
+<meta property="dcterms:modified">${now}</meta>
+<meta property="rendition:layout">pre-paginated</meta><meta property="rendition:spread">none</meta><meta property="rendition:orientation">portrait</meta>
+<meta name="cover" content="cover-img"/>
+</metadata>
+<manifest>
+<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+<item id="css" href="page.css" media-type="text/css"/>
+${pages.map((n, i) => `<item id="p${pad(n)}" href="p${pad(n)}.xhtml" media-type="application/xhtml+xml"/>
+<item id="${i ? 'i' + pad(n) : 'cover-img'}" href="img/p${pad(n)}.jpg" media-type="image/jpeg"${i ? '' : ' properties="cover-image"'}/>`).join('\n')}
+</manifest>
+<spine>${pages.map(n => `<itemref idref="p${pad(n)}"/>`).join('')}</spine>
+</package>`);
+  const ep = resolve(OUT, `${S}.epub`); rmSync(ep, { force: true });
+  spawnSync('zip', ['-X0q', ep, 'mimetype'], { cwd: E, stdio: 'inherit' });
+  spawnSync('zip', ['-rX9q', ep, 'META-INF', 'OEBPS'], { cwd: E, stdio: 'inherit' });
+  console.log(`${OUT}/${S}.epub`);
+}
