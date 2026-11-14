@@ -83,8 +83,13 @@ caption boxes, sound effects.
   `comic.mjs` for the reader edition if needed.
 - **Scale silhouettes to the panel.** `manSil()` stands ~960 units tall, so in a 400–700-unit panel use k .25–.45 (a
   chariot with its horses ~1100 wide: k .3–.4). The first pass at k .5–.6 filled the panels with giants.
-- **Busts under balloons:** the words sit at the top of a panel, so put the head low (its centre at ~.7 of the panel
-  height, k 1.3–1.5) and let the shoulders run off the bottom. Move a caption to the top rather than over a face.
+- **Talking heads go in wide rows, the balloon beside the face** (owner's phone review, 14 Nov: "dialogue box
+  placement, clearer faces"). In a half-width panel a balloon above a bust lands on the crown or the forehead, and a
+  tail aimed at the mouth crosses the face. So a panel with a speaker and a balloon is a full-width row: the head at
+  one side (x ~250 or ~780, its centre at ~.55 of the row, k 1.8–2.1 in a 600-unit row), the balloon on the other side
+  at the head's height, the tail stopping at the cheek. Two speakers face each other from the two ends with the
+  balloon between them (Krishna and Arjuna, p7). Leave room for what sits above the head: Krishna's peacock feather
+  runs ~250 units over the head's centre, the kirita ~100. Pages went from 44 to 48.
 - `mbhHead()` draws the kirita at .58 of Surya's height: the full crown is taller than the face and steals every panel.
 - A figure lying down reads only against something brighter: put Duryodhana's outline on the lit lake, not on the
   dark bank.
@@ -97,4 +102,14 @@ caption boxes, sound effects.
 - A close-up's gem or light glow scales with the head: keep `ashGemGlow` at .4–.6 when the head is k > 2, or it
   blots out the forehead.
 - `deviHead()` draws the Devi's mukut unless `crown: false`: women of the story (Draupadi, Kripi) need it off.
+- **Never leave a panel black for pacing**: the owner read p23's black panel as "a black box of nothing". Give the
+  other panels the room instead.
+- **A head never floats.** A head drawn alone (someone lying in bed) needs the body under a sheet, or it reads as
+  severed (`dhrInBed()` in act 2). A baby is held in the crook of an arm, the face to us (`sita(c, { cradle: true,
+  inArms })`).
+- **A splash needs its people.** Two balls of fire on red read as nothing: show who threw each weapon, the trails
+  from their hands, and where they meet (p37). Meteors and sparks must be thick streaks; thin bright lines turn into
+  ink.
+- **A quote belongs where it's said.** "He would say one day" on p5 confused the owner: narrate early pages, and let
+  the character say the line in its own scene (the gem's powers, p40).
 

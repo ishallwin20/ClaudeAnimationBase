@@ -47,7 +47,7 @@ them as Saptarishis of the next manvantara, and the Kalki Purana has Parshurama 
 | # | Issue | Core story (source to verify verse by verse in the build) | Assets/research we already have |
 |---|---|---|---|
 | 0 | **The Eight** (free IG carousel, 20 slides) | The shloka; one striking panel per immortal; "Issue 1: Ashwatthama" | — |
-| 1 | **Ashwatthama: the night he didn't sleep** | Born neighing (Adi Parva); "Ashwatthama hatah" (Drona Parva); the owl killing sleeping crows gives him the idea, Shiva at the camp gate, the night raid, the Brahmashirsha, the gem, Krishna's 3000-year curse (Sauptika Parva) | MBh mirror known (neonvagabond) |
+| 1 | **Ashwatthama: the night he became a killer** | Born neighing (Adi Parva); "Ashwatthama hatah" (Drona Parva); the owl killing sleeping crows gives him the idea, Shiva at the camp gate, the night raid, the Brahmashirsha, the gem, Krishna's 3000-year curse (Sauptika Parva) | MBh mirror known (neonvagabond) |
 | 2 | **Hanuman: why he chose to stay** | He asks to live as long as Ram's story is told (Valmiki Uttara) | Hanuman series research, rigs |
 | 3 | **Bali: the king who gave away everything** | Vamana, three steps, Sutala (Bhagavata 8.15–23) | Cinematic Vamana from the Dashavatar test |
 | 4 | **Vibhishana: traitor or the only honest man?** | Leaving Lanka (Valmiki Yuddha 9–19); a debate issue | Cinematic Ravana, Lanka sets |
@@ -138,7 +138,7 @@ Then launch, ~10 days of numbers, the gate. If go: an issue every ~2 weeks betwe
 | # | Issue | Branch | Script | Art look | Built | Launched | Results |
 |---|---|---|---|---|---|---|---|
 | 0 | The Eight (IG carousel) | | | | | | |
-| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | **Inked** (owner, 14 Nov); thumbnails of all 41 pages 14 Nov, read and approved by the owner; art: all 44 pages drawn in colour (14 Nov; three pages split for clarity); owner review next | | | |
+| 1 | Ashwatthama | `comic/1-ashwatthama` | `comics/ashwatthama/SCRIPT.md` (41 pp, 14 Nov) | **Inked** (owner, 14 Nov); thumbnails of all 41 pages 14 Nov, read and approved by the owner; art: all 44 pages drawn in colour (14 Nov); owner's phone review (14 Nov): all notes fixed, dialogue re-laid as wide rows, now 48 pages, subtitle "The night he became a killer"; owner's second read next | | | |
 | 2 | Hanuman | | | | | | |
 | 3 | Bali | | | | | | |
 | 4 | Vibhishana | | | | | | |

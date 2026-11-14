@@ -9,7 +9,8 @@
 //     screen right; the sari's hem and the pallu flying) | 'kneel' (sitting back on her heels, bent toward screen
 //     right over something in her lap, both hands down to it)
 //   t, reach (0..1 'carried': how far the arm is flung out), lean (radians, + toward screen right), wind (0..1),
-//   eyes, tears (0..1), look ([x, y] irises), col (one colour: a silhouette)
+//   eyes, tears (0..1), look ([x, y] irises), col (one colour: a silhouette); cradle (with 'stand': the arms folded
+//   across the chest holding o.inArms(c), drawn between the under arm and the over arm, about (-130..160, -680..-540))
 const SITA = {
   skin: '#B47A56', skinSh: '#8C5A3E', skinDk: '#6A402A', palm: '#C89070', lip: '#8E2A2E', lipLo: '#B03A3C',
   sari: '#E3A62A', sariSh: '#A8741A', sariLt: '#F6CE62', border: '#B0202C', borderSh: '#741018', blouse: '#A61C28',
@@ -85,6 +86,11 @@ function sita(c, o = {}) {
     const a = rc, sx = -80, sy = -690;
     stArm(c, S, C, [[sx, sy], [lerp(-120, -220, a), lerp(-600, -730, a)], [lerp(-130, -350, a), lerp(-520, -790, a)]], 40, 'reach');
     stArm(c, S, C, [[80, -690], [150, -610], [196, -668]], 40, 'push');
+  } else if (o.cradle) {
+    // holding something across the chest (o.inArms(c), drawn between the arms): one forearm under it, one over it
+    stArm(c, S, C, [[80, -690], [150, -590], [-60, -566]], 40, 'push');
+    if (o.inArms) o.inArms(c);
+    stArm(c, S, C, [[-80, -690], [-130, -600], [40, -628]], 40, 'push');
   } else if (kneel) {
     stArm(c, S, C, [[-78, -690], [-60, -580], [30, -520]], 38, 'push');
     stArm(c, S, C, [[78, -690], [130, -590], [150, -500]], 38, 'push');
