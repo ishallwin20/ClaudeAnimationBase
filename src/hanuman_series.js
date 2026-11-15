@@ -12,6 +12,7 @@
 //                                         face: saffron robes, a tawny jata, a rudraksha mala, his sindoor tilak, no
 //                                         tail); Ram and Lakshman as they were in the forest (jata, bark cloth, a
 //                                         rudraksha mala, no crown or gold; the bows stay). Load after ram.js
+//   bharat                                Part 7: Bharat in a hermit's cloth and jata (Ram's rig and skin, pale bark)
 //   hsPill(part)                          the small "HANUMAN · PART N" pill, bottom left of the safe band
 //   hsSource(txt, age, life)              the small source line beside it (name the text when it is not Valmiki)
 //   hsCard(t, C)                          the no-price Navadurga card; C = hsCardTimes(t0)
@@ -107,6 +108,10 @@ const VAN_PAL = { dhoti: '#C99A5E', dhotiDk: '#9A7040', dhotiLt: '#E6C08C', bord
   gold: '#1E1B2E', goldDk: '#1E1B2E', goldLt: '#46426A', gem: '#1E1B2E', flower: '#46426A' };
 function vanRam(x, y, u, o = {}) { return ram(x, y, u, { crown: false, topknot: true, shawl: false, ...o, pal: { ...VAN_PAL, ...(o.pal || {}) } }); }
 function vanLakshman(x, y, u, o = {}) { return ram(x, y, u, { crown: false, topknot: true, shawl: false, ...o, pal: { ...LAKSHMAN_PAL, ...VAN_PAL, dhoti: '#B8A46A', dhotiDk: '#8C7A44', dhotiLt: '#D8C894', ...(o.pal || {}) } }); }
+// Part 7 (Ramcharitmanas, Lanka Kand 58–60). Bharat as he lived while Ram was away (Ayodhya Kand: jata, a hermit's
+// cloth): Ram's rig and Ram's dark skin (the Manas has him look like Ram), in pale ash bark with a rust border, so the
+// two can share a frame. Every ram() / narada() option works.
+function bharat(x, y, u, o = {}) { return ram(x, y, u, { crown: false, topknot: true, shawl: false, kodanda: false, ...o, pal: { ...VAN_PAL, dhoti: '#E9DFC8', dhotiDk: '#BDAF90', dhotiLt: '#FFF8E6', border: '#B4532A', ...(o.pal || {}) } }); }
 
 // ---------- small props ----------
 function cloudPuff(x, y, s, key, a = 255, col = '#FFF6EC', dk = '#E8D6CC') {
