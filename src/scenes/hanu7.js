@@ -76,7 +76,7 @@
     ...three('HE FLEW ON. AND TULSIDAS WRITES:', 'ALL THE WAY, HE KEPT PRAISING', 'BHARAT\'S LOVE FOR RAM.', R0, 4.9, 56, 62, 82),
     ...two('HE REACHED IN TIME.', 'LAKSHMAN SAT UP, SMILING.', S0, 3.5, 84, 70, -1),
     ...two('ARE YOU THE LAKSHMAN', 'OF YOUR FAMILY, OR THE BHARAT?', U0, 4.9, 84, 62, -1),
-    ...two('NEXT: RAM SAID "ASK FOR ANYTHING."', 'HANUMAN ASKED FOR THIS.', V0, 3.1, 56, 78),
+    ...two('NEXT: RAM GAVE EVERYONE JEWELS.', 'HANUMAN ASKED FOR THIS.', V0, 3.1, 58, 78),
   ];
   // the series marks: the part pill and the source line show in the opening only, then fade out (owner, 11 Nov)
   const MARKS = D0 - .2;
@@ -555,7 +555,7 @@
     wipeOut(lt, dur, PEACH);
   }
 
-  // ================= V · next: Ram said "ask for anything" =================
+  // ================= V · next: Ram gave everyone jewels; Hanuman asked for this (Uttara 39–40: Ram offers no boon) =================
   function shotNext(t, lt, dur) {
     const g = t - V0;
     camBegin(540, 1180, 1.0 + .01 * lt);

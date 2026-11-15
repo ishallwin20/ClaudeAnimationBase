@@ -70,7 +70,7 @@ The "HANUMAN · PART 7" pill and the source line ("RAMCHARITMANAS · LANKA KAND"
 | 72.4–77.4 | the twist, warm gold: he flies on, heart eyes; Bharat praying in his thought bubble | HE FLEW ON. AND TULSIDAS WRITES: / ALL THE WAY, HE KEPT PRAISING / BHARAT'S LOVE FOR RAM. |
 | 77.4–81.0 | dawn on the field: Lakshman sits up, Ram beams, Hanuman holds the mountain high | HE REACHED IN TIME. / LAKSHMAN SAT UP, SMILING. |
 | 81.0–86.0 | warm gold: Ram and Lakshman walking ("GOES ALONG") or Bharat before Ram's sandals ("KEEPS THE HOME") | ARE YOU THE LAKSHMAN / OF YOUR FAMILY, OR THE BHARAT? |
-| 86.0–89.2 | Ram, crowned, speaks; Hanuman kneels, "?" | NEXT: RAM SAID "ASK FOR ANYTHING." / HANUMAN ASKED FOR THIS. |
+| 86.0–89.2 | Ram, crowned, speaks; Hanuman kneels, "?" | NEXT: RAM GAVE EVERYONE JEWELS. / HANUMAN ASKED FOR THIS. |
 | 89.2–92.8 | `hsCard()` (no-price Navadurga card); ends on the full card | |
 
 ## Sound (tools/hanu7_sfx.mjs → assets/hanu7_sfx.wav → assets/hanu7_mix.wav, ffmpeg loudnorm, −16.2 LUFS)
