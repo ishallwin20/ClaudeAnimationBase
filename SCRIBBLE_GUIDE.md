@@ -86,3 +86,25 @@ for the engine. This guide covers what Scribble adds.
 - The word rises and grows on the in-breath, waits up high, sinks and shrinks on the out-breath.
 - The blurred, photo-like plate could trip Instagram's AI label (see the Cel and Painterly notes): test-post a silent
   copy before relying on it.
+
+## Four looks (14 Nov 2026, the Bal Hanuman wallpapers)
+
+The owner shared four Instagram Hanuman pieces (thread art on dark paper, colour scribble on black, coloured pencil on
+cream paper, a dark rainy night) as style references, never as subjects. `src/sc_hanu.js` turns them into looks a layer
+can take (`scLook(look, layer)`, `SCL` / `SCL_FACE`):
+
+- **thread**: long thin strands (`len` ~104, `w` ~1), lots of loose hairs and ink loops, on `scPaperDark`, with
+  `scStrays` (loose threads floating round the scene) and a beam of moonlight in threads (`scMoonbeam`).
+- **color**: the default strokes with pale loops, on pure black, a glow behind the subject.
+- **pencil**: short diagonal hatching (`flow` -.95, `curl` ~.2, low `under`) and the part option `tooth` (`scTooth`
+  knocks the paper's grain out of the strokes); lay the parts down with `multiply` on `scPaperCream`. Sets in pencil:
+  `scPencilSun`, `scPencilCloud`, `scPencilHills`.
+- **fur** (the default) over a blurred plate still works for night scenes: `scRainNight` + `scRain` (seamless streaks),
+  graded with a cool `multiply` and relit by a diya.
+
+The poses (all Bal Hanuman, on the head and proportions of `scHanuman`): `scHanuGada` (asleep against his gada, ball
+on top), `scHanuStone` (hugging a floating stone with राम on it, feet dangling), `scHanuLeap` (leaping at the sun, eyes
+open), `scHanuLeaf` (under a banana leaf in the rain). `scBalHead({ eyes: 'open', gaze, mouth: 'open' | 'o' })` gives
+him big shiny eyes and an open delighted mouth. Lessons: a gada drawn with its ball at the bottom and a thin shaft read
+as a veena (put the ball on top, shaft ≥ 34 px); peepal leaves need short strokes, high `under` and a pale outline
+inked round each leaf or they turn into grass; a stone wants short strokes and no hair, or it reads as a fuzzy belly.

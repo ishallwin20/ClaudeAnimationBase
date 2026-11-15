@@ -28,6 +28,7 @@ function scPart(key, box, layers, o = {}) {
     const cv = scCanvas(w, h), c = cv.getContext('2d');
     if (SC.raw) { P.designs.forEach(D => c.drawImage(D.cv, 0, 0)); layers.forEach(L => L.ink && (c.save(), c.translate(-P.x, -P.y), L.ink(c, scRnd(1)), c.restore())); return cv; }
     layers.forEach((L, i) => scScribble(c, L, P.designs[i], P, (o.seed ?? 1) * 1000 + i * 97 + v * 7919));
+    if (o.tooth) scTooth(c, w, h, o.tooth, v);   // coloured pencil: the paper's tooth shows through the strokes
     return cv;
   };
   P.at = t => {
@@ -168,6 +169,43 @@ function scWord(c, txt, x, y, size, o = {}) {
   let cx = x - tw / 2;
   chars.forEach((ch, i) => { c.fillText(ch, cx, y + o.wave * Math.sin((o.t || 0) * TAU * 2.2 - i * .7)); cx += ws[i]; });
   c.restore();
+}
+// the paper's tooth: knock speckles of alpha out of a baked part (amount 0..1), so it reads as pencil on rough paper
+const SC_TOOTH = [];
+function scTooth(c, w, h, amount, v = 0) {
+  const S = 512;
+  if (!SC_TOOTH[v]) {
+    const cv = scCanvas(S, S), x = cv.getContext('2d'), id = x.createImageData(S, S), d = id.data, rnd = scRnd(91 + v * 13);
+    for (let y = 0; y < S; y++) for (let X = 0; X < S; X++) {
+      const n = scNoise2(X / 1.6, y / 2.4, 3 + v) * .55 + scNoise2(X / 5, y / 7, 8 + v) * .3 + (rnd() - .5) * .5, i = (y * S + X) * 4;
+      d[i] = d[i + 1] = d[i + 2] = 0; d[i + 3] = clamp((n + .1) * 1.6) * 255;
+    }
+    x.putImageData(id, 0, 0); SC_TOOTH[v] = cv;
+  }
+  c.save(); c.globalCompositeOperation = 'destination-out'; c.globalAlpha = amount;
+  for (let y = 0; y < h; y += S) for (let x = 0; x < w; x += S) c.drawImage(SC_TOOTH[v], x, y);
+  c.restore();
+}
+// loose threads: long, thin, wandering lines floating round a scene (thread art), boiling with the parts.
+// o: { key, box: [x0, y0, x1, y1], n, cols: [css…], len, w, a, curl, seed }. Cached per variant as a sprite of the box.
+function scStrays(c, t, o) {
+  const [x0, y0, x1, y1] = o.box, v = SC.raw ? 0 : Math.floor(t * SC.boil + 1e-6) % SC.variants;
+  const cv = sprite(`strays-${o.key}-${v}`, x1 - x0, y1 - y0, (x, w, h) => {
+    const rnd = scRnd((o.seed || 1) * 31 + v * 977), cols = o.cols || ['rgba(240,232,214,.5)'];
+    x.lineCap = 'round'; x.lineJoin = 'round';
+    for (let i = 0; i < o.n; i++) {
+      let px = rnd() * w, py = rnd() * h, ang = rnd() * TAU;
+      const turn = (rnd() - .5) * (o.curl ?? .25), steps = 8 + Math.floor(rnd() * (o.len || 40)), loop = rnd() < .25;
+      x.strokeStyle = cols[Math.floor(rnd() * cols.length)]; x.lineWidth = (o.w || 1) * (.5 + rnd() * .8); x.globalAlpha = (o.a ?? .6) * (.3 + rnd() * .7);
+      x.beginPath(); x.moveTo(px, py);
+      for (let s = 0; s < steps; s++) {
+        ang += turn + (rnd() - .5) * .35 + (loop && s > steps * .4 && s < steps * .7 ? .5 : 0);
+        px += Math.cos(ang) * 7; py += Math.sin(ang) * 7; x.lineTo(px, py);
+      }
+      x.stroke();
+    }
+  });
+  c.drawImage(cv, x0, y0);
 }
 // anything that drifts (motes), made seamless over a loop of len s: draw(t, w) at t and at t - len, crossfaded
 function scLooped(t, len, draw) { const m = ((t % len) + len) % len, u = m / len; draw(m, 1 - u); draw(m - len, u); }
