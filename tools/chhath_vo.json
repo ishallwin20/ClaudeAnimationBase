@@ -1,0 +1,115 @@
+{
+ "name": "chhath",
+ "defaults": {
+  "speaker": "girish_en_devotional",
+  "lang": "en-IN",
+  "pace": 1.28
+ },
+ "lines": [
+  {
+   "id": "hook",
+   "t": 0.15,
+   "caps": [
+    "The whole world bows | to the *RISING* sun.",
+    "*ONE* festival bows first | to the *SETTING* sun."
+   ],
+   "tts": "The whole world bows to the rising sun. One festival bows first, to the setting sun.",
+   "hold": 0.6
+  },
+  {
+   "id": "what",
+   "gap": 0.7,
+   "caps": [
+    "*CHHATH.* | No priest. No idol. No temple.",
+    "Just a river, the sun, | and a fast of *36 HOURS.*"
+   ],
+   "tts": "छठ. No priest. No idol. No temple. Just a river, the sun, and a fast of thirty-six hours.",
+   "hold": 0.7
+  },
+  {
+   "id": "d1",
+   "gap": 0.8,
+   "caps": [
+    "*DAY ONE:* Nahay Khay. | A holy dip,",
+    "then one pure meal: | rice, dal and lauki."
+   ],
+   "tts": "Day one: Nahaay Khaay. A holy dip, then one pure meal: rice, daal and lauki.",
+   "hold": 0.7
+  },
+  {
+   "id": "d2",
+   "gap": 0.8,
+   "caps": [
+    "*DAY TWO:* Kharna. | Fast all day.",
+    "At night: jaggery kheer | and roti, off a clay stove.",
+    "Then *36 HOURS.* | No food. | Not a drop of *WATER.*"
+   ],
+   "tts": "Day two: Kharnaa. Fast all day. At night: jaggery kheer and roti, off a clay stove. Then, thirty-six hours. No food. Not a drop of water.",
+   "hold": 0.8
+  },
+  {
+   "id": "d3",
+   "gap": 0.8,
+   "caps": [
+    "*DAY THREE:* | Sandhya Arghya.",
+    "Waist-deep in the river, | a *SOOP* of fruit and thekua",
+    "is raised | to the *SETTING* sun."
+   ],
+   "tts": "Day three: Sandhyaa Arghya. Waist-deep in the river, a soop of fruit and thekuaa, is raised to the setting sun.",
+   "hold": 0.8
+  },
+  {
+   "id": "d4",
+   "gap": 0.9,
+   "caps": [
+    "*DAY FOUR:* | Usha Arghya.",
+    "Before dawn, they are back | in the cold water.",
+    "Waiting..."
+   ],
+   "tts": "Day four: Ushaa Arghya. Before dawn, they are back in the cold water. Waiting.",
+   "hold": 0.9
+  },
+  {
+   "id": "rise",
+   "gap": 1.7,
+   "caps": [
+    "And then, | the sun *RISES.*",
+    "Only then | does the fast break."
+   ],
+   "tts": "And then, the sun rises. Only then does the fast break.",
+   "hold": 0.9
+  },
+  {
+   "id": "maiya",
+   "gap": 0.8,
+   "caps": [
+    "And *CHHATHI MAIYA?* | She is *SHASHTHI DEVI,*",
+    "the guardian of children.",
+    "Folk songs call her | the Sun's own *SISTER.*"
+   ],
+   "tts": "And छठी मैया? She is Shashthee Devi, the guardian of children. Folk songs call her, the Sun's own sister.",
+   "hold": 0.8
+  },
+  {
+   "id": "mean",
+   "gap": 0.9,
+   "caps": [
+    "The world salutes | whoever is *RISING.*",
+    "Chhath bows | to the one who *SETS,*",
+    "because he will | *RISE* again."
+   ],
+   "tts": "The world salutes whoever is rising. छठ bows to the one who sets, because he will rise again.",
+   "hold": 0.9
+  },
+  {
+   "id": "ask",
+   "gap": 0.9,
+   "caps": [
+    "Tell us your *GHAT,* | and say it with us:",
+    "*JAI CHHATHI MAIYA!*"
+   ],
+   "tts": "Tell us your ghaat, and say it with us: Jai छठी मैया!",
+   "hold": 0.6
+  }
+ ]
+}
