@@ -1,0 +1,33 @@
+{
+  "name": "phere",
+  "defaults": { "speaker": "girish_en_devotional", "lang": "en-IN", "pace": 1.2 },
+  "lines": [
+    { "id": "hook", "t": 0.15,
+      "caps": ["*SAAT PHERE?* | The Vedic ritual | says *THREE* rounds.", "The *SEVEN* | were never rounds. | They were *STEPS.*"],
+      "tts": "Saat pheray? The Vedic ritual says three rounds. The seven were never rounds. They were steps.", "hold": 0.7 },
+    { "id": "src", "gap": 0.7,
+      "caps": ["It's in the | *PARASKARA* | Grihya Sutra,", "the wedding rite | of the *SHUKLA YAJURVEDA.*", "Two more Grihya Sutras | say the *SAME.*"],
+      "tts": "It's in the Paaraskar Grihya Sutra, the wedding rite of the Shukla Yajurveda. Two more Grihya Sutras say the same.", "hold": 0.7 },
+    { "id": "rite", "gap": 0.8,
+      "caps": ["Her *BROTHER* pours | puffed rice | into her hands.", "She offers it | to the *FIRE.*", "She steps on a *STONE:* | 'Be *FIRM* | like this stone.'", "Then they walk | *ROUND* the fire."],
+      "tts": "Her brother pours puffed rice into her hands. She offers it to the fire. She steps on a stone: be firm, like this stone. Then they walk, round the fire.", "hold": 0.7 },
+    { "id": "count", "gap": 0.5,
+      "caps": ["*ONE.*", "All over again: | *TWO.*", "And again: | *THREE.*", "Only *THREE* rounds."],
+      "tts": "One. All over again: two. And again: three. Only three rounds.", "hold": 0.9 },
+    { "id": "steps", "gap": 0.8,
+      "caps": ["*THEN* come | the *SEVEN STEPS,* | toward the north.", "At each step, | the groom says | *ONE* word."],
+      "tts": "Then come the seven steps, toward the north. At each step, the groom says one word.", "hold": 0.6 },
+    { "id": "words", "gap": 0.5,
+      "caps": ["*ONE:* food. | *TWO:* strength.", "*THREE:* wealth. | *FOUR:* joy.", "*FIVE:* cattle. | *SIX:* the seasons."],
+      "tts": "One: food. Two: strength. Three: wealth. Four: joy. Five: cattle. Six: the seasons.", "hold": 0.8 },
+    { "id": "seven", "gap": 0.4,
+      "caps": ["And on the *SEVENTH,* | he calls her...", "*FRIEND.*"],
+      "tts": "And on the seventh, he calls her... friend.", "hold": 1.4 },
+    { "id": "law", "gap": 0.8,
+      "caps": ["Even the | *HINDU MARRIAGE ACT* | says it:", "where there is saptapadi, | the marriage is *COMPLETE*", "at the *SEVENTH STEP.*"],
+      "tts": "Even the Hindu Marriage Act says it. Where there is सप्तपदी, the marriage is complete, at the seventh step.", "hold": 0.8 },
+    { "id": "ask", "gap": 0.9,
+      "caps": ["How many rounds | at *YOUR* wedding?", "Comment *3,* *4* or *7,* | and your *STATE!*", "And *SEND* this | to a couple | getting married."],
+      "tts": "How many rounds at your wedding? Comment three, four or seven, and your state! And send this to a couple getting married.", "hold": 0.6 }
+  ]
+}
