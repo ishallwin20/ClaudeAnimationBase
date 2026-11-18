@@ -28,6 +28,9 @@
 //   cosmos: 0..1 inside the 'aam' mouth there is NIGHT: stars, a swirl of galaxy, a little sun and moon (BhP 10.8.37)
 //   mud:    0..1 mud smudged round his mouth, on a cheek and on his right hand (he ate some)
 //   cheeks: puff 0..1 (the cheeks balloon out)
+//   other boys on the rig (ayyappa() in ayyappa_series.js): tilak 'u' (default) | 'ash' (a small tripundra and a red
+//           dot) | false; pendant 'crescent' (default) | 'bell' (a gold bell on a dark cord, pal.cord; bellSwing radians)
+//           | false; pearls (default true)
 //   extras: feather (default true), featherWob (phase), flute (default true: tucked in the kardhani), glowK (a soft
 //           blue-gold aura, drawn first), emote + emoteK + emoteAge, hooks behind(u, sw) (body space, first) / hat(u, sw)
 //           (head space) / held(u, sw) (body space, under the hands), boilKey, noShadow, swMul
@@ -131,10 +134,19 @@ function balKrishna(x, y, u, o = {}) {
   paint(ellPts(.5 * u, (-6.2 + up) * u, 1.1 * u, 1.2 * u, 16, J), { wash: lt, washOp: 90, ink: null });   // the tummy's light
   inkLine(B([[-.18, -5.0], [0, -4.85], [.18, -5.0]]), sw * .5, dk, 'inkfine', .5);   // navel
   rs('pearls');
-  for (let i = 0; i <= 10; i++) { const k = i / 10, a = Math.PI * (1 - k); paint(ellPts(Math.cos(a) * 1.75 * u, (-7.95 + Math.sin(a) * 1.05 + up) * u, .17 * u, .17 * u, 7), { wash: C.pearl, ink: INK, sw: sw * .25 }); }
-  inkLine(B([[-1.9, -8.0], [-1.2, -6.95], [0, -6.55], [1.2, -6.95], [1.9, -8.0]]), sw * .9, C.gold, 'ink', .6);
-  paint(B([[-.55, -6.6], [0, -6.35], [.55, -6.6], [.3, -6.0], [0, -5.85], [-.3, -6.0]]), { wash: C.goldLt, ink: INK, sw: sw * .4, curv: .5 });   // the crescent
-  paint(ellPts(0, (-6.1 + up) * u, .14 * u, .14 * u, 7), { wash: C.gem, ink: null });
+  if (o.pearls !== false) for (let i = 0; i <= 10; i++) { const k = i / 10, a = Math.PI * (1 - k); paint(ellPts(Math.cos(a) * 1.75 * u, (-7.95 + Math.sin(a) * 1.05 + up) * u, .17 * u, .17 * u, 7), { wash: C.pearl, ink: INK, sw: sw * .25 }); }
+  if (o.pendant === 'bell') {   // a gold bell on a dark cord (Ayyappa, Manikanta: "the one with a bell at his throat")
+    const sway = o.bellSwing ?? Math.sin(T * 2.6) * .12, bx = Math.sin(sway) * .9, by = -5.55 + Math.cos(sway) * .1;
+    inkLine(B([[-1.85, -8.05], [-1.0, -6.9], [bx * .5, -6.45], [1.0, -6.9], [1.85, -8.05]]), sw * .8, C.cord || '#2A1E2A', 'ink', .6);
+    inkLine(B([[0, -6.5], [bx, by - .55]]), sw * .6, C.cord || '#2A1E2A', 'inkfine', 0);
+    paint(B([[bx - .2, by - .6], [bx + .2, by - .6], [bx + .55, by - .2], [bx + .7, by + .45], [bx + .85, by + .65], [bx - .85, by + .65], [bx - .7, by + .45], [bx - .55, by - .2]]), { wash: C.gold, fill: C.goldDk, fillOp: 55, tex: .4, ink: INK, sw: sw * .5, curv: .45 });
+    paint(ellPts((bx - .22) * u, (by - .1 + up) * u, .14 * u, .3 * u, 8), { wash: C.goldLt, washOp: 220, ink: null });   // its shine
+    paint(ellPts(bx * u, (by + .78 + up) * u, .2 * u, .17 * u, 8), { wash: C.goldDk, ink: INK, sw: sw * .3 });   // the clapper
+  } else if (o.pendant !== false) {
+    inkLine(B([[-1.9, -8.0], [-1.2, -6.95], [0, -6.55], [1.2, -6.95], [1.9, -8.0]]), sw * .9, C.gold, 'ink', .6);
+    paint(B([[-.55, -6.6], [0, -6.35], [.55, -6.6], [.3, -6.0], [0, -5.85], [-.3, -6.0]]), { wash: C.goldLt, ink: INK, sw: sw * .4, curv: .5 });   // the crescent
+    paint(ellPts(0, (-6.1 + up) * u, .14 * u, .14 * u, 7), { wash: C.gem, ink: null });
+  }
 
   // ---------------- the pitambar: a yellow wrap, a front pleat, a red border; the gold kardhani with bells
   rs('pitambar');
@@ -233,9 +245,14 @@ function balKrishna(x, y, u, o = {}) {
   inkLine(Hd([[-.6, -4.8], [-.1, -5.2], [.5, -4.95]]), sw * .4, C.hairLt, 'inkfine', .6);
   paint(Hd(ribbon([[-1.2, -4.0], [0, -3.85], [1.2, -4.0]], .34, .34)), { wash: C.gold, ink: INK, sw: sw * .4 });
   for (let i = 0; i < 5; i++) paint(ellPts((-.9 + i * .45) * u, (-3.93 + Math.abs(i - 2) * .03) * u, .12 * u, .12 * u, 6), { wash: C.pearl, ink: null });
-  rs('tilak');   // the Vaishnava tilak: a white U with a red line, in the parting of the fringe
-  paint(Hd([[-.4, -3.0], [-.3, -1.85], [0, -1.55], [.3, -1.85], [.4, -3.0], [.2, -3.0], [.14, -2.0], [0, -1.85], [-.14, -2.0], [-.2, -3.0]]), { wash: C.tilak, ink: null, curv: .3 });
-  paint(Hd([[-.07, -2.9], [.07, -2.9], [.06, -2.05], [-.06, -2.05]]), { wash: C.tilakRed, ink: null });
+  rs('tilak');
+  if (o.tilak === 'ash') {   // a small ash tripundra across the brow and a red dot under it (Shaiva: Ayyappa's bhasma mark)
+    for (const yy of [-2.05, -1.78, -1.51]) paint(Hd(ribbon([[-.85, yy + .04], [0, yy - .03], [.85, yy + .04]], .15, .15)), { wash: C.tilak, ink: null });
+    paint(ellPts(0, -1.17 * u, .16 * u, .16 * u, 8), { wash: C.tilakRed, ink: null });
+  } else if (o.tilak !== false) {   // the Vaishnava tilak: a white U with a red line, in the parting of the fringe
+    paint(Hd([[-.4, -3.0], [-.3, -1.85], [0, -1.55], [.3, -1.85], [.4, -3.0], [.2, -3.0], [.14, -2.0], [0, -1.85], [-.14, -2.0], [-.2, -3.0]]), { wash: C.tilak, ink: null, curv: .3 });
+    paint(Hd([[-.07, -2.9], [.07, -2.9], [.06, -2.05], [-.06, -2.05]]), { wash: C.tilakRed, ink: null });
+  }
   rs('nazar');
   paint(ellPts(-2.55 * u, -1.15 * u, .2 * u, .2 * u, 10), { wash: C.kajal, ink: null });   // the kajal nazar dot
 
