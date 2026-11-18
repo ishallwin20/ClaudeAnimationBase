@@ -39,6 +39,7 @@ audio cut from someone else's reel either: if it's an AI remix, its watermark co
 |---|---|
 | `src/cel.js` | the engine, over `src/cine.js` (and `src/painterly.js` for sets): `celShape`, `celEll`/`celOval`, `celTube`, `celLine`, `celBand`, `celIK`, `celDance`, `celMirror`, `celHold`, `CEL` |
 | `src/cel_cast.js` | `celShiva` and `CEL_SHIVA_POSES` (`CEL_SHIVA_DANCE`: eight of them); sets `celSnowfield`, `celStormfield`, `celCloudBank`; effects `celDamaru`, `celTrishulGlow`, `celChakra`, `celFlameRing`, `celCracks` |
+| `src/cel_vraj.js` | the Vraja cast for acted skits ("Kanha vs Radha", RADHA_KANHA_SERIES.md): `celKeys` (timed key poses, each listing only what changes), `celKanha`, `celRadha`, `celMonkey`, `celMatki`, `celButter`; the shared face `celFace` (eyes open/happy/closed/squeeze/wide/sparkle/puppy, lids, brows, eleven mouths, `talk`); effects `celHeart`, `celSparkle`, `celSweat`, `celMark`, `celPuff` |
 | `cel.html` | the studio; on main it plays `src/scenes/cel_demo.js` (8 s: calm, then Rudra) |
 | `docs/cel_sheet.jpg` | the reference sheet |
 
@@ -116,6 +117,15 @@ Build it like `celShiva`: an IK rig of tubes and shapes, drawn back to front:
 
 Keep the head huge (chibi) and the limbs short and thick. Give every part its own `celShape` so it gets its own ink
 line. Draw the features with `celLine` and keep them simple. Faces read at reel size, but under about 4 px a line is lost.
+
+## Acted skits (not dances)
+
+`celKeys(t, [[time, pose], ...])` acts a character instead of dancing it: each key lands at its time with an overshoot and
+lists only what changes. The kids are about 560 px tall at s = 1 with the head half of that; at s = 1.1 two of them fill
+the frame side by side (feet y 1478, x 300 and 742). What makes them cute (owner: "extremely cute"): huge all-iris eyes
+with two highlights and a kajal edge, blush with hatch strokes, a held-on-threes bounce, a deadpan lid for Radha, puppy
+eyes and `:3` for Kanha, a talk flap while a line is up, and a babble SFX (pitched blips per speaker) in place of a voice.
+The lines are handwritten (Kalam 700, 76 px) in the speaker's colour on a cream halo, re-wobbled each drawing.
 
 ## What worked
 
