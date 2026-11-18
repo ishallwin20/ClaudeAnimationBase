@@ -114,7 +114,7 @@ Pampa (ch. 4), not something the king finds by chance.
 
 | Part | Ad | Branch | Built | Result |
 |---|---|---|---|---|
-| 1 Hari + Hara | 101 | `ad/101-books123-ayyappa-1-hariharaputra` | | |
+| 1 Hari + Hara | 101 | `ad/101-books123-ayyappa-1-hariharaputra` | 18 Nov 2026 (86.6 s; hook "HIS FATHER IS SHIVA. HIS MOTHER IS VISHNU."; Mahishi's boon, Mohini's "close your eyes", the garden and the ruby ball, the birth (Kanda Puranam names him Harihara-putra); twist = both hug him and Parvati AND Lakshmi both feed him milk; the bell motif; ask = what does your family call him; no-price Navadurga card, line not re-confirmed) | |
 
 ## How each episode is built
 
