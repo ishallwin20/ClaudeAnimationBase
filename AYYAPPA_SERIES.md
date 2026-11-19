@@ -114,7 +114,8 @@ Pampa (ch. 4), not something the king finds by chance.
 
 | Part | Ad | Branch | Built | Result |
 |---|---|---|---|---|
-| 1 Hari + Hara | 101 | `ad/101-books123-ayyappa-1-hariharaputra` | 18 Nov 2026 (86.6 s; hook "HIS FATHER IS SHIVA. HIS MOTHER IS VISHNU."; Mahishi's boon, Mohini's "close your eyes", the garden and the ruby ball, the birth (Kanda Puranam names him Harihara-putra); twist = both hug him and Parvati AND Lakshmi both feed him milk; the bell motif; ask = what does your family call him; no-price Navadurga card, line not re-confirmed) | |
+| 1 Hari + Hara | 101 | `ad/101-books123-ayyappa-1-hariharaputra` | 18 Nov 2026 (86.6 s; hook "HIS FATHER IS SHIVA. HIS MOTHER IS VISHNU."; Mahishi's boon, Mohini's "close your eyes", the garden and the ruby ball, the birth (Kanda Puranam names him Harihara-putra); twist = both hug him and Parvati AND Lakshmi both feed him milk; the bell motif; ask = what does your family call him; no-price Navadurga card, line not re-confirmed) | 114k views, 6.7k likes, 1,134 shares (owner, 19 Nov) |
+| 2 Tiger's milk | 103 | `ad/103-books123-ayyappa-2-tiger-milk` | 19 Nov 2026 (93.0 s; hook "A 12-YEAR-OLD WENT FOR TIGER'S MILK. HE CAME BACK RIDING A TIGER."; ch. 4–6: the baby by the Pampa and the old brahmin, the minister's three plots (black magic: Shiva as a sadhu; poison: Garuda's amrit; the queen talked into a feigned headache), the promise, "you have become Ram, and I am Dasharatha!", the bundle and the three-eyed coconut, "bring us tiger cubs!" "I will."; twist = the tiger was Indra, the tigresses goddesses, the cubs the devas, and the headache gone the day he left; tender beat = the king: "who are you, really?"; ask = who would you send for tiger's milk (tag); the Mahishi fight is skipped ("what he did in the forest is Part 3"); no-price Navadurga card, line not re-confirmed) | |
 
 ## How each episode is built
 
