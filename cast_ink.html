@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hanuman cast</title>
+<!-- CHIRANJEEVI Issue 2: the cast sheet in the Inked look (page n at t = n + .5). -->
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 900px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 900px; }
+  #scrub { flex: 1; } #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="2160" height="2700"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="10" step="1" value="1.5"><span id="tt">loading…</span></div>
+</main>
+<script>const PROJECT = { duration: 10, w: 2160, h: 2700, fonts: [] }; window.COMIC_LOOK = new URLSearchParams(location.search).get('look') || 'ink';</script>
+<script src="src/cine.js"></script>
+<script src="src/cine_shiva.js"></script>
+<script src="src/cine_surya.js"></script>
+<script src="src/cine_sets.js"></script>
+<script src="src/cine_cast.js"></script>
+<script src="src/cine_kumbha.js"></script>
+<script src="src/cine_vanara.js"></script>
+<script src="src/cine_kids.js"></script>
+<script src="src/cine_balhanuman.js"></script>
+<script src="src/comic.js"></script>
+<script src="comics/hanuman/cast.js"></script>
+<script src="src/scenes/hanuman_cast.js"></script>
+<script>comicSetup();</script>
+</body>
+</html>
