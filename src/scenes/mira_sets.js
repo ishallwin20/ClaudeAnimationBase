@@ -142,7 +142,7 @@ function mrRiverPath(y0, y1) {
 function mrFoot(c, x, y, s, o = {}) {
   const lift = o.lift || 0, skin = o.back ? '#DDB49A' : MIRA.skin;
   c.save(); c.translate(x, y); c.scale(s, s); c.translate(250, 0); c.rotate(-lift * .45); c.translate(-250, 0);
-  const P = [[-16, -46], [-4, -6], [26, 0], [96, -8], [190, 2], [246, 5], [272, -3], [270, -17], [236, -30], [160, -52], [104, -92], [76, -150], [70, -210, 1], [4, -210, 1], [0, -130], [-12, -90]];
+  const P = [[-16, -46], [-4, -6], [26, 0], [96, -8], [190, 2], [246, 5], [272, -3], [270, -17], [236, -30], [160, -52], [104, -92], [76, -150], [72, -230], [74, -380, 1], [2, -380, 1], [2, -230], [0, -130], [-12, -90]];
   mnFill(c, P, skin, { shade: ['#C08A6A', 120, -180, 120, 0], shadeA: .4 });
   // alta: red along the sole and on the toes
   mnStroke(c, [[-8, -10], [26, -1], [96, -7], [190, 1], [246, 4], [266, -5]], '#C9372A', 7);
@@ -169,8 +169,14 @@ function mrFeetClose(c, t) {
   const sw = Math.sin(beat * Math.PI) * 26, hy = 905 + Math.abs(sw) * .3;
   mnFill(c, [[-40, -100, 1], [1120, -100, 1], [1120, hy - 30 + sw * .5], [800, hy + 10 - sw * .2], [500, hy + 30], [200, hy + 10 + sw * .2], [-40, hy - 20 - sw * .5]], MIRA.ghagra, { shade: [MIRA.fold, 0, 0, 0, hy], shadeA: .35 });
   for (let i = 0; i < 12; i++) mnStroke(c, [[i * 100 - 40, 0], [i * 100 - 40 + sw * .6, hy - 40]], MIRA.fold, 1.6);
-  c.save(); c.strokeStyle = MIRA.gold; c.lineWidth = 34; c.beginPath(); mnPts([[-40, hy - 37 - sw * .5], [200, hy - 7 + sw * .2], [500, hy + 13], [800, hy - 7 - sw * .2], [1120, hy - 47 + sw * .5]], false).forEach(([px, py], i) => i ? c.lineTo(px, py) : c.moveTo(px, py)); c.stroke(); c.strokeStyle = MIRA.border; c.lineWidth = 8; c.stroke(); c.restore();
+  const hem = mnPts([[-40, hy - 37 - sw * .5], [200, hy - 7 + sw * .2], [500, hy + 13], [800, hy - 7 - sw * .2], [1120, hy - 47 + sw * .5]], false);
+  c.save(); c.strokeStyle = MIRA.gold; c.lineWidth = 34; c.beginPath(); hem.forEach(([px, py], i) => i ? c.lineTo(px, py) : c.moveTo(px, py)); c.stroke(); c.strokeStyle = MIRA.border; c.lineWidth = 8; c.stroke(); c.restore();
+  // the near foot in front of the floor but under the skirt: clipped below the hem band, so the leg goes up into it
+  c.save(); c.beginPath(); hem.forEach(([px, py], i) => i ? c.lineTo(px, py + 10) : c.moveTo(px, py + 10)); c.lineTo(1120, 2000); c.lineTo(-40, 2000); c.closePath(); c.clip();
   mrFoot(c, 470, 1150 - k1 * 40, 1.4, { lift: k1, jingle: k1 > .2, t });
+  c.restore();
+  // the hem's lower edge over the leg, so it reads as tucked behind the border
+  c.save(); c.strokeStyle = MIRA.border; c.lineWidth = 3; c.beginPath(); hem.forEach(([px, py], i) => i ? c.lineTo(px, py + 16) : c.moveTo(px, py + 16)); c.stroke(); c.restore();
   return [[470 + 60, 1150 - k1 * 40 - 210, k1], [380 + 50, 1090 - k2 * 40 - 190, k2]];
 }
 
