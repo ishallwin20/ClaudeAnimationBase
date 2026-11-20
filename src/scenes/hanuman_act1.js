@@ -161,9 +161,9 @@ ART.barkSwing = (c, P) => {
 };
 ART.parentsNo = (c, P) => {
   ashram(c, P);
-  bust(c, P.w * .2, P.h * .45, .42, { expr: 'fierce', crown: 'mukut', age: .25, arms: ['down', 'point'], pal: { skin: '#C8842E', skinSh: '#985A16', cloth: '#2E5A9A', clothSh: '#1A3A6A' } }, lit(DAY()), hanBust);
-  bust(c, P.w * .48, P.h * .42, .42, { ...VAYU, expr: 'fierce', arms: ['down', 'point'] }, lit(DAY()));
-  bust(c, P.w * .76, P.h * .44, .42, { expr: 'pout', look: [1, 0], arms: ['down', 'point'] }, lit(DAY()), anjanaBust);
+  bust(c, P.w * .2, P.h * 0.582, 0.42, { expr: 'fierce', crown: 'mukut', age: .25, arms: ['down', 'point'], pal: { skin: '#C8842E', skinSh: '#985A16', cloth: '#2E5A9A', clothSh: '#1A3A6A' } }, lit(DAY()), hanBust);
+  bust(c, P.w * .48, P.h * 0.582, 0.42, { ...VAYU, expr: 'fierce', arms: ['down', 'point'] }, lit(DAY()));
+  bust(c, P.w * .76, P.h * 0.582, 0.42, { expr: 'pout', look: [1, 0], arms: ['down', 'point'] }, lit(DAY()), anjanaBust);
   // the boy's tail tip vanishing out of frame
   limb(c, [[P.w + 30, P.h * .7], [P.w * .95, P.h * .68], [P.w * .93, P.h * .6], [P.w * .95, P.h * .56]], [20, 18, 14, 10], BH.fur);
 };
@@ -186,8 +186,8 @@ ART.eyesDim = (c, P) => {
 ART.gentle = (c, P) => {
   ashram(c, P);
   // the rishis by the hut, smiling now
-  bust(c, P.w * .72, P.h * .5, .3, { ...RISHI, expr: 'kind', look: [-1, 0], arms: ['down', 'abhaya'] }, lit(DAY()));
-  bust(c, P.w * .88, P.h * .54, .28, { ...RISHI, beard: 'short', expr: 'smile', look: [-1, 0] }, lit(DAY()));
+  bust(c, P.w * .72, P.h * 0.632, 0.3, { ...RISHI, expr: 'kind', look: [-1, 0], arms: ['down', 'abhaya'] }, lit(DAY()));
+  bust(c, P.w * .88, P.h * 0.657, 0.28, { ...RISHI, beard: 'short', expr: 'smile', look: [-1, 0] }, lit(DAY()));
   // the boy walking carefully with a pot of water held up on his head
   baby(c, P.w * .46, P.h * .46, .56, 0, { pose: 'stand', arms: [[-1.9, -.9], [-1.25, .9]], expr: 'calm', look: [1, 0], turn: .3, t: P.t, jewel: true });
   c.save(); c.translate(P.w * .46, P.h * .46 - 150 * .56); kalash(c, 0, 0, .55); c.restore();

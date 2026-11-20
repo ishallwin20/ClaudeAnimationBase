@@ -63,15 +63,23 @@ const OLD = { age: 1, crown: false };
 function moonNecklace(c, x, y, k) { c.save(); c.translate(x, y); c.scale(k, k); glow(c, 0, 220, 160, '#F4F8FF', .5); for (let i = 0; i <= 20; i++) { const a = Math.PI * .12 + i / 20 * Math.PI * .76; ellipse(c, Math.cos(a) * -90, 150 + Math.sin(a) * 120, 9, 9, '#F8F6EE'); } ellipse(c, 0, 274, 16, 20, '#3AA8C8'); ellipse(c, -4, 268, 5, 6, '#E8FAFF'); c.restore(); }
 function nightSky(c, P, o = {}) { vgrad(c, P, [[0, o.top || '#060A1E'], [1, o.bot || '#1E2A4A']]); const R = lcg(o.seed || 3); for (let i = 0; i < (o.n ?? 70); i++) ellipse(c, P.w * R(), P.h * R() * (o.h ?? .7), 1.5 + R() * 2, 1.5 + R() * 2, '#E8ECF8'); }
 function himalaya(c, P, y, col = '#E8EEF8', sh = '#9AA8C8', seed = 2) {
+  // rock below, snow on the peaks; the shadow on each peak's far face
   const R = lcg(seed), pts = []; let up = true;
-  for (let x = -60; x <= P.w + 80; x += 70 + R() * 70) { pts.push([x, up ? y - P.h * (.08 + R() * .16) : y + R() * P.h * .03, up]); up = !up; }
-  const M = 'M -60 ' + (P.h + 20) + ' ' + pts.map(([x, yy]) => `L ${x} ${yy}`).join(' ') + ` L ${P.w + 80} ${P.h + 20} Z`;
-  fillPath(c, M, col);
-  inside(c, M, () => pts.forEach(([x, yy, pk], i) => { if (!pk || !pts[i + 1]) return; const [vx, vy] = pts[i + 1]; fillPath(c, `M ${x} ${yy} L ${vx} ${vy} L ${vx - 20} ${P.h + 20} L ${x + 10} ${P.h + 20} Z`, sh); }));
-  strokePath(c, M, mixCol(sh, '#000000', .3), 3);
+  for (let x = -60; x <= P.w + 140; x += 110 + R() * 130) { pts.push([x, up ? y - P.h * (.08 + R() * .14) : y + R() * P.h * .03, up]); up = !up; }
+  const M = 'M -60 ' + (P.h + 20) + ' ' + pts.map(([x, yy]) => `L ${x} ${yy}`).join(' ') + ` L ${P.w + 140} ${P.h + 20} Z`;
+  const rock = mixCol(sh, '#2E3A5A', .45);
+  fillPath(c, M, rock);
+  inside(c, M, () => pts.forEach(([x, yy, pk], i) => {
+    if (!pk) return; const L = pts[i - 1] || [x - 120, y], Rt = pts[i + 1] || [x + 120, y], k = .45;
+    const ax = lerp(x, L[0], k), ay = lerp(yy, L[1], k), bx = lerp(x, Rt[0], k), by = lerp(yy, Rt[1], k);
+    const SN = `M ${x} ${yy} L ${bx} ${by} L ${lerp(x, bx, .7)} ${by - 14} L ${lerp(x, bx, .4)} ${by + 6} L ${x} ${by - 20} L ${lerp(x, ax, .45)} ${ay + 4} L ${lerp(x, ax, .75)} ${ay - 12} L ${ax} ${ay} Z`;
+    fillPath(c, SN, col); fillPath(c, `M ${x} ${yy} L ${bx} ${by} L ${lerp(x, bx, .7)} ${by - 14} L ${lerp(x, bx, .4)} ${by + 6} L ${x} ${by - 20} Z`, sh);
+    fillPath(c, `M ${x} ${by - 20} L ${lerp(x, bx, .4)} ${by + 6} L ${Rt[0]} ${Rt[1]} L ${Rt[0]} ${P.h + 20} L ${x + 20} ${P.h + 20} Z`, rgba(mixCol(rock, '#000000', .3), .5));
+  }));
+  strokePath(c, M, mixCol(sh, '#000000', .35), 3);
 }
 function plantain(c, x, base, h, k = 1, col = '#5A9A3A') {
-  strokePath(c, `M ${x} ${base} C ${x - 6} ${base - h * .5} ${x + 6} ${base - h * .8} ${x} ${base - h}`, '#8A9A4A', 24 * k);
+  strokePath(c, `M ${x} ${base} C ${x - 6} ${base - h * .5} ${x + 6} ${base - h * .8} ${x} ${base - h}`, '#6A7A3A', 30 * k);
   for (const [a, l] of [[-2.5, 1], [-.6, 1], [-1.9, .85], [-1.25, .9], [-2.95, .7], [-.15, .75]]) {
     c.save(); c.translate(x, base - h); c.rotate(a); const L = 230 * k * l;
     const Lf = `M 0 0 C ${L * .3} -50 ${L * .7} -40 ${L} ${L * .25} C ${L * .7} 10 ${L * .3} 30 0 0 Z`;
@@ -106,17 +114,28 @@ ART.ravanaFalls = (c, P) => {
 };
 ART.ramSita = (c, P) => {
   vgrad(c, P, [[0, '#F8D8A0'], [1, '#E8A070']]); glow(c, P.w * .5, P.h * .4, 300, '#FFF6D0', .5);
-  bust(c, P.w * .7, P.h * .38, .55, { ...RAM, expr: 'kind', look: [-1, .2], turn: -.3, arms: ['down', 'down'] }, lit(DAY()));
-  sitaAt(c, P.w * .28, P.h * .42, .52, { expr: 'smile', look: [1, -.2], turn: .3, arms: ['down', 'down'] }, lit(DAY()));
+  bust(c, P.w * .7, P.h * 0.545, 0.55, { ...RAM, expr: 'kind', look: [-1, .2], turn: -.3, arms: ['down', 'down'] }, lit(DAY()));
+  sitaAt(c, P.w * .28, P.h * 0.571, 0.52, { expr: 'smile', look: [1, -.2], turn: .3, arms: ['down', 'down'] }, lit(DAY()));
 };
 ART.crowned = (c, P) => {
   vgrad(c, P, [[0, '#8A2A2A'], [1, '#E8A040']]);
   // the white parasol over the throne
   fillPath(c, `M ${P.w * .15} ${P.h * .14} Q ${P.w * .5} ${P.h * -.04} ${P.w * .85} ${P.h * .14} Z`, '#F8F4E8'); strokePath(c, `M ${P.w * .5} ${P.h * .06} L ${P.w * .5} ${P.h * .2}`, '#C8963A', 6);
-  bust(c, P.w * .42, P.h * .34, .38, { ...RAM, expr: 'kind', look: [.6, .6], arms: ['down', 'abhaya'] }, lit(DAY()));
-  bust(c, P.w * .78, P.h * .56, .26, { expr: 'tender', look: [-.8, -.6], turn: -.3, arms: ['namaste', 'namaste'], crown: 'band' }, lit(DAY()), hanBust);
+  // the throne's gold back
+  { const TB = `M ${P.w * .14} ${P.h * .7} L ${P.w * .14} ${P.h * .36} C ${P.w * .14} ${P.h * .2} ${P.w * .62} ${P.h * .2} ${P.w * .62} ${P.h * .36} L ${P.w * .62} ${P.h * .7} Z`; fillPath(c, TB, '#E8B84A'); strokePath(c, TB, '#8A5A1A', 4); inside(c, TB, () => fillPath(c, ellP(P.w * .38, P.h * .4, P.w * .18, P.h * .14), '#C21E2A')); }
+  bust(c, P.w * .38, P.h * .38, .4, { ...RAM, expr: 'kind', look: [.6, .6], arms: ['down', 'abhaya'] }, lit(DAY()));
+  bust(c, P.w * .8, P.h * .52, .26, { expr: 'tender', look: [-.8, -.6], turn: -.3, arms: ['namaste', 'namaste'], crown: 'band' }, lit(DAY()), hanBust);
+  { const D = `M -20 ${P.h + 20} L -20 ${P.h * .66} L ${P.w + 20} ${P.h * .66} L ${P.w + 20} ${P.h + 20} Z`; fillPath(c, D, '#D8A040'); strokePath(c, `M -20 ${P.h * .66} L ${P.w + 20} ${P.h * .66}`, '#8A5A1A', 5); strokePath(c, `M -20 ${P.h * .7} L ${P.w + 20} ${P.h * .7}`, '#F6D27A', 4); for (let i = 0; i < 9; i++) ellipse(c, P.w * (i + .5) / 9, P.h * .68, 6, 6, i % 2 ? '#C21E2A' : '#1E8A5A'); }
 };
 
+// the court from behind: heads and shoulders dark in the foreground
+function courtBacks(c, P, y, n, seed = 2, col = '#4A2A1A') {
+  const R = lcg(seed);
+  for (let i = 0; i < n; i++) { const x = P.w * (i + .5 + (R() - .5) * .5) / n, Y = P.h * (y + R() * .05), k = .9 + R() * .3; c.save(); c.translate(x, Y); c.scale(k, k);
+    fillPath(c, 'M -110 260 C -110 120 -80 90 -30 80 L 30 80 C 80 90 110 120 110 260 Z', mixCol(col, '#000000', R() * .3)); fillPath(c, ellP(0, 20, 52, 62), '#1A100C');
+    if (R() < .35) { fillPath(c, 'M -46 -10 L -40 -70 L 40 -70 L 46 -10 Z', '#C8963A'); strokePath(c, 'M -46 -10 L 46 -10', '#8A5A1A', 4); }
+    c.restore(); }
+}
 // =================== p43 · the gifts, the ask ===================
 function ayodhyaHall(c, P) {
   vgrad(c, P, [[0, '#E8C890'], [1, '#D8986A']]);
@@ -127,15 +146,15 @@ function ayodhyaHall(c, P) {
 }
 ART.gifts = (c, P) => {
   ayodhyaHall(c, P);
-  bust(c, P.w * .1, P.h * .46, .28, { ...RAM, expr: 'smile', look: [1, .2], turn: .3, arms: ['down', 'reach'] }, lit(DAY()));
+  bust(c, P.w * .1, P.h * 0.657, 0.28, { ...RAM, expr: 'smile', look: [1, .2], turn: .3, arms: ['down', 'reach'] }, lit(DAY()));
   // Sugriva, Vibhishana, Angada, Jambavan, vanaras: gold in their hands
-  bust(c, P.w * .3, P.h * .6, .24, { expr: 'smile', look: [-1, 0], turn: -.2, crown: 'mukut', arms: ['down', 'cradle'], pal: { skin: '#C8A050', skinSh: '#987028', cloth: '#2E5A9A', clothSh: '#1A3A6A' } }, lit(DAY()), hanBust);
-  bust(c, P.w * .46, P.h * .6, .24, { ...VIBHI, expr: 'smile', look: [-1, 0], turn: -.2, arms: ['down', 'cradle'] }, lit(DAY()));
-  bust(c, P.w * .62, P.h * .62, .24, { expr: 'smile', look: [-1, 0], turn: -.2, arms: ['down', 'cradle'] }, lit(DAY()), jambBust);
-  [[.78, 0], [.9, 2]].forEach(([x, v]) => bust(c, P.w * x, P.h * .64, .22, { v, expr: 'smile', look: [-1, 0], turn: -.2, arms: ['down', 'cradle'] }, lit(DAY()), vanaraBust));
+  bust(c, P.w * .3, P.h * 0.709, 0.24, { expr: 'smile', look: [-1, 0], turn: -.2, crown: 'mukut', arms: ['down', 'cradle'], pal: { skin: '#C8A050', skinSh: '#987028', cloth: '#2E5A9A', clothSh: '#1A3A6A' } }, lit(DAY()), hanBust);
+  bust(c, P.w * .46, P.h * 0.709, 0.24, { ...VIBHI, expr: 'smile', look: [-1, 0], turn: -.2, arms: ['down', 'cradle'] }, lit(DAY()));
+  bust(c, P.w * .62, P.h * 0.709, 0.24, { expr: 'smile', look: [-1, 0], turn: -.2, arms: ['down', 'cradle'] }, lit(DAY()), jambBust);
+  [[.78, 0], [.9, 2]].forEach(([x, v]) => bust(c, P.w * x, P.h * 0.735, 0.22, { v, expr: 'smile', look: [-1, 0], turn: -.2, arms: ['down', 'cradle'] }, lit(DAY()), vanaraBust));
   const R = lcg(4); for (let i = 0; i < 18; i++) { const x = P.w * (.25 + R() * .72), y = P.h * (.78 + R() * .1); ellipse(c, x, y, 8, 8, ['#F0B83A', '#FFE48A', '#C21E2A', '#1E8A5A'][i % 4]); }
 };
-ART.hanAsks = (c, P) => { ayodhyaHall(c, P); bust(c, P.w * .26, P.h * .52, .36, { expr: 'tender', look: [1, 0], turn: .3, tilt: .1, arms: ['namaste', 'namaste'], crown: 'band' }, lit(DAY()), hanBust); };
+ART.hanAsks = (c, P) => { ayodhyaHall(c, P); bust(c, P.w * .26, P.h * 0.52, 0.392, { expr: 'tender', look: [1, 0], turn: .3, tilt: .1, arms: ['namaste', 'namaste'], crown: 'band' }, lit(DAY()), hanBust); };
 ART.hanAsks2 = (c, P) => { ayodhyaHall(c, P); c.save(); c.translate(P.w * .24, P.h * .56); c.scale(1.35, 1.35); figure(c, (c) => hanHead(c, { expr: 'calm', look: [1, -.2], turn: .3, crown: 'band', t: P.t }), lit(DAY())); c.restore(); };
 
 // =================== p44 · the embrace ===================
@@ -146,6 +165,7 @@ ART.embrace = (c, P) => {
   bust(c, P.w * .66, P.h * .44, .72, { ...RAM, expr: 'kind', look: [-1, .3], turn: -.35, arms: ['reach', 'down'] }, lit(DAY()));
   bust(c, P.w * .34, P.h * .5, .7, { expr: 'tender', look: [1, -.3], turn: .35, arms: ['namaste', 'namaste'], crown: 'band' }, lit(DAY()), hanBust);
   moonNecklace(c, P.w * .34, P.h * .5 + 20, .7 * .82);
+  courtBacks(c, P, .7, 7, 5);
 };
 
 // =================== p45 · two deathless ones ===================
@@ -180,11 +200,11 @@ ART.sarayu = (c, P) => {
 };
 
 // =================== p47–49 · an age later ===================
-function grove2(c, P) { vgrad(c, P, [[0, '#7AA0C8'], [1, '#E8E0B0']]); himalaya(c, P, P.h * .42, '#EEF2FA', '#A8B8D4', 6); const R = lcg(9); for (let i = 0; i < 6; i++) plantain(c, P.w * (i + .5) / 6 + (R() - .5) * 40, P.h + 20, P.h * (.55 + R() * .25), .8); fillPath(c, `M -20 ${P.h * .9} L ${P.w + 20} ${P.h * .9} L ${P.w + 20} ${P.h + 20} L -20 ${P.h + 20} Z`, '#7A8A4A'); }
+function grove2(c, P) { vgrad(c, P, [[0, '#7AA0C8'], [1, '#E8E0B0']]); himalaya(c, P, P.h * .42, '#EEF2FA', '#A8B8D4', 6); for (let i = 0; i < 9; i++) puffs(c, P.w * (i + .5) / 9, P.h * (.5 + (i % 3) * .04), 260, i % 2 ? '#3E6A34' : '#4A7A3A', i + 30, 6); fillPath(c, `M -20 ${P.h * .56} L ${P.w + 20} ${P.h * .56} L ${P.w + 20} ${P.h + 20} L -20 ${P.h + 20} Z`, '#3A5E30'); const R = lcg(9); for (let i = 0; i < 6; i++) plantain(c, P.w * (i + .5) / 6 + (R() - .5) * 40, P.h + 20, P.h * (.55 + R() * .25), .8); fillPath(c, `M -20 ${P.h * .9} L ${P.w + 20} ${P.h * .9} L ${P.w + 20} ${P.h + 20} L -20 ${P.h + 20} Z`, '#7A8A4A'); }
 ART.bhimaGrove = (c, P) => {
   grove2(c, P);
   const R = lcg(3); for (let i = 0; i < 6; i++) { c.save(); c.translate(P.w * (.5 + R() * .45), P.h * (.2 + R() * .5)); c.rotate(R() * 3); plantain(c, 0, 0, 120, .5); c.restore(); }
-  bust(c, P.w * .7, P.h * .5, .4, { ...BHIMA, expr: 'fierce', look: [-1, 0], turn: -.3, arms: ['down', 'up'], hold: 'mace' }, lit(DAY()));
+  bust(c, P.w * .7, P.h * 0.64, 0.4, { ...BHIMA, expr: 'fierce', look: [-1, 0], turn: -.3, arms: ['down', 'up'], hold: 'mace' }, lit(DAY()));
 };
 function stone(c, P, y) { const S = `M ${P.w * .05} ${y} C ${P.w * .1} ${y - 70} ${P.w * .7} ${y - 80} ${P.w * .82} ${y - 20} L ${P.w * .86} ${y + 60} L ${P.w * .02} ${y + 60} Z`; fillPath(c, S, '#8A8478'); inside(c, S, () => fillPath(c, `M -20 ${y + 10} L ${P.w} ${y + 10} L ${P.w} ${y + 80} L -20 ${y + 80} Z`, '#6A645A')); strokePath(c, S, '#3A3630', 4); }
 ART.oldMonkey = (c, P) => {
@@ -194,10 +214,13 @@ ART.oldMonkey = (c, P) => {
   fig(c, P.w * .16, P.h * .56, .3, { ...OLD, legs: [[1.65, .1], [1.55, .2]], arms: ['side', [1.9, -2.4, 'rest']], expr: 'calm', look: [1, .6], tail: false, pal: { skin: '#C8B490', skinSh: '#9A866A' } }, lit(DAY()), hanFigure, -1.4);
 };
 const TAILG = (c, P, y) => limb(c, [[-30, P.h * y], [P.w * .4, P.h * (y + .02)], [P.w + 30, P.h * (y - .02)]], [44, 42, 38], '#C8B490');
-ART.tailOneHand = (c, P) => { grove2(c, P); bust(c, P.w * .5, P.h * .5, .5, { ...BHIMA, expr: 'smile', look: [0, 1], arms: ['hip', 'down'], tilt: -.1 }, lit(DAY())); TAILG(c, P, .9); };
+// the hands where devaBust's 'down' arm ends (build 1.22, bodyK .82): (±145, 549) in bust units
+function gripTail(c, x, y, k, sides, S = devaPal({ who: 'bhima' })) { for (const s of sides) { c.save(); c.translate(x + s * 145 * k, y + 549 * k); c.scale(k * .82 * 1.22 * (s < 0 ? -1 : 1), k * .82 * 1.22); devaHand(c, [0, 0], 1.7, 'fist', S); c.restore(); } }
+ART.tailOneHand = (c, P) => { grove2(c, P); const y = P.h * .36, k = .52; bust(c, P.w * .5, y, k, { ...BHIMA, expr: 'smile', look: [.2, 1], arms: ['hip', 'down'] }, lit(DAY())); TAILG(c, P, (y + 560 * k) / P.h); gripTail(c, P.w * .5, y, k, [1]); };
 ART.tailTwoHands = (c, P) => {
   grove2(c, P);
-  bust(c, P.w * .5, P.h * .5, .5, { ...BHIMA, expr: 'pain', look: [0, -.4], arms: ['down', 'down'] }, lit(DAY())); TAILG(c, P, .9);
+  const y = P.h * .36, k = .52; bust(c, P.w * .5, y, k, { ...BHIMA, expr: 'pain', look: [0, -.4], arms: ['down', 'down'] }, lit(DAY())); TAILG(c, P, (y + 560 * k) / P.h); gripTail(c, P.w * .5, y, k, [-1, 1]);
+  for (const s of [-1, 1]) strokePath(c, `M ${P.w * .5 + s * 160} ${P.h * .96} q ${s * 20} -14 ${s * 40} 0 M ${P.w * .5 + s * 150} ${P.h * .99} q ${s * 26} -18 ${s * 52} 0`, '#5A4A2A', 3);
   for (const [x, y] of [[.36, .3], [.66, .28], [.62, .4], [.4, .44]]) fillPath(c, `M ${P.w * x} ${P.h * y} q -8 14 0 18 q 8 -4 0 -18 Z`, '#BEE6FF');
 };
 ART.bhimaBows = (c, P) => { grove2(c, P); bust(c, P.w * .5, P.h * .84, .5, { ...BHIMA, expr: 'kind', look: [0, .3], tilt: .1, arms: ['namaste', 'namaste'] }, lit(DAY())); };
@@ -206,7 +229,8 @@ ART.oldTells = (c, P) => { grove2(c, P); bust(c, P.w * .2, P.h * .66, .5, { ...O
 ART.singing = (c, P) => {
   grove2(c, P);
   glow(c, P.w * .5, P.h * .6, 300, '#FFF6D0', .4);
-  [[.12, .5, 0], [.86, .5, 1], [.26, .74, 2], [.74, .74, 3]].forEach(([x, y, i]) => bust(c, P.w * x, P.h * y, .2, { who: i % 2 ? 'base' : 'sita', fem: !(i % 2), hair: 'long', crown: 'mukut', tilak: 'dot', dress: i % 2 ? 'royal' : 'sari', cloth: ['#E86A9A', '#3A8AC8', '#F0B83A', '#8A3AC8'][i], expr: 'smile', look: [x < .5 ? 1 : -1, 0], turn: x < .5 ? .3 : -.3, arms: ['down', i % 2 ? 'up' : 'abhaya'] }, lit(DAY())));
+  [[.12, .62, 0], [.86, .62, 1], [.27, .7, 2], [.73, .7, 3]].forEach(([x, y, i]) => bust(c, P.w * x, P.h * y, .2, { who: i % 2 ? 'base' : 'sita', fem: !(i % 2), hair: 'long', crown: 'mukut', tilak: 'dot', dress: i % 2 ? 'royal' : 'sari', cloth: ['#E86A9A', '#3A8AC8', '#F0B83A', '#8A3AC8'][i], expr: 'smile', look: [x < .5 ? 1 : -1, 0], turn: x < .5 ? .3 : -.3, arms: ['down', i % 2 ? 'up' : 'abhaya'] }, lit(DAY())));
+  for (let i = 0; i < 8; i++) puffs(c, P.w * (i + .5) / 8, P.h * .9, 200, i % 2 ? '#3E6A34' : '#4A7A3A', i + 40, 5);
   bust(c, P.w * .52, P.h * .66, .44, { ...OLD, expr: 'tender', look: [0, 0], arms: ['namaste', 'namaste'] }, lit(DAY()), hanBust);
 };
 
@@ -221,14 +245,21 @@ ART.lastPage = (c, P) => {
 // =================== back matter ===================
 ART.paper = (c, P) => { vgrad(c, P, [[0, '#1A1418'], [1, '#2A2024']]); };
 ART.backPage = (c, P) => {
-  vgrad(c, P, [[0, '#0E0A14'], [.6, '#2A1A2A'], [1, '#0E0A14']]);
-  // the Season 1 line-up in shadow along the top
-  for (let i = 0; i < 7; i++) { const x = P.w * (.1 + i * .133), k = .14; c.save(); c.translate(x, P.h * .34); c.scale(k * (i % 2 ? -1 : 1), k); manSil(c, { pose: 'stand', head: ['knot', 'kirita', 'bare', 'knot', 'kirita', 'hood', 'bare'][i], col: '#241A2A' }); c.restore(); }
-  // Bali, lit, holding out his hands to a small brahmin boy
-  glow(c, P.w * .38, P.h * .48, 380, '#FFD27A', .45);
-  bust(c, P.w * .34, P.h * .46, .46, { who: 'base', crown: 'kirita', stache: true, tilak: 'dot', build: 1.1, expr: 'kind', look: [1, .5], turn: .3, arms: ['down', 'reach'], pal: { skin: '#B07A52', skinSh: '#8A5838', skinDk: '#4E2E1C', skinLt: '#D09A6E' } }, WARM());
-  const bx = P.w * .76, by = P.h * .38;
-  strokePath(c, `M ${bx + 40} ${by - 70} L ${bx + 40} ${by + 120}`, '#6A4A2A', 6);
-  fillPath(c, `M ${bx - 60} ${by - 60} Q ${bx + 40} ${by - 130} ${bx + 140} ${by - 60} Z`, '#F0E8D0'); strokePath(c, `M ${bx - 60} ${by - 60} Q ${bx + 40} ${by - 130} ${bx + 140} ${by - 60} Z`, '#8A7A5A', 3);
-  fig(c, bx, by, .2, { who: 'ram', crown: 'jata', tilak: 'namam', expr: 'smile', look: [-1, -.4], turn: -.3, dress: 'rishi', legs: 'stand', arms: ['down', 'fist'], hold: 'kamandalu', dhoti: '#F0C030' }, WARM(), devaFigure);
+  vgrad(c, P, [[0, '#0E0A1E'], [.55, '#3A2A4A'], [1, '#0E0A14']]);
+  const R = lcg(5); for (let i = 0; i < 50; i++) ellipse(c, P.w * R(), P.h * R() * .5, 1.5 + R() * 2, 1.5 + R() * 2, '#E8ECF8');
+  // the shadow the boy will become: a giant striding across the sky (Vamana's three steps)
+  fig(c, P.w * .66, P.h * .1, .62, { who: 'ram', crown: 'kirita', expr: 'calm', look: [0, .6], legs: [[1.95, .1], [.9, .3]], arms: ['up', 'down'], dhoti: '#3A2A5A' }, { ...lit(DAY()), tint: ['#2A1E4A', .92], alpha: .4 }, devaFigure);
+  // the yajna platform
+  const PL = `M -20 ${P.h + 20} L -20 ${P.h * .56} L ${P.w + 20} ${P.h * .56} L ${P.w + 20} ${P.h + 20} Z`;
+  glow(c, P.w * .44, P.h * .44, 420, '#FFC060', .4);
+  // Bali, the asura king, pouring the water of the gift
+  bust(c, P.w * .28, P.h * .38, .44, { who: 'base', crown: 'kirita', stache: true, tilak: 'dot', build: 1.1, expr: 'kind', look: [1, .5], turn: .3, arms: ['down', 'reach'], hold: 'kamandalu', pal: { skin: '#B07A52', skinSh: '#8A5838', skinDk: '#4E2E1C', skinLt: '#D09A6E', cloth: '#7A2A8A', clothSh: '#4A1A5A' } }, WARM());
+  fillPath(c, PL, '#2E2026'); strokePath(c, `M -20 ${P.h * .56} L ${P.w + 20} ${P.h * .56}`, '#C8963A', 6);
+  // Vamana: a small brahmin boy with a parasol, holding out his hand
+  const bx = P.w * .66, by = P.h * .395;
+  fig(c, bx, by, .14, { who: 'ram', crown: 'jata', tilak: 'namam', expr: 'smile', look: [-1, -.4], turn: -.3, dress: 'rishi', legs: 'stand', arms: ['down', 'reach'], dhoti: '#F0C030' }, WARM(), devaFigure);
+  strokePath(c, `M ${bx + 34} ${by - 60} L ${bx + 34} ${by + 110}`, '#6A4A2A', 5);
+  fillPath(c, `M ${bx - 50} ${by - 54} Q ${bx + 34} ${by - 116} ${bx + 118} ${by - 54} Z`, '#F0E8D0'); strokePath(c, `M ${bx - 50} ${by - 54} Q ${bx + 34} ${by - 116} ${bx + 118} ${by - 54} Z`, '#8A7A5A', 3);
+  // the water falling from the king's vessel
+  strokePath(c, `M ${P.w * .5} ${P.h * .42} C ${P.w * .54} ${P.h * .44} ${P.w * .57} ${P.h * .45} ${P.w * .6} ${P.h * .47}`, 'rgba(190,230,255,.9)', 6);
 };

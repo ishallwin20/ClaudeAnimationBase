@@ -26,7 +26,7 @@ ART.hanAlone = (c, P) => {
   for (let i = 0; i < 9; i++) bust(c, P.w * (.04 + i * .055), P.h * (.9 + (i % 2) * .04), .12, { v: i % 4, expr: 'calm', look: [-.5, 0], arms: ['down', 'down'] }, { ...lit(DAY()), tint: ['#2A1A2A', .4] }, vanaraBust);
   // a rock apart, Hanuman on it, silent, looking at the sea
   fillPath(c, `M ${P.w * .62} ${P.h + 20} L ${P.w * .66} ${P.h * .74} L ${P.w * .86} ${P.h * .7} L ${P.w * .96} ${P.h + 20} Z`, '#3A3036');
-  bust(c, P.w * .78, P.h * .46, .28, { expr: 'calm', look: [-.6, .2], turn: -.3, arms: ['down', 'down'] }, lit(DAY(-4, -4)), hanBust);
+  bust(c, P.w * .78, P.h * 0.635, 0.28, { expr: 'calm', look: [-.6, .2], turn: -.3, arms: ['down', 'down'] }, lit(DAY(-4, -4)), hanBust);
 };
 
 // =================== p18 · Jambavan ===================
@@ -68,6 +68,8 @@ ART.hanGrows = (c, P) => {
   // the face blazing like a smokeless fire (4.66.4): a ring of light behind his head
   for (let i = 0; i < 28; i++) { const a = i / 28 * TAU; fillPath(c, `M ${P.w * .5 + Math.cos(a - .05) * 230} ${P.h * .34 + Math.sin(a - .05) * 230} L ${P.w * .5 + Math.cos(a) * (360 + (i % 2) * 120)} ${P.h * .34 + Math.sin(a) * (360 + (i % 2) * 120)} L ${P.w * .5 + Math.cos(a + .05) * 230} ${P.h * .34 + Math.sin(a + .05) * 230} Z`, i % 2 ? '#FFD27A' : '#FF9A3A'); }
   bust(c, P.w * .5, P.h * .34, 1.15, { expr: 'roar', look: [0, 0], arms: ['fist', 'fist'] }, lit(DAY()), hanBust);
+  // he is as tall as a hill now: the clouds drift round his waist
+  for (let i = 0; i < 8; i++) puffs(c, P.w * (i + .5) / 8, P.h * (.8 + (i % 2) * .03), 330, i % 2 ? '#F6C890' : '#F2B47A', i + 21, 6);
   // the vanaras tiny at his feet, on the beach
   sand(c, P, .92);
   const R = lcg(9);
