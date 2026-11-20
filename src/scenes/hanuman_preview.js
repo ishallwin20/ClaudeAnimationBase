@@ -53,6 +53,9 @@ function speedLines(c, x, y, n, r0, r1, col, w = 3, seed = 9, a0 = 0, a1 = TAU) 
 function baby(c, x, y, k, r, o, light = lit(DAY())) { c.save(); c.translate(x, y); c.rotate(r || 0); c.scale(k, k); figure(c, (c) => balHanuman(c, o), light); c.restore(); }
 function babyFace(c, x, y, k, o, light = lit(DAY())) { c.save(); c.translate(x, y); c.scale(k, k); figure(c, (c) => balHead(c, o), light); c.restore(); }
 // a head on the Surya rig (mbhHead) as a close-up: its face at (x, y), scale k
+function bust(c, x, y, k, o, light = WARM(), fn = devaBust) { c.save(); c.translate(x, y); c.scale(k, k); figure(c, (c) => fn(c, { t: 0, ...o }), light); c.restore(); }
+function dhead(c, x, y, k, o, light = WARM()) { c.save(); c.translate(x, y); c.scale(k, k); figure(c, (c) => devaHead(c, o), light); c.restore(); }
+function rahuAt(c, x, y, k, o, light = lit(DAY())) { c.save(); c.translate(x, y); c.scale(k * (o.flip ? -1 : 1), k); figure(c, (c) => rahuHead(c, o), light); c.restore(); }
 function godHead(c, x, y, k, o, light) { c.save(); c.translate(x, y); c.scale(k, k); c.translate(0, 815); figure(c, (c) => mbhHead(c, o), light); c.restore(); }
 // the gods' palettes over SUR (cine_mbh.js)
 // a warm interior light (the court, lamps): KLIGHT with a gold rim and a faint warm cast
@@ -105,20 +108,14 @@ function court(c, P) {
 }
 ART.ramAsks = (c, P) => {
   court(c, P);
-  fillPath(c, `M ${P.w * .5} ${P.h} L ${P.w * .5} ${P.h * .3} C ${P.w * .5} ${P.h * .05} ${P.w * .95} ${P.h * .05} ${P.w * .95} ${P.h * .3} L ${P.w * .95} ${P.h} Z`, '#C8912E');
-  fillPath(c, `M ${P.w * .54} ${P.h} L ${P.w * .54} ${P.h * .32} C ${P.w * .54} ${P.h * .12} ${P.w * .91} ${P.h * .12} ${P.w * .91} ${P.h * .32} L ${P.w * .91} ${P.h} Z`, '#7A1A22');
-  c.save(); c.translate(P.w * .78, P.h * 1.86); c.scale(.62, .62); c.rotate(-.06);
-  figure(c, (c) => mbhBust(c, { pal: GOD.ram, crown: 'kirita', dress: 'royal', look: [-.7, 0], t: P.t }), WARM());
-  c.restore();
+  fillPath(c, `M ${P.w * .52} ${P.h} L ${P.w * .52} ${P.h * .3} C ${P.w * .52} ${P.h * .02} ${P.w * .97} ${P.h * .02} ${P.w * .97} ${P.h * .3} L ${P.w * .97} ${P.h} Z`, '#C8912E');
+  fillPath(c, `M ${P.w * .56} ${P.h} L ${P.w * .56} ${P.h * .32} C ${P.w * .56} ${P.h * .1} ${P.w * .93} ${P.h * .1} ${P.w * .93} ${P.h * .32} L ${P.w * .93} ${P.h} Z`, '#7A1A22');
+  bust(c, P.w * .75, P.h * .44, .42, { who: 'ram', crown: 'kirita', tilak: 'namam', expr: 'speak', look: [-.8, 0], turn: -.25, arms: ['down', 'open'] });
 };
-ART.ramAsks2 = (c, P) => { court(c, P); godHead(c, P.w * .74, P.h * .58, 1.5, { pal: GOD.ram, crown: 'kirita', look: [-.8, .1], fierce: .25, t: P.t }, WARM()); };
+ART.ramAsks2 = (c, P) => { court(c, P); dhead(c, P.w * .74, P.h * .56, .95, { who: 'ram', crown: 'kirita', tilak: 'namam', expr: 'speak', look: [-.9, .1], turn: -.3, tilt: -.05 }); };
 ART.hanBowed = (c, P) => {
   court(c, P);
-  fillPath(c, `M -10 ${P.h * .78} L ${P.w * .22} ${P.h * .78} L ${P.w * .2} ${P.h} L -10 ${P.h} Z`, '#C8912E');
-  for (const x of [.05, .13]) ellipse(c, P.w * x, P.h * .74, 44, 18, GOD.ram.skin);
-  c.save(); c.translate(P.w * .7, P.h * 2.25); c.scale(.95, .95);
-  figure(c, (c) => hanumanFig(c, { pose: 'bow', arms: 'namaste', expr: 'sleep', t: P.t }), WARM());
-  c.restore();
+  bust(c, P.w * .72, P.h * .48, .78, { expr: 'sleep', arms: ['namaste', 'namaste'], tilt: .12 }, WARM(), hanBust);
 };
 
 // =================== p3 · hungry ===================
@@ -190,8 +187,6 @@ function flames(c, x, y, r, n, len, cols, seed = 2) {
     fillPath(c, `M ${p0[0]} ${p0[1]} Q ${x + Math.cos(a - .1) * (r + l * .6)} ${y + Math.sin(a - .1) * (r + l * .6)} ${tp[0]} ${tp[1]} Q ${x + Math.cos(a + .3) * (r + l * .4)} ${y + Math.sin(a + .3) * (r + l * .4)} ${p1[0]} ${p1[1]} Z`, col);
   }
 }
-const RAHU = { skin: '#2E2A44', skinSh: '#1C1830', skinDk: '#0C0A16', lip: '#14101E', mouth: '#0A0408', tongue: '#7A1A3A', hair: '#06040A', hairLt: '#1C1628', eye: '#FF3A2A', eyeHot: '#FFD0A0', brow: '#06040A', helm: '#0A0810', helmLt: '#2A2238' };
-function rahuHead(c, x, y, k, o, light = WARM()) { c.save(); c.translate(x, y); c.scale(k, k); if (o.flip) c.scale(-1, 1); c.translate(0, 815); figure(c, (c) => asuraHead(c, { pal: RAHU, crown: 'mukut', ...o }), light); c.restore(); }
 function sunFire(c, P, x, y, r) {
   vgrad(c, P, [[0, '#7A1A0A'], [1, '#E8501A']]);
   glow(c, x, y, r * 2.4, '#FFB040', .7);
@@ -200,10 +195,8 @@ function sunFire(c, P, x, y, r) {
   c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill();
 }
 ART.surya = (c, P) => {
-  sunFire(c, P, P.w * .62, P.h * .55, P.h * .62);
-  c.save(); c.translate(P.w * .62, P.h * .5); c.scale(1.9, 1.9); c.translate(0, 815);
-  figure(c, (c) => suryaHead(c, { look: [-.8, .5], smile: .6, t: P.t }), lit(LIGHTS.dawnBack, { k: 1.2 }));
-  c.restore();
+  sunFire(c, P, P.w * .68, P.h * .55, P.h * .62);
+  dhead(c, P.w * .68, P.h * .5, 1.05, { who: 'surya', crown: 'sun', tilak: 'line', expr: 'kind', look: [-.9, .6], turn: -.25, tilt: -.08, t: P.t }, lit(DAY()));
   // the small gold shape coming at him
   baby(c, P.w * .12, P.h * .8, .22, -.4, { pose: 'leap', arms: [[-2.0, .2], [-1.25, -.1]], legs: [[2.4, .3], [2.0, .25]], expr: 'grin', t: P.t });
 };
@@ -211,18 +204,18 @@ ART.rahu = (c, P) => {
   vgrad(c, P, [[0, '#0A0610'], [1, '#2A1430']]);
   // the edge of the sun at the left
   glow(c, -P.w * .2, P.h * .5, P.h * .9, '#FF9A3A', .7); c.fillStyle = '#FFB040'; c.beginPath(); c.arc(-P.w * .35, P.h * .5, P.h * .55, 0, TAU); c.fill();
-  rahuHead(c, P.w * .62, P.h * .5, 1.55, { expr: 'laugh', look: [-1, 0], t: P.t, flip: false });
+  rahuAt(c, P.w * .64, P.h * .64, .9, { expr: 'rage', look: [-1, -.2], t: P.t, trail: 1 });
 };
 ART.babyGrabs = (c, P) => {
   vgrad(c, P, [[0, '#2A1430'], [1, '#6A2A3A']]);
-  rahuHead(c, P.w * .95, P.h * .42, 1.2, { expr: 'shock', look: [-1, .3], t: P.t });
+  rahuAt(c, P.w * .9, P.h * .46, .85, { expr: 'shock', look: [-1, .3], t: P.t, trail: 1 });
   speedLines(c, P.w * .35, P.h * .5, 16, 120, 340, 'rgba(255,220,180,.5)', 3, 5, Math.PI * .7, Math.PI * 1.3);
   baby(c, P.w * .36, P.h * .48, .62, .9, { pose: 'leap', arms: [[-.9, .1], [-.3, -.1]], legs: [[2.4, .3], [2.0, .25]], expr: 'giggle', look: [1, 0], t: P.t }, lit(DAY(4, -3)));
 };
 ART.rahuFlees = (c, P) => {
   vgrad(c, P, [[0, '#3A1E5A'], [.6, '#E86A4A'], [1, '#FFC080']]);
   speedLines(c, P.w * .62, P.h * .5, 30, 200, 900, 'rgba(255,255,255,.35)', 3, 8, -.3, .3);
-  rahuHead(c, P.w * .2, P.h * .56, .85, { expr: 'scream', look: [1, -.2], t: P.t, flip: true });
+  rahuAt(c, P.w * .2, P.h * .5, .7, { expr: 'scream', look: [1, -.2], t: P.t, trail: 1 });
   baby(c, P.w * .82, P.h * .62, .5, -.9, { pose: 'leap', arms: [[-2.0, .2], [-1.25, -.1]], legs: [[2.4, .3], [2.0, .25]], expr: 'grin', look: [-1, 0], t: P.t, flip: true });
 };
 
@@ -230,28 +223,19 @@ ART.rahuFlees = (c, P) => {
 // Airavata (the white four-tusked elephant, elephantSide in cine_kumbha.js, whitened) with Indra on his back
 function airavata(c, x, y, k, o = {}) {
   c.save(); c.translate(x, y); c.scale(k * (o.flip ? -1 : 1), k);
-  figure(c, (c) => {
-    elephantSide(c, { t: o.t, tusks: 4, run: o.run ?? 1, trunk: o.trunk ?? .3 });
-  }, { ...lit(DAY(4, -4)), tint: ['#FFFFFF', .72] });
-  figure(c, (c) => {
-    // a gold caparison and a gold head plate
-    fillPath(c, 'M -120 -350 C -60 -360 60 -362 120 -352 L 110 -220 C 40 -200 -40 -200 -110 -220 Z', '#C8912E');
-    fillPath(c, 'M -100 -330 C -40 -340 40 -340 100 -332 L 92 -240 C 30 -226 -30 -226 -92 -240 Z', '#9A1E2A');
-    for (let i = 0; i < 5; i++) ellipse(c, -80 + i * 40, -215, 9, 12, '#F2C866');
-    fillPath(c, 'M 200 -340 C 240 -360 290 -340 300 -300 L 262 -290 Z', '#C8912E');
-  }, lit(DAY(4, -4)));
-  if (o.rider) { c.save(); c.translate(-10, -124); c.scale(.6, .6); figure(c, (c) => mbhBust(c, { pal: GOD.indra, crown: 'kirita', dress: 'royal', look: [1, 0], fierce: .3, t: o.t }), lit(DAY(4, -4))); c.restore(); }
+  const seat = o.rider ? (c) => { c.save(); c.translate(0, -170); c.scale(o.flip ? -.5 : .5, .5); devaBust(c, { who: 'indra', crown: 'kirita', tilak: 'dot', stache: true, expr: o.expr || 'fierce', look: [1, 0], arms: o.arms || ['down', 'fist'], t: o.t }); c.restore(); } : null;
+  figure(c, (c) => airavataSide(c, { t: o.t, run: o.run ?? 1, trunk: o.trunk ?? .1, seat }), lit(DAY(4, -4)));
   c.restore();
 }
 ART.indraRides = (c, P) => {
   vgrad(c, P, [[0, '#2E4E8E'], [.7, '#8AB0D8'], [1, '#E8D8B8']]);
   puffs(c, P.w * .5, P.h * .9, 1100, '#F4F0EA', 5, 10);
-  rahuHead(c, P.w * .14, P.h * .56, .42, { expr: 'scream', look: [-1, 0], t: P.t, flip: false });
-  airavata(c, P.w * .58, P.h * 1.0, .55, { flip: true, rider: true, t: P.t });
+  rahuAt(c, P.w * .1, P.h * .36, .3, { expr: 'scream', look: [-1, 0], t: P.t, trail: 1 });
+  airavata(c, P.w * .56, P.h * 1.0, .5, { flip: true, rider: true, t: P.t });
 };
 ART.babyBigger = (c, P) => {
   vgrad(c, P, [[0, '#7AA8D8'], [1, '#E8D8B8']]);
-  airavata(c, P.w * .9, P.h * .55, .3, { flip: true, rider: true, t: P.t, run: .4 });
+  airavata(c, P.w * .92, P.h * .62, .24, { flip: true, rider: true, t: P.t, run: .4 });
   babyFace(c, P.w * .36, P.h * .6, 1.1, { expr: 'hungry', look: [1, -.3], drool: 1, spark: 1, turn: .4, t: P.t });
 };
 ART.babyBlaze = (c, P) => {
@@ -262,18 +246,10 @@ ART.babyBlaze = (c, P) => {
 };
 ART.vajraLeaves = (c, P) => {
   vgrad(c, P, [[0, '#1A1030'], [1, '#4A2A6A']]);
-  // Indra's hand, opening, the gold bangle; the vajra spinning out of it in violet fire
-  c.save(); c.translate(P.w * .25, P.h * .55);
-  const S = GOD.indra;
-  limb(c, [[-300, 120], [-120, 40], [0, 0]], [90, 80, 74], S.skin);
-  fillPath(c, ellP(-100, 44, 26, 48, -.4), '#C8912E');
-  fillPath(c, 'M -10 -40 C 30 -50 70 -30 70 10 C 70 40 30 60 -10 50 Z', S.skin);
-  for (const [a, l] of [[-.9, 70], [-.45, 84], [-.05, 86], [.35, 76]]) limb(c, [[50, -10 + a * 40], [50 + Math.cos(a) * l * .6, -10 + a * 40 + Math.sin(a) * l * .6], [50 + Math.cos(a) * l, -10 + a * 40 + Math.sin(a) * l]], [24, 20, 16], S.skin);
-  limb(c, [[0, -30], [30, -76], [60, -96]], [26, 22, 18], S.skin);
-  c.restore();
-  figure(c, (c) => { glow(c, P.w * .66, P.h * .4, 220, '#B89AFF', .8); }, {});
-  speedLines(c, P.w * .66, P.h * .4, 22, 90, 260, 'rgba(220,200,255,.8)', 3, 7);
-  vajraK(c, P.w * .66, P.h * .4, 1.2, .9);
+  bust(c, P.w * .24, P.h * .52, .62, { who: 'indra', crown: 'kirita', tilak: 'dot', stache: true, expr: 'calm', look: [1, -.4], turn: .3, arms: ['down', 'throw'] }, lit(DAY(4, -4)));
+  glow(c, P.w * .62, P.h * .32, 220, '#B89AFF', .8);
+  speedLines(c, P.w * .62, P.h * .32, 22, 90, 260, 'rgba(220,200,255,.8)', 3, 7);
+  vajraK(c, P.w * .62, P.h * .32, 1.1, .9);
 };
 
 // =================== p7 · the vajra ===================
@@ -302,14 +278,11 @@ ART.babyFallen = (c, P) => {
 // =================== p8 · the wind stops ===================
 ART.vayuLifts = (c, P) => {
   vgrad(c, P, [[0, '#2A2234'], [1, '#141018']]);
-  c.save(); c.translate(P.w * .5, P.h * 1.32); c.scale(.72, .72);
-  figure(c, (c) => mbhBust(c, { pal: GOD.vayu, crown: 'kirita', dress: 'royal', look: [0, 1], pain: .7, fierce: .4, t: P.t }), lit(DAY(-3, -4)));
-  // the child across his arms
-  c.save(); c.translate(0, -520); c.rotate(-1.45); c.scale(.62, .62);
-  figure(c, (c) => balHanuman(c, { pose: 'limp', expr: 'hurt', bruise: 1, blood: 1, t: P.t, tail: 'limp' }), lit(DAY(-3, -4)));
-  c.restore();
-  // his forearms under the child
-  for (const s of [-1, 1]) limb(c, [[s * 200, -380], [s * 120, -470], [s * 20, -490]], [60, 54, 48], GOD.vayu.skin);
+  c.save(); c.translate(P.w * .5, P.h * .46); c.scale(.66, .66);
+  figure(c, (c) => {
+    devaBust(c, { who: 'vayu', crown: 'kirita', hair: 'wind', tilak: 'dot', expr: 'grief', look: [-.3, 1], tilt: .08, arms: ['cradle', 'down'], t: P.t });
+    c.save(); c.translate(-190, 330); c.rotate(-1.62); c.scale(.78, .78); balHanuman(c, { pose: 'limp', expr: 'hurt', bruise: 1, blood: 1, tail: 'limp' }); c.restore();
+  }, lit(DAY(-3, -4)));
   c.restore();
 };
 ART.vayuCave = (c, P) => {

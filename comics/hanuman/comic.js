@@ -39,7 +39,7 @@ const COMIC = {
       { art: 'ramAsks', ink: FACE, note: 'Ram on his throne (right), leaning forward.',
         say: [{ text: 'Vali and Ravana had strength no one could match. Neither was equal to Hanuman.', x: .3, y: .42, w: 300, size: 26, tail: [.62, .4] }] },
       { art: 'ramAsks2', ink: FACE, note: 'Close on Ram: the real question.',
-        say: [{ text: 'So when Vali hunted his friend Sugriva, why didn\'t Hanuman burn him like a dry creeper?', x: .3, y: .45, w: 250, size: 25, tail: [.6, .55] }] },
+        say: [{ text: 'So when Vali hunted his friend Sugriva, why didn\'t Hanuman burn him like a dry creeper?', x: .28, y: .45, w: 230, size: 24, tail: [.58, .55] }] },
       { art: 'hanBowed', ink: FACE, note: 'Hanuman at Ram\'s feet, head bowed, eyes closed. Agastya speaks from off panel.',
         say: [{ text: 'Because he didn\'t know he could.', x: .26, y: .3, w: 340, tail: [-.02, .2] }, { text: 'Listen to what he did as a child.', x: .26, y: .7, w: 340, tail: [-.02, .62] }] },
     ]),
@@ -48,7 +48,7 @@ const COMIC = {
       { art: 'anjanaLeaves', ink: FACE, note: 'Dawn on Meru. Anjana kisses the sleeping newborn on his curl and slips away into the woods with a basket.',
         box: [{ text: 'On Mount Meru, his mother Anjana left him for a moment, to gather fruit.', w: 400 }] },
       { art: 'babyWail', ink: FACE, note: 'He wakes alone on a rock, golden as ripe rice, and cries hard, tiny fists up.',
-        box: [{ text: 'He was a newborn. He was hungry.', x: .05, y: .82, w: 380 }], sfx: [{ text: 'WAAAH!', x: .72, y: .2, size: 64, rot: .12 }] },
+        box: [{ text: 'He was a newborn. He was hungry.', x: .05, y: .82, w: 380 }], sfx: [{ text: 'WAAAH!', x: .8, y: .6, size: 60, rot: .12 }] },
       { art: 'sunRise', note: 'Over the hills the rising sun, red as a hibiscus. No text.' },
       { art: 'babyFruit', ink: FACE, note: 'Close: the wet eyes go wide, a red disc in each. Tears stop. Drool.',
         say: [{ text: 'Fruit.', x: .8, y: .26, w: 200, kind: 'thought', size: 48 }] },
@@ -61,7 +61,7 @@ const COMIC = {
     // 5 · the sun · Rahu (7.35.30–42)
     pg([[1.1, [1]], [1, [1, 1]], [.85, [1]]], [
       { art: 'surya', ink: FACE, note: 'The sun\'s fire filling the panel, Surya\'s face in the flames looking down, gently, at the small gold shape coming.',
-        box: [{ text: 'The Sun did not burn him.', w: 320 }, { text: '"He\'s a child. He doesn\'t know what he\'s doing. And great work waits for him."', x: .5, y: .72, w: 480 }] },
+        box: [{ text: 'The Sun did not burn him.', w: 320 }, { text: '"He\'s a child. He doesn\'t know what he\'s doing. And great work waits for him."', x: .03, y: .3, w: 360 }] },
       { art: 'rahu', note: 'Out of the dark beside the sun: a colossal head with no body, teeth bared.',
         box: [{ text: 'It was an eclipse day. Rahu had come to eat the sun.', w: 380 }] },
       { art: 'babyGrabs', ink: FACE, note: 'The baby turns from the sun and lunges at Rahu, delighted; the giant head recoils.',
@@ -78,7 +78,7 @@ const COMIC = {
       { art: 'babyBlaze', ink: FACE, note: 'He charges, and for a moment his small body blazes like fire.',
         box: [{ text: 'For a moment he blazed like Indra and Agni together.', x: .05, y: .78, w: 400 }] },
       { art: 'vajraLeaves', note: 'Indra\'s hand opens; the vajra leaves it.',
-        box: [{ text: 'Indra wasn\'t even very angry.', w: 420 }] },
+        box: [{ text: 'Indra wasn\'t even very angry.', x: .55, y: .72, w: 420 }] },
     ]),
     // 7 · the vajra (7.35.46–47) · splash
     pg([[2, [1]], [1, [1]]], [

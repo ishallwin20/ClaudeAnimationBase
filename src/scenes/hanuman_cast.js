@@ -13,3 +13,34 @@ ART.tHanHead = (c, P) => { skyDawn(c, P, '#2A2440', '#8A5A50'); const H = [['cal
 ART.tHanStand = (c, P) => { skyDawn(c, P, '#2A2440', '#8A5A50'); c.translate(P.w / 2, P.h * .97); c.scale(.6, .6); figure(c, (c) => hanumanFig(c, { pose: 'plant', arms: 'hips', expr: 'smile', t: P.t }), lit(KLIGHT(5, -4, { rim: '#FFD89A' }))); };
 ART.tHanRoar = (c, P) => { skyDawn(c, P, '#401010', '#C04020'); c.translate(P.w / 2, P.h * .52); c.scale(1.9, 1.9); figure(c, (c) => hanHead(c, { expr: 'roar', blood: 1, t: P.t }), lit(KLIGHT(5, -4, { rim: '#FFD89A' }))); };
 ART.tHanOld = (c, P) => { skyDawn(c, P, '#E8C890', '#F6E6C0'); c.translate(P.w / 2, P.h * .55); c.scale(1.7, 1.7); figure(c, (c) => hanHead(c, { expr: 'tender', age: 1, crown: false, t: P.t }), lit(DAY())); };
+// the gods (cine_deva.js)
+const GODS = [
+  ['#F6D9A8', '#FBEBD0', { who: 'ram', crown: 'kirita', tilak: 'namam', expr: 'kind', arms: ['down', 'abhaya'] }],
+  ['#9EC2E8', '#E2EEF8', { who: 'indra', crown: 'kirita', tilak: 'dot', stache: true, expr: 'fierce', arms: ['down', 'throw'] }],
+  ['#3A4A6A', '#8AA2C2', { who: 'vayu', crown: 'kirita', hair: 'wind', tilak: 'dot', expr: 'grief', arms: ['cradle', 'cradle'] }],
+  ['#E8603A', '#FFC070', { who: 'surya', crown: 'sun', tilak: 'line', expr: 'kind', arms: ['down', 'abhaya'] }],
+  ['#140A1E', '#4A2A4A', null],
+  ['#C8B08A', '#EAD8B8', { who: 'agastya', crown: 'jata', beard: 'long', stache: true, tilak: 'tripundra', age: .7, dress: 'rishi', expr: 'speak', arms: ['down', 'abhaya'] }],
+];
+ART.tGod = (c, P) => {
+  const [a, b, o] = GODS[P.i]; skyDawn(c, P, a, b);
+  if (!o) { c.translate(P.w * .45, P.h * .42); c.scale(1.1, 1.1); figure(c, (c) => rahuHead(c, { expr: 'scream', look: [-.6, 0], t: P.t }), lit(DAY())); return; }
+  c.translate(P.w / 2, P.h * .38); c.scale(.56, .56); figure(c, (c) => devaBust(c, { ...o, t: P.t }), lit(DAY()));
+};
+const GEX = [['ram', 'smile'], ['ram', 'grief'], ['ram', 'speak'], ['indra', 'rage'], ['indra', 'shock'], ['vayu', 'rage'], ['vayu', 'pain'], ['agastya', 'laugh'], ['rahu', 'shock']];
+ART.tGodExpr = (c, P) => {
+  const [w, e] = GEX[P.i]; skyDawn(c, P, '#F8D8A0', '#FBEED0');
+  const base = GODS.find(g => g[2] && g[2].who === w); const o = base ? base[2] : {};
+  c.translate(P.w / 2, P.h * .56); c.scale(1.05, 1.05);
+  figure(c, (c) => w === 'rahu' ? rahuHead(c, { expr: e, t: P.t }) : devaHead(c, { ...o, expr: e, turn: [0, .3, -.3, 0, .2, -.3, 0, .3, 0][P.i], t: P.t }), lit(DAY()));
+};
+ART.tAiravata = (c, P) => {
+  skyDawn(c, P, '#5A8AD0', '#DCEAF6');
+  c.translate(P.w * .4, P.h * .97); c.scale(.85, .85);
+  figure(c, (c) => airavataSide(c, { t: P.t, trunk: .1, seat: (c) => { c.save(); c.translate(0, -230); c.scale(.55, .55); devaBust(c, { who: 'indra', crown: 'kirita', tilak: 'dot', stache: true, expr: 'fierce', look: [1, 0], arms: ['down', 'throw'] }); c.restore(); } }), lit(DAY()));
+};
+ART.tHanBust = (c, P) => { skyDawn(c, P, '#2A2440', '#8A5A50'); c.translate(P.w / 2, P.h * .3); c.scale(.8, .8); figure(c, (c) => hanBust(c, { expr: 'calm', arms: ['namaste', 'namaste'], t: P.t }), lit(DAY())); };
+ART.tVayuChild = (c, P) => {
+  skyDawn(c, P, '#2A2234', '#5A5070'); c.translate(P.w / 2, P.h * .3); c.scale(.8, .8);
+  figure(c, (c) => { devaBust(c, { who: 'vayu', crown: 'kirita', hair: 'wind', tilak: 'dot', expr: 'grief', look: [0, 1], arms: ['cradle', 'down'], t: P.t }); c.save(); c.translate(-190, 330); c.rotate(-1.62); c.scale(.78, .78); balHanuman(c, { pose: 'limp', expr: 'hurt', bruise: 1, blood: 1, tail: 'limp' }); c.restore(); }, lit(DAY()));
+};
