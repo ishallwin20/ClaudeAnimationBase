@@ -13,7 +13,8 @@
 //     'clamp' (the arm on screen right bent hard, pinning something under the armpit; the other on the hip);
 //     each pose has a default
 //   expr: 'calm' | 'smirk' | 'fierce' | 'laugh' | 'tears'; look ([x, y] irises), eyes (0..1 overrides how open)
-//   tail (true), armFx: figure() options for each arm (its own edge light)
+//   tail (true), armFx: figure() options for each arm (its own edge light), headFn(c, o): draws the head in place of
+//   vanaraHead (Hanuman's, cine_hanuman.js)
 // vanaraHead(c, o): the head alone at its rest position (0, -815), with the neck: expr, look, eyes, t, light, pal.
 //   A close-up: translate to the face, scale(k), translate(0, 815).
 // vanaraFoot(c, o): the foot, close, side view with the toes to screen right, the sole on y = 0, the heel at about
@@ -238,7 +239,7 @@ function vanara(c, o = {}) {
   fillPath(c, 'M -12 -620 L 12 -620 L 0 -596 Z', S.gold); ellipse(c, 0, -614, 7, 8, S.ruby);
   // the head (a bow lowers it and tips it forward)
   c.save(); if (pose === 'bow') { c.translate(0, 26); c.translate(0, -760); c.scale(1, .97); c.translate(0, 760); }
-  vanaraHead(c, { t, light: L, expr: o.expr, look: o.look || (pose === 'bow' ? [0, 1] : null), eyes: o.eyes ?? (pose === 'bow' ? .15 : undefined), open: o.open });
+  (o.headFn || vanaraHead)(c, { t, light: L, expr: o.expr, look: o.look || (pose === 'bow' ? [0, 1] : null), eyes: o.eyes ?? (pose === 'bow' ? .15 : undefined), open: o.open });
   c.restore();
   // the arms
   const SH = [[-170, -690 + br], [170, -690 + br]];

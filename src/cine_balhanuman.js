@@ -19,8 +19,8 @@
 //     arms / legs  overrides: [[upper angle, bend], [upper angle, bend]] (far side first), radians, 0 = +x
 //     tail   'stream' | 'curl' | 'up' | 'limp'; jewel (bool); flip (mirror)
 const BH = {
-  fur: '#EDA63C', furSh: '#C47C22', furDk: '#8E5214', furLt: '#FFD27A',
-  skin: '#FADCB8', skinSh: '#E6B488', skinDk: '#C98E64', skinLt: '#FFF0DC',
+  fur: '#EE9A2C', furSh: '#C06C16', furDk: '#86480E', furLt: '#FFCB6A',
+  skin: '#F1BE8C', skinSh: '#D99863', skinDk: '#B87648', skinLt: '#FBDDBA',
   eye: '#3B2112', iris: '#8A4E1E', irisLt: '#C98A3A', eyeW: '#FFFDF6', lid: '#4A2414', brow: '#9A5A1C',
   nose: '#6A3420', mouth: '#9A2E2E', mouthDk: '#5A1414', tongue: '#F27C7A', teeth: '#FFFDF6', blush: '#F69284',
   tear: '#BFE6FF', tilak: '#E02A1E', langot: '#D8322E', langotSh: '#A21E1E', gold: '#F2BE3E', goldSh: '#B88420', goldLt: '#FFE69A',
@@ -75,7 +75,6 @@ function balHead(c, o = {}) {
   radialShade(c, HEAD, -30 + sx, -46, 40, 150, S.furSh, .75);
   ellipse(c, -34 + sx * .6, -62, 34, 16, rgba(S.furLt, .55), -.25);
   // fur texture: a few soft strands on the crown
-  for (const [x, y, a] of [[-40, -78, -.4], [-10, -88, -.1], [22, -86, .2], [50, -72, .5]]) strokePath(c, `M ${x + sx * .5} ${y} q ${Math.sin(a) * 10} -14 ${Math.sin(a) * 22 + 4} -16`, rgba(S.furSh, .6), 3);
   // ---- the curl on the crown
   {
     const bx = 4 + sx * .5;
@@ -93,14 +92,14 @@ function balHead(c, o = {}) {
   F.closePath();
   fillPath(c, F, S.skin);
   shade(c, F, fx + 10, -10, fx - 30, 96, S.skinSh, .55);
-  ellipse(c, fx - 30, -30, 30, 18, rgba(S.skinLt, .7), -.3);
+  c.save(); c.strokeStyle = S.furSh; c.lineWidth = 3.5; c.stroke(F); c.restore();
   // ---- the sindoor tilak, a small drop between the lobes
   fillPath(c, `M ${fx} -82 C ${fx + 6} -70 ${fx + 6} -58 ${fx} -50 C ${fx - 6} -58 ${fx - 6} -70 ${fx} -82 Z`, S.tilak);
   // ---- brows: little soft arcs high on the fur (worried up, cross down)
   const bw = E.brow;
   for (const s of [-1, 1]) {
     const x0 = fx + s * 20, x1 = fx + s * 60, yb = -62 - bw * 6, yin = yb + (bw > 0 ? -bw * 8 : -bw * 14), yout = yb + (bw > 0 ? bw * 6 : bw * 4);
-    strokePath(c, `M ${x0} ${yin} Q ${(x0 + x1) / 2} ${yb - 8} ${x1} ${yout}`, rgba(S.brow, .95), 7);
+    strokePath(c, `M ${x0} ${yin} Q ${(x0 + x1) / 2} ${yb - 8} ${x1} ${yout}`, S.lid, 5);
   }
   // ---- eyes
   const op = o.open ?? E.open, spark = o.spark ?? E.spark ?? 0, red = o.red || 0;
@@ -128,7 +127,6 @@ function balHead(c, o = {}) {
     // the upper lid: a thick soft line with a little flick at the outer corner (no frown tick)
     strokePath(c, `M ${ex - rx - 2} ${ey + 2} C ${ex - rx * .6} ${ey - ry - 6} ${ex + rx * .6} ${ey - ry - 6} ${ex + rx + 2} ${ey + 2}`, S.lid, 6.5);
     strokePath(c, `M ${ex + s * (rx - 2)} ${ey - ry * .45} q ${s * 9} -3 ${s * 13} -10`, S.lid, 4);
-    strokePath(c, `M ${ex - rx * .5} ${ey + ry + 2} Q ${ex} ${ey + ry + 7} ${ex + rx * .5} ${ey + ry + 2}`, rgba(S.skinDk, .5), 2.4);
   }
   // ---- tears: two shining streams from the outer corners, a drop flying
   const tr = o.tears ?? E.tears ?? 0;
@@ -196,14 +194,13 @@ function balHanuman(c, o = {}) {
     if (tl !== 'limp') { const e = pts[pts.length - 1]; ellipse(c, e[0], e[1], 9, 9, S.furLt); }
   }
   // limbs: a chubby two-bone chain; a hand or a foot at the end
-  const lim = (sh, a, b, l1, l2, w) => { const ch = chain(sh, a, l1, b, l2); limb(c, ch, w, S.fur); limb(c, ch.map(([x, y]) => [x + 4, y + 6]), w.map(v => v * .36), rgba(S.furSh, .55)); return ch; };
+  const lim = (sh, a, b, l1, l2, w, dark) => { const ch = chain(sh, a, l1, b, l2); limb(c, ch, w, dark ? S.furSh : S.fur); return ch; };
   const hand = (p, a, open) => {
     c.save(); c.translate(p[0], p[1]); c.rotate(a);
-    const H = open ? 'M -6 -20 C 14 -26 36 -20 44 -10 C 52 -4 52 4 44 8 C 50 14 46 22 38 20 C 30 26 12 26 -6 20 Z' : 'M -8 -20 C 14 -26 34 -18 38 0 C 40 18 22 26 -8 20 Z';
-    fillPath(c, H, S.skin); shade(c, H, 10, -20, 10, 24, S.skinSh, .7);
-    if (open) strokePath(c, 'M 30 -4 L 46 -2 M 28 8 L 42 12', rgba(S.skinDk, .9), 2.6);
-    else strokePath(c, 'M 22 -10 Q 30 0 24 12 M 12 -14 Q 20 -2 14 14', rgba(S.skinDk, .7), 2.4);
-    fillPath(c, ellP(6, -20, 11, 8, -.4), S.skin);        // the thumb
+    const H = open ? ellP(18, 0, 26, 22) : ellP(14, 0, 22, 20);
+    fillPath(c, H, S.skin); shade(c, H, 14, -18, 14, 22, S.skinSh, .5);
+    fillPath(c, ellP(open ? 10 : 8, -18, 10, 8, -.5), S.skin);   // the thumb
+    if (open) for (const k of [-10, 0, 10]) ellipse(c, 42, k, 7, 6, S.skin);
     c.restore();
   };
   const foot = (p, a) => {
@@ -214,8 +211,8 @@ function balHanuman(c, o = {}) {
   };
   const hipX = 38, hipY = by + 52, shY = by - 50;
   // ---- far leg, far arm
-  const lF = lim([-hipX, hipY], legs[0][0], legs[0][1], 54, 50, [52, 44, 36]); foot(lF[2], legs[0][0] + legs[0][1]);
-  const aF = lim([-54, shY], arms[0][0], arms[0][1], 48, 44, [40, 34, 30]); hand(aF[2], arms[0][0] + arms[0][1], o.open);
+  const lF = lim([-hipX, hipY], legs[0][0], legs[0][1], 54, 50, [52, 44, 36], 1); foot(lF[2], legs[0][0] + legs[0][1]);
+  const aF = lim([-54, shY], arms[0][0], arms[0][1], 48, 44, [40, 34, 30], 1); hand(aF[2], arms[0][0] + arms[0][1], o.open);
   // ---- the torso: a round pear, the belly patch
   const TOR = `M 0 ${by - 92} C 52 ${by - 92} 82 ${by - 50} 86 ${by} C 90 ${by + 58} 66 ${by + 96} 0 ${by + 98} C -66 ${by + 96} -90 ${by + 58} -86 ${by} C -82 ${by - 50} -52 ${by - 92} 0 ${by - 92} Z`;
   fillPath(c, TOR, S.fur);
