@@ -213,6 +213,8 @@ function balHanuman(c, o = {}) {
   // ---- far leg, far arm
   const lF = lim([-hipX, hipY], legs[0][0], legs[0][1], 54, 50, [52, 44, 36], 1); foot(lF[2], legs[0][0] + legs[0][1]);
   const aF = lim([-54, shY], arms[0][0], arms[0][1], 48, 44, [40, 34, 30], 1); hand(aF[2], arms[0][0] + arms[0][1], o.open);
+  // ---- near leg: both legs come out from under the belly and the langot (never a leg in front of the cloth)
+  const lN = lim([hipX, hipY], legs[1][0], legs[1][1], 54, 50, [54, 46, 38]); foot(lN[2], legs[1][0] + legs[1][1]);
   // ---- the torso: a round pear, the belly patch
   const TOR = `M 0 ${by - 92} C 52 ${by - 92} 82 ${by - 50} 86 ${by} C 90 ${by + 58} 66 ${by + 96} 0 ${by + 98} C -66 ${by + 96} -90 ${by + 58} -86 ${by} C -82 ${by - 50} -52 ${by - 92} 0 ${by - 92} Z`;
   fillPath(c, TOR, S.fur);
@@ -224,8 +226,6 @@ function balHanuman(c, o = {}) {
   fillPath(c, LG, S.langot); shade(c, LG, 20, by + 50, -40, by + 104, S.langotSh, .8);
   limb(c, [[-74, by + 50], [0, by + 64], [74, by + 50]], [9, 9, 9], S.gold, false);
   if (o.jewel) { strokePath(c, `M -40 ${by - 80} C -22 ${by - 58} 22 ${by - 58} 40 ${by - 80}`, S.gold, 6); ellipse(c, 0, by - 60, 8, 10, S.gold); ellipse(c, 0, by - 60, 4, 5, S.tilak); }
-  // ---- near leg
-  const lN = lim([hipX, hipY], legs[1][0], legs[1][1], 54, 50, [54, 46, 38]); foot(lN[2], legs[1][0] + legs[1][1]);
   // ---- the head, on top of the body (a little bob)
   c.save(); const hd = P.head; c.translate(0, by - 92); c.rotate(hd[1] * 0 + (o.headRot ?? 0)); c.translate(hd[0] * 30, -92 + hd[1] * 40);
   balHead(c, { ...o, tilt: (o.tilt ?? 0) + hd[1] * .5 });
