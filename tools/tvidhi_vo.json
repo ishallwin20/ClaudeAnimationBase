@@ -1,0 +1,179 @@
+{
+  "name": "tvidhi",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.25
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "*TULSI VIVAH* | is on *SATURDAY.*",
+        "*SAVE* this: the whole | wedding, step by step."
+      ],
+      "tts": "तुलसी विवाह is on Saturday. Save this: the whole wedding, step by step.",
+      "hold": 0.4
+    },
+    {
+      "id": "when",
+      "gap": 0.5,
+      "caps": [
+        "Kartik Shukla | *DWADASHI.*",
+        "At dusk, | *GODHULI* time.",
+        "Many keep a *FAST* | until the evening."
+      ],
+      "tts": "कार्तिक शुक्ल द्वादशी. At dusk, गोधूलि time. Many keep a fast until the evening.",
+      "hold": 0.5
+    },
+    {
+      "id": "s1",
+      "gap": 0.5,
+      "caps": [
+        "*ONE.* Clean her | *TULSI CHAURA,*",
+        "and draw a rangoli.",
+        "Pick the leaves you need | the *DAY BEFORE.*"
+      ],
+      "tts": "One. Clean her तुलसी चौरा, and draw a rangoli. Pick the leaves you need the day before.",
+      "hold": 0.4
+    },
+    {
+      "id": "s2",
+      "gap": 0.5,
+      "caps": [
+        "*TWO.* The mandap: | four *SUGARCANE* stalks,",
+        "tied over her, and a | toran of *MARIGOLDS.*"
+      ],
+      "tts": "Two. The mandap: four sugarcane stalks, tied over her, and a toran of marigolds.",
+      "hold": 0.4
+    },
+    {
+      "id": "s3",
+      "gap": 0.5,
+      "caps": [
+        "*THREE.* Dress the bride: | a red *CHUNARI,*",
+        "bangles, a bindi. | *GENTLY.*",
+        "She is a | *LIVING* plant."
+      ],
+      "tts": "Three. Dress the bride: a red चुनरी, bangles, a bindi. Gently. She is a living plant.",
+      "hold": 0.4
+    },
+    {
+      "id": "s4",
+      "gap": 0.5,
+      "caps": [
+        "*FOUR.* The groom: | *SHALIGRAM.*",
+        "Bathe him, | a *YELLOW* dhoti,",
+        "a sandal tilak, and | seat him beside her.",
+        "No Shaligram? A *VISHNU* | or *KRISHNA* murti."
+      ],
+      "tts": "Four. The groom: शालिग्राम. Bathe him, a yellow dhoti, a sandal tilak, and seat him beside her. No शालिग्राम? A Vishnu or Krishna murti.",
+      "hold": 0.4
+    },
+    {
+      "id": "s5",
+      "gap": 0.5,
+      "caps": [
+        "*FIVE.* Sit down, | facing *NORTH.*",
+        "Worship *GANESHA* first,",
+        "then take your *SANKALP.*"
+      ],
+      "tts": "Five. Sit down, facing north. Worship Ganesha first, then take your संकल्प.",
+      "hold": 0.4
+    },
+    {
+      "id": "s6",
+      "gap": 0.5,
+      "caps": [
+        "*SIX.* Worship them *BOTH:* | flowers, sandal,",
+        "kumkum, akshat, | incense and a *LAMP.*"
+      ],
+      "tts": "Six. Worship them both: flowers, sandal, kumkum, akshat, incense and a lamp.",
+      "hold": 0.6
+    },
+    {
+      "id": "s7",
+      "gap": 0.5,
+      "caps": [
+        "*SEVEN.* *KANYADAAN.*",
+        "Give Tulsi | to Vishnu,",
+        "with a little | *WATER* poured.",
+        "Couples with no daughter | often do this."
+      ],
+      "tts": "Seven. कन्यादान. Give तुलसी to Vishnu, with a little water poured. Couples with no daughter often do this.",
+      "hold": 0.4
+    },
+    {
+      "id": "s8",
+      "gap": 0.5,
+      "caps": [
+        "*EIGHT.* Tie them *TOGETHER:*",
+        "a thread, or | her chunari's edge."
+      ],
+      "tts": "Eight. Tie them together: a thread, or her चुनरी's edge.",
+      "hold": 0.4
+    },
+    {
+      "id": "s9",
+      "gap": 0.5,
+      "caps": [
+        "*NINE.* The wedding verses, | *MANGALASHTAK.*",
+        "On *SAVDHAN!* everyone | showers rice and kumkum."
+      ],
+      "tts": "Nine. The wedding verses, मंगलाष्टक. On सावधान! everyone showers rice and kumkum.",
+      "hold": 0.4
+    },
+    {
+      "id": "s10",
+      "gap": 0.5,
+      "caps": [
+        "*TEN.* The *PHERAS:*",
+        "carry Shaligram | around her.",
+        "Seven rounds | in many homes."
+      ],
+      "tts": "Ten. The फेरे: carry शालिग्राम around her. Seven rounds in many homes.",
+      "hold": 0.4
+    },
+    {
+      "id": "s11",
+      "gap": 0.5,
+      "caps": [
+        "*ELEVEN.* *SINDOOR* | for the bride,",
+        "then *AARTI* | with camphor."
+      ],
+      "tts": "Eleven. सिंदूर for the bride, then aarti with camphor.",
+      "hold": 0.4
+    },
+    {
+      "id": "s12",
+      "gap": 0.5,
+      "caps": [
+        "*TWELVE.* Bhog | from the *SEASON:*",
+        "sugarcane, amla, ber, | sweet potato.",
+        "Then share | the *PRASAD.*"
+      ],
+      "tts": "Twelve. Bhog from the season: sugarcane, amla, बेर, sweet potato. Then share the prasad.",
+      "hold": 0.5
+    },
+    {
+      "id": "close",
+      "gap": 0.5,
+      "caps": [
+        "Tulsi's wedding opens | the *WEDDING SEASON.*"
+      ],
+      "tts": "तुलसी's wedding opens the wedding season.",
+      "hold": 0.5
+    },
+    {
+      "id": "ask",
+      "gap": 0.4,
+      "caps": [
+        "How many *ROUNDS* | in your home?",
+        "*COMMENT* your state, | and *SAVE* this."
+      ],
+      "tts": "How many rounds in your home? Comment your state, and save this.",
+      "hold": 1.0
+    }
+  ]
+}
