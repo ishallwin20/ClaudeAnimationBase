@@ -522,7 +522,11 @@ sun's path.
 said"; 147.39: apsaras and gandharvas sing his deeds to him here. (147.37f*, Sita's grace bringing him heavenly food,
 is starred in the critical edition: left out.)
 
-**Still to read before the art** (marked in the pages): the ring and the jewel (5.33–36), the grove (5.39–40),
-Jambumali, the ministers' sons and the generals (5.40.36–5.44), Indrajit (5.46), the court (5.47–51), the fire not
-burning (5.51), Sita found alive (end of 5.53), the war's end (Yuddha), Ram's departure (7.99–100), Bhima and the tail
-in the critical text (3.146–147).
+**Read for the Lanka pages and the ending (20 Nov 2026)**: 5.34.2–4 (the ring; "as if her husband had come"; her face
+like the moon freed from Rahu), 5.36.52 (the jewel), 5.39.1–4 (he decides on force), 5.40.19 (the shimshapa spared),
+5.42 (Jambumali), 5.43 (the ministers' sons), 5.44 (five generals), 5.46.37–45 (he lets the Brahma weapon hold him, to
+meet Ravana; bound with hemp and bark), 5.47.9 (the crystal throne), 5.50.6–11 (Vibhishana: a messenger is not
+killed), 5.51.3–7 (monkeys prize their tails; old cotton cloths; he grew as they wound), 5.51.29–30 (the fire burns
+but feels cold as frost), 5.53.20–28 and 5.54.1 (Sita unharmed; "by good fortune I see you unharmed"), 7.100.5 (Ram
+steps into the Sarayu), MBh 3.147.17–20 (Bhima: the left hand, smiling, then both arms; brows raised, eyes rolling,
+sweat; he cannot lift it).

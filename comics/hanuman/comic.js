@@ -242,7 +242,8 @@ const COMIC = {
     // 27 · the ring (5.33–5.36)
     pg([[1, [1]], [1, [1, 1]]], [
       { art: 'ringOffer', ink: FACE, note: 'Hanuman drops softly to her; she recoils. He holds out Ram\'s ring.' },
-      { art: 'ringFace', ink: FACE, note: 'Sita pressing the ring to her face.' },
+      { art: 'ringFace', ink: FACE, note: 'Sita holding the ring close, as if he had come (5.34.3–4).',
+        box: [{ text: 'She held her husband\'s ring as if he himself had come. Her face shone like the moon set free from Rahu.', x: .05, y: .03, w: .9 }] },
       { art: 'jewelGive', ink: FACE, note: 'She gives him her hair jewel for Ram.' },
     ]),
     // 28 · a message for Ravana (5.39–5.40)
@@ -250,8 +251,8 @@ const COMIC = {
       say: [{ text: 'I found her. Now let them see what Ram\'s messenger is.', x: .3, y: .12, w: 460, kind: 'thought' }], sfx: [{ text: 'KRASSH', x: .7, y: .6, size: 110, rot: .1 }] }]),
     // 29 · eighty thousand (5.40.23–29; 5.41.5–9) · splash
     pg(FULL, [{ art: 'kinkaras', ink: FACE, note: 'Splash: at the grove gate Hanuman, big as a hill, lashes his tail; eighty thousand kinkaras with hammers and maces pour at him like moths into a fire. He roars.',
-      box: [{ text: 'Ravana sent the kinkaras: eighty thousand, huge-bellied, huge-fanged.', w: 480 }],
-      say: [{ text: 'VICTORY TO RAM! I AM HANUMAN, SERVANT OF RAM! A THOUSAND RAVANAS COULD NOT STAND AGAINST ME!', x: .5, y: .82, w: 760, size: 44, tail: [.5, .55] }] }]),
+      box: [{ text: 'Ravana sent the kinkaras: eighty thousand, huge-bellied, huge-fanged.', x: .03, y: .9, w: 480 }],
+      say: [{ text: 'VICTORY TO RAM! I AM HANUMAN, SERVANT OF RAM! A THOUSAND RAVANAS COULD NOT STAND AGAINST ME!', x: .5, y: .13, w: 760, size: 44, tail: [.5, .3] }] }]),
     // 30 · the iron bar (5.40.31–34)
     pg([[1, [1, 1]], [1.2, [1]], [.9, [1]]], [
       { art: 'beamTear', ink: FACE, note: 'He tears the iron beam out of the gate.' },
@@ -262,9 +263,9 @@ const COMIC = {
     ]),
     // 31 · more (5.40.36–5.44)
     pg([[1, [1]], [1, [1]], [1, [1]]], [
-      { art: 'jambumali', note: 'Jambumali, Prahasta\'s son, with his bow.' },
-      { art: 'ministersSons', note: 'The ministers\' seven sons in their chariots.' },
-      { art: 'generals', note: 'Five generals with their armies. Each ends under the same gate.' },
+      { art: 'jambumali', note: 'Jambumali, Prahasta\'s son, with his bow.', box: [{ text: 'Then came Jambumali, Prahasta\'s son, with his bow.', w: 420 }] },
+      { art: 'ministersSons', note: 'The ministers\' seven sons in their chariots.', box: [{ text: 'Then the seven sons of Ravana\'s ministers.', w: 420 }] },
+      { art: 'generals', note: 'Five generals with their armies. Each ends under the same gate.', box: [{ text: 'Then five generals with their armies. Every one of them ended under the same gate.', x: .3, y: .03, w: 420 }] },
     ]),
     // 32 · Aksha (5.45.1–25)
     pg([[1, [1]], [1, [1]], [1, [1]]], [
@@ -295,10 +296,10 @@ const COMIC = {
     // 36 · Ravana's court (5.47–5.51)
     pg([[1.2, [1]], [.8, [1, 1]], [.8, [1, 1]]], [
       { art: 'court', note: 'Ravana on a crystal throne blazing with gems; Hanuman bound before him.' },
-      { art: 'hanSpeaks', ink: FACE, note: 'Hanuman.', say: [{ text: 'Give Sita back.', x: .5, y: .25, w: 300, tail: [.5, .65] }] },
-      { art: 'ravanaKill', ink: FACE, note: 'Ravana.', say: [{ text: 'Kill him.', x: .5, y: .25, w: 220, tail: [.5, .65] }] },
-      { art: 'vibhishana', ink: FACE, note: 'Vibhishana.', say: [{ text: 'A messenger is never killed.', x: .5, y: .25, w: 340, tail: [.5, .65] }] },
-      { art: 'ravanaBurn', ink: FACE, note: 'Ravana.', say: [{ text: 'Then burn his tail.', x: .5, y: .25, w: 300, tail: [.5, .65] }] },
+      { art: 'hanSpeaks', ink: FACE, note: 'Hanuman.', say: [{ text: 'Give Sita back.', x: .5, y: .2, w: 300, tail: [.5, .44] }] },
+      { art: 'ravanaKill', ink: FACE, note: 'Ravana.', say: [{ text: 'Kill him.', x: .5, y: .2, w: 220, tail: [.5, .42] }] },
+      { art: 'vibhishana', ink: FACE, note: 'Vibhishana.', say: [{ text: 'A messenger is never killed.', x: .5, y: .2, w: 340, tail: [.5, .46] }] },
+      { art: 'ravanaBurn', ink: FACE, note: 'Ravana.', say: [{ text: 'Then burn his tail.', x: .5, y: .2, w: 300, tail: [.5, .42] }] },
     ]),
     // 37 · be cool (5.51)
     pg([[1, [1]], [1, [1]], [1, [1]]], [
@@ -316,9 +317,10 @@ const COMIC = {
     // 40 · Sita (5.53.1–7)
     pg([[1, [1]], [.9, [1, 1]], [1, [1]]], [
       { art: 'shoreLooks', note: 'Hanuman on the shore, his tail out in the sea, Lanka burning behind him.', box: [{ text: 'Then he looked at what he\'d done.', w: 400 }] },
-      { art: 'horror', ink: FACE, note: 'His face in horror.', say: [{ text: 'If Lanka burned, Sita burned. I\'ve killed the one I came to save.', x: .5, y: .28, w: 400, tail: [.5, .7] }] },
-      { art: 'wisdom', ink: FACE, note: 'Hanuman, head in hands.', say: [{ text: 'Blessed are those who put out their anger with wisdom, as water puts out fire.', x: .5, y: .28, w: 400, kind: 'thought' }] },
-      { art: 'sitaAlive', ink: FACE, note: 'He flies back over the smoke to the grove: Sita, alive, under her tree.' },
+      { art: 'horror', ink: FACE, note: 'His face in horror.', say: [{ text: 'If Lanka burned, Sita burned. I\'ve killed the one I came to save.', x: .5, y: .22, w: 420, tail: [.5, .44] }] },
+      { art: 'wisdom', ink: FACE, note: 'Hanuman, head in hands.', say: [{ text: 'Blessed are those who put out their anger with wisdom, as water puts out fire.', x: .5, y: .26, w: 440, kind: 'thought' }] },
+      { art: 'sitaAlive', ink: FACE, note: 'He flies back over the smoke to the grove: Sita, alive, under her tree (5.54.1).',
+        say: [{ text: 'By good fortune, I see you unharmed.', x: .74, y: .14, w: 300, tail: [.76, .32] }] },
     ]),
 
     // ================= Act 4 · The war (41–42) =================
@@ -334,21 +336,21 @@ const COMIC = {
     // ================= Act 5 · The choice (43–46) =================
     pg([[1, [1]], [1, [1]], [1, [1]]], [
       { art: 'gifts', note: 'The court: Sugriva, Vibhishana, the vanaras and bears receiving gold and jewels, taking leave.' },
-      { art: 'hanAsks', ink: FACE, note: 'Hanuman bowing, hands joined.', say: [{ text: 'My love for you will never move. My devotion goes nowhere else.', x: .65, y: .4, w: 440, tail: [.3, .6] }] },
-      { art: 'hanAsks2', ink: FACE, note: 'Closer.', say: [{ text: 'As long as I can hear Ram\'s story on this earth, let my life stay in my body.', x: .65, y: .4, w: 440, tail: [.3, .6] }] },
+      { art: 'hanAsks', ink: FACE, note: 'Hanuman bowing, hands joined.', say: [{ text: 'My love for you will never move. My devotion goes nowhere else.', x: .67, y: .4, w: 440, tail: [.4, .46] }] },
+      { art: 'hanAsks2', ink: FACE, note: 'Closer.', say: [{ text: 'As long as I can hear Ram\'s story on this earth, let my life stay in my body.', x: .67, y: .4, w: 440, tail: [.4, .5] }] },
     ]),
     pg(FULL, [{ art: 'embrace', ink: FACE, note: 'Splash: Ram rises from the throne and holds him.',
       say: [{ text: 'So it will be. As long as the worlds stand, my story will stand. And as long as it is told, your life stays in your body.', x: .5, y: .12, w: 680, tail: [.45, .4] }],
       box: [{ text: 'He took the necklace from his own neck, bright as the moon, and put it on Hanuman. Hanuman looked like a golden mountain with the moon on its peak.', x: .05, y: .82, w: 620 }] }]),
     pg([[.9, [1, 1]], [1.2, [1]]], [
       { art: 'ashwatthama', ink: FACE, note: 'Cool colours: Ashwatthama from Issue 1, the wound on his forehead.', box: [{ text: 'Ashwatthama cannot die. It is a curse.', x: .05, y: .78, w: 400 }] },
-      { art: 'jambaEcho', ink: FACE, note: 'Jambavan, remembered.', say: [{ text: 'You will die only when you choose.', x: .5, y: .3, w: 360, tail: [.5, .7] }] },
+      { art: 'jambaEcho', ink: FACE, note: 'Jambavan, remembered.', say: [{ text: 'You will die only when you choose.', x: .5, y: .22, w: 380, tail: [.5, .44] }] },
       { art: 'steps', ink: FACE, note: 'Hanuman alone on the palace steps at night, the necklace catching the moon.',
         box: [{ text: 'Hanuman could die any day he chose. He chose to stay and listen.', x: .4, y: .78, w: 560 }] },
     ]),
     pg([[1, [1]], [1.3, [1]]], [
       { art: 'ramLast', ink: FACE, note: 'Ram, at the end of his reign.',
-        say: [{ text: 'You set your mind on living. Don\'t break your promise. As long as my stories go through the world, keep your life.', x: .62, y: .4, w: 520, tail: [.25, .65] }] },
+        say: [{ text: 'You set your mind on living. Don\'t break your promise. As long as my stories go through the world, keep your life.', x: .64, y: .4, w: 520, tail: [.34, .44] }] },
       { art: 'sarayu', note: 'Ram walking into the Sarayu with all who followed him; on the bank, from behind, one figure who stays.' },
     ]),
 
@@ -360,12 +362,12 @@ const COMIC = {
     pg([[1, [1, 1]], [1, [1, 1]]], [
       { art: 'tailOneHand', note: 'Bhima takes the tail in one hand, carelessly.' },
       { art: 'tailTwoHands', ink: FACE, note: 'Both hands; sweat, eyes rolling. It does not move.' },
-      { art: 'bhimaBows', ink: FACE, note: 'Bhima, bowing.', say: [{ text: 'Who are you?', x: .5, y: .25, w: 260, tail: [.5, .65] }] },
-      { art: 'iAmHanuman', ink: FACE, note: 'The old monkey, smiling.', say: [{ text: 'I am Hanuman.', x: .5, y: .25, w: 280, tail: [.5, .65] }] },
+      { art: 'bhimaBows', ink: FACE, note: 'Bhima, bowing.', say: [{ text: 'Who are you?', x: .5, y: .2, w: 260, tail: [.5, .44] }] },
+      { art: 'iAmHanuman', ink: FACE, note: 'The old monkey, smiling.', say: [{ text: 'I am Hanuman.', x: .5, y: .2, w: 280, tail: [.5, .44] }] },
     ]),
     pg([[1, [1]], [1.2, [1]]], [
       { art: 'oldTells', ink: FACE, note: 'Old Hanuman, telling.',
-        say: [{ text: 'When Ram was crowned, I asked him: as long as Ram\'s story is told in the worlds, let me live. He said: so be it.', x: .62, y: .4, w: 520, tail: [.25, .65] }] },
+        say: [{ text: 'When Ram was crowned, I asked him: as long as Ram\'s story is told in the worlds, let me live. He said: so be it.', x: .64, y: .4, w: 520, tail: [.34, .46] }] },
       { art: 'singing', ink: FACE, note: 'Hanuman, eyes closed, in the plantain grove; gandharvas and apsaras singing around him.',
         say: [{ text: 'Here, they sing his deeds to me.', x: .3, y: .15, w: 380, tail: [.45, .5] }] },
     ]),
@@ -382,11 +384,11 @@ const COMIC = {
         '• Revived; the boons and the name: 7.36.1–25 · the ashrams, the curse: 7.36.28–34 · the answer: 7.36.38–43\n' +
         '• The shore: 4.64 · Jambavan, the death-at-will boon: 4.65.1–35 · he grows: 4.66.1–7\n' +
         '• Mahendra: 5.1.10–21 · Simhika: 5.1.166–179 · Lanka: 5.3.34, 5.10.10 · Ravana\'s threat: 5.20.8–9\n' +
-        '• The ring and the jewel: 5.33–36 · the grove, the kinkaras, the war cry: 5.40–41\n' +
-        '• Aksha: 5.45 · Indrajit: 5.46 · the court and the tail: 5.47–51 · Sita\'s prayer: 5.51.24–27\n' +
-        '• Lanka burns: 5.52.10–13 · his horror: 5.53.1–7 · the mountain: 6.61.33, 63\n' +
-        '• The gifts, his ask, the embrace and the necklace: 7.39.14–21 · Ram\'s last words to him: 7.98.24–25\n' +
-        'Mahabharata (critical edition): Bhima and the old monkey 3.146–147; "so be it" 3.147.37; they sing to him 3.147.39' }] }]),
+        '• The ring: 5.34.2–4 · the jewel: 5.36.52 · the grove, her tree spared, the kinkaras, the war cry: 5.39–41 · Jambumali, the ministers\' sons, the generals: 5.42–44\n' +
+        '• Aksha: 5.45 · Indrajit\'s Brahma weapon: 5.46.37–45 · the crystal throne: 5.47.9 · "a messenger is never killed": 5.50 · the tail: 5.51.3–7 · Sita\'s prayer: 5.51.24–27 · the fire cold as frost: 5.51.29–30\n' +
+        '• Lanka burns: 5.52.10–13 · his horror: 5.53.1–7 · Sita unharmed: 5.53.20–28, 5.54.1 · the mountain: 6.61.33, 63\n' +
+        '• The gifts, his ask, the embrace and the necklace: 7.39.14–21 · Ram\'s last words to him: 7.98.24–25 · the Sarayu: 7.100.5\n' +
+        'Mahabharata (critical edition): Bhima and the old monkey 3.146–147; the tail, one hand then both: 3.147.17–20; "so be it" 3.147.37; they sing to him 3.147.39' }] }]),
     pg(FULL, [{ art: 'paper', note: 'Plain dark page.',
       title: [{ text: 'WHAT THE TEXTS DON\'T SAY', y: .05, size: 48 }],
       box: [{ list: true, x: 30, y: .1, w: 970, size: 24, text:

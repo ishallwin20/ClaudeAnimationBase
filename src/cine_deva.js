@@ -19,13 +19,13 @@
 //     cloth  the uttariya's colour
 //   rahuHead(c, o)   Rahu: a head with no body, its neck trailing smoke.
 const DEVA = {
-  base: { skin: '#E2A878', skinSh: '#BC7E52', skinDk: '#7A4A2C', skinLt: '#F6CBA0', lip: '#9A3A2E', lipLo: '#B8564A', mouth: '#3A0A0C',
-    teeth: '#FBF4E6', tongue: '#C0504A', hair: '#1A1012', hairLt: '#3A2A2C', iris: '#8A5428', kohl: '#140A08', brow: '#1A0E0C', eyeW: '#FBF2E4',
+  base: { skin: '#E2A878', skinSh: '#BC7E52', skinDk: '#7A4A2C', skinLt: '#F6CBA0', lip: '#B04A3E', lipLo: '#C8645A', mouth: '#3A0A0C',
+    teeth: '#FBF4E6', tongue: '#C0504A', hair: '#1A1012', hairLt: '#3A2A2C', iris: '#B07434', kohl: '#3A1E14', brow: '#1A0E0C', eyeW: '#FBF2E4',
     gold: '#F0B83A', goldSh: '#A87418', goldLt: '#FFE48A', ruby: '#C21E2A', emerald: '#1E8A5A', pearl: '#F6EEDC',
     tilakW: '#FFF6E6', tilak: '#D8201E', cloth: '#F0C030', clothSh: '#B8861A', thread: '#FFF4D8', beard: '#F2EEE6', beardSh: '#B8B2A8' },
   ram: { skin: '#3A6A98', skinSh: '#28507A', skinDk: '#142E4C', skinLt: '#6A96C2', lip: '#7A2E48', lipLo: '#9A4462', cloth: '#F2C230', clothSh: '#B88A18' },
   indra: { skin: '#EDB98A', skinSh: '#C88E60', skinDk: '#84542E', skinLt: '#FBD8B0', cloth: '#E8E2D2', clothSh: '#B4AA92', hair: '#2A1A10' },
-  vayu: { skin: '#8CC6E8', skinSh: '#5E9CC6', skinDk: '#2E5E88', skinLt: '#C4E4F6', lip: '#3E5486', lipLo: '#56709E', hair: '#1E2A44', hairLt: '#3A4A6A', cloth: '#F4F8FC', clothSh: '#B4C6DA', iris: '#4A6A9A' },
+  vayu: { skin: '#8CC6E8', skinSh: '#5E9CC6', skinDk: '#2E5E88', skinLt: '#C4E4F6', lip: '#3E5486', lipLo: '#56709E', hair: '#1E2A44', hairLt: '#3A4A6A', cloth: '#F4F8FC', clothSh: '#B4C6DA', iris: '#5A86B8' },
   surya: { skin: '#F2A84A', skinSh: '#CC7E26', skinDk: '#8A4A14', skinLt: '#FFD488', lip: '#A2381E', lipLo: '#C8502E', cloth: '#E8501E', clothSh: '#A8341A' },
   rahu: { skin: '#3A3658', skinSh: '#26223E', skinDk: '#100E1E', skinLt: '#5A5680', lip: '#1A1222', lipLo: '#2A1E34', hair: '#08060E', hairLt: '#1E1A2C', iris: '#FF4A2A', kohl: '#04020A', brow: '#04020A', eyeW: '#FFD86A', mouth: '#120408' },
   agastya: { skin: '#B07A52', skinSh: '#8A5838', skinDk: '#4E2E1C', skinLt: '#D09A6E', hair: '#E4DED2', hairLt: '#FFFFFF', brow: '#D8D2C6', cloth: '#E8A050', clothSh: '#A86A28' },
@@ -37,6 +37,18 @@ const DEVA = {
   vishva: { skin: '#C88A58', skinSh: '#A0663A', skinDk: '#5A3820', skinLt: '#E6AE7E', hair: '#E8E2D6', hairLt: '#FFFFFF', brow: '#D8D2C6', cloth: '#5A6A8A', clothSh: '#3A4A66' },
   rishi: { skin: '#B88458', skinSh: '#92603C', skinDk: '#523420', skinLt: '#D8A476', hair: '#8A8278', hairLt: '#B0A898', brow: '#7A7268', beard: '#D8D2C6', cloth: '#E8A050', clothSh: '#A86A28' },
   vali: { skin: '#E8A040' },
+  // Lanka (Issue 2, Act 3)
+  sita: { skin: '#E9B486', skinSh: '#C48A5E', skinDk: '#7A4A2E', skinLt: '#F8D2AE', lip: '#A8343E', lipLo: '#C04A52', hair: '#140C0E', hairLt: '#2E2024', cloth: '#D8A838', clothSh: '#9A7420' },
+  ravana: { skin: '#9C6A48', skinSh: '#76492F', skinDk: '#4F2E1D', skinLt: '#C08A62', lip: '#5E3024', lipLo: '#7E4434', hair: '#120C10', hairLt: '#2E2128', iris: '#A04A1E', cloth: '#7C1526', clothSh: '#4E0C18' },
+  aksha: { skin: '#B88262', skinSh: '#906044', skinDk: '#52321E', skinLt: '#DCA886', lip: '#7A3428', lipLo: '#944838', cloth: '#C8302E', clothSh: '#8A1A1A' },
+  indrajit: { skin: '#7E5E6E', skinSh: '#5E4252', skinDk: '#2E1E28', skinLt: '#A8869A', lip: '#3E1E28', lipLo: '#58303C', iris: '#B83A1E', cloth: '#3A1A4A', clothSh: '#1E0C28' },
+  vibhi: { skin: '#9A8476', skinSh: '#76604E', skinDk: '#3E3028', skinLt: '#C2AA9A', cloth: '#E8E0C8', clothSh: '#B0A88A' },
+  rk0: { skin: '#6E8A5A', skinSh: '#4E6A3E', skinDk: '#26381E', skinLt: '#9AB27E', iris: '#E0A020', lip: '#2E2A1A', lipLo: '#4A4228', cloth: '#5A3A22', clothSh: '#2E1E10' },
+  rk1: { skin: '#7A5A7E', skinSh: '#5A3E5E', skinDk: '#2E1E30', skinLt: '#A486A6', iris: '#E0A020', lip: '#2E1A2A', lipLo: '#4A2A42', cloth: '#3A4A2A', clothSh: '#1E2614' },
+  rk2: { skin: '#A0503A', skinSh: '#783626', skinDk: '#401A10', skinLt: '#C8785A', iris: '#F0C040', lip: '#3A1410', lipLo: '#58201A', cloth: '#2A2A3A', clothSh: '#14141E' },
+  rk3: { skin: '#5A6A7A', skinSh: '#3E4C5A', skinDk: '#1E2630', skinLt: '#8494A4', iris: '#E0A020', lip: '#1E222A', lipLo: '#343A46', cloth: '#7A2A1A', clothSh: '#4A160C' },
+  simhika: { skin: '#3E6A5E', skinSh: '#2A4C42', skinDk: '#10241E', skinLt: '#6A9A8A', hair: '#0E1A16', hairLt: '#1E3A30', lip: '#1E0E14', lipLo: '#341A22', iris: '#E8C020', eyeW: '#FFE070', mouth: '#1A0408', brow: '#06100C', kohl: '#06100C' },
+  bhima: { skin: '#A06A46', skinSh: '#7A4C30', skinDk: '#46281A', skinLt: '#C8916A', lip: '#64302A', lipLo: '#82443A', hair: '#100B0C', cloth: '#7A5A1E', clothSh: '#4A3410' },
 };
 const DEVA_EXPR = {
   calm:   { op: 1, brow: 0, cw: 0, open: 0 },
@@ -57,7 +69,7 @@ function devaPal(o) { return { ...DEVA.base, ...(DEVA[o.who] || {}), ...(o.pal |
 function devaHead(c, o = {}) {
   const S = devaPal(o), E = DEVA_EXPR[o.expr || 'calm'] || DEVA_EXPR.calm, tn = clamp(o.turn || 0, -1, 1), lk = o.look || [0, 0];
   const sx = tn * 22, fx = sx, t = o.t || 0, hair = o.hair || 'long', age = o.age || 0;
-  c.save(); c.rotate(o.tilt || 0);
+  c.save(); c.rotate(o.tilt || 0); if (o.fem) c.scale(.92, .98);
   // ---- the sun's rays behind (Surya)
   if (o.crown === 'sun') {
     const R = new Path2D(); for (let i = 0; i < 24; i++) { const a = i / 24 * TAU, b = a + TAU / 48, r1 = 230 + (i % 2) * 40; R.moveTo(Math.cos(a - .07) * 150, -40 + Math.sin(a - .07) * 150); R.lineTo(Math.cos(b) * r1, -40 + Math.sin(b) * r1); R.lineTo(Math.cos(a + .2) * 150, -40 + Math.sin(a + .2) * 150); }
@@ -97,24 +109,24 @@ function devaHead(c, o = {}) {
   // ---- brows: one dark stroke each (raised at the middle in grief, drawn down in anger)
   const bw = E.brow;
   for (const s of [-1, 1]) {
-    const x0 = fx + s * 12, x1 = fx + s * 66, yin = -42 + (bw < 0 ? 12 * -bw : -12 * bw), yout = -42 + (bw > 0 ? 6 * bw : -4 * bw);
+    const x0 = fx + s * 12, x1 = fx + s * 66, yin = -46 + (bw < 0 ? 12 * -bw : -12 * bw), yout = -46 + (bw > 0 ? 6 * bw : -4 * bw);
     const B = `M ${x0} ${yin} Q ${fx + s * 34} ${yin - 16 - (bw < 0 ? -6 : 0)} ${x1} ${yout}`;
-    strokePath(c, B, S.brow, 5.5);
+    strokePath(c, o.fem ? `M ${x0} ${yin - 8} Q ${fx + s * 34} ${yin - 26} ${x1} ${yout - 8}` : B, S.brow, o.fem ? 3.4 : 4.8);
   }
   // ---- eyes: almond, lined in kohl, big enough to read at phone size
   const op = E.op;
   for (const s of [-1, 1]) {
-    const far = s * tn < 0 ? -s * tn : 0, kx = 1 - far * .35, ex = fx + s * 34 + tn * 4, ey = -8;
+    const far = s * tn < 0 ? -s * tn : 0, kx = (1 - far * .35) * .86, ex = fx + s * 39 + tn * 4, ey = -8;
     if (op === 'shut') { strokePath(c, `M ${ex - 22 * kx} ${ey} Q ${ex} ${ey + 8} ${ex + 22 * kx} ${ey}`, S.kohl, 5); continue; }
     if (op === 'happy') { strokePath(c, `M ${ex - 22 * kx} ${ey + 4} Q ${ex} ${ey - 12} ${ex + 22 * kx} ${ey + 4}`, S.kohl, 5); continue; }
-    const h = 19 * op, A = `M ${ex - 28 * kx} ${ey + 3} C ${ex - 20 * kx} ${ey - h - 4} ${ex + 14 * kx} ${ey - h - 6} ${ex + 28 * kx} ${ey - 2} C ${ex + 16 * kx} ${ey + h + 2} ${ex - 14 * kx} ${ey + h + 4} ${ex - 28 * kx} ${ey + 3} Z`;
+    const h = 21 * op, A = `M ${ex - 30 * kx} ${ey + 3} C ${ex - 22 * kx} ${ey - h - 4} ${ex + 16 * kx} ${ey - h - 6} ${ex + 30 * kx} ${ey - 2} C ${ex + 18 * kx} ${ey + h + 2} ${ex - 16 * kx} ${ey + h + 4} ${ex - 30 * kx} ${ey + 3} Z`;
     fillPath(c, A, S.eyeW);
     inside(c, A, () => {
       const ix = ex + lk[0] * 9 * kx, iy = ey - 1 + lk[1] * 5;
-      ellipse(c, ix, iy, 12.5 * kx, 13.5, S.iris); ellipse(c, ix, iy, 5 * kx, 6, o.glow ? '#FFF2A0' : '#1A0C06');
-      if (!o.glow) { ellipse(c, ix - 5 * kx, iy - 5, 4.5, 4.5, '#FFFFFF'); ellipse(c, ix + 5 * kx, iy + 5, 2.2, 2.2, '#FFFFFF'); }
+      ellipse(c, ix, iy, 10 * kx, 11, S.iris); ellipse(c, ix, iy, 4 * kx, 5, o.glow ? '#FFF2A0' : '#24100A');
+      if (!o.glow) { ellipse(c, ix - 4 * kx, iy - 4, 4, 4, '#FFFFFF'); ellipse(c, ix + 4 * kx, iy + 4, 2, 2, '#FFFFFF'); }
     });
-    strokePath(c, `M ${ex - 29 * kx} ${ey + 3} C ${ex - 20 * kx} ${ey - h - 5} ${ex + 14 * kx} ${ey - h - 7} ${ex + 29 * kx} ${ey - 2} l ${s * 10} -6`, S.kohl, 5.5);
+    strokePath(c, `M ${ex - 31 * kx} ${ey + 3} C ${ex - 22 * kx} ${ey - h - 5} ${ex + 16 * kx} ${ey - h - 7} ${ex + 31 * kx} ${ey - 2} l ${s * 9} -5`, S.kohl, 4.2);
   }
   // ---- tilak
   const tk = o.tilak ?? false;
@@ -125,6 +137,7 @@ function devaHead(c, o = {}) {
   // ---- nose: the bridge in shade on one side, a soft base
   strokePath(c, `M ${fx - 14 + tn * 4} 34 Q ${fx - 16 + tn * 4} 42 ${fx - 7 + tn * 4} 42 Q ${fx + tn * 6} 45 ${fx + 7 + tn * 6} 42 Q ${fx + 16 + tn * 6} 42 ${fx + 14 + tn * 6} 34`, S.skinDk, 3.5);
   ellipse(c, fx + tn * 6, 30, 7, 4, rgba(S.skinLt, .7));
+  if (o.nosering) { c.strokeStyle = S.gold; c.lineWidth = 3.5; c.beginPath(); c.arc(fx + 14 + tn * 6, 46, 9, -1.2, 3.6); c.stroke(); ellipse(c, fx + 14 + tn * 6, 55, 3, 3, S.pearl); }
   // ---- the moustache and beard
   if (o.beard) {
     const L = o.beard === 'long', B = `M ${fx - 58} 40 C ${fx - 60} ${L ? 150 : 110} ${fx - 30} ${L ? 230 : 150} ${fx} ${L ? 260 : 160} C ${fx + 30} ${L ? 230 : 150} ${fx + 60} ${L ? 150 : 110} ${fx + 58} 40 C ${fx + 40} 90 ${fx + 20} 96 ${fx} 96 C ${fx - 20} 96 ${fx - 40} 90 ${fx - 58} 40 Z`;
@@ -256,9 +269,13 @@ function devaBust(c, o = {}) {
     strokePath(c, SR, rgba(clothSh, 1), 3);
   }
   if (dress === 'armor') {
+    // a breastplate of scales, a gold edge and a round boss on the chest
+    const ac = o.armor || S.gold, acSh = mixCol(ac, '#000000', .38), acLt = mixCol(ac, '#FFFFFF', .3);
     const AR = `M ${-shX + 4} 250 C -60 220 60 220 ${shX - 4} 250 L ${shX - 30} 620 L ${-shX + 30} 620 Z`;
-    fillPath(c, AR, S.gold); inside(c, AR, () => { shade(c, AR, 0, 240, 0, 620, S.goldSh, .5); for (let y = 300; y < 620; y += 50) strokePath(c, `M ${-shX} ${y} Q 0 ${y + 24} ${shX} ${y}`, S.goldSh, 4); });
-    strokePath(c, AR, S.goldSh, 3);
+    fillPath(c, AR, ac); inside(c, AR, () => { shade(c, AR, shX * .3, 240, -shX, 620, acSh, .5); for (let r = 0, y = 330; y < 640; y += 44, r++) for (let x = -shX + (r % 2) * 30; x < shX; x += 60) strokePath(c, `M ${x - 28} ${y} Q ${x} ${y + 30} ${x + 28} ${y}`, acSh, 3.5); });
+    strokePath(c, AR, acSh, 3); strokePath(c, `M ${-shX + 4} 250 C -60 220 60 220 ${shX - 4} 250`, S.gold, 9);
+    ellipse(c, 0, 300, 34, 34, S.gold); ellipse(c, 0, 300, 20, 20, S.ruby); ellipse(c, -6, 294, 6, 6, '#FFB0A0');
+    if (o.armorLt !== false) ellipse(c, -shX * .35, 360, 40, 22, rgba(acLt, .35));
   }
   if (o.waist) o.waist(c);
   // ---- the sacred thread: from his left shoulder (screen right) to his right hip (screen left)
@@ -373,6 +390,8 @@ function devaProp(c, kind, a, S) {
   } else if (kind === 'kamandalu') {
     const K = 'M -50 20 C -70 80 -50 140 0 146 C 50 140 70 80 50 20 Z'; fillPath(c, K, G); strokePath(c, K, Gs, 3); strokePath(c, 'M -40 20 C -40 -30 40 -30 40 20', Gs, 6); strokePath(c, 'M 50 60 C 90 50 100 30 110 10', G, 10);
   } else if (kind === 'vajra') { vajraK(c, 0, -60, .9, 0); }
+  else if (kind === 'bow') { strokePath(c, 'M 0 -420 C 90 -260 90 160 0 320', '#6A3A1A', 14); strokePath(c, 'M 0 -420 C 90 -260 90 160 0 320', G, 4); strokePath(c, 'M 0 -420 L 0 320', '#F2EAD6', 2.5); }
+  else if (kind === 'sword') { const B = 'M -12 0 L -14 -300 L 0 -340 L 14 -300 L 12 0 Z'; fillPath(c, B, '#D8DCE4'); strokePath(c, B, '#5A6070', 3); fillPath(c, 'M -40 0 L 40 0 L 40 14 L -40 14 Z', G); }
 }
 
 // Brahma: four faces (three seen), a white beard, crowns
@@ -480,3 +499,49 @@ function hanFigure(c, o = {}) {
   devaFigure(c, { pal: { ...HAN_FUR, ...(o.pal || {}) }, dhoti: o.dhoti || HAN_DHOTI, tail: o.tail ?? 'up', fur: (o.pal && o.pal.skin) || HAN_FUR.skin, ...o,
     head: (cc) => { cc.save(); cc.translate(0, -6); hanHead(cc, { expr: o.expr, look: o.look, crown: o.crown, age: o.age, blood: o.blood, turn: o.turn, tilt: o.tilt, t: o.t, tilak: o.tilak, pal: o.headPal }); cc.restore(); } });
 }
+
+// ---------- Lanka (Issue 2, Act 3) ----------
+// Sita: devaHead's face made a woman's (o.fem: narrower, lashes, a nose ring), a single braid (ekaveni) over her
+// shoulder, a dusty yellow sari. sitaBust(c, o): devaBust's options (expr, look, turn, arms).
+function sitaHead(c, o = {}) { devaHead(c, { who: 'sita', fem: true, nosering: true, tilak: 'dot', hair: 'short', crown: false, ...o }); }
+function sitaBust(c, o = {}) {
+  const S = devaPal({ who: 'sita' });
+  const braid = (c) => { const pts = [[-70, 120], [-110, 220], [-118, 340], [-104, 460], [-96, 560]]; limb(c, pts, [40, 38, 34, 30, 20], S.hair); for (let i = 1; i < 5; i++) { const p = pts[i]; strokePath(c, `M ${p[0] - 16} ${p[1] - 10} q 16 14 32 0`, S.hairLt, 3); } ellipse(c, -96, 572, 14, 10, '#C8302E'); };
+  devaBust(c, { who: 'sita', dress: 'sari', build: .8, ...o, waist: braid, head: (cc) => { cc.save(); cc.translate(0, -6); cc.scale(.94, .94); sitaHead(cc, o); cc.restore(); } });
+}
+// rakshasas: fangs, wild hair, amber eyes; o.r 0..3 picks the skin; a kinkara carries a hammer or a mace
+function rakshasaHead(c, o = {}) { devaHead(c, { who: 'rk' + ((o.r || 0) % 4), fangs: true, hair: 'wild', crown: false, stache: true, tilak: false, ...o }); }
+function rakshasaBust(c, o = {}) { devaBust(c, { who: 'rk' + ((o.r || 0) % 4), dress: 'armor', armor: ['#5A4A3A', '#4A4A52', '#5A3A2A', '#3E4A3A'][(o.r || 0) % 4], build: 1.15, fangs: true, hair: 'wild', crown: false, stache: true, tilak: false, ...o }); }
+// Ravana, ten-headed: the centre head in a tall kirita, four to screen left and five to screen right (as cine_ravana.js
+// has them), smaller, lower and turned out the further they go; a black collar behind. All take o.expr (or o.exprs[10]).
+function dashaHeads(c, o = {}) {
+  const q = { who: 'ravana', stache: true, tilak: 'tripundra', hair: 'short', ...o, neck: false };
+  const pos = []; for (let i = 1; i <= 5; i++) for (const s of [-1, 1]) if (!(s < 0 && i === 5)) pos.push([s, i]);
+  pos.sort((a, b) => b[1] - a[1]);
+  const S = devaPal({ who: 'ravana' });
+  for (const [s, i] of pos) {
+    const k = .84 - i * .05, x = s * (64 + i * 84), y = 30 + i * 16;
+    c.save(); c.translate(x, y); c.scale(k, k);
+    const ix = s < 0 ? 4 - i : 4 + i;
+    devaHead(c, { ...q, crown: 'mukut', turn: s * (.3 + i * .07), look: o.look || [s * .4, 0], expr: (o.exprs && o.exprs[ix]) || o.expr });
+    c.restore();
+  }
+  devaHead(c, { ...q, crown: 'kirita', expr: (o.exprs && o.exprs[4]) || o.expr });
+}
+// dashaBust: the heads on a broad body, eight more arms fanned behind holding blades (o.extra pairs, default 4)
+function dashaBust(c, o = {}) {
+  const S = devaPal({ who: 'ravana' }), n = o.extra ?? 4, bk = o.bodyK ?? .82;
+  c.save(); c.translate(0, 120); c.scale(bk, bk); c.translate(0, -120);
+  for (const s of [-1, 1]) for (let i = 0; i < n; i++) {
+    const th = -1.45 + i * .42, sh = [s * 170, 250], el = [sh[0] + s * Math.cos(th) * 220, sh[1] + Math.sin(th) * 220], th2 = th - .7, wr = [el[0] + s * Math.cos(th2) * 190, el[1] + Math.sin(th2) * 190];
+    limb(c, [sh, el, wr], [70, 58, 46], S.skinDk); limb(c, [sh, el, wr], [63, 51, 39], i % 2 ? S.skinSh : S.skin);
+    c.save(); c.translate(wr[0], wr[1]); c.rotate(s * (th2 + .9));
+    const B = 'M -10 0 L -12 -230 L 0 -270 L 12 -230 L 10 0 Z'; fillPath(c, B, '#D8DCE4'); strokePath(c, B, '#5A6070', 3); fillPath(c, 'M -34 -4 L 34 -4 L 34 10 L -34 10 Z', S.gold);
+    c.restore(); ellipse(c, wr[0], wr[1], 26, 26, S.skin); strokePath(c, ellP(wr[0], wr[1], 26, 26), S.skinDk, 3);
+    c.save(); c.translate(lerp(sh[0], el[0], .4), lerp(sh[1], el[1], .4)); c.rotate(Math.atan2(el[1] - sh[1], el[0] - sh[0])); fillPath(c, 'M -9 -32 L 9 -32 L 9 32 L -9 32 Z', S.gold); c.restore();
+  }
+  c.restore();
+  devaBust(c, { who: 'ravana', build: 1.3, cloth: '#7C1526', clothSh: '#4E0C18', ...o, head: (cc) => dashaHeads(cc, o) });
+}
+// Simhika: a rakshasi of the sea, a vast green face with seaweed hair, burning eyes
+function simhikaHead(c, o = {}) { devaHead(c, { who: 'simhika', fem: true, fangs: true, hair: 'wild', glow: true, crown: false, tilak: false, expr: 'rage', ...o }); }

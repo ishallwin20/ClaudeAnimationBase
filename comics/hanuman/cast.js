@@ -23,4 +23,9 @@ const COMIC = { slug: 'hanuman_cast', pages: {
   ] },
   7: { panels: [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => ({ r: [24 + (i % 3) * 344, 24 + Math.floor(i / 3) * 440, 328, 424], art: 'tGod2', o: { i }, ink: FACE })) },
   8: { panels: [0, 1, 2, 3, 4, 5].map(i => ({ r: [24 + (i % 3) * 344, 24 + Math.floor(i / 3) * 660, 328, 644], art: 'tHanFig', o: { i }, ink: FACE })) },
+  9: { panels: [
+    { r: [24, 24, 1032, 640], art: 'tRavana', ink: FACE },
+    ...[0, 1, 2, 3, 4, 5].map(i => ({ r: [24 + (i % 3) * 344, 680 + Math.floor(i / 3) * 331, 328, 315], art: 'tLanka', o: { i }, ink: FACE })),
+  ] },
+  10: { panels: [0, 1, 2, 3, 4, 5].map(i => ({ r: [24 + (i % 3) * 344, 24 + Math.floor(i / 3) * 660, 328, 644], art: 'tLanka2', o: { i }, ink: FACE })) },
 } };

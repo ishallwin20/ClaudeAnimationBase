@@ -66,3 +66,23 @@ const HFIG = [
   { legs: 'kneel', arms: ['namaste', 'namaste'], expr: 'tender', tail: 'curl' }, { legs: 'stride', arms: ['down', 'up'], expr: 'shout' },
 ];
 ART.tHanFig = (c, P) => { skyDawn(c, P, '#7AA8D8', '#E8F0F8'); const o = HFIG[P.i]; c.translate(P.w / 2, P.h * .2); c.rotate(o.rot || 0); c.scale(.24, .24); figure(c, (c) => hanFigure(c, { ...o, t: P.t }), lit(DAY())); };
+
+ART.tRavana = (c, P) => { skyDawn(c, P, '#3A1A2A', '#8A3A3A'); c.translate(P.w / 2, P.h * .3); c.scale(.62, .62); figure(c, (c) => dashaBust(c, { expr: 'fierce', arms: ['down', 'fist'], hold: 'sword', t: P.t }), lit(DAY())); };
+const LANKA1 = [
+  (c) => sitaBust(c, { expr: 'grief', look: [0, .4], arms: ['down', 'down'] }),
+  (c) => sitaBust(c, { expr: 'smile', look: [0, .6], arms: ['chest', 'down'] }),
+  (c) => devaBust(c, { who: 'aksha', crown: 'mukut', expr: 'fierce', dress: 'armor', armor: '#B8862A', arms: ['down', 'fist'], hold: 'bow' }),
+  (c) => devaBust(c, { who: 'indrajit', crown: 'kirita', stache: true, expr: 'fierce', dress: 'armor', armor: '#3A3A4A', tilak: 'line', arms: ['down', 'fist'], hold: 'bow' }),
+  (c) => devaBust(c, { who: 'vibhi', crown: 'mukut', stache: true, beard: 'short', tilak: 'dot', expr: 'speak', arms: ['down', 'abhaya'] }),
+  (c) => devaBust(c, { who: 'bhima', crown: 'band', stache: true, build: 1.2, expr: 'shock', arms: ['down', 'fist'], hold: 'mace' }),
+];
+ART.tLanka = (c, P) => { skyDawn(c, P, '#F8D8A0', '#FBEED0'); c.translate(P.w / 2, P.h * .4); c.scale(.6, .6); figure(c, (c) => LANKA1[P.i](c), lit(DAY())); };
+const LANKA2 = [
+  (c) => rakshasaBust(c, { r: 0, expr: 'rage', arms: ['down', 'fist'], hold: 'hammer' }),
+  (c) => rakshasaBust(c, { r: 1, expr: 'fierce', arms: ['down', 'fist'], hold: 'mace' }),
+  (c) => rakshasaBust(c, { r: 2, expr: 'laugh', arms: ['down', 'down'] }),
+  (c) => rakshasaBust(c, { r: 3, expr: 'scream', arms: ['up', 'fist'], hold: 'mace' }),
+  (c) => simhikaHead(c, {}),
+  (c) => hanBust(c, { expr: 'smile', age: 1, arms: ['down', 'down'] }),
+];
+ART.tLanka2 = (c, P) => { skyDawn(c, P, '#7AA8D8', '#E8F0F8'); const hd = P.i === 4; c.translate(P.w / 2, P.h * (hd ? .45 : .3)); c.scale(hd ? 1.1 : .6, hd ? 1.1 : .6); figure(c, (c) => LANKA2[P.i](c), lit(DAY())); };
