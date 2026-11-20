@@ -60,3 +60,9 @@ ART.tGod2 = (c, P) => {
   const head = w === 'anjana';
   c.translate(P.w / 2, P.h * (head ? .52 : .34)); c.scale(head ? 1.2 : .4, head ? 1.2 : .4); figure(c, (c) => f(c), lit(DAY()));
 };
+const HFIG = [
+  { legs: 'stand', arms: ['hip', 'hip'], expr: 'smile' }, { legs: 'crouch', arms: [[1.3, -.3, 'fist'], [1.3, -.3, 'fist']], expr: 'fierce', tail: 'stream' },
+  { legs: 'leap', arms: ['reach', 'reach'], expr: 'fierce', tail: 'stream', rot: .9 }, { legs: 'run', arms: ['fist', 'reach'], expr: 'roar', tail: 'stream' },
+  { legs: 'kneel', arms: ['namaste', 'namaste'], expr: 'tender', tail: 'curl' }, { legs: 'stride', arms: ['down', 'up'], expr: 'shout' },
+];
+ART.tHanFig = (c, P) => { skyDawn(c, P, '#7AA8D8', '#E8F0F8'); const o = HFIG[P.i]; c.translate(P.w / 2, P.h * .2); c.rotate(o.rot || 0); c.scale(.24, .24); figure(c, (c) => hanFigure(c, { ...o, t: P.t }), lit(DAY())); };

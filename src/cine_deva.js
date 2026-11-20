@@ -184,7 +184,7 @@ function devaHead(c, o = {}) {
 
 // ---------- the body ----------
 const DEVA_ARM = {   // [upper angle, bend, hand] radians, 0 = +x (screen right for the near arm; mirrored for the far)
-  down: [1.62, .08, 'rest'], hip: [1.9, -1.9, 'fist'], abhaya: [1.75, -2.6, 'palm'], reach: [.35, -.25, 'open'], point: [.1, -.05, 'point'],
+  down: [1.62, .08, 'rest'], side: [1.4, .16, 'rest'], hip: [1.9, -1.9, 'fist'], abhaya: [1.75, -2.6, 'palm'], reach: [.35, -.25, 'open'], point: [.1, -.05, 'point'],
   fist: [1.3, -2.2, 'fist'], cradle: [1.5, 1.85, 'cup'], namaste: [1.75, 2.05, 'join'], up: [-1.1, -.2, 'open'], throw: [-1.5, -.4, 'open'],
   chest: [1.7, 2.3, 'claw'], throat: [1.85, 2.6, 'claw'], open: [.9, -.6, 'open'],
 };
@@ -212,7 +212,7 @@ function devaBust(c, o = {}) {
   const cloth = o.cloth || S.cloth, clothSh = o.clothSh || S.clothSh;
   const shY = 196, shX = 176 * b;
   const armOf = (k) => Array.isArray(k) ? k : DEVA_ARM[k] || DEVA_ARM.down;
-  const front = (k) => ['cradle', 'namaste', 'chest', 'throat', 'abhaya', 'reach', 'point', 'fist', 'up', 'throw', 'open'].includes(k) || Array.isArray(k);
+  const front = (k) => o.armsFront || ['cradle', 'namaste', 'chest', 'throat', 'abhaya', 'reach', 'point', 'fist', 'up', 'throw', 'open'].includes(k) || Array.isArray(k);
   const PTS = {   // the near arm (s = 1); mirrored for the far: [elbow, wrist, hand kind]
     namaste: [[shX - 20, shY + 210], [34, shY + 150], 'none'], cradle: [[shX + 10, shY + 220], [-70, shY + 250], 'cup'],
     chest: [[shX - 10, shY + 200], [60, shY + 110], 'claw'], throat: [[shX - 40, shY + 190], [40, 40], 'claw'],
@@ -221,7 +221,7 @@ function devaBust(c, o = {}) {
     const [u, bd, hk0] = armOf(k), ua = s > 0 ? u : Math.PI - u, ba = s > 0 ? bd : -bd;
     let ch = chain([s * shX, shY + 10], ua, 190 * b, ba, 170 * b), hk = hk0;
     if (PTS[k]) { const [e, w, h] = PTS[k]; ch = [[s * shX, shY + 10], [s * e[0], e[1]], [s * w[0], w[1]]]; hk = h; }
-    limb(c, ch, [70 * b, 58 * b, 46 * b], S.skin);
+    limb(c, ch, [78 * b + 7, 64 * b + 7, 50 * b + 7], S.skinDk); limb(c, ch, [78 * b, 64 * b, 50 * b], S.skin);
     strokePath(c, `M ${ch[0][0]} ${ch[0][1] + 20} L ${ch[1][0]} ${ch[1][1]}`, rgba(S.skinSh, .0), 1);
     // an armlet and a bangle
     const am = [lerp(ch[0][0], ch[1][0], .35), lerp(ch[0][1], ch[1][1], .35)], ang = Math.atan2(ch[1][1] - ch[0][1], ch[1][0] - ch[0][0]);
@@ -240,13 +240,14 @@ function devaBust(c, o = {}) {
   // ---- the neck
   { const N = 'M -40 60 C -40 110 -44 150 -50 200 L 50 200 C 44 150 40 110 40 60 Z'; fillPath(c, N, S.skin); inside(c, N, () => fillPath(c, 'M -60 60 L 60 60 L 60 120 Q 0 150 -60 120 Z', rgba(S.skinSh, .8))); }
   // ---- the torso
-  const TOR = `M ${-shX - 36} ${shY + 70} C ${-shX - 50} ${shY - 10} ${-shX + 10} 156 -50 158 L 50 158 C ${shX - 10} 156 ${shX + 50} ${shY - 10} ${shX + 36} ${shY + 70} C ${shX + 20} ${shY + 140} ${shX - 6} 380 ${shX - 40} 460 C ${shX - 56} 520 ${shX - 60} 580 ${shX - 56} 640 L ${-shX + 56} 640 C ${-shX + 60} 580 ${-shX + 56} 520 ${-shX + 40} 460 C ${-shX + 6} 380 ${-shX - 20} ${shY + 140} ${-shX - 36} ${shY + 70} Z`;
+  const TOR = `M ${-shX - 36} ${shY + 70} C ${-shX - 50} ${shY - 10} ${-shX + 10} 156 -50 158 L 50 158 C ${shX - 10} 156 ${shX + 50} ${shY - 10} ${shX + 36} ${shY + 70} C ${shX + 20} ${shY + 140} ${shX - 16} 380 ${shX - 56} 460 C ${shX - 74} 520 ${shX - 80} 580 ${shX - 76} 640 L ${-shX + 76} 640 C ${-shX + 80} 580 ${-shX + 74} 520 ${-shX + 56} 460 C ${-shX + 16} 380 ${-shX - 20} ${shY + 140} ${-shX - 36} ${shY + 70} Z`;
   fillPath(c, TOR, S.skin);
   inside(c, TOR, () => {
     shade(c, TOR, shX * .2, 200, -shX - 40, 300, S.skinSh, .5);
     for (const s of [-1, 1]) strokePath(c, `M ${s * 12} 300 C ${s * 60} 330 ${s * 120} 326 ${s * 150} 290`, rgba(S.skinDk, .55), 3.5);   // the chest
     strokePath(c, 'M 0 330 L 0 470', rgba(S.skinDk, .35), 3); ellipse(c, 0, 520, 6, 8, rgba(S.skinDk, .6));
     ellipse(c, -20, 250, 70, 24, rgba(S.skinLt, .35));
+    for (const s2 of [-1, 1]) { strokePath(c, `M ${s2 * (shX - 10)} ${shY + 10} C ${s2 * (shX - 40)} ${shY + 60} ${s2 * (shX - 40)} ${shY + 110} ${s2 * (shX - 4)} ${shY + 150}`, rgba(S.skinDk, .5), 3); for (const y of [380, 430]) strokePath(c, `M ${s2 * 10} ${y} q ${s2 * 30} 6 ${s2 * 50} -6`, rgba(S.skinDk, .35), 3); }
   });
   strokePath(c, TOR, S.skinDk, 3);
   if (dress === 'sari') {
@@ -259,6 +260,7 @@ function devaBust(c, o = {}) {
     fillPath(c, AR, S.gold); inside(c, AR, () => { shade(c, AR, 0, 240, 0, 620, S.goldSh, .5); for (let y = 300; y < 620; y += 50) strokePath(c, `M ${-shX} ${y} Q 0 ${y + 24} ${shX} ${y}`, S.goldSh, 4); });
     strokePath(c, AR, S.goldSh, 3);
   }
+  if (o.waist) o.waist(c);
   // ---- the sacred thread: from his left shoulder (screen right) to his right hip (screen left)
   if (dress !== 'armor' && dress !== 'sari') strokePath(c, `M ${shX * .55} 196 C ${shX * .2} 320 ${-shX * .3} 470 ${-shX * .62} 620`, S.thread, 5);
   // ---- haras, or a mala
@@ -270,7 +272,7 @@ function devaBust(c, o = {}) {
   }
   // ---- the uttariya over both shoulders, an end falling in front on screen left
   if (dress !== 'armor' && dress !== 'sari') {
-    const U1 = `M ${shX + 40} ${shY + 80} C ${shX + 30} ${shY - 10} ${shX - 30} 160 ${shX - 90} 168 C ${shX - 70} 230 ${-shX * .2} 420 ${-shX + 40} 520 L ${-shX + 70} 590 C ${-shX * .1} 470 ${shX * .4} 320 ${shX + 40} ${shY + 80} Z`;
+    const sl = o.slim ? .55 : 1, U1 = `M ${shX + 40} ${shY + 80} C ${shX + 30} ${shY - 10} ${shX - 30} 160 ${shX - 90} 168 C ${shX - 70} 230 ${-shX * .2} 420 ${-shX + 40} 520 L ${-shX + 40 + 30 * sl} ${520 + 70 * sl} C ${-shX * .1 + 40 * (1 - sl)} ${470} ${shX * .4} ${320 - 60 * (1 - sl)} ${shX + 40 - 50 * (1 - sl)} ${shY + 80 + 40 * (1 - sl)} Z`;
     for (const U of [U1]) { fillPath(c, U, dress === 'rishi' ? '#A8743E' : cloth); inside(c, U, () => { for (let i = 0; i < 3; i++) strokePath(c, `M ${shX - 60 + i * 24} ${190 + i * 10} Q ${shX * .1 + i * 20} ${360 + i * 20} ${-shX + 70 + i * 16} ${540 + i * 10}`, rgba(clothSh, .8), 3); }); strokePath(c, U, rgba(clothSh, 1), 3); }
   }
   // arms in front
@@ -437,3 +439,44 @@ function jambBust(c, o = {}) { devaBust(c, { pal: { skin: JB.fur, skinSh: JB.fur
 // vanaras of the army: Hanuman's face in other furs, no crown
 const VFUR = [{ skin: '#9A7A5A', skinSh: '#6A5038' }, { skin: '#C8A050', skinSh: '#987028' }, { skin: '#8A8A8A', skinSh: '#5A5A5A' }, { skin: '#B8603A', skinSh: '#884020' }];
 function vanaraBust(c, o = {}) { const f = VFUR[(o.v || 0) % 4]; devaBust(c, { pal: { ...f, skinDk: '#3A2A1A', cloth: ['#3A7A4A', '#7A3A8A', '#C8802A', '#2A5A8A'][(o.v || 0) % 4], clothSh: '#2A2A2A' }, ...o, head: (cc) => { cc.save(); cc.translate(0, -6); hanHead(cc, { expr: o.expr, look: o.look, turn: o.turn, crown: false, tilak: false, t: o.t, pal: { fur: f.skin, furSh: f.skinSh, furDk: mixCol(f.skinSh, '#000000', .3), ruff: f.skinSh, ruffSh: mixCol(f.skinSh, '#000000', .35), face: mixCol(f.skin, '#F2D0B0', .55), muzzle: mixCol(f.skin, '#F8E4CC', .65) } }); cc.restore(); } }); }
+
+// ---------- the whole figure: devaBust on legs, a dhoti over the hips and thighs (the legs always come out from
+// UNDER the cloth), and a tail for the vanaras. Head at (0, 0); the hips at ~550; standing, the soles at ~1150.
+//   devaFigure(c, o): devaBust's options plus legs: 'stand' | 'crouch' (squatting, knees wide) | 'leap' (both legs
+//   trailing back, for flight to screen right) | 'run' | 'kneel' | 'stride' | [[far upper, bend], [near upper, bend]]
+//   dhoti (colour), tail ('up' | 'stream' | 'curl' | false), fur (the tail's colour)
+const DEVA_LEGS = {
+  stand: [[1.64, -.02], [1.5, .02]], stride: [[1.95, .1], [1.2, .2]], crouch: [[2.55, -1.95], [.6, 1.95]],
+  leap: [[2.5, .45], [2.15, .7]], run: [[.95, 1.3], [2.25, -.35]], kneel: [[1.15, 1.75], [1.95, -.3]],
+};
+function devaFigure(c, o = {}) {
+  const S = devaPal(o), L = Array.isArray(o.legs) ? o.legs : DEVA_LEGS[o.legs || 'stand'], dh = o.dhoti || S.cloth, dhSh = mixCol(dh, '#000000', .3);
+  const bk = o.bodyK ?? 1, hipY = 120 + 440 * bk, hx = 74 * bk;
+  const leg = (s, [u, b]) => {
+    const ch = chain([s * hx, hipY], u, 300 * bk, b, 290 * bk);
+    limb(c, ch, [110 * bk + 7, 88 * bk + 7, 66 * bk + 7], S.skinDk); limb(c, ch, [110 * bk, 88 * bk, 66 * bk], s < 0 ? S.skinSh : S.skin);
+    const a = Math.atan2(ch[2][1] - ch[1][1], ch[2][0] - ch[1][0]);
+    c.save(); c.translate(ch[2][0], ch[2][1]); c.rotate(a - Math.PI / 2);
+    const F = 'M -30 -10 C -34 30 -20 56 10 62 C 50 66 80 58 84 40 C 80 24 40 18 26 -10 Z'; fillPath(c, F, s < 0 ? S.skinSh : S.skin); strokePath(c, F, S.skinDk, 3);
+    fillPath(c, 'M -30 -30 L 30 -30 L 30 -12 L -30 -12 Z', S.gold);
+    c.restore();
+    return ch;
+  };
+  // the tail, behind everything
+  if (o.tail) {
+    const T = o.tail === 'stream' ? [[0, 520], [-160, 600], [-320, 560], [-460, 470], [-520, 360], [-480, 300]]
+      : o.tail === 'curl' ? [[0, 520], [-140, 560], [-240, 480], [-240, 360], [-180, 320], [-150, 360]]
+      : [[0, 520], [-150, 540], [-250, 420], [-260, 220], [-200, 120], [-150, 150]];
+    limb(c, T, [44, 40, 36, 30, 24, 18], o.fur || S.skin); strokePath(c, 'M ' + T.map(p => p.join(' ')).join(' L '), rgba(S.skinDk, 0), 1);
+  }
+  const lf = leg(-1, L[0]), ln = leg(1, L[1]);
+  // the dhoti: a waist cloth and a pleated tube over each thigh to above the knee
+  for (const [ch, col] of [[lf, dhSh], [ln, dh]]) { const k = [lerp(ch[0][0], ch[1][0], .85), lerp(ch[0][1], ch[1][1], .85)]; limb(c, [ch[0], [lerp(ch[0][0], k[0], .5), lerp(ch[0][1], k[1], .5)], k], [160 * bk, 148 * bk, 126 * bk], col); strokePath(c, `M ${ch[0][0]} ${ch[0][1]} L ${k[0]} ${k[1]}`, rgba(dhSh, .8), 4); }
+  const waist = (c) => { const W = `M -150 560 C -60 536 60 536 150 560 L 160 690 C 60 720 -60 720 -160 690 Z`; fillPath(c, W, dh); strokePath(c, W, dhSh, 3); fillPath(c, 'M -150 560 C -60 536 60 536 150 560 L 152 590 C 60 566 -60 566 -152 590 Z', S.gold); };
+  devaBust(c, { ...o, waist, bodyK: bk, armsFront: true, arms: (o.arms || ['side', 'side']).map(a => a === 'down' ? 'side' : a), slim: true });
+}
+const HAN_DHOTI = '#D8322E';
+function hanFigure(c, o = {}) {
+  devaFigure(c, { pal: { ...HAN_FUR, ...(o.pal || {}) }, dhoti: o.dhoti || HAN_DHOTI, tail: o.tail ?? 'up', fur: (o.pal && o.pal.skin) || HAN_FUR.skin, ...o,
+    head: (cc) => { cc.save(); cc.translate(0, -6); hanHead(cc, { expr: o.expr, look: o.look, crown: o.crown, age: o.age, blood: o.blood, turn: o.turn, tilt: o.tilt, t: o.t, tilak: o.tilak, pal: o.headPal }); cc.restore(); } });
+}

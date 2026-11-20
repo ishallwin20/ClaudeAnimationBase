@@ -22,4 +22,5 @@ const COMIC = { slug: 'hanuman_cast', pages: {
     { r: [548, 680, 508, 646], art: 'tVayuChild', ink: FACE },
   ] },
   7: { panels: [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => ({ r: [24 + (i % 3) * 344, 24 + Math.floor(i / 3) * 440, 328, 424], art: 'tGod2', o: { i }, ink: FACE })) },
+  8: { panels: [0, 1, 2, 3, 4, 5].map(i => ({ r: [24 + (i % 3) * 344, 24 + Math.floor(i / 3) * 660, 328, 644], art: 'tHanFig', o: { i }, ink: FACE })) },
 } };

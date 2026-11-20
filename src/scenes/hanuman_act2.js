@@ -11,16 +11,19 @@ function sand(c, P, y = .78) { fillPath(c, `M -20 ${P.h * y} Q ${P.w * .5} ${P.h
 // =================== p17 · the shore ===================
 ART.shore = (c, P) => {
   dusk(c, P, .5); sand(c, P, .74);
-  // the army in rows along the beach, small and dark against the sunset
+  // the army along the beach: rows of vanaras, the far rows small and in shadow
   const R = lcg(3);
-  for (const [y, k, n, col] of [[.8, .1, 14, '#5A4038'], [.9, .14, 10, '#3A2A26'], [1.02, .19, 7, '#22181A']]) for (let i = 0; i < n; i++) { const x = P.w * (i + .5 + (R() - .5) * .5) / n; c.save(); c.translate(x, P.h * y); c.scale(k * (R() > .5 ? 1 : -1), k); vanaraSil(c, { pose: R() > .8 ? 'kneel' : 'stand', col, tw: .7 }); c.restore(); }
+  for (const [y, k, n, tint] of [[.8, .1, 16, .55], [.88, .14, 12, .35], [.98, .2, 8, .12]]) for (let i = 0; i < n; i++) {
+    const x = P.w * (i + .5 + (R() - .5) * .4) / n;
+    bust(c, x, P.h * y, k, { v: Math.floor(R() * 4), expr: ['calm', 'grief', 'calm', 'awe'][i % 4], look: [(R() - .5), .3], turn: (R() - .5) * .6, arms: ['down', 'down'] }, { ...lit(DAY()), tint: ['#2A1A2A', tint] }, vanaraBust);
+  }
 };
 const LEAPS = { leap10: [0, 'smile'], leap20: [1, 'calm'], leap30: [2, 'grief'], leap50: [3, 'grief'] };
 for (const [name, [v, e]] of Object.entries(LEAPS)) ART[name] = (c, P) => { dusk(c, P, .62); bust(c, P.w * .5, P.h * .68, .3, { v, expr: e, look: [0, .3], arms: ['down', 'down'], t: P.t }, lit(DAY()), vanaraBust); };
 ART.hanAlone = (c, P) => {
   dusk(c, P, .5); sand(c, P, .82);
   const R = lcg(5);
-  for (let i = 0; i < 14; i++) { const x = P.w * (.05 + R() * .4), y = P.h * (.84 + R() * .12), k = .1; c.save(); c.translate(x, y); c.scale(k, k); vanaraSil(c, { pose: 'stand', col: '#3A2A26', tw: .8 }); c.restore(); }
+  for (let i = 0; i < 9; i++) bust(c, P.w * (.04 + i * .055), P.h * (.9 + (i % 2) * .04), .12, { v: i % 4, expr: 'calm', look: [-.5, 0], arms: ['down', 'down'] }, { ...lit(DAY()), tint: ['#2A1A2A', .4] }, vanaraBust);
   // a rock apart, Hanuman on it, silent, looking at the sea
   fillPath(c, `M ${P.w * .62} ${P.h + 20} L ${P.w * .66} ${P.h * .74} L ${P.w * .86} ${P.h * .7} L ${P.w * .96} ${P.h + 20} Z`, '#3A3036');
   bust(c, P.w * .78, P.h * .46, .28, { expr: 'calm', look: [-.6, .2], turn: -.3, arms: ['down', 'down'] }, lit(DAY(-4, -4)), hanBust);
@@ -83,8 +86,8 @@ ART.mahendra = (c, P) => {
   // the trees dropping every flower
   const R = lcg(6); for (let i = 0; i < 60; i++) ellipse(c, P.w * R(), P.h * (.1 + R() * .6), 5, 5, ['#F4A0BE', '#FFE07A', '#FFFFFF'][i % 3]);
   // Hanuman, crouched on the peak, gripping it with both hands, about to push
-  glow(c, P.w * .5, P.h * .3, 600, '#FFD27A', .5);
-  c.save(); c.translate(P.w * .52, P.h * .66); c.scale(-.9, .9);
-  figure(c, (c) => vanaraSil(c, { pose: 'kneel', col: '#1A1018', tw: 1.4 }), { edge: { col: '#FFD27A', w: 6, a: 1 } });
+  glow(c, P.w * .5, P.h * .4, 500, '#FFD27A', .35);
+  c.save(); c.translate(P.w * .5, P.h * .29); c.scale(.5, .5);
+  figure(c, (c) => hanFigure(c, { legs: 'crouch', arms: [[1.15, .25, 'fist'], [1.15, .25, 'fist']], expr: 'fierce', look: [0, -.8], tail: 'stream', t: P.t }), lit(DAY()));
   c.restore();
 };
