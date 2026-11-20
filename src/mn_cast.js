@@ -4,7 +4,8 @@
 //   mnMira(c, x, y, s, o): Mirabai: a white odhni with a gold border over a saffron choli, a white ghagra, a tulsi mala,
 //     a sandal tilak. o: pose 'stand' | 'sit' | 'dance' | 'parrot' | 'walk', ektara (true), eyes (0 shut..1 open),
 //     look (-1..1 the iris down..up), mouth (0..1 open, singing), tilt (head, radians), t (breathing, cloth),
-//     flare (the skirt, dance), arms (override: { near: [[x,y]...3], far: [...] }), flip, alpha, close (detail).
+//     flare (the skirt, dance), arms (override: { near: [[x,y]...3], far: [...] }), flip, alpha, close (detail),
+//     child (0..1: a little girl, bigger head, shorter body, no odhni, a plait), pal (colour overrides of MIRA).
 //   mnMan(c, x, y, s, o): the bahroopiya: a man painted blue and dressed as Krishna (peacock-feather mukut, yellow
 //     pitambar, a mala), playing a flute; o.crown 0..1 (1 on his head, 0 lifted off in his hand), o.flute (1 at the lips,
 //     0 lowered), o.grin.
@@ -114,15 +115,18 @@ function mnMira(c, x, y, s, o = {}) {
   c.restore();
 }
 function mnMiraDraw(c, o) {
-  const C = MN.col, M = MIRA, t = o.t || 0, pose = o.pose || 'stand', A = { ...MIRA_ARMS[pose === 'sit' ? 'sit' : pose] || MIRA_ARMS.stand, ...(o.arms || {}) };
+  const C = MN.col, M = { ...MIRA, ...(o.pal || {}) }, t = o.t || 0, pose = o.pose || 'stand', A = { ...MIRA_ARMS[pose === 'sit' ? 'sit' : pose] || MIRA_ARMS.stand, ...(o.arms || {}) };
   const sit = pose === 'sit' || o.seated, dy = sit ? 400 : 0, flare = o.flare ?? (pose === 'dance' ? 1 : 0), sw = o.swirl || 0;
   const br = Math.sin(t * 1.6) * 1.2, wind = o.wind ?? 0;
+  // o.child (0..1): Mira as a little girl: a shorter body under a bigger head, no odhni, her hair in a plait
+  const ch = o.child || 0, K = 1 - .34 * ch, HS = 1 + .3 * ch, veil = ch > 0 ? 0 : 1;
+  c.save(); c.scale(1, K);
   // the odhni's long drape down her back (behind everything)
   c.save(); c.translate(0, dy);
   const flow = Math.sin(t * 1.3) * 8 * (1 + wind) + wind * 40 + sw * 60;
   const drape = [[-24, -1000], [-60, -975], [-78, -900], [-92, -800], [-112 - flow * .3, -680], [-128 - flow * .6, -560], [-150 - flow, -470 + (sit ? 120 : 0), 1], [-112 - flow * .7, -500 + (sit ? 120 : 0)], [-70 - flow * .4, -560], [-44, -700], [-30, -830]];
-  if (!sit || true) mnFill(c, drape, M.odhni, { shade: [M.fold, 0, -900, -140, -500], shadeA: .5 });
-  mnStroke(c, drape.slice(5, 8).map(p => [p[0] + 6, p[1]]), M.gold, MN.lw * 2.2);
+  if (veil) mnFill(c, drape, M.odhni, { shade: [M.fold, 0, -900, -140, -500], shadeA: .5 });
+  if (veil) mnStroke(c, drape.slice(5, 8).map(p => [p[0] + 6, p[1]]), M.gold, MN.lw * 2.2);
   c.restore();
   // the far arm (behind the body)
   const lift = ([px, py]) => [px, py + dy];
@@ -164,8 +168,10 @@ function mnMiraDraw(c, o) {
   c.restore();
   // the head (tilts about the neck), then the odhni over it
   c.save(); c.translate(0, dy); if (o.lean) c.rotate(o.lean);
-  c.translate(0, -840); c.rotate(o.tilt || 0); c.translate(0, 840);
+  c.translate(0, -840); if (ch) c.scale(HS, HS / K); c.rotate(o.tilt || 0); c.translate(0, 840);
+  if (ch) { const pl = mnPts([[-50, -900], [-58, -860], [-62, -820], [-60, -780]], false, 4); for (let i = 0; i < pl.length; i++) mnEll(c, pl[i][0], pl[i][1], 7.5 - i * .25, 6, C.black, { line: '#000000', lw: MN.lw * .6 }); mnStroke(c, [[-60, -774], [-60, -760]], M.border, MN.lw * 2.4); }
   mnHead(c, { eyes: o.eyes, look: o.look, mouth: o.mouth, close: o.close });
+  if (!veil) { c.restore(); if (A.ektara && o.ektara !== false && o.arms !== false) { const [ex, ey, el, ea] = A.ektara; mnEktara(c, ex, ey + dy, el, ea, { pluck: o.pluck || 0 }); } if (o.hold) o.hold(c, dy); if (A.near && o.arms !== false) mnArm(c, A.near.map(lift), M.skin, { fingers: A.nearFingers }); if (o.after) o.after(c, dy); c.restore(); return; }
   // odhni over the head, framing the face, falling over the near shoulder and across the chest
   const od = [[21, -990], [8, -1006], [-26, -1010], [-56, -986], [-68, -940], [-74, -880], [-60, -820], [-46, -760], [-36, -706], [0, -700], [30, -716], [56, -760, 1], [40, -788], [16, -808], [-6, -830], [-14, -862], [-13, -905], [-9, -945], [3, -973]];
   mnFill(c, od, M.odhni, { shade: [M.fold, 30, -1000, -60, -760], shadeA: .45, alpha: o.veil ?? 1 });
@@ -181,6 +187,7 @@ function mnMiraDraw(c, o) {
   if (o.hold) o.hold(c, dy);
   if (A.near && o.arms !== false) mnArm(c, A.near.map(lift), M.skin, { fingers: A.nearFingers });
   if (o.after) o.after(c, dy);
+  c.restore();
 }
 
 // ---------- the bahroopiya ----------
