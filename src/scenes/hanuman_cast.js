@@ -44,3 +44,19 @@ ART.tVayuChild = (c, P) => {
   skyDawn(c, P, '#2A2234', '#5A5070'); c.translate(P.w / 2, P.h * .3); c.scale(.8, .8);
   figure(c, (c) => { devaBust(c, { who: 'vayu', crown: 'kirita', hair: 'wind', tilak: 'dot', expr: 'grief', look: [0, 1], arms: ['cradle', 'down'], t: P.t }); c.save(); c.translate(-190, 330); c.rotate(-1.62); c.scale(.78, .78); balHanuman(c, { pose: 'limp', expr: 'hurt', bruise: 1, blood: 1, tail: 'limp' }); c.restore(); }, lit(DAY()));
 };
+const GODS2 = [
+  ['brahma', (c) => { c.save(); c.translate(0, 560); lotusSeat(c, 300); c.restore(); brahmaBust(c, { expr: 'speak', arms: ['down', 'abhaya'], hold: null }); }],
+  ['shiva', (c) => devaBust(c, { who: 'shiva', crown: 'jata', moon: true, snake: true, thirdEye: true, tilak: 'tripundra', hair: 'long', dress: 'rishi', expr: 'kind', arms: ['down', 'fist'], hold: 'trishul' })],
+  ['yama', (c) => devaBust(c, { who: 'yama', crown: 'mukut', stache: true, tilak: 'line', expr: 'fierce', arms: ['down', 'fist'], hold: 'staff' })],
+  ['varuna', (c) => devaBust(c, { who: 'varuna', crown: 'kirita', tilak: 'dot', expr: 'calm', arms: ['down', 'fist'], hold: 'noose' })],
+  ['kubera', (c) => devaBust(c, { who: 'kubera', crown: 'mukut', stache: true, tilak: 'dot', expr: 'smile', build: 1.18, arms: ['down', 'fist'], hold: 'mace' })],
+  ['vishva', (c) => devaBust(c, { who: 'vishva', crown: 'mukut', beard: 'long', stache: true, age: .7, tilak: 'line', expr: 'kind', arms: ['down', 'fist'], hold: 'hammer' })],
+  ['kesari', (c) => hanBust(c, { expr: 'fierce', crown: 'mukut', age: .25, arms: ['down', 'down'], pal: { skin: '#C8842E', skinSh: '#985A16', cloth: '#2E5A9A', clothSh: '#1A3A6A' } })],
+  ['anjana', (c) => anjanaHead(c, { expr: 'calm', t: 0 })],
+  ['rishi', (c) => devaBust(c, { who: 'rishi', crown: 'jata', beard: 'long', stache: true, age: .8, tilak: 'tripundra', dress: 'rishi', expr: 'fierce', arms: ['down', 'abhaya'] })],
+];
+ART.tGod2 = (c, P) => {
+  const [w, f] = GODS2[P.i]; skyDawn(c, P, '#F8D8A0', '#FBEED0');
+  const head = w === 'anjana';
+  c.translate(P.w / 2, P.h * (head ? .52 : .34)); c.scale(head ? 1.2 : .4, head ? 1.2 : .4); figure(c, (c) => f(c), lit(DAY()));
+};

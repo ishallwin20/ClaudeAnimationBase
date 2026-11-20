@@ -12,7 +12,7 @@
 //            eye narrows: a cheap three-quarter view); tilt (radians)
 //     tears  0..1; drool 0..1; bruise 0..1 (the broken left jaw, on screen right: his left); red (0..1) the eyes
 //            catching a red sun; spark (0..1) extra catch-lights; blood (0..1) a trickle from the mouth corner
-//            on his left; t
+//            on his left; pal (colours over BH: Anjana); curl (false: no crown curl); t
 //   balHanuman(c, o)  the whole child. o: everything balHead takes, plus
 //     pose   'sit' | 'wail' (sitting, fists up) | 'leap' (stretched up and to screen right, one hand reaching) |
 //            'reach' (both arms up to us) | 'limp' (lying on his back, arms out: rotate it yourself) | 'curl' (curled
@@ -56,7 +56,7 @@ function bhFluff(cx, cy, rx, ry, n, amp, seed = 1, a0 = 0, a1 = TAU) {
 }
 
 function balHead(c, o = {}) {
-  const S = BH, E = BH_EXPR[o.expr || 'calm'], t = o.t || 0, tn = clamp(o.turn || 0, -1, 1), lk = o.look || [0, 0];
+  const S = o.pal ? { ...BH, ...o.pal } : BH, E = BH_EXPR[o.expr || 'calm'], t = o.t || 0, tn = clamp(o.turn || 0, -1, 1), lk = o.look || [0, 0];
   const sx = tn * 22;                                   // how far the face slides with the turn
   c.save(); c.rotate(o.tilt || 0);
   // ---- ears (the far one hides a little behind the head when turned)
@@ -77,7 +77,7 @@ function balHead(c, o = {}) {
   ellipse(c, -34 + sx * .6, -62, 34, 16, rgba(S.furLt, .55), -.25);
   // fur texture: a few soft strands on the crown
   // ---- the curl on the crown
-  {
+  if (o.curl !== false) {
     const bx = 4 + sx * .5;
     limb(c, [[bx - 8, -92], [bx - 10, -122], [bx + 6, -146], [bx + 30, -146], [bx + 38, -126], [bx + 24, -112], [bx + 12, -122]], [30, 26, 22, 18, 14, 10, 7], S.fur);
     limb(c, [[bx - 6, -100], [bx - 8, -124], [bx + 6, -142]], [9, 7, 5], rgba(S.furLt, .8));

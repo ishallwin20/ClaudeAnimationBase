@@ -30,6 +30,12 @@ const DEVA = {
   rahu: { skin: '#3A3658', skinSh: '#26223E', skinDk: '#100E1E', skinLt: '#5A5680', lip: '#1A1222', lipLo: '#2A1E34', hair: '#08060E', hairLt: '#1E1A2C', iris: '#FF4A2A', kohl: '#04020A', brow: '#04020A', eyeW: '#FFD86A', mouth: '#120408' },
   agastya: { skin: '#B07A52', skinSh: '#8A5838', skinDk: '#4E2E1C', skinLt: '#D09A6E', hair: '#E4DED2', hairLt: '#FFFFFF', brow: '#D8D2C6', cloth: '#E8A050', clothSh: '#A86A28' },
   brahma: { skin: '#E8A060', skinSh: '#C07438', skinDk: '#7A4420', skinLt: '#FAC88E', hair: '#EAE4D8', hairLt: '#FFFFFF', brow: '#D8D2C6', cloth: '#E86A2A', clothSh: '#A8461A' },
+  shiva: { skin: '#86A8CC', skinSh: '#5E82AA', skinDk: '#2E4A6E', skinLt: '#BAD2EA', lip: '#5A3448', lipLo: '#7A4A62', hair: '#1A1420', hairLt: '#3A2E40', cloth: '#C8A070', clothSh: '#8A6A40' },
+  yama: { skin: '#4E6A5A', skinSh: '#36503F', skinDk: '#1A2A20', skinLt: '#7A967E', lip: '#3A1E22', lipLo: '#542A30', iris: '#C8301E', cloth: '#C8301E', clothSh: '#8A1A12' },
+  varuna: { skin: '#4A9AA0', skinSh: '#2E7278', skinDk: '#154248', skinLt: '#82C6C8', lip: '#3A2E4A', lipLo: '#524262', cloth: '#E8F0F0', clothSh: '#A8C0C4' },
+  kubera: { skin: '#E8B070', skinSh: '#C08848', skinDk: '#7A5228', skinLt: '#FAD49E', cloth: '#2E8A5A', clothSh: '#1A5A38' },
+  vishva: { skin: '#C88A58', skinSh: '#A0663A', skinDk: '#5A3820', skinLt: '#E6AE7E', hair: '#E8E2D6', hairLt: '#FFFFFF', brow: '#D8D2C6', cloth: '#5A6A8A', clothSh: '#3A4A66' },
+  rishi: { skin: '#B88458', skinSh: '#92603C', skinDk: '#523420', skinLt: '#D8A476', hair: '#8A8278', hairLt: '#B0A898', brow: '#7A7268', beard: '#D8D2C6', cloth: '#E8A050', clothSh: '#A86A28' },
   vali: { skin: '#E8A040' },
 };
 const DEVA_EXPR = {
@@ -164,11 +170,14 @@ function devaHead(c, o = {}) {
     const BD = `M ${-82} -78 C -50 -108 50 -108 82 -78 L 80 -62 C 50 -92 -50 -92 -80 -62 Z`;
     fillPath(c, BD, S.gold); strokePath(c, BD, S.goldSh, 2.5); for (let i = -3; i <= 3; i++) ellipse(c, i * 22, -84 - Math.cos(i / 3 * 1.2) * 11, 3.5, 3.5, i ? S.pearl : S.ruby);
   }
+  if (o.thirdEye) { const T = `M ${fx} -70 C ${fx - 6} -62 ${fx - 6} -50 ${fx} -44 C ${fx + 6} -50 ${fx + 6} -62 ${fx} -70 Z`; fillPath(c, T, S.eyeW); strokePath(c, T, S.kohl, 3); ellipse(c, fx, -57, 3, 5, '#C8201E'); }
   if (cr === 'jata') {   // a rishi's matted topknot, tied with a strand of rudraksha
     const J = `M -60 -80 C -70 -140 -40 -190 0 -196 C 40 -190 70 -140 60 -80 C 40 -100 -40 -100 -60 -80 Z`;
     fillPath(c, J, S.hair); inside(c, J, () => { for (let i = -3; i <= 3; i++) strokePath(c, `M ${i * 16} -86 Q ${i * 22} -140 ${i * 6} -190`, rgba(S.beardSh, .9), 3); });
     strokePath(c, 'M -46 -130 Q 0 -144 46 -130', '#6A2A1A', 9);
     fillPath(c, `M -78 -14 C -86 -80 -50 -102 0 -102 C 50 -102 86 -80 78 -14 C 70 -40 50 -60 0 -64 C -50 -60 -70 -40 -78 -14 Z`, S.hair);
+    if (o.moon) { const M = 'M 26 -170 C 60 -176 80 -150 74 -120 C 66 -142 48 -156 26 -170 Z'; fillPath(c, M, '#F6F2E0'); strokePath(c, M, '#A8A490', 2.5); }
+    if (o.snake) { limb(c, [[-70, -40], [-84, -10], [-70, 20], [-40, 30]], [16, 16, 14, 10], '#3A7A4A'); ellipse(c, -40, 30, 12, 9, '#3A7A4A'); ellipse(c, -36, 28, 2.5, 2.5, '#FFE04A'); }
   }
   c.restore();
 }
@@ -226,7 +235,8 @@ function devaBust(c, o = {}) {
   const bk = o.bodyK ?? .82; c.save(); c.translate(0, 120); c.scale(bk, bk); c.translate(0, -120);
   // arms behind the torso
   if (!front(arms[0])) drawArm(-1, arms[0]);
-  if (!front(arms[1])) drawArm(1, arms[1]);
+  let nearCh = null;
+  if (!front(arms[1])) nearCh = drawArm(1, arms[1]);
   // ---- the neck
   { const N = 'M -40 60 C -40 110 -44 150 -50 200 L 50 200 C 44 150 40 110 40 60 Z'; fillPath(c, N, S.skin); inside(c, N, () => fillPath(c, 'M -60 60 L 60 60 L 60 120 Q 0 150 -60 120 Z', rgba(S.skinSh, .8))); }
   // ---- the torso
@@ -239,27 +249,34 @@ function devaBust(c, o = {}) {
     ellipse(c, -20, 250, 70, 24, rgba(S.skinLt, .35));
   });
   strokePath(c, TOR, S.skinDk, 3);
+  if (dress === 'sari') {
+    const SR = `M ${-shX - 30} ${shY + 70} C ${-shX - 40} ${shY} ${-shX + 20} 168 -40 168 L 40 168 C ${shX - 20} 168 ${shX + 40} ${shY} ${shX + 30} ${shY + 70} L ${shX - 40} 640 L ${-shX + 40} 640 Z`;
+    fillPath(c, SR, cloth); inside(c, SR, () => { fillPath(c, `M ${shX + 60} ${shY - 40} C ${shX - 40} 260 ${-shX * .3} 460 ${-shX + 20} 660 L ${-shX + 90} 680 C ${-shX * .1} 480 ${shX * .2} 320 ${shX + 80} ${shY + 40} Z`, clothSh); strokePath(c, `M ${shX + 60} ${shY - 30} C ${shX - 40} 270 ${-shX * .3} 470 ${-shX + 30} 660`, S.gold, 8); });
+    strokePath(c, SR, rgba(clothSh, 1), 3);
+  }
   if (dress === 'armor') {
     const AR = `M ${-shX + 4} 250 C -60 220 60 220 ${shX - 4} 250 L ${shX - 30} 620 L ${-shX + 30} 620 Z`;
     fillPath(c, AR, S.gold); inside(c, AR, () => { shade(c, AR, 0, 240, 0, 620, S.goldSh, .5); for (let y = 300; y < 620; y += 50) strokePath(c, `M ${-shX} ${y} Q 0 ${y + 24} ${shX} ${y}`, S.goldSh, 4); });
     strokePath(c, AR, S.goldSh, 3);
   }
   // ---- the sacred thread: from his left shoulder (screen right) to his right hip (screen left)
-  if (dress !== 'armor') strokePath(c, `M ${shX * .55} 196 C ${shX * .2} 320 ${-shX * .3} 470 ${-shX * .62} 620`, S.thread, 5);
+  if (dress !== 'armor' && dress !== 'sari') strokePath(c, `M ${shX * .55} 196 C ${shX * .2} 320 ${-shX * .3} 470 ${-shX * .62} 620`, S.thread, 5);
   // ---- haras, or a mala
-  if (dress === 'rishi') { for (let i = 0; i <= 18; i++) { const a = Math.PI * .1 + i / 18 * Math.PI * .8; ellipse(c, Math.cos(a) * -86, 200 + Math.sin(a) * 140, 7, 7, '#5A2A1A'); } }
+  if (dress === 'sari') { strokePath(c, 'M -50 176 Q 0 230 50 176', S.gold, 5); }
+  else if (dress === 'rishi') { for (let i = 0; i <= 18; i++) { const a = Math.PI * .1 + i / 18 * Math.PI * .8; ellipse(c, Math.cos(a) * -86, 200 + Math.sin(a) * 140, 7, 7, '#5A2A1A'); } }
   else {
     for (const [d, w, col] of [[60, 5, S.gold], [96, 6, S.gold], [140, 4, S.pearl]]) strokePath(c, `M -64 182 Q 0 ${182 + d * 1.6} 64 182`, col, w);
     fillPath(c, ellP(0, 182 + 96 * .8 + 6, 14, 18), S.gold); ellipse(c, 0, 182 + 96 * .8 + 6, 8, 10, S.ruby);
   }
   // ---- the uttariya over both shoulders, an end falling in front on screen left
-  if (dress !== 'armor') {
+  if (dress !== 'armor' && dress !== 'sari') {
     const U1 = `M ${shX + 40} ${shY + 80} C ${shX + 30} ${shY - 10} ${shX - 30} 160 ${shX - 90} 168 C ${shX - 70} 230 ${-shX * .2} 420 ${-shX + 40} 520 L ${-shX + 70} 590 C ${-shX * .1} 470 ${shX * .4} 320 ${shX + 40} ${shY + 80} Z`;
     for (const U of [U1]) { fillPath(c, U, dress === 'rishi' ? '#A8743E' : cloth); inside(c, U, () => { for (let i = 0; i < 3; i++) strokePath(c, `M ${shX - 60 + i * 24} ${190 + i * 10} Q ${shX * .1 + i * 20} ${360 + i * 20} ${-shX + 70 + i * 16} ${540 + i * 10}`, rgba(clothSh, .8), 3); }); strokePath(c, U, rgba(clothSh, 1), 3); }
   }
   // arms in front
   if (front(arms[0])) drawArm(-1, arms[0]);
-  if (front(arms[1])) drawArm(1, arms[1]);
+  if (front(arms[1])) nearCh = drawArm(1, arms[1]);
+  if (o.hold && nearCh) { const ch = nearCh, a = Math.atan2(ch[2][1] - ch[1][1], ch[2][0] - ch[1][0]); c.save(); c.translate(ch[2][0] + Math.cos(a) * 26, ch[2][1] + Math.sin(a) * 26); devaProp(c, o.hold, a, S); c.restore(); }
   if (arms[0] === 'namaste' && arms[1] === 'namaste') {   // the palms joined, fingers up
     const J = `M 0 ${shY + 150} C -34 ${shY + 140} -36 ${shY + 60} -22 ${shY + 10} C -14 ${shY - 16} 14 ${shY - 16} 22 ${shY + 10} C 36 ${shY + 60} 34 ${shY + 140} 0 ${shY + 150} Z`;
     fillPath(c, J, S.skin); strokePath(c, J, S.skinDk, 3); strokePath(c, `M 0 ${shY - 6} L 0 ${shY + 146}`, S.skinDk, 3);
@@ -332,3 +349,52 @@ function airavataSide(c, o = {}) {
   leg(-80, Math.PI * .4, true); leg(230, Math.PI * 1.4, true);
   c.restore();
 }
+
+// props held in a hand, drawn at the fist (the forearm's direction a): staff, mace, noose, trishul, garland, hammer,
+// lotus, kamandalu (a water pot), vajra
+function devaProp(c, kind, a, S) {
+  const G = S.gold || '#F0B83A', Gs = S.goldSh || '#A87418';
+  if (kind === 'staff' || kind === 'trishul') {
+    strokePath(c, 'M 0 -360 L 0 260', '#5A3A22', 14); strokePath(c, 'M 0 -360 L 0 260', '#3A2412', 3);
+    if (kind === 'trishul') { const T = 'M -60 -360 C -60 -420 -40 -460 -36 -480 C -28 -440 -22 -400 0 -380 C 22 -400 28 -440 36 -480 C 40 -460 60 -420 60 -360 Z'; fillPath(c, T, '#D8DCE4'); fillPath(c, 'M -8 -380 L 0 -500 L 8 -380 Z', '#D8DCE4'); strokePath(c, T, '#6A7080', 3); ellipse(c, 0, -340, 26, 14, '#8A5A2A'); }
+    else { ellipse(c, 0, -370, 22, 22, G); ellipse(c, 0, -370, 10, 10, S.ruby || '#C21E2A'); }
+  } else if (kind === 'mace') {
+    strokePath(c, 'M 0 60 L 0 -260', G, 18); const H = ellP(0, -320, 70, 84); fillPath(c, H, G); inside(c, H, () => { for (let i = -2; i <= 2; i++) strokePath(c, `M ${i * 26} -400 Q ${i * 34} -320 ${i * 26} -240`, Gs, 4); }); strokePath(c, H, Gs, 3); ellipse(c, 0, -408, 14, 14, G);
+  } else if (kind === 'noose') {
+    c.lineCap = 'round'; strokePath(c, 'M 0 0 C 60 40 120 30 130 -30 C 140 -110 40 -130 20 -70 C 6 -30 60 0 90 -20', '#C8A050', 9); strokePath(c, 'M 0 0 C -20 60 -10 140 20 200', '#C8A050', 9);
+  } else if (kind === 'hammer') {
+    strokePath(c, 'M 0 60 L 0 -200', '#6A4A2A', 16); fillPath(c, 'M -70 -260 L 70 -260 L 70 -190 L -70 -190 Z', '#8A9098'); strokePath(c, 'M -70 -260 L 70 -260 L 70 -190 L -70 -190 Z', '#4A5058', 3);
+  } else if (kind === 'garland') {
+    for (let i = 0; i <= 16; i++) { const k = i / 16, x = Math.sin(k * Math.PI) * 90, y = k * 260; ellipse(c, x, y, 18, 16, i % 2 ? '#F2C640' : '#E8602A'); }
+  } else if (kind === 'lotus') {
+    strokePath(c, 'M 0 0 L 0 -120', '#3E7A3A', 8); for (const [r, col] of [[-.6, '#E87AA0'], [.6, '#E87AA0'], [0, '#F4A0BE']]) { c.save(); c.translate(0, -130); c.rotate(r); fillPath(c, 'M 0 0 C -24 -30 -20 -70 0 -90 C 20 -70 24 -30 0 0 Z', col); c.restore(); }
+  } else if (kind === 'kamandalu') {
+    const K = 'M -50 20 C -70 80 -50 140 0 146 C 50 140 70 80 50 20 Z'; fillPath(c, K, G); strokePath(c, K, Gs, 3); strokePath(c, 'M -40 20 C -40 -30 40 -30 40 20', Gs, 6); strokePath(c, 'M 50 60 C 90 50 100 30 110 10', G, 10);
+  } else if (kind === 'vajra') { vajraK(c, 0, -60, .9, 0); }
+}
+
+// Brahma: four faces (three seen), a white beard, crowns
+function brahmaHeads(c, o = {}) {
+  const q = { who: 'brahma', crown: 'mukut', beard: 'long', stache: true, tilak: 'line', age: .4, ...o };
+  for (const s of [-1, 1]) { c.save(); c.translate(s * 120, 14); c.scale(.8, .8); devaHead(c, { ...q, turn: s * .9, expr: o.sideExpr || 'calm', look: [s, 0], neck: false }); c.restore(); }
+  devaHead(c, q);
+}
+function brahmaBust(c, o = {}) { devaBust(c, { who: 'brahma', dress: 'rishi', ...o, head: (cc) => brahmaHeads(cc, o) }); }
+// a lotus seat, its centre at (0, 0), ~r wide
+function lotusSeat(c, r = 300, o = {}) {
+  const P1 = o.col || '#F4A0BE', P2 = o.col2 || '#E06A90';
+  for (const [k, col, y] of [[1, P2, 10], [.8, P1, -6]]) for (let i = -4; i <= 4; i++) { c.save(); c.translate(i * r * .22 * k, y); c.rotate(i * .22); const L = `M 0 0 C ${-40 * k} -20 ${-46 * k} -110 0 ${-140 * k} C ${46 * k} -110 ${40 * k} -20 0 0 Z`; fillPath(c, L, col); strokePath(c, L, rgba('#7A2A4A', .7), 3); c.restore(); }
+  fillPath(c, ellP(0, 20, r * 1.05, 40), '#3E7A3A');
+}
+// Anjana: a vanari mother: Bal Hanuman's soft face grown (the same eyes), her hair in a bun, earrings, a nose ring
+function anjanaHead(c, o = {}) {
+  c.save(); c.scale(.92, 1.02);
+  // the bun and a braid of flowers behind
+  fillPath(c, ellP(0, -100, 70, 50), '#3A2414'); for (let i = -2; i <= 2; i++) ellipse(c, i * 26, -136, 10, 10, '#FFFFFF');
+  balHead(c, { expr: o.expr || 'calm', look: o.look, turn: o.turn, tears: o.tears, t: o.t, curl: false, pal: { fur: '#D08A3A', furSh: '#A0621E', furDk: '#6E3E10', furLt: '#F0B868', ...(o.pal || {}) } });
+  for (const s of [-1, 1]) { ellipse(c, s * 104, 52, 9, 9, '#F0B83A'); ellipse(c, s * 104, 70, 6, 8, '#F0B83A'); }
+  c.strokeStyle = '#F0B83A'; c.lineWidth = 4; c.beginPath(); c.arc((o.turn || 0) * 22 + 14, 34, 9, 0, TAU); c.stroke();
+  c.restore();
+}
+
+function anjanaBust(c, o = {}) { devaBust(c, { pal: { skin: '#D08A3A', skinSh: '#A0621E', skinDk: '#6E3E10', skinLt: '#F0B868', cloth: '#C8302E', clothSh: '#8A1A1A' }, dress: 'sari', build: .82, ...o, head: (cc) => { cc.save(); cc.translate(0, -10); cc.scale(.95, .95); anjanaHead(cc, o); cc.restore(); } }); }
