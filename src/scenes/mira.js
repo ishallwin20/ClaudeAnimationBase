@@ -4,11 +4,12 @@
 const TL = {
   L1: 1.2, L2: 10.8, L3: 20.5, L3b: 25.5, L4: 29.4, L5: 35.5, L5b: 38.0, L5c: 41.7, L6: 45.5, L7: 55.6, L7b: 60.8, L8: 64.7, L9: 69.8,
   L10: 75.8, L10b: 81.3, L11: 86.1, L12: 96.4, L12b: 101.6, L13: 105.8, L14: 110.7, L15: 115.8, END: 120.9, CARD: 121.4,
+  OFF: 4,   // the music's intro: everything below is timed to her recording and shifted by OFF at the bottom of the file
 };
 MN.verse = [
   { a: -.4, b: 10.2, hi: 'सांवल रूप निहारौ आए, | सांवरो नाही आयो', en: 'I came to gaze upon his dark form… | my Saanwara did not come.', instant: true },
-  { a: 10.5, b: 19.9, hi: 'पलकन छांवो उतारौ आए, | सांवरो नाही आयो', en: 'I came to spread my lashes as shade on his path… | my Saanwara did not come.' },
-  { a: 20.3, b: 29.1, hi: 'दूर देस के बेहरूपी ने | मोहन रूप दिखायो', en: 'A player from a far-off land | came wearing Mohan’s form…' },
+  { a: 10.5, b: 19.9, hi: 'पलकन छांवो उतारौ आए, | सांवरो नाही आयो', en: 'I came to keep him in the shade of my eyelids… | my Saanwara did not come.' },
+  { a: 20.3, b: 29.1, hi: 'दूर देस के बेहरूपी ने | मोहन रूप दिखायो', en: 'A shape-shifter from a far-off land | showed me his form: Mohan, the enchanter…' },
   { a: 29.3, b: 34.9, hi: 'मेरो सांवरो नाही आयो', en: 'My Saanwara did not come.', hs: 60 },
   { a: 35.3, b: 44.7, hi: 'बिनत करूँ न, पाँव पडूँ न, | न भेजूं कोई तार', en: 'I do not plead, I do not fall at his feet, | I send no word.' },
   { a: 45.2, b: 54.9, hi: 'गीत माला कंठन में डाले, | गाऊं सौ सौ बार', en: 'With a garland of songs around my throat, | I sing a hundred times.' },
@@ -39,7 +40,7 @@ MN.after = (c, t) => {
 
 // ---------- 1. the terrace at dusk: she watches the path ----------
 SHOTS.push({ a: 0, b: 10.6, draw(c, u, t) {
-  const cam = { z: lerp(1, 1.1, easeIO(u / 10.6)), fx: 520, fy: 800 };
+  const cam = { z: lerp(1, 1.1, easeIO((u + TL.OFF) / (10.6 + TL.OFF))), fx: 520, fy: 800 };
   plane(c, cam, .6, (c) => { mrSkyTerrace(c, t); for (let i = 0; i < 5; i++) mnCrane(c, 100 + i * 52 + t * 30, 780 + Math.abs(i - 2) * 20 - t * 5, .8, t * 1.4 + i * .23); });
   plane(c, cam, .85, (c) => { c.save(); c.translate(0, 120); mrFarHills(c, t); c.restore(); });
   plane(c, cam, 1, (c) => {
@@ -64,23 +65,22 @@ SHOTS.push({ a: 10.2, b: 20.4, xf: .8, draw(c, u, t) {
   });
 } });
 
-// ---------- 3. the bahroopiya: Mohan's form, on a stranger ----------
-const BAHRU_CAM = [[20.2, [1.25, 700, 860]], [23.6, [1.3, 720, 860]], [25.0, [1.3, 330, 560]], [28.8, [1.34, 320, 540]], [29.5, [1.3, 720, 840]], [32.0, [1.32, 720, 840]], [32.9, [1.36, 320, 540]]];
+// ---------- 3. the temple, years ago: the shape-shifter shows her his Mohan form ----------
+// (the poet: Mira sees Krishna's murti in a temple as a little girl, is spellbound, and waits for him ever since;
+// "Mohan" is both his name and "the one who enchants"; his crown always stays on)
+const TEMPLE_CAM = [[19.9, [1.0, 540, 800]], [24.4, [1.1, 520, 800]], [25.4, [1.75, 640, 720]], [27.4, [1.85, 640, 700]], [28.2, [1.9, 330, 800]], [29.3, [1.95, 330, 800]], [30.4, [1.12, 500, 800]], [35.4, [1.18, 480, 800]]];
 SHOTS.push({ a: 19.9, b: 35.4, xf: .6, draw(c, u, t) {
-  const [z, px, py] = kf(t, BAHRU_CAM, easeIO), cam = mnLook(z, px, py);
+  const [z, px, py] = kf(t, TEMPLE_CAM, easeIO), cam = mnLook(z, px, py);
   plane(c, cam, 1, (c) => {
-    mrStreet(c, t);
-    // Mira at the jharokha: she sees him and leans out, hopeful; then turns away
-    const hope = seg(t, 24.6, 26.2) * (1 - seg(t, 30.4, 31.6)), down = seg(t, 32.4, 34);
-    mrJharokhaBack(c, 300, 600);
-    c.save(); c.beginPath(); c.rect(150, 300, 300, 330); c.clip();
-    mnMira(c, 296 + hope * 14, 600 + 470, .6, { t, eyes: lerp(1, .35, down), look: lerp(-.6, -1, down), tilt: hope * .08 + down * .12, arms: false, lean: hope * .04 });
-    c.restore();
-    mrJharokhaFront(c, 300, 600);
-    // the bahroopiya plays; then lowers the flute and lifts off his crown, grinning
-    const lift = seg(t, 29.8, 31.4), fl = 1 - seg(t, 29.4, 29.9);
-    mnMan(c, 760, 1240, .66, { t, flip: true, dance: fl, crown: 1 - lift, flute: fl, grin: lift });
-    // a few coins on the ground and a boy watching
+    const reveal = seg(t, 25.2, 26.6) * (1 - seg(t, 29.6, 31.2) * .7);
+    mrTemple(c, t, { glow: ease(reveal) });
+    // the little girl, hands joined, gazing up at him; her eyes go wide when he shows his form
+    const grown = ease(seg(t, 30.2, 31.8)), down = seg(t, 32.6, 34.2), wow = seg(t, 25.6, 26.6);
+    const X = 300, Y = 1236, sway = Math.sin(t * 1.3) * .015;
+    if (grown < 1) mnMira(c, X, Y, .54, { t, child: 1, pose: 'pray', ektara: false, alpha: 1 - grown, eyes: lerp(.85, 1.05, wow), look: lerp(.5, .9, wow), mouth: wow * .25, tilt: -.08 - wow * .06 + sway, wind: .1,
+      pal: { ghagra: '#D9503A', fold: '#9A2A1E', choli: '#E8B83C', border: '#E8B83C' } });
+    // …and the years pass where she stands: Mira grown, still waiting before him
+    if (grown > 0) mnMira(c, X, Y, .6, { t, pose: 'pray', ektara: false, alpha: grown, eyes: lerp(.9, .3, down), look: lerp(.6, -.7, down), tilt: lerp(-.1, .08, down) });
   });
 } });
 
@@ -105,8 +105,8 @@ SHOTS.push({ a: 34.9, b: 45.6, xf: .7, draw(c, u, t) {
   });
 } });
 
-// ---------- 5. the shrine: a garland of songs ----------
-const GARLAND = mnPts([[-20, -834], [-26, -790], [-12, -738], [16, -712], [44, -718], [56, -752], [40, -800], [22, -830]], false, 6);
+// ---------- 5. the shrine: a garland of songs (each "Krishna" she sings becomes a flower) ----------
+const GARLAND = mnPts([[-20, -834], [-26, -790], [-12, -738], [16, -712], [44, -718], [56, -752], [40, -800], [22, -830]], false, 3);
 SHOTS.push({ a: 45.1, b: 55.6, xf: .7, draw(c, u, t) {
   const cam = mnLook(lerp(1.3, 1.5, easeIO(u / 10.5)), 380, 840, 720);
   plane(c, cam, 1, (c) => {
@@ -115,14 +115,24 @@ SHOTS.push({ a: 45.1, b: 55.6, xf: .7, draw(c, u, t) {
     const n = GARLAND.length, X = 330, Y = 1236, S = .95, mouth = [36, -910];
     mnMira(c, X, Y, S, { t, pose: 'sit', eyes: .45, look: .6, mouth: sing * .7, pluck: Math.max(0, Math.sin(t * 6)), tilt: -.03,
       hold: (c, dy) => {
-        // flowers leave her lips and string themselves round her throat, one by one
+        // "कृष्ण" leaves her lips, word by word; each word turns into a flower and strings itself round her throat
         for (let i = 0; i < n; i++) {
-          const t0 = 46 + i / n * 7.6, k = seg(t, t0, t0 + .9); if (k <= 0) continue;
-          const [gx, gy] = GARLAND[i], mx = mouth[0] + 10, my = mouth[1] + dy, e = ease(k);
-          const fx = lerp(mx, gx, e) + Math.sin(k * Math.PI) * 60, fy = lerp(my, gy + dy, e) - Math.sin(k * Math.PI) * 40;
-          const col = i % 3 === 1 ? '#F7F0E0' : '#F0A020';
-          if (k < 1) glow(c, fx, fy, 26, '#FFD27A', .5 * (1 - k), 'lighter');
-          mnEll(c, fx, fy, 9, 9, col, { lw: MN.lw * .7 }); for (let q = 0; q < 6; q++) mnDot(c, fx + Math.cos(q * 1.05) * 5, fy + Math.sin(q * 1.05) * 5, 2.2, mixCol(col, '#B05A10', .35)); mnDot(c, fx, fy, 2.6, i % 3 === 1 ? '#E8B83C' : '#C9372A');
+          const t0 = 45.9 + i / n * 6.9, k = seg(t, t0, t0 + 1.6); if (k <= 0) continue;
+          const [gx, gy] = GARLAND[i], mx = mouth[0] + 16, my = mouth[1] + dy, e = ease(k);
+          const fx = lerp(mx, gx, e) + Math.sin(k * Math.PI) * 170, fy = lerp(my, gy + dy, e) - Math.sin(k * Math.PI) * (90 + (i % 3) * 40);
+          const word = 1 - seg(k, .5, .78), bloom = seg(k, .55, .85), col = i % 3 === 1 ? '#F7F0E0' : '#F0A020';
+          if (word > 0) {
+            c.save(); c.globalAlpha *= word * seg(k, .04, .22); c.translate(fx, fy); c.scale(.7 + .5 * seg(k, 0, .3) - .4 * (1 - word), .7 + .5 * seg(k, 0, .3) - .4 * (1 - word));
+            c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = `34px ${MN.devFont}`;
+            glow(c, 0, 0, 40, '#FFD27A', .35, 'lighter');
+            c.lineWidth = 4; c.strokeStyle = 'rgba(255,240,200,.85)'; c.strokeText('कृष्ण', 0, 0); c.fillStyle = '#8E1F18'; c.fillText('कृष्ण', 0, 0);
+            c.restore();
+          }
+          if (bloom > 0) {
+            const r = 11.5 * ease(bloom);
+            if (k < 1) glow(c, fx, fy, 30, '#FFD27A', .5 * (1 - k), 'lighter');
+            mnEll(c, fx, fy, r, r, col, { lw: MN.lw * .7 }); for (let q = 0; q < 6; q++) mnDot(c, fx + Math.cos(q * 1.05) * r * .55, fy + Math.sin(q * 1.05) * r * .55, 2.4 * bloom, mixCol(col, '#B05A10', .35)); mnDot(c, fx, fy, 2.8 * bloom, i % 3 === 1 ? '#E8B83C' : '#C9372A');
+          }
         }
       } });
   });
@@ -305,3 +315,9 @@ SHOTS.push({ a: 121.2, b: 127.5, xf: .9, draw(c, u, t) {
   if (k > .01) { c.save(); c.translate(540, 1340); c.scale(k, k); c.fillStyle = '#2E5F5A'; c.beginPath(); c.roundRect(-230, -44, 460, 88, 44); c.fill(); c.restore(); text(c, 'Follow both', 540, 1342, '600 42px Poppins', '#FBE0CF', { pop: u - 1.1 }); }
 } });
 MN.band.hold = true; MN.band.hideAfter = 121.2;
+
+// ---------- the intro: the music plays OFF seconds before she sings; shift everything (the terrace holds from 0) ----------
+for (const s of SHOTS) { const d = s.draw, first = s.a === 0; if (!first) s.a += TL.OFF; s.b += TL.OFF; s.draw = (c, u, t) => d(c, first ? u - TL.OFF : u, t - TL.OFF); }
+for (const v of MN.verse) { if (!v.instant) v.a += TL.OFF; v.b += TL.OFF; }
+{ const f = MN.after; MN.after = (c, t) => f(c, t - TL.OFF); }
+MN.band.hideAfter += TL.OFF;

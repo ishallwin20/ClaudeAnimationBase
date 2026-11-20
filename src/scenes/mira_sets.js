@@ -173,3 +173,136 @@ function mrFeetClose(c, t) {
   mrFoot(c, 470, 1150 - k1 * 40, 1.4, { lift: k1, jingle: k1 > .2, t });
   return [[470 + 60, 1150 - k1 * 40 - 210, k1], [380 + 50, 1090 - k2 * 40 - 190, k2]];
 }
+
+// ---------- the temple (her childhood): the sanctum with Giridhar's murti ----------
+// mrMohan(c, x, y, s, o): Krishna's murti, front view, black stone in tribhanga with the flute, standing on a gold
+// lotus: the tall gold mukut with its peacock feather (always on his head), makara kundalas, the long temple eyes, a
+// sandal tilak, yellow pitambar, a vaijayanti mala. ~1000 units tall. o.glow 0..1 (the lamps' gold on the stone)
+function mrMohan(c, x, y, s, o = {}) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  mnScaleLines(s, () => {
+    const bk = '#262A40', bkL = '#46506E', gd = MC.gold, gl = o.glow || 0;
+    // the lotus pedestal
+    mnFill(c, [[-170, 0, 1], [170, 0, 1], [160, -40, 1], [-160, -40, 1]], '#B88A2E', { lw: 1.4 });
+    for (let i = 0; i < 9; i++) { const px = -150 + i * 37.5; mnFill(c, [[px - 20, -40], [px, -92], [px + 20, -40]], i % 2 ? '#F0B7C0' : '#E8909C', { lw: 1 }); }
+    mnFill(c, [[-130, -86, 1], [130, -86, 1], [130, -100, 1], [-130, -100, 1]], gd, { lw: 1.2 });
+    // legs: the right crossed over the left at the ankle (tribhanga), gold anklets
+    mnLimb(c, [[30, -104], [50, -260], [40, -420]], [30, 36, 46], bk);
+    mnLimb(c, [[-34, -104], [10, -260], [-30, -420]], [30, 36, 46], bk);
+    mnFill(c, [[22, -104], [62, -100], [64, -92, 1], [18, -92, 1]], bk, { lw: .9 }); mnFill(c, [[-44, -104], [-6, -100], [-4, -92, 1], [-48, -92, 1]], bk, { lw: .9 });
+    for (const [ax, ay] of [[30, -122], [-30, -122]]) mnFill(c, [[ax - 22, ay - 8, 1], [ax + 22, ay - 8, 1], [ax + 22, ay + 6, 1], [ax - 22, ay + 6, 1]], gd, { lw: .9 });
+    // the pitambar: yellow, pleated, a red-and-gold border; the sash's ends hanging between the knees
+    const dh = [[-70, -600], [70, -600], [84, -470], [96, -360, 1], [40, -340], [-10, -360], [-60, -340], [-100, -362, 1], [-86, -480]];
+    mnFill(c, dh, MC.yellow, { shade: ['#B07A10', 60, -600, -60, -360], shadeA: .4 });
+    for (let i = 0; i < 6; i++) mnStroke(c, [[-50 + i * 20, -590], [-70 + i * 30, -360]], '#B98A1E', MN.lw * .9);
+    mnStroke(c, [[96, -362], [40, -342], [-10, -362], [-60, -342], [-100, -364]], MC.vermilion, MN.lw * 3);
+    mnFill(c, [[-12, -560], [14, -560], [26, -300], [6, -280], [-16, -300]], MC.vermilion, { lw: 1 });
+    mnStroke(c, [[-14, -300], [24, -300]], gd, MN.lw * 2);
+    // the waist and torso
+    mnFill(c, [[-64, -604], [64, -604], [72, -700], [84, -770], [60, -792], [-60, -792], [-84, -770], [-72, -700]], bk, { shade: [bkL, -60, -700, 60, -700], shadeA: .5 });
+    // the uttariya: a yellow scarf over the shoulders, its ends falling past the elbows
+    mnFill(c, [[-84, -786], [-30, -760], [30, -760], [84, -786], [104, -700], [96, -560], [80, -566], [82, -690], [60, -740], [-60, -740], [-82, -690], [-80, -566], [-96, -560], [-104, -700]], MC.yellow, { shade: ['#B07A10', 0, -790, 0, -560], shadeA: .35 });
+    mnStroke(c, [[-96, -562], [-80, -568]], MC.vermilion, MN.lw * 3); mnStroke(c, [[96, -562], [80, -568]], MC.vermilion, MN.lw * 3);
+    mnFill(c, [[-72, -612, 1], [72, -612, 1], [72, -592, 1], [-72, -592, 1]], gd, { lw: 1 });
+    // the arms up to the flute: it runs from his lips out to his right (our left)
+    mnLimb(c, [[-80, -776], [-150, -700], [-120, -840]], [30, 24, 20], bk);
+    mnLimb(c, [[80, -776], [104, -706], [-26, -846]], [30, 24, 20], bk);
+    for (const [bx, by] of [[-146, -712], [100, -716]]) mnEll(c, bx, by, 18, 7, gd, { lw: .9 });
+    // necklaces and the vaijayanti mala down to the knees
+    mnStroke(c, [[-60, -770], [0, -730], [60, -770]], gd, MN.lw * 3);
+    mnStroke(c, [[-66, -772], [0, -700], [66, -772]], '#F4EEDF', MN.lw * 2);
+    const vm = mnPts([[-80, -776], [-96, -600], [-60, -420], [0, -390], [60, -420], [96, -600], [80, -776]], false, 5);
+    vm.forEach(([px, py], i) => mnDot(c, px, py, 9, ['#C9372A', '#F4EEDF', '#E8B83C', '#4F7A3E'][i % 4]));
+    // the flute, gold-tipped, across the arms
+    // (drawn after the face, below)
+    // the face: round, black stone; long white temple eyes with a red rim; the tilak; red lips
+    mnFill(c, [[-22, -800, 1], [22, -800, 1], [20, -830, 1], [-20, -830, 1]], bk, {});
+    mnEll(c, 0, -890, 60, 70, bk, { shade: [bkL, -40, -900, 40, -900], shadeA: .4 });
+    for (const sx of [-1, 1]) {
+      const ex = sx * 26, ey = -900, eye = [[ex - 22 * sx, ey + 2, 1], [ex - 4 * sx, ey - 12], [ex + 16 * sx, ey - 9], [ex + 30 * sx, ey - 3, 1], [ex + 14 * sx, ey + 9], [ex - 6 * sx, ey + 9]];
+      mnFill(c, eye, '#FBF7EE', { line: '#7A1A18', lw: MN.lw * .9 });
+      mnDot(c, ex + 2 * sx, ey - 1, 8, '#120E10'); mnDot(c, ex + 4 * sx, ey - 4, 2.2, 'rgba(255,255,255,.85)');
+      mnStroke(c, [[ex - 20 * sx, ey - 18], [ex + 6 * sx, ey - 24], [ex + 30 * sx, ey - 16]], '#120E10', MN.lw * 1.4);
+    }
+    mnFill(c, [[-12, -960], [12, -960], [6, -918], [0, -912], [-6, -918]], '#F3E6C8', { lw: .8 });
+    mnStroke(c, [[0, -950], [0, -920]], MC.vermilion, MN.lw * 2.2);
+    mnFill(c, [[-14, -852], [0, -858], [14, -852], [0, -842]], '#C9372A', { line: false });
+    // the flute at his lips, gold-tipped, his fingers on it
+    mnStroke(c, [[-240, -838], [30, -852]], '#9C6A34', MN.lw * 7);
+    for (const fx of [-200, -170, -140]) mnDot(c, fx, -840 - (fx + 240) * .052, 3, '#3A2210');
+    mnStroke(c, [[-242, -838], [-226, -839]], gd, MN.lw * 8); mnStroke(c, [[16, -851], [30, -852]], gd, MN.lw * 8);
+    mnEll(c, -120, -844, 22, 13, bk, {}); mnEll(c, -36, -848, 22, 13, bk, {});
+    // curls under the crown, and the makara kundalas
+    for (const sx of [-1, 1]) { for (let i = 0; i < 3; i++) mnEll(c, sx * (58 + i * 6), -930 + i * 26, 14, 16, bk, { lw: .9 }); mnEll(c, sx * 70, -846, 13, 20, gd, { lw: 1 }); mnDot(c, sx * 70, -846, 5, '#C9372A'); }
+    // the mukut: tall, tiered, jewelled; the peacock feather tilted on its right
+    const mk = [[-62, -950, 1], [62, -950, 1], [56, -1010], [40, -1080], [22, -1124], [0, -1150], [-22, -1124], [-40, -1080], [-56, -1010]];
+    mnFill(c, mk, gd, { shade: ['#8A5A10', 0, -1150, 0, -950], shadeA: .35 });
+    mnStroke(c, [[-62, -962], [62, -962]], MC.goldLt, MN.lw * 3);
+    for (const [jx, jy, jc] of [[0, -1000, '#C9372A'], [-30, -990, '#2E7A5A'], [30, -990, '#2E7A5A'], [0, -1060, '#2A5DA8'], [0, -1112, '#C9372A']]) mnDot(c, jx, jy, 7, jc);
+    for (let i = 0; i < 9; i++) mnDot(c, -54 + i * 13.5, -952, 3.6, '#F4EEDF');
+    mnStroke(c, [[30, -1060], [70, -1140], [92, -1190]], '#2E7A5A', MN.lw * 2.4);
+    for (let i = 0; i < 6; i++) { const u = i / 5; mnStroke(c, [[lerp(40, 90, u), lerp(-1080, -1186, u)], [lerp(40, 90, u) + 18, lerp(-1080, -1186, u) - 6]], '#3F8A5A', MN.lw); }
+    mnEll(c, 98, -1204, 18, 26, '#2E7A5A', { rot: .5, lw: 1 }); mnEll(c, 99, -1204, 11, 16, '#2A5DA8', { rot: .5, lw: .8 }); mnEll(c, 100, -1205, 5, 7, MC.gold, { rot: .5, lw: .6 });
+    // the lamps' gold on the stone
+    if (gl > 0) { glow(c, -40, -880, 120, '#FFD27A', .22 * gl, 'lighter'); glow(c, 50, -700, 150, '#FFC864', .14 * gl, 'lighter'); }
+  });
+  c.restore();
+}
+// mrTemple(c, t, o): the mandapa of a white-stone temple: a pillar, a carved sanctum doorway lit gold, the murti in it
+// (mrMohan), a marigold toran, a hanging bell, a brass lamp-stand, a black-and-white marble floor.
+//   o.glow 0..1: the moment he shows his form (the sanctum blazes, a halo opens behind him, petals fall)
+function mrTemple(c, t, o = {}) {
+  const gl = o.glow || 0, X = 640, Y = 1110;
+  // the wall, the frieze, the floor
+  mnFill(c, [[-40, -100, 1], [1120, -100, 1], [1120, 1130, 1], [-40, 1130, 1]], '#EADFC8', { lw: 1.4, shade: ['#A8987A', 0, 200, 0, 1130], shadeA: .3 });
+  mnFill(c, [[-40, 240, 1], [1120, 240, 1], [1120, 276, 1], [-40, 276, 1]], MC.vermilion, { lw: 1.2 });
+  for (let x = 0; x < 1080; x += 36) mnFill(c, mnArchPath(x + 18, 274, 26, 28, 3), MC.yellow, { lw: .8 });
+  mnFill(c, [[-40, 1130, 1], [1120, 1130, 1], [1120, 2400, 1], [-40, 2400, 1]], '#EFE8DA', { lw: 1.4 });
+  c.save(); c.beginPath(); c.rect(-40, 1130, 1160, 1300); c.clip(); c.fillStyle = 'rgba(122,92,70,.32)';
+  const rows = [1130, 1160, 1196, 1240, 1292, 1354, 1428, 1516, 1620, 1744, 1890, 2060, 2400];
+  for (let r = 0; r < rows.length - 1; r++) { const y0 = rows[r], y1 = rows[r + 1], w0 = 40 + r * 10, w1 = w0 + 10; for (let i = -14; i < 14; i++) if ((i + r) % 2 === 0) { c.beginPath(); c.moveTo(X + i * w0, y0); c.lineTo(X + (i + 1) * w0, y0); c.lineTo(X + (i + 1) * w1, y1); c.lineTo(X + i * w1, y1); c.closePath(); c.fill(); } }
+  c.restore();
+  // the sanctum: a carved surround, a stepped doorway, the dark garbhagriha lit by its lamps
+  mnFill(c, [[X - 330, 1130, 1], [X + 330, 1130, 1], [X + 330, 330, 1], [X - 330, 330, 1]], '#E2D2B4', { lw: 1.6, shade: ['#9A8664', 0, 330, 0, 1130], shadeA: .2 });
+  for (const sx of [-1, 1]) { mnFill(c, [[X + sx * 300, 1130, 1], [X + sx * 262, 1130, 1], [X + sx * 262, 360, 1], [X + sx * 300, 360, 1]], '#D6C29E', { lw: 1.2 }); for (let i = 0; i < 9; i++) mnEll(c, X + sx * 281, 420 + i * 82, 12, 26, '#C9B088', { lw: .8 }); }
+  mnFill(c, [[X - 340, 330, 1], [X + 340, 330, 1], [X + 330, 300, 1], [X - 330, 300, 1]], '#D6C29E', { lw: 1.4 });
+  mnDome(c, X, 300, 300, '#E9DCC4');
+  mnFill(c, [[X - 10, 160, 1], [X + 10, 160, 1], [X + 14, 120], [X, 96], [X - 14, 120]], MC.gold, { lw: 1 });
+  const arch = mnArchPath(X, Y, 470, 760);
+  mnFill(c, arch, mixCol('#2A1E3A', '#5A3A2A', gl * .5), { lw: 1.6 });
+  c.save(); c.clip(arch);
+  glow(c, X, 700, 340, '#F2B860', .38 + .4 * gl, 'lighter');
+  if (gl > 0) {
+    // the halo opens behind him: rings of gold and rays
+    c.save(); c.globalAlpha = gl; c.translate(X, 1080 - 890 * .56);
+    for (let i = 0; i < 36; i++) { const a = i / 36 * TAU + t * .05; c.fillStyle = rgba('#FFE7A0', .18 + .1 * (i % 2)); c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, 520, a, a + .05); c.closePath(); c.fill(); }
+    for (const [r, w, col] of [[96, 6, '#FFE7A0'], [114, 3, MC.gold], [132, 2, '#FFE7A0']]) { c.strokeStyle = col; c.lineWidth = w; c.beginPath(); c.arc(0, 0, r * (.6 + .4 * gl), 0, TAU); c.stroke(); }
+    c.restore();
+  }
+  mrMohan(c, X, 1080, .56, { glow: .6 + gl });
+  for (const dx of [-170, 170]) mnDiya(c, X + dx, 1094, 1.2, t + dx, { glow: 1 + gl });
+  c.restore();
+  c.save(); c.strokeStyle = MC.gold; c.lineWidth = 9; c.stroke(arch); c.strokeStyle = mnLineCol('#E2D2B4'); c.lineWidth = 1.6; c.stroke(arch); c.restore();
+  // the threshold step, flowers on it
+  mnFill(c, [[X - 260, 1150, 1], [X + 260, 1150, 1], [X + 260, 1112, 1], [X - 260, 1112, 1]], '#F2E9DA', { lw: 1.4 });
+  for (let i = 0; i < 11; i++) mnDot(c, X - 200 + i * 40, 1131, 7, ['#F0A020', '#F7F0E0', '#C9372A'][i % 3]);
+  // a marigold toran over the door
+  for (const k of [0, 1]) for (let i = 0; i < 30; i++) { const u = i / 29, px = X - 240 + u * 480, py = 352 + k * 20 + Math.sin(u * Math.PI * 4) ** 2 * 14; mnDot(c, px, py, 8, (i + k) % 3 ? '#F0A020' : '#F7F0E0'); }
+  for (let i = 0; i < 9; i++) { const px = X - 240 + i * 60; for (let j = 0; j < 3; j++) mnDot(c, px, 380 + j * 13, 5.5, j % 2 ? '#C9372A' : '#F0A020'); mnFill(c, [[px - 6, 414], [px, 432], [px + 6, 414]], '#4F7A3E', { lw: .7 }); }
+  // the bell on its chain, swinging a little
+  const bx = 190, sw = Math.sin(t * 1.4) * .04;
+  c.save(); c.translate(bx, 276); c.rotate(sw);
+  for (let i = 0; i < 9; i++) mnEll(c, 0, 14 + i * 22, 5, 11, '#B98A2E', { lw: .8 });
+  mnFill(c, [[-10, 214], [10, 214], [20, 236], [34, 300], [44, 312, 1], [-44, 312, 1], [-34, 300], [-20, 236]], '#C99A3A', { shade: ['#6A4A10', -40, 0, 40, 0], shadeA: .45 });
+  mnDot(c, 0, 318, 8, '#8A6A20');
+  c.restore();
+  // a brass lamp-stand on the right, its wicks lit
+  const lx = 1000; mnFill(c, [[lx - 40, 1130, 1], [lx + 40, 1130, 1], [lx + 20, 1100], [lx - 20, 1100]], '#B88A2E', { lw: 1.2 });
+  mnFill(c, [[lx - 8, 1100, 1], [lx + 8, 1100, 1], [lx + 8, 720, 1], [lx - 8, 720, 1]], '#C99A3A', { lw: 1 });
+  for (const [ly, w] of [[900, 46], [800, 38], [720, 30]]) { mnFill(c, [[lx - w, ly, 1], [lx + w, ly, 1], [lx + w * .6, ly + 14], [lx - w * .6, ly + 14]], '#C99A3A', { lw: 1 }); for (const sx of [-1, 1]) mnDiya(c, lx + sx * (w - 6), ly - 2, .5, t + ly + sx, { glow: .6 }); }
+  // the pillar at the left
+  mnFill(c, [[20, 1130, 1], [110, 1130, 1], [110, 276, 1], [20, 276, 1]], '#E2D2B4', { lw: 1.4, shade: ['#9A8664', 110, 0, 20, 0], shadeA: .35 });
+  for (const py of [340, 700, 1060]) mnFill(c, [[10, py + 30, 1], [120, py + 30, 1], [120, py, 1], [10, py, 1]], '#D6C29E', { lw: 1.2 });
+  // petals drifting down while he shows his form
+  if (gl > 0) for (let i = 0; i < 28; i++) { const px = (hash(i) * 1000 + Math.sin(t + i) * 30) % 1000 + 40, py = (hash(i + 4) * 1100 + t * 70) % 1100 + 120; c.save(); c.globalAlpha = gl; c.translate(px, py); c.rotate(t * 2 + i); mnEll(c, 0, 0, 7, 4, i % 3 ? '#F0A020' : '#E8909C', { lw: .7 }); c.restore(); }
+}
