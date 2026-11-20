@@ -36,7 +36,7 @@ function hnGrey(S, age) {
     ruff: g('ruff', '#D2CABE'), ruffSh: g('ruffSh', '#8C8478'), face: g('face', '#D2B49A'), muzzle: g('muzzle', '#E6D6C4') };
 }
 function hanHead(c, o = {}) {
-  const S = hnGrey(HN, o.age || 0), E = HN_EXPR[o.expr || 'calm'], t = o.t || 0, tn = clamp(o.turn || 0, -1, 1), lk = o.look || [0, 0];
+  const S = hnGrey(o.pal ? { ...HN, ...o.pal } : HN, o.age || 0), E = HN_EXPR[o.expr || 'calm'], t = o.t || 0, tn = clamp(o.turn || 0, -1, 1), lk = o.look || [0, 0];
   const sx = tn * 20, mo = E.mouth, open = mo === 'roar' ? 1 : mo === 'shout' ? .6 : mo === 'snarl' ? .25 : mo === 'o' ? .3 : 0;
   c.save(); c.rotate(o.tilt || 0);
   // ---- the ruff: darker gold fur flaring round the face, longest at the jaw (sideburns), tufted
@@ -103,8 +103,10 @@ function hanHead(c, o = {}) {
     strokePath(c, `M ${ex - 28 * kx} ${ey + 2} Q ${ex - 4 * kx} ${ey - h - 7} ${ex + 28 * kx} ${ey - 3} l ${s * 8} -4`, S.kohl, 5);
   }
   // ---- the tilak: a white U on the brow fur with a red line
+  if (o.tilak !== false) {
   strokePath(c, `M ${fx - 12} -96 L ${fx - 9} -66 Q ${fx} -56 ${fx + 9} -66 L ${fx + 12} -96`, S.tilakW, 6);
   strokePath(c, `M ${fx} -96 L ${fx} -64`, S.tilak, 6);
+  }
   // ---- the nose: broad and flat
   fillPath(c, `M ${fx - 22 + tn * 6} 18 C ${fx - 22} 4 ${fx + 22} 4 ${fx + 22 + tn * 6} 18 C ${fx + 20} 30 ${fx + 8} 34 ${fx + tn * 3} 32 C ${fx - 8} 34 ${fx - 20} 30 ${fx - 22 + tn * 6} 18 Z`, S.nose);
   for (const s of [-1, 1]) ellipse(c, fx + s * 9 + tn * 3, 24, 5, 3.4, '#1A0804');

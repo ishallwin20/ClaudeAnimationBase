@@ -183,24 +183,24 @@ const COMIC = {
     // 18 · Jambavan (4.65.1–28)
     pg([[1, [1]], [1, [1, 1]], [1, [1]]], [
       { art: 'jambavan', ink: FACE, note: 'Jambavan, an old grey bear, leaning on a staff, beside Hanuman.',
-        say: [{ text: 'Why do you sit alone and silent? You\'re greater than every living thing. Why don\'t you know who you are?', x: .62, y: .38, w: 520, tail: [.3, .65] }] },
+        say: [{ text: 'Why do you sit alone and silent? You\'re greater than every living thing. Why don\'t you know who you are?', x: .53, y: .3, w: 440, tail: [.28, .45] }] },
       { art: 'jambaMemory', note: 'Gold flashback: the newborn leaping at the sun.',
-        say: [{ text: 'As a baby you leapt at the rising sun. Indra\'s vajra broke your jaw. That\'s why you\'re called Hanuman.', x: .5, y: .3, w: 420, tail: [.0, .9] }] },
+        say: [{ text: 'As a baby you leapt at the rising sun. Indra\'s vajra broke your jaw. That\'s why you\'re called Hanuman.', x: .5, y: .22, w: 420, size: 26, tail: [.0, .5] }] },
       { art: 'hanEyes', ink: FACE, note: 'Close on Hanuman\'s eyes, lifting.',
-        say: [{ text: 'When Indra saw you healed, he gave you a boon: you will die only when you choose.', x: .5, y: .26, w: 420, tail: [-.05, .9] }] },
+        say: [{ text: 'When Indra saw you healed, he gave you a boon: you will die only when you choose.', x: .5, y: .2, w: 420, size: 26, tail: [-.05, .3] }] },
       { art: 'jambaWind', ink: FACE, note: 'Jambavan\'s hand on his shoulder.',
-        say: [{ text: 'You are the Wind\'s own son. In leaping, you are his equal.', x: .62, y: .4, w: 480, tail: [.3, .65] }] },
+        say: [{ text: 'You are the Wind\'s own son. In leaping, you are his equal.', x: .5, y: .2, w: 420, tail: [.26, .4] }] },
     ]),
     // 19 · rise (4.65.32–36)
     pg([[1, [1, 1]], [1.4, [1]]], [
-      { art: 'jambaOld', ink: FACE, note: 'Jambavan, old.', say: [{ text: 'I\'m old now. My strength is gone. Yours is the time.', x: .5, y: .3, w: 400, tail: [.5, .7] }] },
-      { art: 'jambaGetUp', ink: FACE, note: 'Jambavan pointing at the sea.', say: [{ text: 'Get up. Cross the ocean. The whole army wants to see what you are.', x: .5, y: .3, w: 400, tail: [.5, .7] }] },
+      { art: 'jambaOld', ink: FACE, note: 'Jambavan, old.', say: [{ text: 'I\'m old now. My strength is gone. Yours is the time.', x: .5, y: .2, w: 400, tail: [.5, .38] }] },
+      { art: 'jambaGetUp', ink: FACE, note: 'Jambavan pointing at the sea.', say: [{ text: 'Get up. Cross the ocean. The whole army wants to see what you are.', x: .5, y: .2, w: 400, tail: [.45, .38] }] },
       { art: 'hanRises', ink: FACE, note: 'Hanuman rising to his feet, the vanaras turning toward him.' },
     ]),
     // 20 · he grows (4.66.1–7) · splash
     pg(FULL, [{ art: 'hanGrows', ink: FACE, note: 'Splash: Hanuman swelling to the size of a hill, tail lashing, yawning like a lion in a cave, face blazing like smokeless fire. Vanaras tiny at his feet.',
       box: [{ text: 'As they praised him, he grew. He yawned like a lion waking in its cave.', w: 520 }],
-      say: [{ text: 'I am the Wind\'s own son. No one alive can leap like me.', x: .62, y: .82, w: 520, size: 36, tail: [.55, .55] }] }]),
+      say: [{ text: 'I am the Wind\'s own son. No one alive can leap like me.', x: .5, y: .8, w: 560, size: 36, tail: [.5, .62] }] }]),
     // 21 · Mahendra (5.1.10–21) · splash
     pg(FULL, [{ art: 'mahendra', note: 'Splash: he crouches on Mount Mahendra and pushes; water bursts from the rock, trees drop their flowers, snakes bite the rocks which catch fire.',
       box: [{ text: 'He gripped the mountain with his hands and feet. It bled water like an elephant in rut. Snakes bit the rocks, and the rocks burst into flame.', w: 560 }],

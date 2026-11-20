@@ -398,3 +398,42 @@ function anjanaHead(c, o = {}) {
 }
 
 function anjanaBust(c, o = {}) { devaBust(c, { pal: { skin: '#D08A3A', skinSh: '#A0621E', skinDk: '#6E3E10', skinLt: '#F0B868', cloth: '#C8302E', clothSh: '#8A1A1A' }, dress: 'sari', build: .82, ...o, head: (cc) => { cc.save(); cc.translate(0, -10); cc.scale(.95, .95); anjanaHead(cc, o); cc.restore(); } }); }
+
+// Jambavan, the old bear king: a broad shaggy head, grey with age, a pale muzzle, a big black nose, heavy white brows,
+// kind small eyes, a gold band. jambHead(c, o): centre (0, 0), radius ~110. o: expr 'calm' | 'speak' | 'smile' | 'stern', look, turn
+const JB = { fur: '#5A5058', furSh: '#3A323A', furLt: '#8A8088', grey: '#C8C0C0', muzzle: '#C8B6A2', muzzleSh: '#9A866E', nose: '#141012', eye: '#2A1A10', mouth: '#2A0E0E', gold: '#F0B83A', goldSh: '#A87418', ruby: '#C21E2A' };
+function jambHead(c, o = {}) {
+  const S = JB, tn = clamp(o.turn || 0, -1, 1), sx = tn * 20, lk = o.look || [0, 0], e = o.expr || 'calm';
+  // ears
+  for (const s of [-1, 1]) { fillPath(c, ellP(s * 92 + sx * .3, -88, 34, 32), S.fur); fillPath(c, ellP(s * 92 + sx * .3, -86, 18, 16), S.furSh); }
+  // the shaggy head, grey at the cheeks
+  const H = bhFluff(sx * .2, 0, 124, 118, 22, .1, 5);
+  fillPath(c, H, S.fur); inside(c, H, () => { for (const s of [-1, 1]) fillPath(c, ellP(s * 100 + sx * .3, 50, 50, 60), S.grey); fillPath(c, ellP(sx * .2 - 40, -60, 60, 40), rgba(S.furLt, .6)); });
+  strokePath(c, H, S.furSh, 3);
+  // the muzzle, long and pale
+  const M = ellP(sx + 2, 50, 62, 54);
+  fillPath(c, M, S.muzzle); inside(c, M, () => fillPath(c, ellP(sx, 100, 70, 26), S.muzzleSh)); strokePath(c, M, S.muzzleSh, 3);
+  // brows: white tufts; eyes small and kind
+  for (const s of [-1, 1]) {
+    const ex = sx + s * 44, ey = -22;
+    fillPath(c, `M ${ex - s * 26} ${ey - 12} Q ${ex} ${ey - (e === 'stern' ? 22 : 34)} ${ex + s * 34} ${ey - 20} L ${ex + s * 30} ${ey - 10} Q ${ex} ${ey - 20} ${ex - s * 22} ${ey - 4} Z`, '#F0ECE6');
+    ellipse(c, ex, ey + 4, 13, 14, '#F4ECDC'); ellipse(c, ex + lk[0] * 4, ey + 5 + lk[1] * 3, 9, 10, S.eye); ellipse(c, ex + lk[0] * 4 - 3, ey + 1, 3, 3, '#FFFFFF');
+    strokePath(c, `M ${ex - 15} ${ey - 2} Q ${ex} ${ey - 12} ${ex + 15} ${ey - 2}`, '#140A08', 4);
+    if (e === 'smile') strokePath(c, `M ${ex - 12} ${ey + 14} Q ${ex} ${ey + 20} ${ex + 12} ${ey + 14}`, rgba(S.furSh, .7), 3);
+  }
+  // nose and mouth
+  fillPath(c, `M ${sx - 26} 14 C ${sx - 26} 0 ${sx + 26} 0 ${sx + 26} 14 C ${sx + 22} 34 ${sx + 6} 40 ${sx} 40 C ${sx - 6} 40 ${sx - 22} 34 ${sx - 26} 14 Z`, S.nose);
+  ellipse(c, sx - 8, 10, 7, 4, rgba('#FFFFFF', .4));
+  strokePath(c, `M ${sx} 40 L ${sx} 58`, S.mouth, 4);
+  if (e === 'speak') { const MO = `M ${sx - 26} 64 C ${sx - 20} 96 ${sx + 20} 96 ${sx + 26} 64 Q ${sx} 58 ${sx - 26} 64 Z`; fillPath(c, MO, S.mouth); inside(c, MO, () => ellipse(c, sx, 90, 14, 8, '#A84444')); }
+  else strokePath(c, `M ${sx - 30} ${e === 'smile' ? 58 : 64} Q ${sx} ${e === 'smile' ? 80 : 70} ${sx + 30} ${e === 'smile' ? 58 : 64}`, S.mouth, 4);
+  // a white chin tuft
+  fillPath(c, `M ${sx - 36} 96 C ${sx - 30} 140 ${sx - 8} 160 ${sx} 172 C ${sx + 8} 160 ${sx + 30} 140 ${sx + 36} 96 Z`, '#ECE6DE');
+  // a king's gold band
+  const BD = `M -96 -92 C -60 -128 60 -128 96 -92 L 92 -74 C 60 -106 -60 -106 -92 -74 Z`;
+  fillPath(c, BD, S.gold); strokePath(c, BD, S.goldSh, 2.5); ellipse(c, 0, -106, 9, 11, S.ruby);
+}
+function jambBust(c, o = {}) { devaBust(c, { pal: { skin: JB.fur, skinSh: JB.furSh, skinDk: '#1E181E', skinLt: JB.furLt, cloth: '#8A6A3A', clothSh: '#5A4220' }, dress: 'rishi', build: 1.15, ...o, head: (cc) => jambHead(cc, o) }); }
+// vanaras of the army: Hanuman's face in other furs, no crown
+const VFUR = [{ skin: '#9A7A5A', skinSh: '#6A5038' }, { skin: '#C8A050', skinSh: '#987028' }, { skin: '#8A8A8A', skinSh: '#5A5A5A' }, { skin: '#B8603A', skinSh: '#884020' }];
+function vanaraBust(c, o = {}) { const f = VFUR[(o.v || 0) % 4]; devaBust(c, { pal: { ...f, skinDk: '#3A2A1A', cloth: ['#3A7A4A', '#7A3A8A', '#C8802A', '#2A5A8A'][(o.v || 0) % 4], clothSh: '#2A2A2A' }, ...o, head: (cc) => { cc.save(); cc.translate(0, -6); hanHead(cc, { expr: o.expr, look: o.look, turn: o.turn, crown: false, tilak: false, t: o.t, pal: { fur: f.skin, furSh: f.skinSh, furDk: mixCol(f.skinSh, '#000000', .3), ruff: f.skinSh, ruffSh: mixCol(f.skinSh, '#000000', .35), face: mixCol(f.skin, '#F2D0B0', .55), muzzle: mixCol(f.skin, '#F8E4CC', .65) } }); cc.restore(); } }); }
