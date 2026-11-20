@@ -39,7 +39,7 @@ audio cut from someone else's reel either: if it's an AI remix, its watermark co
 |---|---|
 | `src/cel.js` | the engine, over `src/cine.js` (and `src/painterly.js` for sets): `celShape`, `celEll`/`celOval`, `celTube`, `celLine`, `celBand`, `celIK`, `celDance`, `celMirror`, `celHold`, `CEL` |
 | `src/cel_cast.js` | `celShiva` and `CEL_SHIVA_POSES` (`CEL_SHIVA_DANCE`: eight of them); sets `celSnowfield`, `celStormfield`, `celCloudBank`; effects `celDamaru`, `celTrishulGlow`, `celChakra`, `celFlameRing`, `celCracks` |
-| `src/cel_vraj.js` | the Vraja cast for acted skits ("Kanha vs Radha", RADHA_KANHA_SERIES.md): `celKeys` (timed key poses, each listing only what changes), `celKanha`, `celRadha`, `celMonkey`, `celMatki`, `celButter`; the shared face `celFace` (eyes open/happy/closed/squeeze/wide/sparkle/puppy, lids, brows, eleven mouths, `talk`); effects `celHeart`, `celSparkle`, `celSweat`, `celMark`, `celPuff` |
+| `src/cel_vraj.js` | the Vraja cast for acted skits ("Kanha vs Radha", RADHA_KANHA_SERIES.md): `celKeys` (timed key poses, each listing only what changes), `celKanha`, `celRadha`, `celMonkey`, `celMatki`, `celButter`; the shared face `celFace` (eyes open/happy/closed/squeeze/wide/sparkle/puppy, lids, brows, eleven mouths, `talk`); effects `celHeart`, `celSparkle`, `celSweat`, `celMark`, `celPuff`; mud (`mud` on Kanha's face, `celSmudge`, `celClod`); the cosmos (`celSpace`, `celGalaxy`, `celPlanet` with little faces, `celSun`, `celMoon`, `celEarth` with Vraja on top, the 'aah' mouth with `cosmos` in it) |
 | `cel.html` | the studio; on main it plays `src/scenes/cel_demo.js` (8 s: calm, then Rudra) |
 | `docs/cel_sheet.jpg` | the reference sheet |
 
@@ -131,6 +131,8 @@ The lines are handwritten (Kalam 700, 76 px) in the speaker's colour on a cream 
 
 - Changing pose every two beats with a bounce on the beat between kept him always moving, like the example; one pose
   every beat at 150 BPM would be frantic.
+- A tiny kid (s ≈ .25, the Radha on the Earth in Kanha vs Radha #2) needs `CEL.inkK ≈ 2.2` round the call, or its ink
+  goes hairline.
 - Raised hands are lost against the big head (short chibi arms): send them out to the sides.
 - A leg that crosses in front has to be drawn over the dhoti (`front`), or it reads as behind his body (owner).
 - The fierce version: no blush, the third eye opening on the stomps, lightning on the strong hits, a ring of fire, and

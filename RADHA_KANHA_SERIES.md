@@ -23,7 +23,7 @@ gags (its punchline was the Damodar rope: don't reuse it).
 | # | setup → punchline | source | status |
 |---|---|---|---|
 | 1 | "Nobody can catch the butter thief!" / "Kanha… your face." / "The MONKEYS ate it!" / a monkey with a full pot and a clean face: "Not me." / "…want some?" She melts. | BhP 10.8.29, 10.9.8 | built 18 Nov 2026, `reel/kanha-radha-1-butter` |
-| 2 | "The whole universe is inside me." / "Open." Galaxies inside… / "Then why did you eat MUD?" | BhP 10.8.32–39 | |
+| 2 | Mud on his face: "I did NOT eat mud." / "Open." The universe bursts out of his mouth and they float in it; a tiny Radha waves from a tiny Vraja (10.8.39: Yashoda saw herself inside) / a clod drifts past: "…is that MUD?" He gulps it all back. / "That's a planet." She cracks up. | BhP 10.8.32–39 | built 20 Nov 2026, `reel/kanha-radha-2-universe` |
 | 3 | "I held a mountain for 7 days with one hand." / "Then carry my water pot home." / "…I'm tired." | BhP 10.25.19–23 (one hand; "little finger" is not in the text) | |
 | 4 | "I danced on Kaliya's hoods!" / Radha holds up Yashoda's stick. He bursts into tears. | BhP 10.16; 10.9.9–11 (he ran from her stick, crying) | |
 | 5 | Radha hides the flute; the cows stop coming; Kanha panics. | Braj tradition (Surdas's pads), labelled as such | |
@@ -31,5 +31,5 @@ gags (its punchline was the Damodar rope: don't reuse it).
 | 7 | "Why does everyone say Radhe-Krishna? I'm the famous one." All of Braj: "Radhe Radhe." He gives in. Ask: "Radhe Radhe, Jai Shri Krishna or Hare Krishna: what does YOUR family say?" | the Braj greeting (living tradition) | the strongest comment lever |
 | 8 | Lathmar Holi: the Nandgaon boys arrive; Barsana's girls are waiting with lathis. | the Barsana–Nandgaon Holi (living tradition) | hold for Holi, March 2027 |
 
-New cast each episode may need: Yashoda (Cel), the cosmos in Kanha's mouth, Govardhan, Kaliya, a calf, Brahma, gopas.
+New cast each episode may need (the cosmos kit and mud on his face are in since #2): Yashoda (Cel), Govardhan, Kaliya, a calf, Brahma, gopas.
 Add them to `src/cel_vraj.js` on main.

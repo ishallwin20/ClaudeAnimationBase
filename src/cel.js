@@ -60,7 +60,7 @@ function celStroke(c, C, w, closed, seed, col = CEL.ink, taper = 0) {
     const a = C[i], b = C[(i + 1) % m];
     let k = .78 + .42 * vnoise(i * .21 + seed * 3.3 + CEL.d * 1.9, 5);
     if (taper) k *= lerp(1, .25 + .75 * Math.sin(Math.PI * clamp((i + .5) / n)), taper);
-    c.lineWidth = Math.max(.6, w * k); c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.stroke();
+    c.lineWidth = Math.max(.6, w * k * (CEL.inkK ?? 1)); c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.stroke();
   }
 }
 

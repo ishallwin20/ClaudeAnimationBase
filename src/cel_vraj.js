@@ -19,6 +19,11 @@
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
+//   celSmudge(c, x, y, r, S, sd) a smudge (butter, mud: CEL_MUD); celClod(c, x, y, r, rot) a clod of mud with grass
+//   the cosmos (the universe in Kanha's mouth): celSpace(c, t) deep space over the frame, celSpaceIn(q, x, y, r, a) a
+//                                little one inside a clipped shape, celGalaxy, celPlanet(c, x, y, r, { col, sh, lt, ring,
+//                                band, craters, face }), celSun, celMoon (asleep), celMiniFace, celEarth(c, x, y, r, t)
+//                                (Vraja on top: a hut and a kadamba; returns the point where a tiny figure stands)
 //
 // A kid's pose (px at s = 1; x to screen right, y down; "L" is screen left, the kid's right):
 //   hip [x, y]      the pelvis from the ground point between the feet (standing: [0, -112]); hop (px: the whole kid
@@ -30,9 +35,12 @@
 //                   'puppy' (huge, glossy, "who, ME?"); or [screen left, screen right]
 //   look [x, y]     -1..1, where the eyes look; lid 0..1 the upper lids down (deadpan); brow (-1..1 lower / raise);
 //   tilt            -1 cross .. 1 worried (the brows' inner ends); browR: a different raise for the screen-right brow
-//   mouth           'smile' | 'cat' (:3) | 'grin' | 'open' | 'o' | 'flat' | 'pout' | 'smug' | 'wobble' | 'frown' | 'wail'
+//   mouth           'smile' | 'cat' (:3) | 'grin' | 'open' | 'o' | 'flat' | 'pout' | 'smug' | 'wobble' | 'frown' | 'wail' |
+//                   'aah' (wide open; cosmos 0..1 fills it with the universe) | 'puff' (held shut, cheeks ballooned)
 //   talk            1: the mouth flaps (a new shape every two drawings) over the pose's mouth
-//   blush           0..1 extra; sweat 0..1 (a drop by the temple); butter 0..1 (Kanha: butter smeared on his face)
+//   blush           0..1 extra; sweat 0..1 (a drop by the temple); butter 0..1 (Kanha: butter smeared on his face);
+//                   mud 0..1 (Kanha: mud on his face)
+// A tiny kid (s ≈ .2) keeps a readable line with CEL.inkK (ink width × k, cel.js) set round the call.
 
 // ---------- acting ----------
 function celKeys(t, keys, o = {}) {
@@ -106,7 +114,7 @@ function celEye(c, ex, ey, kind, P, C, sd, k = 1, lashes = false) {
   else { const arc = []; for (let i = 0; i <= 8; i++) { const a = Math.PI * (1.12 + .76 * i / 8); arc.push([cx + Math.cos(a) * (rx + 1), cy + Math.sin(a) * (ry + 1)]); } celLine(c, arc, 7.5 * k, { taper: .25 }); }
   if (lashes) { const a = sd > 0 ? -.5 : Math.PI + .5, bx = cx + Math.cos(a) * rx, by = (lid > .02 ? ly : cy + Math.sin(a) * ry); celLine(c, [[bx, by], [bx + sd * 13 * k, by - 9 * k]], 4.5 * k); celLine(c, [[bx - sd * 4 * k, by - 4 * k], [bx + sd * 6 * k, by - 16 * k]], 4 * k); }
 }
-function celMouth(c, m, C, y = 92, k = 1) {
+function celMouth(c, m, C, y = 92, k = 1, cos = 0) {
   const M = (P) => P.map(([a, b]) => [a * k, y + (b - 92) * k]), tongue = (q, ty, rx) => { q.fillStyle = C.tongue; q.beginPath(); q.ellipse(0, y + (ty - 92) * k, rx * k, 9 * k, 0, 0, TAU); q.fill(); };
   if (m === 'smile') celLine(c, M([[-20, 88], [0, 99], [20, 88]]), 5.5 * k);
   else if (m === 'cat') { celLine(c, M([[-24, 88], [-12, 99], [0, 90]]), 5 * k, { taper: .4 }); celLine(c, M([[0, 90], [12, 99], [24, 88]]), 5 * k, { taper: .4 }); }
@@ -118,10 +126,18 @@ function celMouth(c, m, C, y = 92, k = 1) {
   else if (m === 'smug') celLine(c, M([[-18, 95], [4, 98], [24, 85]]), 5.5 * k);
   else if (m === 'wobble') celLine(c, M([[-26, 96], [-13, 89], [0, 96], [13, 89], [26, 96]]), 4.5 * k, { taper: .3 });
   else if (m === 'frown') celLine(c, M([[-20, 100], [0, 90], [20, 100]]), 5.5 * k);
+  else if (m === 'aah') celShape(c, M([[-40, 80], [0, 76], [40, 80], [46, 106], [30, 136], [0, 146], [-30, 136], [-46, 106]]), C.mouth, { n: 4, w: 4.5 * k, over: q => cos > .02 ? celSpaceIn(q, 0, y + 20 * k, 52 * k, cos) : tongue(q, 134, 20) });
+  else if (m === 'puff') celLine(c, M([[-11, 97], [-4, 92], [4, 97], [11, 92]]), 4.5 * k, { taper: .3 });
   else if (m === 'wail') celShape(c, M([[-34, 82], [34, 82], [28, 120], [0, 128], [-28, 120]]), C.mouth, { n: 3, w: 4.5 * k, over: q => tongue(q, 122, 18) });
 }
 function celFace(c, P, C, o = {}) {
   const F = { ...CEL_FACE, ...(o.face || {}) }, k = F.k, ev = Array.isArray(P.eyes) ? P.eyes : [P.eyes || 'open', P.eyes || 'open'];
+  // puffed cheeks (the mouth held shut round something big): skin balloons over the cheeks, inked on their outer side
+  if (P.mouth === 'puff') for (const sd of [-1, 1]) {
+    celOval(c, sd * 134 * k, 70 * k, 44 * k, 44 * k, C.skin, { ink: false, over: q => ellipse(q, sd * 126 * k, 54 * k, 14 * k, 9 * k, 'rgba(255,255,255,.35)', -.4) });
+    const arc = []; for (let i = 0; i <= 10; i++) { const a = sd > 0 ? lerp(-1.1, 1.4, i / 10) : lerp(Math.PI + 1.1, Math.PI - 1.4, i / 10); arc.push([sd * 134 * k + Math.cos(a) * 44 * k, 70 * k + Math.sin(a) * 44 * k]); }
+    celLine(c, arc, 5.5 * k, { taper: .55 });
+  }
   // the blush first (under the eyes' lower edge)
   const bk = clamp((P.blush || 0)), ba = .5 + .4 * bk;
   for (const sd of [-1, 1]) {
@@ -137,7 +153,7 @@ function celFace(c, P, C, o = {}) {
   celLine(c, [[-3 * k, (F.my - 36) * k], [4 * k, (F.my - 32) * k]], 3.5 * k);   // the nose
   let m = P.mouth || 'smile';
   if ((P.talk || 0) > .5) { const r = hash(Math.floor(CEL.d / 2) * 1.71 + (o.seed || 0)); m = r < .42 ? 'open' : r < .68 ? 'o' : m === 'open' ? 'smile' : m; }
-  celMouth(c, m, C, F.my * k, k);
+  celMouth(c, m, C, F.my * k, k, P.cosmos || 0);
 }
 // a sweat drop, a heart, a sparkle, an ink mark: the little things that make it cute
 function celSweat(c, x, y, k = 1) {
@@ -176,6 +192,19 @@ function celPuff(c, x, y, r, a = 1) {
   c.restore();
 }
 
+// mud on a kid's face (head coordinates), under the features: a muddy ring round the mouth, a swipe across his cheek
+// where he wiped it with his hand, a dab on the nose, a drip on the chin. b 0..1 how much.
+function celMudFace(c, b) {
+  // a soft stain (no ink): round the mouth, a swipe across his cheek, the tip of his nose; filled once, so it is even
+  const p = new Path2D(), blob = (x, y, rx, ry, r = 0) => { p.moveTo(x + rx * Math.cos(r), y + rx * Math.sin(r)); p.ellipse(x, y, rx * b, ry * b, r, 0, TAU); };
+  for (const [x, y, rx, ry] of [[-30, 104, 22, 14], [-8, 116, 26, 14], [18, 112, 24, 13], [36, 100, 13, 10], [-42, 92, 10, 8], [6, 128, 15, 9]]) blob(x, y, rx, ry);
+  for (let i = 0; i <= 5; i++) blob(lerp(-150, -84, i / 5), lerp(58, 34, i / 5), 17 - i * 1.6, 9 - i * .6, -.35);
+  blob(-1, 61, 8, 6);
+  c.save(); c.globalAlpha *= .82; c.fillStyle = '#9A6438'; c.fill(p); c.restore();
+  // crumbs, inked
+  for (const [x, y, r, sd] of [[-48, 114, 9, 1], [46, 118, 7.5, 2], [12, 142, 7, 3], [-116, 50, 7.5, 4], [62, 94, 5.5, 5]]) celSmudge(c, x, y, r * b, CEL_MUD, sd);
+}
+
 // ---------- a clay pot of butter ----------
 function celMatki(c, x, y, s = 1, o = {}) {
   c.save(); c.translate(x, y); c.rotate(o.tilt || 0); c.scale(s, s);
@@ -189,9 +218,16 @@ function celMatki(c, x, y, s = 1, o = {}) {
 }
 
 // a blob of butter (on a palm, on a face): r its size
-function celButter(c, x, y, r, C, seed = 0) {
+function celButter(c, x, y, r, C, seed = 0) { celSmudge(c, x, y, r, { col: C.butter, sh: C.butterSh }, seed); }
+// a smudge of something soft (butter, mud): S.col, S.sh, S.dots (speckles), S.hi (the highlight's alpha)
+const CEL_MUD = { col: '#9A6236', sh: '#6E3F1E', dots: '#5A3016', hi: .55 };
+function celSmudge(c, x, y, r, S, seed = 0) {
+  if (r <= 1) return;
   const P = []; for (let i = 0; i < 7; i++) { const a = i / 7 * TAU, rr = r * (.86 + .2 * hash(i + seed * 13)); P.push([x + Math.cos(a) * rr, y + Math.sin(a) * rr * .8]); }
-  celShape(c, P, C.butter, { n: 6, w: 3.2, boil: .5, shade: [C.butterSh, r * .2, r * .2], over: q => ellipse(q, x - r * .3, y - r * .25, r * .26, r * .17, '#FFFFFF', -.4) });
+  celShape(c, P, S.col, { n: 6, w: 3.2, boil: .5, shade: [S.sh, r * .2, r * .2], over: q => {
+    if (S.dots) for (let i = 0; i < 3; i++) ellipse(q, x + (hash(seed * 5 + i) - .5) * r, y + (hash(seed * 7 + i + 3) - .5) * r * .8, r * .12, r * .1, S.dots);
+    ellipse(q, x - r * .3, y - r * .25, r * .26, r * .17, `rgba(255,255,255,${S.hi ?? 1})`, -.4);
+  } });
 }
 
 // ---------- the kids ----------
@@ -349,6 +385,7 @@ function celKid(c, x, y, s, P, o, who) {
     for (let i = 0; i < 9; i++) { const u = -56 + i * 14; celOval(c, u, -172 - Math.sqrt(Math.max(0, 1 - (u / 64) ** 2)) * 6, 7.5, 7.5, C.pearl, { w: 2.2, boil: .25 }); }
   }
   A.top = at(0, R ? -200 : -250);
+  if (!R && (P.mud || 0) > .02) celMudFace(c, clamp(P.mud));
   celFace(c, P, C, { lashes: R, seed: R ? 7 : 0 });
   if (!R && (P.butter || 0) > .02) {
     const b = clamp(P.butter);
@@ -419,4 +456,112 @@ function celMonkey(c, x, y, s, P, o = {}) {
   }
   c.restore(); c.restore();
   return A;
+}
+
+// ---------- the cosmos (the universe in Kanha's mouth, Bhagavata 10.8.36–39) ----------
+// Effects, not drawings: the stars twinkle at the full frame rate (T); the bodies are cel-inked and boil with CEL.d.
+const CEL_SPACE = { top: '#120C34', mid: '#2A1A66', bot: '#170F3E', star: '#FFF6D8' };
+// a small cosmos inside a clipped shape (Kanha's open mouth), a its opacity
+function celSpaceIn(q, x, y, r, a = 1) {
+  q.save(); q.globalAlpha *= a;
+  const g = q.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, '#8A6AF0'); g.addColorStop(.4, '#3A2688'); g.addColorStop(1, '#120C34');
+  q.fillStyle = g; q.fillRect(x - r * 2, y - r * 2, r * 4, r * 4);
+  q.globalCompositeOperation = 'lighter';
+  for (let arm = 0; arm < 2; arm++) for (let i = 0; i < 14; i++) { const u = i / 14, an = arm * Math.PI + u * 3.4 + T * .8, rr = r * .5 * u; ellipse(q, x + Math.cos(an) * rr, y + Math.sin(an) * rr * .6, r * .05 * (1.2 - u), r * .05 * (1.2 - u), 'rgba(255,190,240,.7)'); }
+  for (let i = 0; i < 12; i++) { const an = hash(i * 3.1) * TAU, rr = r * (.2 + .75 * hash(i * 7.7)), tw = .5 + .5 * Math.sin(T * 7 + i * 2.3), s = r * (.025 + .035 * hash(i + .5)) * (.6 + tw * .7); ellipse(q, x + Math.cos(an) * rr, y + Math.sin(an) * rr * .8, s, s, CEL_SPACE.star); }
+  q.restore();
+}
+// deep space over the whole frame (w × h): a gradient, nebulae and twinkling stars
+function celSpace(c, t, o = {}) {
+  const w = o.w ?? W, h = o.h ?? H;
+  let g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, CEL_SPACE.top); g.addColorStop(.45, CEL_SPACE.mid); g.addColorStop(1, CEL_SPACE.bot); c.fillStyle = g; c.fillRect(0, 0, w, h);
+  for (const [x, y, r, col, a] of [[200, 380, 460, '#FF6FB0', .22], [880, 1280, 520, '#3FD6C8', .15], [560, 900, 620, '#8A5CFF', .24], [900, 300, 380, '#FFB86B', .12], [150, 1600, 440, '#6F8CFF', .2]]) {
+    const gg = c.createRadialGradient(x * w / 1080, y * h / 1920, 0, x * w / 1080, y * h / 1920, r); gg.addColorStop(0, rgba(col, a)); gg.addColorStop(1, rgba(col, 0)); c.fillStyle = gg; c.fillRect(0, 0, w, h);
+  }
+  for (let i = 0; i < 240; i++) {
+    const x = hash(i * 1.37) * w, y = hash(i * 2.71 + 5) * h, s = .9 + 2.8 * hash(i * .91 + 2) ** 3, tw = .55 + .45 * Math.sin(t * (2 + hash(i) * 4) + i);
+    c.globalAlpha = tw; ellipse(c, x, y, s, s, i % 7 === 0 ? '#FFE3A8' : i % 5 === 0 ? '#BFE2FF' : '#FFFFFF');
+  }
+  c.globalAlpha = 1;
+}
+// a spiral galaxy: two arms of glowing dots round a bright core (additive)
+function celGalaxy(c, x, y, r, rot = 0, a = 1) {
+  c.save(); c.translate(x, y); c.rotate(rot); c.scale(1, .5); c.globalAlpha *= a; c.globalCompositeOperation = 'lighter';
+  let g = c.createRadialGradient(0, 0, 0, 0, 0, r * .4); g.addColorStop(0, 'rgba(255,240,220,.9)'); g.addColorStop(.4, 'rgba(255,150,210,.35)'); g.addColorStop(1, 'rgba(255,150,210,0)'); c.fillStyle = g; c.fillRect(-r, -r, 2 * r, 2 * r);
+  for (let arm = 0; arm < 2; arm++) for (let i = 0; i < 70; i++) {
+    const u = i / 70, an = arm * Math.PI + u * 3.8 + (hash(i + arm * 99) - .5) * .3, rr = r * (.08 + .92 * u) * (1 + (hash(i * 3 + arm) - .5) * .18), s = r * .045 * (1.1 - u * .7);
+    ellipse(c, Math.cos(an) * rr, Math.sin(an) * rr, s, s, `rgba(${u < .5 ? '255,200,235' : '190,170,255'},${.75 * (1 - u * .7)})`);
+  }
+  c.restore();
+}
+// a little face for the planets, k ≈ r / 45: 'open' (shiny dots), 'happy' (^ ^), 'sleep' (‿ ‿)
+function celMiniFace(c, x, y, k, kind = 'open', blush = '#FF7FA8') {
+  for (const sd of [-1, 1]) {
+    const ex = x + sd * 18 * k, ey = y;
+    if (kind === 'happy') celLine(c, [[ex - 7 * k, ey + 3 * k], [ex, ey - 5 * k], [ex + 7 * k, ey + 3 * k]], 3.4 * k, { taper: .3, boil: .4 });
+    else if (kind === 'sleep') celLine(c, [[ex - 7 * k, ey - 1 * k], [ex, ey + 5 * k], [ex + 7 * k, ey - 1 * k]], 3.4 * k, { taper: .3, boil: .4 });
+    else { ellipse(c, ex, ey, 5.5 * k, 7.5 * k, CEL.ink); ellipse(c, ex - 1.8 * k, ey - 2.8 * k, 2.3 * k, 2.5 * k, '#FFFFFF'); }
+    c.save(); c.globalAlpha = .6; ellipse(c, x + sd * 29 * k, y + 10 * k, 7.5 * k, 4.2 * k, blush); c.restore();
+  }
+  celLine(c, [[x - 5 * k, y + 8 * k], [x, y + 12 * k], [x + 5 * k, y + 8 * k]], 2.8 * k, { taper: .3, boil: .4 });
+}
+// a planet: o.col / sh / lt, o.ring (a ring's colour), o.band (stripes), o.face, o.rot
+function celPlanet(c, x, y, r, o = {}) {
+  const col = o.col || '#F59A5A', sh = o.sh || '#D06A36', lt = o.lt || '#FFC89A', w = Math.max(3.2, r * .09);
+  c.save(); c.translate(x, y); c.rotate(o.rot || 0);
+  const arc = (a0, a1) => { const P = []; for (let i = 0; i <= 18; i++) { const a = lerp(a0, a1, i / 18); P.push([Math.cos(a) * r * 1.75, Math.sin(a) * r * .42]); } return P; };
+  if (o.ring) celLine(c, arc(Math.PI, TAU), r * .3, { under: o.ring, taper: 0, boil: .5 });
+  celOval(c, 0, 0, r, r, col, { w, shade: [sh, r * .16, r * .16], lt: [lt, r * .08, r * .08], over: q => {
+    if (o.band) { q.fillStyle = o.band; for (const [by, bh] of [[-.42, .1], [.12, .16], [.5, .08]]) q.fillRect(-r, r * by, 2 * r, r * bh); }
+    if (o.craters) for (const [cx, cy, cr] of [[.35, -.35, .16], [-.45, .25, .12], [.3, .5, .1]]) ellipse(q, r * cx, r * cy, r * cr, r * cr * .8, rgba(sh, .7));
+    ellipse(q, -r * .42, -r * .45, r * .2, r * .13, 'rgba(255,255,255,.85)', -.6);
+  } });
+  if (o.face) celMiniFace(c, 0, r * .05, r / 45, o.face, o.blush);
+  if (o.ring) celLine(c, arc(0, Math.PI), r * .3, { under: o.ring, taper: 0, boil: .5 });
+  c.restore();
+}
+// the sun with a happy face and turning rays, the moon asleep
+function celSun(c, x, y, r, t, o = {}) {
+  glow(c, x, y, r * 2.6, '#FFC94A', .5);
+  c.save(); c.translate(x, y); c.rotate(t * .25);
+  for (let i = 0; i < 12; i++) { const a = i / 12 * TAU, l = r * (i % 2 ? 1.42 : 1.6); celShape(c, [[Math.cos(a - .16) * r * .9, Math.sin(a - .16) * r * .9], [Math.cos(a) * l, Math.sin(a) * l], [Math.cos(a + .16) * r * .9, Math.sin(a + .16) * r * .9]], i % 2 ? '#FFB43A' : '#FFD54A', { n: 2, w: Math.max(3, r * .06), boil: .5 }); }
+  c.restore();
+  celPlanet(c, x, y, r, { col: '#FFD84A', sh: '#F4A62C', lt: '#FFF1A6', face: o.face || 'happy', blush: '#FF8A5A' });
+}
+function celMoon(c, x, y, r, o = {}) { celPlanet(c, x, y, r, { col: '#FFF0BE', sh: '#E8CF8A', lt: '#FFFBE6', craters: 1, face: o.face || 'sleep', blush: '#FFA6B8' }); }
+// the earth with Vraja on it: blue, green land, a cloud, a hut with a thatched roof and a kadamba tree on top.
+// Returns the point on top where a tiny figure stands. o.spin turns the land under the clipped disc.
+function celEarth(c, x, y, r, t, o = {}) {
+  glow(c, x, y, r * 2, '#7FD4FF', .35);
+  const sp = o.spin ?? t * .12;
+  // the tree and the hut sit on the rim (behind the disc's ink), drawn first so the globe's edge overlaps their feet
+  const onRim = (a, f) => { c.save(); c.translate(x + Math.cos(a) * r * .94, y + Math.sin(a) * r * .94); c.rotate(a + Math.PI / 2); f(); c.restore(); };
+  const k = r / 90;
+  onRim(-Math.PI / 2 - .78, () => {   // the kadamba: a trunk, a round crown, little orange flower-balls
+    celShape(c, [[-7 * k, 4 * k], [-6 * k, -34 * k], [6 * k, -34 * k], [7 * k, 4 * k]], '#8A5A34', { n: 2, w: 3, boil: .4 });
+    celOval(c, 0, -52 * k, 30 * k, 26 * k, '#4FA852', { w: 3.5, shade: ['#2F7E3C', 5 * k, 5 * k], over: q => { for (let i = 0; i < 6; i++) ellipse(q, (hash(i * 3) - .5) * 40 * k, -52 * k + (hash(i * 5 + 1) - .5) * 30 * k, 4.5 * k, 4.5 * k, '#FFB03A'); } });
+  });
+  onRim(-Math.PI / 2 + .78, () => {   // the hut: mud walls, a thatched roof, a dark door
+    celShape(c, [[-20 * k, 4 * k], [-20 * k, -26 * k], [20 * k, -26 * k], [20 * k, 4 * k]], '#E8B98A', { n: 2, w: 3, boil: .4, shade: ['#C99466', 4 * k, 0], over: q => ellipse(q, 0, -6 * k, 6 * k, 10 * k, '#5A3420') });
+    celShape(c, [[-30 * k, -22 * k], [0, -50 * k], [30 * k, -22 * k]], '#D6A043', { n: 3, w: 3, boil: .4, shade: ['#A87528', 0, 4 * k] });
+  });
+  celOval(c, x, y, r, r, '#4FB2EC', { w: Math.max(3.5, r * .05), shade: ['#2F82C6', r * .14, r * .14], lt: ['#9ADCFA', r * .07, r * .07], over: q => {
+    const land = (lx, ly, lr, s2) => { const P = []; for (let i = 0; i < 9; i++) { const a = i / 9 * TAU, rr = lr * (.75 + .4 * hash(i + s2 * 9)); P.push([x + lx + Math.cos(a) * rr, y + ly + Math.sin(a) * rr * .8]); } q.fillStyle = '#6CC45A'; q.beginPath(); P.forEach((p, i) => i ? q.lineTo(...p) : q.moveTo(...p)); q.closePath(); q.fill(); };
+    for (const [lx, ly, lr, s2] of [[-.35, -.15, .5, 1], [.48, .32, .36, 2], [.08, -.66, .44, 3], [-.15, .64, .3, 4], [.9, -.4, .3, 5]]) { const u = ((lx + sp) % 2.4 + 2.4) % 2.4 - 1.2; land(u * r, ly * r, lr * r, s2); }
+    q.strokeStyle = '#7FD0FF'; q.lineWidth = r * .06; q.beginPath(); for (let i = 0; i <= 12; i++) { const u = i / 12; q.lineTo(x + (u - .5) * r * 1.4, y + r * .1 + Math.sin(u * 9 + sp * 3) * r * .08); } q.stroke();   // the Yamuna
+    ellipse(q, x - r * .2, y - r * .3, r * .22, r * .08, 'rgba(255,255,255,.85)'); ellipse(q, x + r * .35, y + r * .55, r * .18, r * .06, 'rgba(255,255,255,.75)');
+    ellipse(q, x - r * .45, y - r * .5, r * .16, r * .1, 'rgba(255,255,255,.7)', -.6);
+  } });
+  return [x, y - r * .97];
+}
+// a clod of mud with a tuft of grass, r its size
+function celClod(c, x, y, r, rot = 0) {
+  c.save(); c.translate(x, y); c.rotate(rot);
+  for (const [a, l] of [[-.35, 1.0], [0, 1.25], [.32, .9]]) celShape(c, [[Math.sin(a) * r * .5 - r * .07, -r * .7], [Math.sin(a) * r * 1.2 * l, -r * (.7 + .75 * l)], [Math.sin(a) * r * .5 + r * .07, -r * .7]], '#5DB54E', { n: 3, w: Math.max(2.5, r * .06), boil: .4 });
+  const P = []; for (let i = 0; i < 9; i++) { const a = i / 9 * TAU, rr = r * (.82 + .3 * hash(i * 2.3 + 1)); P.push([Math.cos(a) * rr, Math.sin(a) * rr * .86]); }
+  celShape(c, P, '#93603A', { n: 4, w: Math.max(3.5, r * .09), shade: ['#6A3E1E', r * .16, r * .18], lt: ['#B98250', r * .08, r * .08], over: q => {
+    for (let i = 0; i < 6; i++) ellipse(q, (hash(i * 4.1) - .5) * r * 1.3, (hash(i * 6.3 + 2) - .5) * r * 1.1, r * .08, r * .065, '#5A3016');
+    ellipse(q, r * .25, r * .3, r * .14, r * .11, '#B9A08A'); ellipse(q, -r * .35, -r * .32, r * .2, r * .12, 'rgba(255,255,255,.5)', -.5);
+  } });
+  c.restore();
 }
