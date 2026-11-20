@@ -11,7 +11,8 @@
 //     look   [x, y] the irises (-1..1); turn (-1..1) the head turned to screen left/right (the features slide, the far
 //            eye narrows: a cheap three-quarter view); tilt (radians)
 //     tears  0..1; drool 0..1; bruise 0..1 (the broken left jaw, on screen right: his left); red (0..1) the eyes
-//            catching a red sun; spark (0..1) extra catch-lights; t
+//            catching a red sun; spark (0..1) extra catch-lights; blood (0..1) a trickle from the mouth corner
+//            on his left; t
 //   balHanuman(c, o)  the whole child. o: everything balHead takes, plus
 //     pose   'sit' | 'wail' (sitting, fists up) | 'leap' (stretched up and to screen right, one hand reaching) |
 //            'reach' (both arms up to us) | 'limp' (lying on his back, arms out: rotate it yourself) | 'curl' (curled
@@ -158,6 +159,8 @@ function balHead(c, o = {}) {
     const M = `M ${mx - 36} ${my - 4} C ${mx - 34} ${my + 46} ${mx + 34} ${my + 46} ${mx + 36} ${my - 4} C ${mx + 16} ${my + 4} ${mx - 16} ${my + 4} ${mx - 36} ${my - 4} Z`;
     fillPath(c, M, S.mouthDk); inside(c, M, () => { ellipse(c, mx, my + 34, 22, 14, S.tongue); });
   }
+  // blood at the corner of the mouth, on his left (screen right): the vajra
+  if (o.blood) { const x = mx + 20, y = my + 2, b = o.blood; fillPath(c, `M ${x - 3} ${y} C ${x + 2} ${y + 14 * b} ${x + 8} ${y + 26 * b} ${x + 6} ${y + 36 * b} C ${x + 10} ${y + 40 * b} ${x + 14} ${y + 34 * b} ${x + 11} ${y + 26 * b} C ${x + 8} ${y + 16 * b} ${x + 4} ${y + 6 * b} ${x + 3} ${y} Z`, '#B0141E'); }
   // drool, for the hungry look at the "fruit"
   const dr = o.drool ?? E.drool ?? 0;
   if (dr) { const x = mx + 9, y = my + 18; fillPath(c, `M ${x - 4} ${y} C ${x - 5} ${y + 16 * dr} ${x - 6} ${y + 22 * dr} ${x} ${y + 26 * dr} C ${x + 6} ${y + 22 * dr} ${x + 5} ${y + 16 * dr} ${x + 4} ${y} Z`, rgba(S.tear, .9)); }
