@@ -153,4 +153,23 @@ caption boxes, sound effects.
 - **A snake, a weapon, an animal must read at a glance.** Shiva's snake as a thin green line read as "a weird green
   thing on his face". Draw it big and in its full shape (the cobra's spread hood, a head with eyes, the tongue),
   clear of the face.
+- **Check the PDF, not only the PNGs.** A CSS `text-shadow` on lettering prints into the PDF as an opaque dark box:
+  on the cover and the back page the subtitle's box hid the bottom of the title above it ("Next: BALI" cut off),
+  while the PNG pages looked fine. `tools/comic.mjs` no longer uses text-shadow; render a few PDF pages to images
+  (PDFKit) and look at them before delivering.
+- **A tail grows from the hip.** Tails drawn as a separate stroke beside a bust or a turned figure came loose ("attached
+  to the clouds", "separate from his body"). Draw the whole figure with `devaFigure`'s `tail` as an array of points
+  from the hip (0, 520), `tailW` for thickness, and `tailFn` for anything on it (rags); fire at the tip is drawn after
+  the figure (`TIPS`/`tipFires` in hanuman_act3.js), because inside the figure's layer the ink edge scratches it. When
+  only the body is cut by the panel's edge, the tail must enter from that same edge.
+- **Ropes go round the body** (`bindRopes` via a figure's `after`): loops that stay inside the outline and a knot in
+  front. A rope polyline across the panel read as "a Z over him".
+- **Caption what the picture can't say.** Every panel the owner couldn't read had no words: say where we are (Lanka),
+  who acts (Indrajit, Akshakumara: the full name first, then the short one), what is being shown (the ring "bears
+  Ram's name", the grove where Sita was held) and who speaks off-panel (the beings of the sky).
+- **Give a big moment its own page** (the tail being lit): a 3-panel page made the tail and the ropes too small to see.
+- **A new setting needs its why.** Bhima appeared with no reason to be there: give the age (a new yuga), the place,
+  and the errand (Draupadi's lotus) before the meeting, and a line of dialogue before an action (the tail pull).
+- **Keep the plain words for sensitive lines** (owner: "come to my bed" is offensive): use the text's other honest
+  wording ("if you still refuse to take me as your husband", 5.20.9).
 
