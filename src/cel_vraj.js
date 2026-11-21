@@ -19,6 +19,15 @@
 //   Govardhan (Bhagavata 10.25): celGovardhan(c, x, y, r, t) the hill lifted up (green on top, its rocky underside and
 //                                roots showing), celRainCloud(c, x, y, r, o) a fat cloud (o.face 'grumpy' | 'happy' | null),
 //                                celRain(c, x0, x1, y0, y1, t, o) falling rain over a box, splashing at y1
+//   a little Vishnu shrine:      celShrine(c, x, y, s, t, o) a wayside mandir on two steps (a white body with a cusped
+//                                doorway, a shikhara with its kalash and a saffron flag, a marigold toran, two diyas, a
+//                                brass bell; o.bell its swing, o.glow the light inside, o.lateBell to draw the bell later with
+//                                celShrineBell(c, bellAt.x, bellAt.y, s, swing)), the murti in it (celVishnuMurti);
+//                                returns { step, bell, bellAt, murti, door }
+//   celVishnuMurti(c, x, y, s, t, o) a small four-armed Vishnu on a lotus (chakra, shankh, lotus, gada; kirita, mala,
+//                                a gold prabhavali), the kids' blue and face, smiling; o.glow
+//   celThali(c, x, y, s, o)      a brass plate of ladoos (o.n 0..6) with tulsi on top, (x, y) the plate's middle;
+//                                celLadoo(c, x, y, r) one ladoo
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -33,7 +42,8 @@
 //                   rises, feet too); lean (radians, + to screen right); head (the head's tilt on top); squash
 //   hL, hR [x, y]   the hands, in the upper body's frame (origin the pelvis; shoulders at [±64, -134]); eL, eR: which
 //                   way each elbow bends; fL, fR the feet ([±44, 0] standing); kL, kR the knees
-//   handL, handR    'open' | 'fist' | 'point' (the forearm's direction) | 'butter' (a blob of butter on the palm)
+//   handL, handR    'open' | 'fist' | 'point' (the forearm's direction) | 'butter' (a blob of butter on the palm) |
+//                   'pray' (a palm standing up: both hands in front of the chest are folded hands)
 //   eyes            'open' | 'happy' (^ ^) | 'closed' (smug ‿ ‿) | 'squeeze' (> <) | 'wide' (shock) | 'sparkle' |
 //                   'puppy' (huge, glossy, "who, ME?"); or [screen left, screen right]
 //   look [x, y]     -1..1, where the eyes look; lid 0..1 the upper lids down (deadpan); brow (-1..1 lower / raise);
@@ -42,7 +52,7 @@
 //                   'aah' (wide open; cosmos 0..1 fills it with the universe) | 'puff' (held shut, cheeks ballooned)
 //   talk            1: the mouth flaps (a new shape every two drawings) over the pose's mouth
 //   blush           0..1 extra; sweat 0..1 (a drop by the temple); butter 0..1 (Kanha: butter smeared on his face);
-//                   mud 0..1 (Kanha: mud on his face)
+//                   mud 0..1 (Kanha: mud on his face); belly 0..1 (Kanha: a round full tummy)
 // A tiny kid (s ≈ .2) keeps a readable line with CEL.inkK (ink width × k, cel.js) set round the call.
 
 // ---------- acting ----------
@@ -299,8 +309,10 @@ function celKid(c, x, y, s, P, o, who) {
     celShape(c, [[-54, -26], [-60, -84], [-60, -128], [-38, -150], [0, -154], [38, -150], [60, -128], [60, -84], [54, -26], [0, -18]], C.choli, { shade: sh(C.choliSh), lt: lt(C.choliLt) });
     celLine(c, [[-56, -36], [0, -28], [56, -36]], 12, { under: C.gold, taper: 0 });
   } else {
-    celShape(c, [[-64, -24], [-74, -80], [-68, -128], [-42, -150], [0, -156], [42, -150], [68, -128], [74, -80], [64, -24], [0, -12]], C.skin, skin);
-    celLine(c, [[-5, -62], [0, -56], [5, -62]], 3);   // the tummy button
+    // belly 0..1: a round full tummy (after the ladoos), pushed out at the sides and below, with a shine
+    const bl = clamp(P.belly || 0), bw = 22 * bl;
+    celShape(c, [[-64 - bw * .5, -24], [-74 - bw, -76], [-68 - bw * .3, -128], [-42, -150], [0, -156], [42, -150], [68 + bw * .3, -128], [74 + bw, -76], [64 + bw * .5, -24], [0, -12 + 12 * bl]], C.skin, { ...skin, over: bl > .02 ? q => ellipse(q, -30 - bw * .4, -92, 16 * bl, 22 * bl, 'rgba(255,255,255,.35)', -.4) : null });
+    celLine(c, [[-5, -62 + 4 * bl], [0, -56 + 4 * bl], [5, -62 + 4 * bl]], 3);   // the tummy button
   }
   c.restore();
 
@@ -408,6 +420,12 @@ function celKid(c, x, y, s, P, o, who) {
       celShape(c, celTube([hc, v2.add(hc, v2.mul(d, 40))], [16, 13]), C.skin, { dense: true, w: 4 });
       celOval(c, hc[0], hc[1], 21, 19, C.skin, { ...skin, rot });
     } else if (kind === 'fist') celOval(c, hc[0], hc[1], 21, 19, C.skin, { ...skin, rot });
+    else if (kind === 'pray') {
+      // a flat palm standing up, fingers to the sky: two of them side by side (hL ≈ [-14, -96], hR ≈ [14, -96]) are folded hands
+      const px = hc[0] - sd * 4, py = hc[1] - 18;
+      celShape(c, [[px - sd * 15, py + 22], [px - sd * 16, py - 8], [px - sd * 9, py - 34], [px - sd * 1, py - 38], [px + sd * 2, py - 6], [px + sd * 1, py + 24]], C.skin, { n: 4, w: 4.5, shade: [C.sh, -sd * 5, 4] });
+      celLine(c, [[px - sd * 13, py - 4], [px - sd * 4, py - 10]], 2.6, { boil: .3 });
+    }
     else {
       const th = v2.add(v2.add(wr, v2.mul(d, 8)), v2.mul(q, 18 * (d[1] * sd > 0 ? -1 : 1) * sd));
       celOval(c, th[0], th[1], 11, 8, C.skin, { rot: rot - .6, w: 4 });
@@ -626,5 +644,163 @@ function celRain(c, x0, x1, y0, y1, t, o = {}) {
     const s = (t * sp + hash(i * 5.3) + .5) % 1;
     if (s < .18) { const xs = x - sl * span, e = s / .18; c.strokeStyle = `rgba(110,170,240,${.8 * (1 - e)})`; c.lineWidth = 3; for (const sd of [-1, 1]) { c.beginPath(); c.moveTo(xs + sd * 4, bot - 2); c.lineTo(xs + sd * (6 + 12 * e), bot - 6 - 10 * e); c.stroke(); } }
   }
+  c.restore();
+}
+
+// ---------- a Vishnu shrine, its murti, a plate of ladoos ----------
+const CEL_LADOO = { col: '#F7A72C', sh: '#D67C12', lt: '#FFD370', dot: '#E08A1A' };
+function celLadoo(c, x, y, r, o = {}) {
+  const P = []; for (let i = 0; i < 9; i++) { const a = i / 9 * TAU, rr = r * (.95 + .08 * hash(i * 1.9 + (o.seed || 0))); P.push([x + Math.cos(a) * rr, y + Math.sin(a) * rr * .94]); }
+  celShape(c, P, CEL_LADOO.col, { n: 4, w: Math.max(2.5, r * .12), boil: .4, shade: [CEL_LADOO.sh, r * .18, r * .2], lt: [CEL_LADOO.lt, r * .1, r * .1], over: q => {
+    for (let i = 0; i < 9; i++) { const a = hash(i * 3.3 + (o.seed || 0)) * TAU, d = Math.sqrt(hash(i * 7.1 + 2)) * r * .8; ellipse(q, x + Math.cos(a) * d, y + Math.sin(a) * d, r * .09, r * .09, CEL_LADOO.dot); }   // boondi
+    ellipse(q, x - r * .34, y - r * .36, r * .22, r * .15, 'rgba(255,255,255,.75)', -.6);
+  } });
+}
+// a tulsi sprig: two leaves and a little stem
+function celTulsi(c, x, y, k = 1, rot = 0) {
+  c.save(); c.translate(x, y); c.rotate(rot); c.scale(k, k);
+  celLine(c, [[0, 6], [0, -10]], 3, { col: '#2E6E34', boil: .3 });
+  for (const sd of [-1, 1]) celShape(c, [[0, -6], [sd * 12, -22], [sd * 26, -20], [sd * 22, -6], [sd * 8, -2]], '#4BAA55', { n: 4, w: 3, boil: .3, shade: ['#2F8040', sd * 3, 3], over: q => celLine(q, [[sd * 2, -6], [sd * 18, -16]], 1.6, { col: 'rgba(30,80,40,.6)', ink: false }) });
+  c.restore();
+}
+// a brass plate with a pile of ladoos (n of them: 3 + 2 + 1), tulsi on the top one; (x, y) the plate's middle
+function celThali(c, x, y, s = 1, o = {}) {
+  const n = o.n ?? 6;
+  c.save(); c.translate(x, y); c.rotate(o.tilt || 0); c.scale(s, s);
+  celOval(c, 0, 0, 118, 30, '#E9B23C', { w: 4.5, shade: ['#B98220', 0, 7], over: q => {
+    q.strokeStyle = 'rgba(160,100,20,.55)'; q.lineWidth = 3; q.beginPath(); q.ellipse(0, -2, 92, 21, 0, 0, TAU); q.stroke();
+    ellipse(q, -54, -10, 26, 5, 'rgba(255,248,210,.7)', -.05);
+  } });
+  const L = [[-46, -20, 0], [46, -20, 1], [0, -16, 2], [-23, -54, 3], [23, -54, 4], [0, -88, 5]];
+  for (let i = 0; i < Math.min(n, 6); i++) celLadoo(c, L[i][0], L[i][1], 26, { seed: L[i][2] });
+  if (n >= 6) celTulsi(c, 0, -114, 1, .1);
+  // a marigold on the rim
+  celOval(c, 92, -6, 13, 10, '#FF9B1E', { w: 3, boil: .3, over: q => { for (let i = 0; i < 6; i++) { const a = i / 6 * TAU; ellipse(q, 92 + Math.cos(a) * 6, -6 + Math.sin(a) * 4.5, 3, 2.5, '#FFC23A'); } } });
+  c.restore();
+}
+
+// a small Vishnu murti, standing on a lotus, feet at (x, y), about 250 px tall at s = 1; the kids' blue and face (smiling
+// lidded, looking down at the offering); upper hands: the chakra (screen left, his right) and the shankh, lower: a lotus
+// and the gada. o.glow 0..1 the prabhavali lights up
+function celVishnuMurti(c, x, y, s = 1, t = 0, o = {}) {
+  const C = CEL_KANHA, sk = { shade: [C.sh, 4, 5], lt: [C.lt, 3, 3] }, g = o.glow || 0, ik = CEL.inkK;
+  c.save(); c.translate(x, y); c.scale(s, s); CEL.inkK = (ik ?? 1) * .75;
+  // the prabhavali: a gold arch behind him, with flames along it
+  const arch = []; for (let i = 0; i <= 24; i++) { const a = Math.PI * (1 + i / 24); arch.push([Math.cos(a) * 92, -132 + Math.sin(a) * 140]); }
+  if (g > .02) glow(c, 0, -160, 220, '#FFE7A0', .7 * g);
+  celShape(c, [[-92, -20], ...arch, [92, -20], [74, -20], ...arch.map(([a, b]) => [a * .8, -132 + (b + 132) * .82]).reverse(), [-74, -20]], '#F2B52E', { n: 3, w: 3.5, shade: ['#C98A1A', 3, 4] });
+  for (let i = 1; i < 24; i += 2) { const a = Math.PI * (1 + i / 24); celShape(c, [[Math.cos(a) * 92, -132 + Math.sin(a) * 140], [Math.cos(a) * 110, -132 + Math.sin(a) * 160], [Math.cos(a + .06) * 94, -132 + Math.sin(a + .06) * 142]], '#F7C744', { n: 2, w: 2.5, boil: .3 }); }
+  // the lotus pedestal
+  for (const [px, w, col] of [[-36, 30, '#F57DA8'], [36, 30, '#F57DA8'], [-14, 28, '#FF9CC0'], [14, 28, '#FF9CC0'], [0, 26, '#FFB6D0']]) celShape(c, [[px - w, -4], [px - w * .5, -30], [px, -40], [px + w * .5, -30], [px + w, -4], [px, 2]], col, { n: 3, w: 3, shade: ['#D6528A', 3, 3] });
+  // the arms behind: upper ones raised, holding the chakra (spinning) and the shankh
+  const arm = (S, H) => celShape(c, celTube([S, v2.lerp(S, H, .5), H], [22, 19, 17]), C.skin, { dense: true, w: 3.5, ...sk });
+  arm([-26, -142], [-70, -186]); arm([26, -142], [70, -186]);
+  celOval(c, -70, -186, 11, 10, C.skin, { w: 3 }); celOval(c, 70, -186, 11, 10, C.skin, { w: 3 });
+  c.save(); c.translate(-74, -212); c.rotate(t * 1.6);
+  if (g > .02) glow(c, 0, 0, 50, '#FFE08A', .6 * g);
+  celOval(c, 0, 0, 22, 22, '#F7C744', { w: 3, shade: ['#D89A22', 2, 3], over: q => { q.strokeStyle = '#C47A18'; q.lineWidth = 2.5; for (let i = 0; i < 8; i++) { const a = i / 8 * TAU; q.beginPath(); q.moveTo(0, 0); q.lineTo(Math.cos(a) * 16, Math.sin(a) * 16); q.stroke(); } ellipse(q, 0, 0, 5, 5, '#E2452B'); } });
+  for (let i = 0; i < 8; i++) { const a = i / 8 * TAU; celShape(c, [[Math.cos(a - .18) * 21, Math.sin(a - .18) * 21], [Math.cos(a) * 30, Math.sin(a) * 30], [Math.cos(a + .18) * 21, Math.sin(a + .18) * 21]], '#F7C744', { n: 2, w: 2.2, boil: .2 }); }
+  c.restore();
+  celShape(c, [[60, -196], [70, -226], [82, -232], [92, -220], [88, -200], [76, -190]], '#FFF8EC', { n: 4, w: 3, shade: ['#E2D2BC', 3, 3], over: q => { q.strokeStyle = 'rgba(160,130,100,.7)'; q.lineWidth = 2; q.beginPath(); q.arc(80, -214, 7, 0, 5); q.stroke(); } });
+  // the dhoti (yellow) and the body
+  celShape(c, [[-34, -104], [-40, -60], [-44, -30], [0, -26], [44, -30], [40, -60], [34, -104]], C.pit, { n: 3, w: 3.5, shade: [C.pitSh, 4, 4], lt: [C.pitLt, 3, 3], over: q => { q.strokeStyle = C.border; q.lineWidth = 8; q.beginPath(); q.moveTo(-44, -33); q.lineTo(0, -29); q.lineTo(44, -33); q.stroke(); } });
+  celShape(c, [[-30, -100], [-36, -130], [-26, -152], [0, -156], [26, -152], [36, -130], [30, -100], [0, -96]], C.skin, { n: 3, w: 3.5, ...sk });
+  celLine(c, [[-36, -104], [0, -100], [36, -104]], 7, { under: C.gold, taper: 0 });
+  // the mala and the kaustubha gem
+  for (let i = 0; i <= 10; i++) { const a = Math.PI * i / 10; celOval(c, -28 * Math.cos(a), -150 + 52 * Math.sin(a), 5, 5, C.mala[i % 4], { w: 1.8, boil: .2 }); }
+  celOval(c, 0, -134, 6, 7, '#E2452B', { w: 2.2, boil: .2, over: q => ellipse(q, -2, -136, 2, 2, '#FFFFFF') });
+  // the lower arms: a lotus (screen left), the gada standing by him (screen right)
+  arm([-30, -140], [-48, -96]); arm([30, -140], [48, -96]);
+  celShape(c, celTube([[62, -132], [62, -30]], [8, 8]), '#E9B23C', { dense: true, w: 3 });
+  celOval(c, 62, -140, 16, 16, '#F2B52E', { w: 3, shade: ['#C98A1A', 3, 3], over: q => ellipse(q, 57, -145, 4, 4, '#FFF2C0') });
+  celOval(c, 48, -92, 10, 9, C.skin, { w: 3 });
+  for (const [dx, a] of [[-10, -.5], [0, 0], [10, .5]]) celShape(c, [[-52 + dx * .3, -100], [-52 + dx - 7, -116], [-52 + dx, -128], [-52 + dx + 7, -116]].map(([px, py]) => [px, py]), '#FF8CB4', { n: 3, w: 2.5, boil: .3 });
+  celOval(c, -48, -94, 10, 9, C.skin, { w: 3 });
+  // the head: the kids' face, smaller, with the kirita
+  c.save(); c.translate(0, -196);
+  for (const sd of [-1, 1]) celShape(c, celTube([[sd * 36, -6], [sd * 44, 18], [sd * 38, 34]], [12, 10, 6]), C.hair, { dense: true, w: 3 });
+  celShape(c, [[-36, -24], [-16, -38], [0, -40], [16, -38], [36, -24], [42, 4], [36, 26], [16, 38], [0, 40], [-16, 38], [-36, 26], [-42, 4]], C.skin, { w: 3.5, shade: [C.sh, 3, 4], lt: [C.lt, 2, 2] });
+  celShape(c, [[-38, -10], [-36, -30], [-20, -42], [0, -44], [20, -42], [36, -30], [38, -10], [30, -18], [0, -24], [-30, -18]], C.hair, { n: 3, w: 3 });
+  // the kirita: a tall gold crown with a jewel and a peak
+  celShape(c, [[-34, -26], [-30, -72], [-20, -92], [0, -110], [20, -92], [30, -72], [34, -26], [0, -32]], '#F2B52E', { n: 3, w: 3.2, shade: ['#C98A1A', 4, 3], lt: ['#FFE48E', 2, 2], over: q => {
+    q.strokeStyle = '#C98A1A'; q.lineWidth = 2.5; for (const yy of [-40, -62]) { q.beginPath(); q.moveTo(-34, yy); q.quadraticCurveTo(0, yy - 6, 34, yy); q.stroke(); }
+    ellipse(q, 0, -50, 6, 7, '#E2452B'); ellipse(q, -18, -50, 3.5, 3.5, '#1FA39A'); ellipse(q, 18, -50, 3.5, 3.5, '#1FA39A'); ellipse(q, 0, -84, 4, 5, '#E2452B');
+  } });
+  for (const sd of [-1, 1]) celOval(c, sd * 42, 14, 6, 7, C.gold, { w: 2, boil: .2 });
+  celLine(c, [[-4, -18], [-3, -8], [0, -4], [3, -8], [4, -18]], 3, { under: C.tilak, taper: .25, boil: .3 });
+  CEL.inkK = (ik ?? 1) * 1.9;
+  celFace(c, { eyes: 'happy', brow: .2, tilt: .1, mouth: 'smile', blush: .35 }, C, { face: { k: .22 } });
+  c.restore();
+  CEL.inkK = ik; c.restore();
+}
+
+// a wayside Vishnu shrine on two steps, its base's middle at (x, y), about 930 px to the flag's tip at s = 1, 460 wide
+function celShrine(c, x, y, s = 1, t = 0, o = {}) {
+  const A = {}, at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  const stone = '#FBEFDC', stSh = '#E2CBA8', stLt = '#FFF9EE', och = '#E8833A', ochSh = '#C2602A';
+  c.save(); c.translate(x, y); c.scale(s, s);
+  // the flag on its pole, waving
+  celLine(c, [[0, -820], [0, -930]], 4, { col: '#8A5A34', taper: 0 });
+  const fw = i => Math.sin(t * 5 - i * .9) * 7 * i / 4;
+  celShape(c, [[2, -928], [40, -920 + fw(1)], [82, -914 + fw(2)], [118, -906 + fw(3)], [92, -896 + fw(3)], [124, -882 + fw(4)], [80, -880 + fw(2)], [40, -884 + fw(1)], [2, -886]], '#FF8A1E', { n: 2, w: 3.5, shade: ['#E0621A', 0, 5] });
+  // the shikhara: a curved tower with ribs, the amalaka and the kalash on top
+  const sh = []; for (let i = 0; i <= 10; i++) { const u = i / 10; sh.push([-150 + 110 * Math.pow(u, 1.6), -436 - u * 330]); }
+  celShape(c, [...sh, [0, -790], ...sh.map(([a, b]) => [-a, b]).reverse()], stone, { n: 3, w: 4.5, shade: [stSh, 10, 6], lt: [stLt, 5, 5], over: q => {
+    q.strokeStyle = 'rgba(200,120,70,.65)'; q.lineWidth = 4; for (let i = 1; i < 8; i++) { const u = i / 8, hw = 150 - 110 * Math.pow(u, 1.6); q.beginPath(); q.moveTo(-hw, -436 - u * 330); q.lineTo(hw, -436 - u * 330); q.stroke(); }
+    q.strokeStyle = 'rgba(200,120,70,.45)'; q.lineWidth = 3; for (const k of [-.45, 0, .45]) { q.beginPath(); for (let i = 0; i <= 10; i++) { const u = i / 10, hw = 150 - 110 * Math.pow(u, 1.6); q.lineTo(k * hw, -436 - u * 330); } q.stroke(); }
+  } });
+  celOval(c, 0, -790, 48, 16, stone, { w: 4, shade: [stSh, 0, 5], over: q => { q.strokeStyle = 'rgba(200,120,70,.6)'; q.lineWidth = 2.5; for (let i = -3; i <= 3; i++) { q.beginPath(); q.moveTo(i * 13, -804); q.lineTo(i * 14, -776); q.stroke(); } } });
+  celShape(c, [[-20, -804], [-28, -826], [-16, -842], [-8, -848], [-8, -858], [8, -858], [8, -848], [16, -842], [28, -826], [20, -804]], '#F2B52E', { n: 3, w: 3.5, shade: ['#C98A1A', 4, 3] });
+  // the body and the cornice
+  celShape(c, [[-176, -84], [-176, -420], [176, -420], [176, -84]], stone, { n: 1, w: 4.5, shade: [stSh, 12, 0], lt: [stLt, 6, 0] });
+  celShape(c, [[-196, -414], [-188, -446], [188, -446], [196, -414]], och, { n: 1, w: 4.5, shade: [ochSh, 0, 6] });
+  // the doorway: a cusped arch, warm and lamp-lit inside
+  const D = [[-104, -90]]; for (let i = 0; i <= 18; i++) { const u = i / 18, a = Math.PI * (1 + u), cusp = 1 - .07 * Math.abs(Math.sin(u * Math.PI * 5)); D.push([Math.cos(a) * 104 * cusp, -300 + Math.sin(a) * 82 * cusp]); } D.push([104, -90]);
+  const gi = o.glow || 0;
+  celShape(c, D, '#8C3E26', { n: 1, w: 4.5, over: q => {
+    const g = q.createRadialGradient(0, -180, 0, 0, -180, 220); g.addColorStop(0, `rgba(255,${200 + 30 * gi | 0},120,${.75 + .25 * gi})`); g.addColorStop(.55, 'rgba(214,110,60,.8)'); g.addColorStop(1, 'rgba(120,46,30,1)');
+    q.fillStyle = g; q.fillRect(-120, -400, 240, 320);
+  } });
+  A.door = at(0, -230);
+  // a stone pedestal inside the door, so an offering on the step sits below the murti's feet
+  celShape(c, [[-62, -88], [-56, -150], [-66, -150], [-66, -166], [66, -166], [66, -150], [56, -150], [62, -88]], '#E9D2AE', { n: 1, w: 3.5, shade: ['#C9A87C', 5, 0], over: q => { q.strokeStyle = 'rgba(200,80,60,.6)'; q.lineWidth = 4; q.beginPath(); q.moveTo(-58, -118); q.lineTo(58, -118); q.stroke(); } });
+  celVishnuMurti(c, 0, -164, .76, t, { glow: gi });
+  A.murti = at(0, -300);
+  // pillars round the door, the arch's ochre frame
+  for (const sd of [-1, 1]) {
+    celShape(c, [[sd * 108, -88], [sd * 108, -396], [sd * 140, -396], [sd * 140, -88]], '#F6E2C2', { n: 1, w: 4, shade: [stSh, sd * 5, 0] });
+    for (const yy of [-120, -250, -370]) celLine(c, [[sd * 108, yy], [sd * 140, yy]], 6, { under: och, taper: 0 });
+  }
+  // the marigold toran across the top of the door, mango leaves between the swags
+  for (let k = 0; k < 3; k++) {
+    const x0 = -120 + k * 80, x1 = x0 + 80;
+    for (let i = 0; i <= 8; i++) { const u = i / 8, px = lerp(x0, x1, u), py = -392 + Math.sin(u * Math.PI) * 26; celOval(c, px, py, 9, 9, i % 2 ? '#FFB020' : '#FF8A1E', { w: 2.4, boil: .3 }); }
+  }
+  for (const lx of [-120, -40, 40, 120]) celShape(c, [[lx - 6, -394], [lx, -360], [lx + 6, -394]], '#3F9A4E', { n: 3, w: 2.6, boil: .3 });
+  // the steps
+  celShape(c, [[-226, 0], [-226, -42], [226, -42], [226, 0]], stone, { n: 1, w: 4.5, shade: [stSh, 0, 8], lt: [stLt, 0, 4] });
+  celShape(c, [[-200, -42], [-200, -86], [200, -86], [200, -42]], stone, { n: 1, w: 4.5, shade: [stSh, 0, 8], lt: [stLt, 0, 4], over: q => { q.strokeStyle = 'rgba(214,80,60,.55)'; q.lineWidth = 5; q.beginPath(); q.moveTo(-200, -64); q.lineTo(200, -64); q.stroke(); } });
+  A.step = at(0, -86); A.step0 = at(0, -42);
+  // two diyas on the upper step
+  for (const sd of [-1, 1]) {
+    const dx = sd * 160, fl = 1 + .12 * Math.sin(t * 13 + sd * 2) + .06 * Math.sin(t * 29);
+    glow(c, dx, -112, 60, '#FFD27A', .5);
+    celShape(c, [[dx - 24, -94], [dx + 24, -94], [dx + 14, -84], [dx - 14, -84]], '#C96A36', { n: 2, w: 3.2, shade: ['#9A4A22', 0, 3] });
+    celShape(c, [[dx - 5, -96], [dx - 6, -108 * 1], [dx, -96 - 26 * fl], [dx + 6, -108], [dx + 5, -96]], '#FFC23A', { n: 3, w: 2.6, boil: .3, over: q => ellipse(q, dx, -104, 3, 6, '#FFF6C8') });
+  }
+  // the brass bell, hanging from the cornice's left end by a chain (o.lateBell: leave it out and draw it later with
+  // celShrineBell, over a kid ringing it)
+  A.bellAt = at(-186, -414); A.bell = at(-186 + 140 * Math.sin(-(o.bell || 0)), -414 + 140 * Math.cos(o.bell || 0));
+  c.restore();
+  if (!o.lateBell) celShrineBell(c, A.bellAt[0], A.bellAt[1], s, o.bell || 0);
+  return A;
+}
+// the shrine's bell, hung at (x, y), swung by `swing` radians
+function celShrineBell(c, x, y, s = 1, swing = 0) {
+  c.save(); c.translate(x, y); c.scale(s, s); c.rotate(swing);
+  celLine(c, [[0, 0], [0, 100]], 4, { col: '#9A7A3A', taper: 0, boil: .3 });
+  for (let i = 1; i < 6; i++) celOval(c, 0, i * 18, 4, 6, '#C9A040', { w: 2, boil: .2 });
+  celShape(c, [[-10, 102], [-16, 120], [-24, 146], [-32, 152], [32, 152], [24, 146], [16, 120], [10, 102]], '#E0A93A', { n: 3, w: 3.5, shade: ['#B07C1E', 5, 3], lt: ['#FFE08A', 3, 3] });
+  celOval(c, 0, 158, 7, 7, '#B07C1E', { w: 2.5 });
   c.restore();
 }
