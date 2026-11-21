@@ -15,7 +15,10 @@
 //                                with a gold border, a mint odhni across her, red and gold bangles, payal. Same anchors.
 //   celMonkey(c, x, y, s, P, o)  a little monkey (about 330 px tall), feet at (x, y): P like a kid's (eyes, mouth, look,
 //                                hL / hR, handL / handR, lean, hop) plus pot (true: hugging a pot of butter) and tail
-//   celMatki(c, x, y, s, o)      a clay pot, its base at (x, y): o.empty (no butter), o.tilt
+//   celMatki(c, x, y, s, o)      a clay pot, its base at (x, y): o.empty (no butter), o.water (a water pot), o.tilt
+//   Govardhan (Bhagavata 10.25): celGovardhan(c, x, y, r, t) the hill lifted up (green on top, its rocky underside and
+//                                roots showing), celRainCloud(c, x, y, r, o) a fat cloud (o.face 'grumpy' | 'happy' | null),
+//                                celRain(c, x0, x1, y0, y1, t, o) falling rain over a box, splashing at y1
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -212,7 +215,8 @@ function celMatki(c, x, y, s = 1, o = {}) {
   celLine(c, [[-66, -62], [-33, -54], [0, -51], [33, -54], [66, -62]], 9, { under: '#F4E6CC', taper: 0 });
   for (let i = 0; i < 6; i++) { const u = -50 + i * 20; celLine(c, [[u, -44], [u + 10, -34], [u + 20, -44]], 3, { col: '#F4E6CC', boil: .4 }); }
   celOval(c, 0, -114, 40, 12, '#B85A30', { w: 4.5 });
-  if (!o.empty) celShape(c, [[-38, -114], [-32, -136], [-12, -154], [12, -150], [32, -134], [40, -114], [0, -106]], '#FFF5D2', { n: 4, w: 4.5, shade: ['#F2DA8C', 6, 6], over: q => ellipse(q, -12, -136, 9, 6, '#FFFFFF', -.4) });
+  if (o.water) { ellipse(c, 0, -114, 31, 8, '#5DB8EC'); ellipse(c, -10, -116, 12, 3, 'rgba(255,255,255,.8)'); ellipse(c, 14, -112, 6, 2, 'rgba(255,255,255,.6)'); }
+  else if (!o.empty) celShape(c, [[-38, -114], [-32, -136], [-12, -154], [12, -150], [32, -134], [40, -114], [0, -106]], '#FFF5D2', { n: 4, w: 4.5, shade: ['#F2DA8C', 6, 6], over: q => ellipse(q, -12, -136, 9, 6, '#FFFFFF', -.4) });
   else ellipse(c, 0, -114, 30, 7, '#5A2A16');
   c.restore();
 }
@@ -563,5 +567,64 @@ function celClod(c, x, y, r, rot = 0) {
     for (let i = 0; i < 6; i++) ellipse(q, (hash(i * 4.1) - .5) * r * 1.3, (hash(i * 6.3 + 2) - .5) * r * 1.1, r * .08, r * .065, '#5A3016');
     ellipse(q, r * .25, r * .3, r * .14, r * .11, '#B9A08A'); ellipse(q, -r * .35, -r * .32, r * .2, r * .12, 'rgba(255,255,255,.5)', -.5);
   } });
+  c.restore();
+}
+
+// ---------- Govardhan and Indra's rain (Bhagavata 10.25) ----------
+// the hill lifted off the ground, (x, y) the middle of its underside, r its half width: a green dome with trees, rocks
+// and flowers, the torn-up rock and earth underneath with roots hanging from it
+function celGovardhan(c, x, y, r, t = 0) {
+  const k = r / 100, w = Math.max(3, 4.5 * k);
+  c.save(); c.translate(x, y);
+  // the underside: rock and earth, roots dangling
+  const U = []; for (let i = 0; i <= 10; i++) { const u = i / 10, a = Math.PI * u; U.push([-Math.cos(a) * 100 * k, Math.sin(a) * (26 + 10 * hash(i * 2.3)) * k]); }
+  celShape(c, [[-100 * k, -6 * k], ...U, [100 * k, -6 * k]], '#9A6A44', { n: 3, w, shade: ['#6E4426', 0, -8 * k], over: q => {
+    for (const [rx, ry, rr] of [[-50, 10, 9], [10, 18, 11], [55, 8, 8], [-15, 4, 6]]) ellipse(q, rx * k, ry * k, rr * k, rr * k * .7, '#B9A48E');
+  } });
+  for (const [rx, l, sw] of [[-60, 26, 1], [-22, 36, -1], [24, 30, 1], [64, 22, -1]]) {
+    const ph = Math.sin(t * 2.4 + rx) * 3 * k;
+    celLine(c, [[rx * k, 22 * k], [(rx + sw * 6) * k + ph, (22 + l * .5) * k], [(rx - sw * 2) * k + ph * 1.6, (22 + l) * k]], Math.max(2, 3 * k), { col: '#6E4426', taper: .7, boil: .5 });
+  }
+  // the hill itself
+  const D = []; for (let i = 0; i <= 16; i++) { const u = i / 16, a = Math.PI * u; D.push([-Math.cos(a) * 104 * k, -Math.sin(a) * (78 + 8 * Math.sin(u * 9)) * k - 2 * k]); }
+  celShape(c, [...D, [104 * k, 4 * k], [-104 * k, 4 * k]], '#6CC05A', { n: 3, w, shade: ['#3F9446', 12 * k, 10 * k], lt: ['#9ADE7A', 6 * k, 6 * k], over: q => {
+    for (const [fx, fy] of [[-62, -22], [-30, -50], [40, -38], [72, -16], [4, -14]]) { ellipse(q, fx * k, fy * k, 5 * k, 5 * k, '#FFFFFF'); ellipse(q, fx * k, fy * k, 2.2 * k, 2.2 * k, '#FFC83A'); }
+  } });
+  for (const [rx, ry, rr] of [[-74, -10, 13], [58, -6, 15]]) celOval(c, rx * k, ry * k, rr * k, rr * k * .72, '#B8B4C4', { w: Math.max(2.5, 3.5 * k), shade: ['#8C88A0', 0, 4 * k] });
+  // trees on top: round crowns on little trunks, kadamba flower-balls on the middle one
+  for (const [tx, ty, tr, fl] of [[-46, -66, 24, 0], [6, -84, 30, 1], [54, -64, 22, 0]]) {
+    celShape(c, [[(tx - 4) * k, (ty + 6) * k], [(tx - 3) * k, (ty - tr * .6) * k], [(tx + 3) * k, (ty - tr * .6) * k], [(tx + 4) * k, (ty + 6) * k]], '#8A5A34', { n: 2, w: Math.max(2, 3 * k), boil: .4 });
+    celOval(c, tx * k, (ty - tr * 1.1) * k, tr * k, tr * .9 * k, fl ? '#4FA852' : '#5DB55A', { w, shade: ['#2F7E3C', 5 * k, 5 * k], over: fl ? q => { for (let i = 0; i < 5; i++) ellipse(q, (tx + (hash(i * 3) - .5) * tr * 1.3) * k, (ty - tr * 1.1 + (hash(i * 5 + 1) - .5) * tr) * k, 3.6 * k, 3.6 * k, '#FFB03A'); } : null });
+  }
+  c.restore();
+}
+// a fat rain cloud, (x, y) its middle, r its half width; o.face 'grumpy' (Indra's clouds) | 'happy' | null, o.col
+function celRainCloud(c, x, y, r, o = {}) {
+  const P = []; for (let i = 0; i < 40; i++) { const a = i / 40 * TAU, top = Math.sin(a) < 0, b = top ? 1 + .16 * Math.abs(Math.sin(a * 3.5)) : 1; P.push([Math.cos(a) * r * b, Math.sin(a) * r * (top ? .62 : .4) * b]); }
+  c.save(); c.translate(x, y);
+  celShape(c, P, o.col || '#8E98BC', { dense: true, w: Math.max(3, r * .05), shade: [o.sh || '#6C759C', 0, r * .1], lt: ['#B8C0DC', r * .05, r * .06] });
+  const k = r / 90;
+  if (o.face === 'grumpy') {
+    for (const sd of [-1, 1]) {
+      ellipse(c, sd * 24 * k, 2 * k, 5 * k, 6.5 * k, CEL.ink); ellipse(c, sd * 24 * k - 1.5 * k, -.5 * k, 2 * k, 2.2 * k, '#FFFFFF');
+      celLine(c, [[sd * 36 * k, -14 * k], [sd * 12 * k, -6 * k]], 4 * k, { taper: .2, boil: .4 });
+    }
+    celLine(c, [[-11 * k, 22 * k], [0, 16 * k], [11 * k, 22 * k]], 3.4 * k, { taper: .3, boil: .4 });
+    c.save(); c.globalAlpha = .45; for (const sd of [-1, 1]) ellipse(c, sd * 40 * k, 14 * k, 8 * k, 4.5 * k, '#C86A8A'); c.restore();
+  } else if (o.face) celMiniFace(c, 0, 4 * k, k, o.face);
+  c.restore();
+}
+// rain over the box x0..x1, y0..y1: slanted blue streaks falling at the full frame rate, little splashes at y1 (a number
+// or a function of x). o.n streaks, o.a alpha, o.slant
+function celRain(c, x0, x1, y0, y1, t, o = {}) {
+  const n = o.n ?? 26, a = o.a ?? 1, sl = o.slant ?? .18, yb = typeof y1 === 'function' ? y1 : () => y1;
+  if (a <= .01) return;
+  c.save(); c.globalAlpha *= a; c.lineCap = 'round';
+  for (let i = 0; i < n; i++) {
+    const x = lerp(x0, x1, (i + hash(i * 1.7)) / n), bot = yb(x), span = bot - y0, sp = 1.4 + hash(i * 3.1) * .5, u = (t * sp + hash(i * 5.3)) % 1, yy = y0 + u * span, l = Math.min(26, span * .25);
+    c.strokeStyle = 'rgba(90,150,230,.85)'; c.lineWidth = 4; c.beginPath(); c.moveTo(x - sl * (yy - y0), yy); c.lineTo(x - sl * (yy - y0) + sl * l, yy - l); c.stroke();
+    const s = (t * sp + hash(i * 5.3) + .5) % 1;
+    if (s < .18) { const xs = x - sl * span, e = s / .18; c.strokeStyle = `rgba(110,170,240,${.8 * (1 - e)})`; c.lineWidth = 3; for (const sd of [-1, 1]) { c.beginPath(); c.moveTo(xs + sd * 4, bot - 2); c.lineTo(xs + sd * (6 + 12 * e), bot - 6 - 10 * e); c.stroke(); } }
+  }
   c.restore();
 }
