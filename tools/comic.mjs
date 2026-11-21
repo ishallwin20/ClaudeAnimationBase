@@ -17,6 +17,8 @@
 //   <slug>.epub         fixed-layout EPUB 3 (pre-paginated, one page at a time, no spreads): each page a lettered
 //                       1440 × 1800 JPEG with its words as the image's alt text; for Apple Books, Google Play Books
 //   <slug>.cbz          the PNG pages zipped, for comic-reader apps
+// comic.js may also give: subtitle (in the PDF title), description and subjects (EPUB metadata), uuid (the EPUB's
+// identifier: set one per issue and keep it for every edition), toc ([[page, label], …], the EPUB's contents).
 // Fonts: assets/fonts (Kalam for the words, Bangers for sound effects, Marcellus for titles; all SIL OFL).
 import puppeteer from 'puppeteer-core';
 import { spawnSync } from 'node:child_process';
@@ -134,7 +136,8 @@ for (const page of document.querySelectorAll('.page')) {
 }
 window.lettered = true;
 `;
-const html = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(COMIC.title)}</title><style>${css}</style></head><body>
+const FULLTITLE = `${COMIC.series} ${COMIC.issue}: ${COMIC.title}${COMIC.subtitle ? ' · ' + COMIC.subtitle : ''}`;
+const html = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(FULLTITLE)}</title><style>${css}</style></head><body>
 ${pages.map(pageHtml).join('\n')}
 <script>document.fonts.ready.then(() => {${balloonScript}});</script></body></html>`;
 writeFileSync(`${TMP}/comic.html`, html);
@@ -181,14 +184,14 @@ if (!args.pages) {
 <body><img src="img/p${pad(n)}.jpg" alt="${esc(words(n) || 'Page ' + n)}"/></body></html>`);
   }
   writeFileSync(`${E}/OEBPS/nav.xhtml`, `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="${lang}" xml:lang="${lang}"><head><meta charset="utf-8"/><title>${esc(title)}</title></head><body>
-<nav epub:type="toc" id="toc"><ol><li><a href="p01.xhtml">${esc(title)}</a></li><li><a href="p${pad(pages[pages.length - 2])}.xhtml">Facts used</a></li></ol></nav>
+<nav epub:type="toc" id="toc"><ol>${(COMIC.toc || [[1, title], [pages[pages.length - 2], 'Facts used']]).map(([n, l]) => `<li><a href="p${pad(n)}.xhtml">${esc(l)}</a></li>`).join('')}</ol></nav>
 <nav epub:type="page-list" hidden=""><ol>${pages.map(n => `<li><a href="p${pad(n)}.xhtml">${n}</a></li>`).join('')}</ol></nav></body></html>`);
   const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z'), id = COMIC.uuid || `urn:uuid:3c6a1e52-9b0f-4d8e-a7c1-${S.padEnd(12, '0').slice(0, 12).replace(/[^0-9a-f]/g, 'a')}`;
   writeFileSync(`${E}/OEBPS/content.opf`, `<?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="bookid" xml:lang="${lang}" prefix="rendition: http://www.idpf.org/vocab/rendition/#">
 <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
 <dc:identifier id="bookid">${id}</dc:identifier><dc:title>${esc(title)}</dc:title><dc:language>${lang}</dc:language>
-<dc:creator>Rishi Katha</dc:creator><dc:publisher>Rishi Katha</dc:publisher>
+<dc:creator>Rishi Katha</dc:creator><dc:publisher>Rishi Katha</dc:publisher>${COMIC.description ? `<dc:description>${esc(COMIC.description)}</dc:description>` : ''}${(COMIC.subjects || []).map(x => `<dc:subject>${esc(x)}</dc:subject>`).join('')}<dc:date>${now.slice(0, 10)}</dc:date><dc:rights>© ${now.slice(0, 4)} Rishi Katha. All rights reserved.</dc:rights>
 <meta property="dcterms:modified">${now}</meta>
 <meta property="rendition:layout">pre-paginated</meta><meta property="rendition:spread">none</meta><meta property="rendition:orientation">portrait</meta>
 <meta name="cover" content="cover-img"/>

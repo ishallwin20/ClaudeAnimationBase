@@ -173,3 +173,20 @@ caption boxes, sound effects.
 - **Keep the plain words for sensitive lines** (owner: "come to my bed" is offensive): use the text's other honest
   wording ("if you still refuse to take me as your husband", 5.20.9).
 
+
+## Release kit (Issue 2, 21 Nov 2026)
+
+- **Metadata in comic.js:** `subtitle` (goes into the PDF title), `description` and `subjects` (EPUB), a fixed `uuid` per issue
+  (keep it for every edition, so stores see an update, not a new book), and `toc` (the EPUB's contents: acts, facts).
+  Rebuild with `node tools/comic.mjs --comic=comics/<slug> --look=ink` (no `--pages`) and run epubcheck 5.1.
+- **The release folder** (`out/comics/<slug>_out/release/`): `CHIRANJEEVI-<n>-<Name>.pdf` (the reader PDF, ~20 MB, the one
+  people download), `-print-hires.pdf` (the master), `.epub`, `.cbz`, the store covers (1600 × 2000 JPEG and the
+  2160 × 2700 PNG), and `preview/`: the free pages as 1080 × 1350 JPEGs, a lettered "End of the free preview" page (the
+  cliffhanger in a caption box, four blurred, padlocked panels from the paid pages with their names, "Read all N pages ·
+  rishikatha.com"), and a preview PDF of the free pages plus that page. Set the PDFs' author/title/keywords (pypdf):
+  Chrome writes only the title.
+- **Trailers for a cute hero lead with the cute:** Issue 2's two cuts both open on Bal Hanuman (one all-baby, one baby
+  → Jambavan → Lanka) because followers love him. A wide panel is too small framed in 9:16: give `framed()` an `h` and
+  let it crop in; never cover-fill 9:16 from a wide close-up (the face blows up past the frame). Story frames: the hook
+  image, the hook line, a poll frame with an empty band for the sticker, the cover with a link pill, and "first N pages
+  free".
