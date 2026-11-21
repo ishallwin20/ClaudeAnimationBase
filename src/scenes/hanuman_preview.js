@@ -69,13 +69,16 @@ const GOD = {
 
 // =================== p1 · cover ===================
 ART.cover = (c, P) => {
-  vgrad(c, P, [[0, '#3A0E1E'], [.35, '#C2321E'], [.62, '#F08A3A'], [.8, '#5A2A3A'], [1, '#160A14']]);
-  redSun(c, P.w * .66, P.h * .23, 250);
-  puffs(c, P.w * .3, P.h * .8, 700, '#7A3A46', 4, 8); puffs(c, P.w * .85, P.h * .84, 600, '#5A2838', 6, 7);
-  ridge(c, P.w, P.h, P.h * .9, 30, '#1C0C16', 2);
+  // the title zone (y > .74) is kept clean: a plain dark field with no shape edges, speed lines or limbs under the
+  // lettering, so the words read on top of the art (owner, 21 Nov: COMIC_GUIDE.md "Lettering sits on clean ground")
+  vgrad(c, P, [[0, '#3A0E1E'], [.32, '#C2321E'], [.56, '#F08A3A'], [.7, '#8A3A3A'], [.76, '#2A1020'], [1, '#12070E']]);
+  redSun(c, P.w * .66, P.h * .22, 240);
+  ridge(c, P.w, P.h, P.h * .68, 26, '#7A3A46', 4, 7); ridge(c, P.w, P.h, P.h * .72, 22, '#4A1E2C', 6, 6);
+  c.fillStyle = '#2A1020'; c.fillRect(0, P.h * .745, P.w, P.h);
+  const g = c.createLinearGradient(0, P.h * .745, 0, P.h); g.addColorStop(0, '#2A1020'); g.addColorStop(1, '#12070E'); c.fillStyle = g; c.fillRect(0, P.h * .745, P.w, P.h * .26);
   bolt(c, [[-20, -30], [90, 110], [60, 180], [190, 300], [160, 360], [280, 470]], 9, 7);
-  speedLines(c, P.w * .42, P.h * .46, 22, 260, 620, 'rgba(255,230,190,.35)', 3, 11, Math.PI * .55, Math.PI * 1.1);
-  baby(c, P.w * .42, P.h * .46, 1.3, .4, { pose: 'leap', arms: [[-2.0, .2], [-1.25, -.1]], legs: [[2.4, .3], [2.0, .25]], expr: 'grin', look: [.8, -.7], red: .7, spark: 1, t: P.t }, lit(DAY(5, -5)));
+  speedLines(c, P.w * .42, P.h * .4, 20, 240, 520, 'rgba(255,230,190,.35)', 3, 11, Math.PI * .8, Math.PI * 1.12);
+  baby(c, P.w * .44, P.h * .4, 1.22, .4, { pose: 'leap', arms: [[-2.0, .2], [-1.25, -.1]], legs: [[2.6, .3], [2.25, .25]], expr: 'grin', look: [.8, -.7], red: .7, spark: 1, t: P.t }, lit(DAY(5, -5)));
 };
 
 // =================== p2 · the question ===================
@@ -127,21 +130,15 @@ function dawnWoods(c, P, o = {}) {
 }
 ART.anjanaLeaves = (c, P) => {
   dawnWoods(c, P, { seed: 5 });
-  // Anjana, small, from behind, walking away into the woods, a basket on her hip (a vanari: the tail)
-  c.save(); c.translate(P.w * .76, P.h * .68); c.scale(.5, .5);
-  const A = '#5A4650';
-  limb(c, [[-10, -40], [-70, -10], [-110, -60], [-100, -120], [-70, -130]], [16, 14, 12, 10, 8], A);
-  fillPath(c, 'M -26 -170 C -50 -150 -56 -110 -46 -60 C -60 0 -78 60 -84 120 L 84 120 C 78 60 60 0 46 -60 C 56 -110 50 -150 26 -170 Z', A);
-  ellipse(c, 0, -205, 30, 36, A); ellipse(c, 0, -240, 20, 16, A);
-  fillPath(c, 'M -30 -220 C -50 -170 -70 -60 -80 40 L -40 40 C -30 -60 -20 -150 -10 -200 Z', mixCol(A, '#000000', .2));
-  limb(c, [[40, -150], [74, -100], [90, -60]], [18, 14, 12], A);
-  fillPath(c, 'M 60 -70 C 64 -40 140 -40 146 -70 L 140 -30 C 130 -10 76 -10 66 -30 Z', '#6E5038');
+  // Anjana, the whole of her: going into the woods with her basket, looking back at him with love
+  c.save(); c.translate(P.w * .78, P.h * .12); c.scale(.305, .305);
+  figure(c, (c) => anjanaFigure(c, { expr: 'calm', open: 'happy', look: [-1, .5], turn: -.35, basket: true, tail: 'up', t: P.t }), lit(DAY()));
   c.restore();
   // the newborn asleep in a nest of leaves in the fork of a tree, close
-  fillPath(c, `M -20 ${P.h * .62} C ${P.w * .2} ${P.h * .58} ${P.w * .4} ${P.h * .7} ${P.w * .55} ${P.h * .82} L ${P.w * .5} ${P.h + 20} L -20 ${P.h + 20} Z`, '#5A3A26');
-  const R = lcg(4); for (let i = 0; i < 30; i++) leaf(c, P.w * (.02 + R() * .45), P.h * (.72 + R() * .14), 22 + R() * 10, R() * 3, ['#5E8A3A', '#4A7A2E', '#7AA048'][i % 3]);
-  baby(c, P.w * .27, P.h * .7, .62, -.5, { pose: 'curl', expr: 'sleep', t: P.t, tail: 'curl' });
-  for (let i = 0; i < 8; i++) leaf(c, P.w * (.04 + R() * .44), P.h * (.86 + R() * .1), 24 + R() * 10, R() * 3, ['#5E8A3A', '#4A7A2E', '#7AA048'][i % 3]);
+  fillPath(c, `M -20 ${P.h * .66} C ${P.w * .2} ${P.h * .62} ${P.w * .4} ${P.h * .74} ${P.w * .55} ${P.h * .86} L ${P.w * .5} ${P.h + 20} L -20 ${P.h + 20} Z`, '#5A3A26');
+  const R = lcg(4); for (let i = 0; i < 30; i++) leaf(c, P.w * (.02 + R() * .45), P.h * (.76 + R() * .12), 22 + R() * 10, R() * 3, ['#5E8A3A', '#4A7A2E', '#7AA048'][i % 3]);
+  baby(c, P.w * .25, P.h * .74, .58, -.5, { pose: 'curl', expr: 'sleep', t: P.t, tail: 'curl' });
+  for (let i = 0; i < 8; i++) leaf(c, P.w * (.04 + R() * .44), P.h * (.88 + R() * .1), 24 + R() * 10, R() * 3, ['#5E8A3A', '#4A7A2E', '#7AA048'][i % 3]);
 };
 ART.babyWail = (c, P) => {
   dawnWoods(c, P, { seed: 8 });

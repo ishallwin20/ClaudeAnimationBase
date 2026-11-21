@@ -52,9 +52,14 @@ caption boxes, sound effects.
 - Positions are in panel units. A number in (0, 1] is a fraction of the panel, so `x: .5, y: .3` is the centre-top.
 - A `tail` points at the speaker. The tool stops it ~100 px past the balloon (130 for thought bubbles), so aim it
   anywhere toward the speaker.
-- Sizes on the phone: 31–33 px words are the floor (a page shows ~390 pt wide). Keep a caption under ~25 words, a
+- Sizes on the phone: 31–33 px words are the target and 27 px the hard floor (a page shows ~390 pt wide). Keep a caption under ~25 words, a
   balloon under ~20. Long speeches split across two panels.
 - Lines in quotes are close paraphrases of the cited verse; nobody says more than the text gives them.
+- `small: true` is 26 px, never less; `tools/comic.mjs` raises any balloon or box `size` under 27 px to 27 (owner,
+  21 Nov: the 19-px boxes "look small on phone"). Only the back-matter `list` boxes may go smaller.
+- `note: true` is a pale-blue aside box that explains a word or a measure (siddha vs sadhu, a yojana); `gift: true` is
+  a gold tag (the boons). A word the reader may not know gets a note the first time it matters.
+- `title` with `font: 'Kalam'` and a small size names people in a panel ("KESARI, his father").
 
 ## Drawing for the Inked look
 
@@ -119,4 +124,33 @@ caption boxes, sound effects.
   ink.
 - **A quote belongs where it's said.** "He would say one day" on p5 confused the owner: narrate early pages, and let
   the character say the line in its own scene (the gem's powers, p40).
+
+## Lessons from Issue 2 (Hanuman), owner's phone review, 21 Nov 2026
+
+- **Lettering sits on clean ground.** On the cover the subtitle ran across a hill's ink outline and the hero's speed
+  lines ended in it, so it looked tangled in the art instead of in front of it. Every title, subtitle and caption that
+  is not in a box needs a plain field under it: no shape edges, speed lines, limbs or outlines inside the lettering's
+  area (a flat colour or a soft gradient is fine). Keep figures and their speed lines above the title zone, end the
+  scenery above it, and check a 1:1 crop of the lettering on every cover and splash.
+- **Name everyone the first time.** The owner couldn't tell which god was which on the boon pages, or who Vishvakarma
+  was. A row of gods, a council, a line-up: give each a name (and who he is, in a few words) and what he does in the
+  scene. Lists read best as one wide row per person (the face on one side, the name, the line and a tag on the other).
+- **Set up every scene's question before it plays.** The vanaras calling out yojanas made no sense without who was
+  asking and why (Sita in Lanka, a hundred yojanas of sea, Angad asking). Before a scene that depends on context, give
+  a page that sets it up; pages may grow.
+- **Introduce a character before he matters.** Jambavan spoke to Hanuman before anyone had said who he was. Give a
+  new character a short panel (who he is, one fact that makes him matter) and then bring him into the story.
+- **Say why a beat matters, don't just state it.** "Indra wasn't even very angry" didn't land. Put the contrast in
+  the words ("The Sun had spared him: he was only a child. Indra, not even very angry, threw the vajra at a newborn").
+- **Show the effect of a curse or a change on the body** (the boy dizzy, spiral eyes, stars) rather than a close-up
+  that needs a caption to read.
+- **One idea per panel when a page is a montage.** A single splash of "the three worlds" mixed gods, a city and a
+  priest into one unreadable picture; three labelled panels (heaven, earth, below) read at once.
+- **Use the same word for the same thing.** Vayu took his *wind* out of the worlds (not "breath"): keep the term the
+  same in every caption that refers to it.
+- **Small faces ink into black "goggles"**: dark irises, kohl and brows merge at panel size. Draw speaking faces at
+  bust k ≥ .4, give small faces lighter irises and brown kohl, or close the eyes (Anjana's fond look).
+- **A snake, a weapon, an animal must read at a glance.** Shiva's snake as a thin green line read as "a weird green
+  thing on his face". Draw it big and in its full shape (the cobra's spread hood, a head with eyes, the tongue),
+  clear of the face.
 

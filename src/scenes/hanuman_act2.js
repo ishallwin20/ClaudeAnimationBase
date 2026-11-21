@@ -18,8 +18,29 @@ ART.shore = (c, P) => {
     bust(c, x, P.h * y, k, { v: Math.floor(R() * 4), expr: ['calm', 'grief', 'calm', 'awe'][i % 4], look: [(R() - .5), .3], turn: (R() - .5) * .6, arms: ['down', 'down'] }, { ...lit(DAY()), tint: ['#2A1A2A', tint] }, vanaraBust);
   }
 };
-const LEAPS = { leap10: [0, 'smile'], leap20: [1, 'calm'], leap30: [2, 'grief'], leap50: [3, 'grief'] };
-for (const [name, [v, e]] of Object.entries(LEAPS)) ART[name] = (c, P) => { dusk(c, P, .62); bust(c, P.w * .5, P.h * .68, .3, { v, expr: e, look: [0, .3], arms: ['down', 'down'], t: P.t }, lit(DAY()), vanaraBust); };
+// the leaders' answers (4.64.3–13): each in his own fur, faces falling as the numbers climb
+const LEAPS = { leap10: [0, 'smile'], leap20: [1, 'calm'], leap30: [2, 'calm'], leap40: [3, 'calm'], leap50: [0, 'grief'], leap60: [1, 'grief'], leap70: [2, 'grief'], leap80: [3, 'grief'] };
+for (const [name, [v, e]] of Object.entries(LEAPS)) ART[name] = (c, P) => { dusk(c, P, .62); bust(c, P.w * .5, P.h * .56, .44, { v, expr: e, look: [0, .3], arms: ['down', 'down'], t: P.t }, lit(DAY()), vanaraBust); };
+ART.leap90 = (c, P) => { dusk(c, P, .62); bust(c, P.w * .25, P.h * .58, .5, { ...JAMB, expr: 'calm', look: [.6, .3], turn: .3 }, lit(DAY()), jambBust); };
+// Angad, Vali's son, the young prince: a band crown, darker gold fur, a green dhoti
+const ANGAD = { pal: { skin: '#C8862E', skinSh: '#985A16', skinDk: '#5A3410', cloth: '#2E7A4A', clothSh: '#1A4A2A' }, headPal: { fur: '#C8862E', furSh: '#985A16', ruff: '#A86A22', kohl: '#5A3418', irisDk: '#6A3A12' } };
+function angadBust(c, o = {}) { devaBust(c, { ...o, pal: ANGAD.pal, head: (cc) => { cc.save(); cc.translate(0, -6); hanHead(cc, { expr: o.expr, look: o.look, turn: o.turn, crown: 'mukut', tilak: false, t: o.t, pal: ANGAD.headPal }); cc.restore(); } }); }
+ART.leap100 = (c, P) => { dusk(c, P, .62); bust(c, P.w * .75, P.h * .58, .5, { expr: 'grief', look: [-.6, .3], turn: -.3, arms: ['down', 'chest'] }, lit(DAY()), angadBust); };
+ART.angadAsks = (c, P) => {
+  dusk(c, P, .55); sand(c, P, .8);
+  for (let i = 0; i < 7; i++) bust(c, P.w * (.42 + i * .09), P.h * (.92 + (i % 2) * .05), .16, { v: i % 4, expr: 'calm', look: [-1, -.3], arms: ['down', 'down'] }, { ...lit(DAY()), tint: ['#2A1A2A', .35] }, vanaraBust);
+  bust(c, P.w * .2, P.h * .5, .5, { expr: 'shout', look: [1, 0], turn: .3, arms: ['down', 'open'] }, lit(DAY()), angadBust);
+};
+ART.searchParty = (c, P) => {
+  vgrad(c, P, [[0, '#7AA8C8'], [.6, '#D8E4D0'], [1, '#6A8A5A']]);
+  ridge(c, P.w, P.h, P.h * .5, 70, '#8A9AB0', 3); ridge(c, P.w, P.h, P.h * .66, 50, '#5E7A5E', 7);
+  for (let i = 0; i < 8; i++) tree(c, P.w * (.04 + i * .13), P.h * .86, P.h * .34, i % 2 ? '#3E6A3E' : '#4A7A42', i + 2, 1.3);
+  ridge(c, P.w, P.h, P.h * .9, 20, '#3A5A32', 9);
+  // vanaras fanning out over the hills, shading their eyes, pointing (the search, Kishkindha 39–42)
+  [[.12, .78, .2, 0, [-.6, -.2]], [.34, .7, .16, 1, [.6, -.4]], [.58, .74, .18, 2, [.6, -.2]], [.82, .64, .13, 3, [-.6, -.4]], [.92, .82, .22, 0, [-.8, -.1]]].forEach(([x, y, k, v, lk], i) =>
+    bust(c, P.w * x, P.h * y, k, { v, expr: i % 2 ? 'awe' : 'calm', look: lk, turn: lk[0] * .4, arms: ['down', i % 2 ? 'point' : 'abhaya'] }, lit(DAY()), vanaraBust));
+  for (let i = 0; i < 7; i++) puffs(c, P.w * (i + .5) / 7, P.h * 1.02, 260, i % 2 ? '#3A5A32' : '#466A3A', i + 30, 6);
+};
 ART.hanAlone = (c, P) => {
   dusk(c, P, .5); sand(c, P, .82);
   const R = lcg(5);
@@ -27,6 +48,30 @@ ART.hanAlone = (c, P) => {
   // a rock apart, Hanuman on it, silent, looking at the sea
   fillPath(c, `M ${P.w * .62} ${P.h + 20} L ${P.w * .66} ${P.h * .74} L ${P.w * .86} ${P.h * .7} L ${P.w * .96} ${P.h + 20} Z`, '#3A3036');
   bust(c, P.w * .78, P.h * 0.635, 0.28, { expr: 'calm', look: [-.6, .2], turn: -.3, arms: ['down', 'down'] }, lit(DAY(-4, -4)), hanBust);
+};
+
+// =================== Jambavan, introduced (4.64.11–16, 4.65.30) ===================
+ART.trivikrama = (c, P) => {
+  // gold flashback: Vishnu as Trivikrama, a giant striding across the worlds; the earth's curve under his feet; the
+  // young bear racing round his foot (no stars: in the Inked look they ink into black dots)
+  vgrad(c, P, [[0, '#2A1A50'], [.45, '#8A4A7A'], [1, '#F0B050']]);
+  glow(c, P.w * .7, P.h * .3, 520, '#FFD27A', .55);
+  fig(c, P.w * .7, P.h * .1, .3, { who: 'ram', crown: 'kirita', tilak: 'namam', expr: 'calm', look: [-.3, .7], legs: [[2.25, .05], [.9, .2]], arms: ['up', 'down'], dhoti: '#F0C030' }, { ...lit(DAY()), tint: ['#FFD27A', .15] }, devaFigure);
+  // the earth's curve
+  const E = `M -40 ${P.h + 40} C ${P.w * .2} ${P.h * .78} ${P.w * .8} ${P.h * .78} ${P.w + 40} ${P.h + 40} Z`;
+  fillPath(c, E, '#3E6A4A'); inside(c, E, () => { for (let i = 0; i < 5; i++) ellipse(c, P.w * (.1 + i * .2), P.h * .93, 60, 16, '#5A8A5A'); });
+  // the young bear, running round the giant's foot, a trail of dust behind him
+  const bx = P.w * .88, by = P.h * .97;
+  speedLines(c, bx + 50, by - 70, 9, 30, 130, 'rgba(255,240,200,.85)', 3, 5, -.25, .25);
+  c.save(); c.translate(bx, by - 1150 * .17); c.scale(-.17, .17);
+  figure(c, (c) => devaFigure(c, { pal: { skin: '#3A3238', skinSh: '#26202A', skinDk: '#141016', skinLt: '#5A5058', cloth: '#8A6A3A', clothSh: '#5A4220' }, dress: 'rishi', build: 1.15, legs: 'run', arms: ['reach', 'up'], dhoti: '#8A6A3A', head: (cc) => jambHead(cc, { expr: 'smile', look: [1, 0], turn: .3 }) }), lit(DAY()));
+  c.restore();
+  c.fillStyle = 'rgba(255,200,120,.1)'; c.fillRect(0, 0, P.w, P.h);
+};
+ART.jambaNow = (c, P) => {
+  dusk(c, P, .58); sand(c, P, .84);
+  for (let i = 0; i < 8; i++) bust(c, P.w * (.5 + i * .065), P.h * (.92 + (i % 2) * .04), .13, { v: i % 4, expr: 'grief', look: [-.5, 0], arms: ['down', 'down'] }, { ...lit(DAY()), tint: ['#2A1A2A', .35] }, vanaraBust);
+  bust(c, P.w * .2, P.h * .5, .5, { ...JAMB, expr: 'calm', look: [.8, .3], turn: .3 }, lit(DAY()), jambBust);
 };
 
 // =================== p18 · Jambavan ===================

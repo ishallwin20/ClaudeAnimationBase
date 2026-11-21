@@ -12,6 +12,39 @@ Uttara 39–40: both are given where they differ. Mahabharata, critical edition 
 
 ---
 
+## Revision, 21 Nov 2026 (the owner's 14 notes): now 56 pages
+
+`comic.js` is the source of truth for the words; the page numbers below this section are the 53-page draft's. What
+changed (new page numbers):
+- p1 cover: the title and subtitle sit on a plain dark field; nothing in the art runs under them.
+- p3 Anjana drawn whole, going into the woods with her basket, looking back at him.
+- p4 every box at full size; a note box: siddhas are sky-beings already perfected, born with powers; sadhus are people
+  on earth still on the path.
+- p6 "The Sun had spared him: he was only a child. Indra, not even very angry, threw the vajra at a newborn."
+  (7.35.30, 7.35.46).
+- p8 "And he took his *wind* with him" (was "breath"); the other captions already say the Wind.
+- p9 the three worlds as three panels: heaven (the gods choking), earth (joints cracking, stiff as wood, no offering,
+  the smoke standing straight), below (the asuras) and "The three worlds looked like hell" (7.35.49–51).
+- pp12–14 the eight boons, one numbered row per god: name, who he is, his words, and a gold "Gift" tag (7.36.10–21,
+  the text's order; Surya teaches the shastras, 36.14; Yama: never ill, 36.16; Brahma and Vishvakarma: long life,
+  36.19–21). Shiva's snake is now a clear cobra round his neck, its hood beside his face.
+- p15 the parents named (KESARI, VAYU, ANJANA: all three forbade him, 7.36.31) with lines of their own.
+- p16 the middle panel: the curse lands and he sits down dizzy (spiral eyes, stars), "He still had all his strength.
+  He just couldn't remember it." (36.33–34).
+- p18 NEW · the search: Ravana took Sita; Sugriva sent the vanaras to the four directions (4.39–42); Angad's party
+  reached the southern sea; Sampati told them Lanka was a hundred yojanas across (4.57.19–23); Angad asks who can leap
+  it (4.64.1–2); a note box on the yojana.
+- p19 the leaps, every leader named: Gaja 10, Gavaksha 20, Gavaya 30, Sharabha 40, Gandhamadana 50, Mainda 60, Dvivida
+  70, Sushena 80 (4.64.3–9), Jambavan 90, "once I could leap farther; now I'm old" (4.64.11–16), Angad 100 "but I
+  can't be sure I'd make it back" (4.64.19).
+- p20 NEW · Jambavan introduced: king of the bears, the oldest; when Vishnu as Trivikrama strode the worlds he circled
+  him (4.64.15) and ran round the earth twenty-one times (4.65.30, *triḥ saptakṛtvaḥ*); now too old; he sees Hanuman
+  sitting apart, silent (4.65.1–2). (The "born from Brahma's yawn" story is NOT in the critical Bala Kanda, so it is
+  left out.)
+- Lettering: no word on any page is smaller than 27 px.
+
+---
+
 ## Why the Ashwatthama preview didn't sell, and what this issue does about it
 
 The funnel (owner, 20 Nov): 140 visitors → 82 swiped past page 1 (59%) → 55 reached the preview's end (67% of them) →

@@ -31,7 +31,7 @@ const COMIC = {
     // ================= FREE PREVIEW (1–8) =================
     // 1 · cover
     pg(FULL, [{ art: 'cover', ink: FACE, note: 'Bal Hanuman, tiny, at full stretch in the sky, one paw reaching for a sun red as a hibiscus that fills the top half. From the top corner a white-violet bolt is already coming.',
-      title: [{ text: 'CHIRANJEEVI · 2', y: .05, size: 40 }, { text: 'HANUMAN', y: .8, size: 132, col: '#FFE7A6' }, { text: 'He could die any day he chose.', y: .88, size: 46, font: 'Kalam' }] }]),
+      title: [{ text: 'CHIRANJEEVI · 2', y: .05, size: 40 }, { text: 'HANUMAN', y: .8, size: 132, col: '#FFE7A6' }, { text: 'He could die any day he chose.', y: .9, size: 48, font: 'Kalam' }] }]),
     // 2 · the question (7.35.1–18)
     pg([[1.15, [1]], [.8, [1.25, 1]], [.8, [1]]], [
       { art: 'valiSugriva', note: 'Flashback in cool blues: Vali, huge, beating Sugriva down on a rocky hill. Behind them a young vanara stands with his fists at his sides and does nothing.',
@@ -39,14 +39,14 @@ const COMIC = {
       { art: 'ramAsks', ink: FACE, note: 'Ram on his throne (right), leaning forward.',
         say: [{ text: 'Vali and Ravana had strength no one could match. Neither was equal to Hanuman.', x: .3, y: .42, w: 300, size: 26, tail: [.62, .4] }] },
       { art: 'ramAsks2', ink: FACE, note: 'Close on Ram: the real question.',
-        say: [{ text: 'So when Vali hunted his friend Sugriva, why didn\'t Hanuman burn him like a dry creeper?', x: .28, y: .45, w: 230, size: 24, tail: [.58, .55] }] },
+        say: [{ text: 'So when Vali hunted his friend Sugriva, why didn\'t Hanuman burn him like a dry creeper?', x: .245, y: .45, w: 230, size: 24, tail: [.58, .55] }] },
       { art: 'hanBowed', ink: FACE, note: 'Hanuman at Ram\'s feet, head bowed, eyes closed. Agastya speaks from off panel.',
         say: [{ text: 'Because he didn\'t know he could.', x: .26, y: .3, w: 340, tail: [-.02, .2] }, { text: 'Listen to what he did as a child.', x: .26, y: .7, w: 340, tail: [-.02, .62] }] },
     ]),
     // 3 · hungry (7.35.19–23)
     pg([[1, [1, 1]], [.9, [1]], [1.05, [1]]], [
       { art: 'anjanaLeaves', ink: FACE, note: 'Dawn on Meru. Anjana kisses the sleeping newborn on his curl and slips away into the woods with a basket.',
-        box: [{ text: 'On Mount Meru, his mother Anjana left him for a moment, to gather fruit.', w: 400 }] },
+        box: [{ text: 'On Mount Meru, his mother Anjana left him for a moment, to gather fruit.', x: 14, y: 14, w: 300 }] },
       { art: 'babyWail', ink: FACE, note: 'He wakes alone on a rock, golden as ripe rice, and cries hard, tiny fists up.',
         box: [{ text: 'He was a newborn. He was hungry.', x: .05, y: .82, w: 380 }], sfx: [{ text: 'WAAAH!', x: .8, y: .6, size: 60, rot: .12 }] },
       { art: 'sunRise', note: 'Over the hills the rising sun, red as a hibiscus. No text.' },
@@ -55,8 +55,9 @@ const COMIC = {
     ]),
     // 4 · the leap (7.35.23–29) · splash
     pg(FULL, [{ art: 'leap', ink: FACE, note: 'Splash: the newborn launched into the sky, the forest dropping away, a trail of torn leaves; the sun ahead. Inset bottom right: Vayu flying behind him, breathing snow.',
-      box: [{ text: 'He jumped at the sun.', x: .05, y: .04, w: 400 }, { text: 'Gods, demons and siddhas watched him go. "Not the Wind, not Garuda, not even the mind moves like this. If this is the baby, what will he be when he\'s grown?"', x: .5, y: .62, w: 470, small: true },
-        { text: 'His father, the Wind, flew behind him, cold as snow, so the sun would not burn him.', x: .5, y: .88, w: 480, small: true }],
+      box: [{ text: 'He jumped at the sun.', x: .05, y: .04, w: 400 }, { text: 'Gods, demons and siddhas watched him go. "Not the Wind, not Garuda, not even the mind moves like this. If this is the baby, what will he be when he\'s grown?"', x: .44, y: .555, w: 560 },
+        { note: true, text: 'SIDDHAS are not sadhus.\nA sadhu is a person on earth, still on the path. A siddha is a being of the sky, already perfected, born with powers.', x: .03, y: .735, w: 440 },
+        { text: 'His father, the Wind, flew behind him, cold as snow, so the sun would not burn him.', x: .5, y: .835, w: 500 }],
       sfx: [{ text: 'WHOOOSH', x: .3, y: .3, size: 96, rot: -.25 }] }]),
     // 5 · the sun · Rahu (7.35.30–42)
     pg([[1.1, [1]], [1, [1, 1]], [.85, [1]]], [
@@ -70,7 +71,7 @@ const COMIC = {
         say: [{ text: 'INDRA! INDRA!', x: .56, y: .3, w: 340, size: 52, tail: [.3, .5] }] },
     ]),
     // 6 · a bigger fruit (7.35.33–46)
-    pg([[1.1, [1]], [1, [1, 1]], [.8, [1]]], [
+    pg([[1.1, [1]], [1, [1, 1]], [.95, [1]]], [
       { art: 'indraRides', note: 'Indra on Airavata, the white four-tusked elephant, gold garland, Rahu flying ahead.',
         box: [{ text: 'Indra, king of the gods, came on his elephant.', w: 420 }], say: [{ text: 'Don\'t be afraid. I\'ll kill it.', x: .2, y: .78, w: 300, tail: [.5, .3] }] },
       { art: 'babyBigger', ink: FACE, note: 'The baby sees Airavata: bigger, whiter, rounder than the sun. Eyes huge, drool.',
@@ -78,7 +79,7 @@ const COMIC = {
       { art: 'babyBlaze', ink: FACE, note: 'He charges, and for a moment his small body blazes like fire.',
         box: [{ text: 'For a moment he blazed like Indra and Agni together.', x: .05, y: .78, w: 400 }] },
       { art: 'vajraLeaves', note: 'Indra\'s hand opens; the vajra leaves it.',
-        box: [{ text: 'Indra wasn\'t even very angry.', x: .55, y: .72, w: 420 }] },
+        box: [{ text: 'The Sun had spared him: he was only a child. Indra, not even very angry, threw the vajra at a newborn.', x: .42, y: .58, w: 580 }] },
     ]),
     // 7 · the vajra (7.35.46–47) · splash
     pg([[2, [1]], [1, [1]]], [
@@ -92,15 +93,21 @@ const COMIC = {
       { art: 'vayuLifts', ink: FACE, note: 'Vayu kneels and lifts the limp child. Grief turning to rage.',
         box: [{ text: 'The Wind was furious with Indra.', w: 360 }] },
       { art: 'vayuCave', note: 'Vayu walks into a cave with the child; grass, banners and flames all bend toward the cave mouth.',
-        box: [{ text: 'He took his son into a cave. And he took his breath with him.', w: 380 }] },
+        box: [{ text: 'He took his son into a cave. And he took his wind with him.', w: 380 }] },
       { art: 'choke', note: 'A rishi at his fire, hands at his throat; a deer on its knees; the fire standing dead straight; a god in the clouds clutching his chest.',
         box: [{ text: 'Out of every living body in the three worlds.', w: 520 }, { text: 'Gods. Demons. Humans. Everything that breathed began to choke.', x: .4, y: .82, w: 600 }] },
     ]),
 
     // ================= Act 1 · The boy who forgot (9–16) =================
-    // 9 · hell (7.35.49–51)
-    pg(FULL, [{ art: 'hell', note: 'Splash: the three worlds without air. Bodies stiff as wood, a gandharva frozen mid-fall, fires out, a city of people standing still as walls.',
-      box: [{ text: 'Their joints cracked. Their bodies went stiff as wood. No offering went up, no prayer.', w: 520 }, { text: 'The three worlds looked like hell.', x: .5, y: .88, w: 480 }] }]),
+    // 9 · hell (7.35.49–51): three panels, the three worlds
+    pg([[1, [1]], [1, [1]], [1, [1]]], [
+      { art: 'hellHeaven', ink: FACE, note: 'Heaven: the gods on their clouds, hands at their throats, eyes bulging; a gandharva dropping his veena.',
+        box: [{ text: 'In heaven, the gods couldn\'t breathe.', x: .03, y: .06, w: 420 }] },
+      { art: 'hellEarth', ink: FACE, note: 'Earth: a rishi at a dead fire, choking; villagers frozen mid-step behind; a cow on its knees.',
+        box: [{ text: 'On earth, joints cracked. Bodies went stiff as wood. No offering went up, no prayer.', x: .03, y: .06, w: 440 }] },
+      { art: 'hellBelow', ink: FACE, note: 'Below: the asuras in their dark halls, choking too; the lamps burning dead straight.',
+        box: [{ text: 'Below the earth, even the asuras choked.', x: .03, y: .06, w: 420 }, { text: 'The three worlds looked like hell.', x: .5, y: .8, w: 500 }] },
+    ]),
     // 10 · to Brahma (7.35.52–63)
     pg([[1.1, [1]], [1, [1]], [.7, [1]]], [
       { art: 'godsBrahma', note: 'The gods, bellies swollen, gasping, at Brahma\'s lotus; gandharvas, asuras, men behind.',
@@ -115,51 +122,75 @@ const COMIC = {
       { art: 'caveLap', ink: FACE, note: 'The cave: Vayu sits with the child in his lap; the child glows like sun, fire and gold. Brahma and every god crowd the mouth.' },
       { art: 'vayuBows', note: 'Vayu, holding the boy, falls at Brahma\'s feet.' },
       { art: 'brahmaTouch', ink: FACE, note: 'Brahma\'s hand on the small head. The eyes open.',
-        box: [{ text: 'At one touch the child came back, like a crop given water.', x: .04, y: .82, w: 460, small: true }] },
+        box: [{ text: 'At one touch the child came back, like a crop given water.', x: .04, y: .74, w: 470, small: true }] },
       { art: 'windReturns', note: 'The wind rushes out of the cave: grass, cloth, hair streaming; people gasping, laughing.',
         box: [{ text: 'Seeing his son breathe, the Wind moved through every living thing again.', w: 560 }] },
     ]),
-    // 12 · the boons, 1 (7.36.7–16)
-    pg([[.7, [1]], [1, [1, 1]], [1, [1, 1]]], [
+    // 12–14 · the eight boons (7.36.7–25): one numbered row per god: his name, who he is, his words and the gift
+    pg([[.8, [1]], [1, [1]], [1, [1]], [1, [1]]], [
       { art: 'brahmaAsks', ink: FACE, note: 'Brahma, the boy on Vayu\'s shoulder, the gods around.',
         say: [{ text: 'This child will do work for you all. Give him boons.', x: .48, y: .4, w: 380, tail: [.25, .5] }] },
-      { art: 'boonIndra', ink: FACE, note: 'Indra with a lotus garland.',
-        say: [{ text: 'My vajra broke his jaw, his hanu. He will be called Hanuman. My vajra will never kill him.', x: .5, y: .2, w: 440, size: 24, tail: [.5, .46] }] },
-      { art: 'boonSurya', ink: FACE, note: 'Surya, his light pouring into the child.',
-        say: [{ text: 'A hundredth of my own light. And when he\'s old enough, I will teach him everything.', x: .5, y: .2, w: 440, size: 24, tail: [.5, .46] }] },
-      { art: 'boonVaruna', ink: FACE, note: 'Varuna with his noose and water.',
-        say: [{ text: 'No noose of mine, no water will kill him.', x: .5, y: .2, w: 440, size: 24, tail: [.5, .46] }] },
-      { art: 'boonYama', ink: FACE, note: 'Yama with his staff.',
-        say: [{ text: 'My staff won\'t touch him. He\'ll never be ill.', x: .5, y: .2, w: 440, size: 24, tail: [.5, .46] }] },
+      { art: 'boonIndra', ink: FACE, note: 'Indra, king of the gods.',
+        title: [{ text: '1 · INDRA', x: 0.6, y: .13, size: 46, col: '#FFE7A6' }, { text: 'king of the gods', x: 0.6, y: .28, size: 30, font: 'Kalam' }],
+        say: [{ text: 'My vajra broke his jaw, his hanu. So he will be called Hanuman.', x: 0.6, y: .55, w: 600, size: 29, tail: [0.3, .42] }],
+        box: [{ gift: true, text: 'Gift: a name, and the vajra can\'t kill him', x: 0.3, y: .76, w: 620, size: 28 }] },
+      { art: 'boonSurya', ink: FACE, note: 'Surya, the Sun.',
+        title: [{ text: '2 · SURYA', x: 0.4, y: .13, size: 46, col: '#FFE7A6' }, { text: 'the Sun', x: 0.4, y: .28, size: 30, font: 'Kalam' }],
+        say: [{ text: 'A hundredth of my own light. And when he\'s old enough, I\'ll teach him everything.', x: 0.4, y: .55, w: 600, size: 29, tail: [0.7, .42] }],
+        box: [{ gift: true, text: 'Gift: the Sun\'s light, and every shastra', x: 0.1, y: .76, w: 620, size: 28 }] },
+      { art: 'boonVaruna', ink: FACE, note: 'Varuna, lord of the waters.',
+        title: [{ text: '3 · VARUNA', x: 0.6, y: .13, size: 46, col: '#FFE7A6' }, { text: 'lord of the waters', x: 0.6, y: .28, size: 30, font: 'Kalam' }],
+        say: [{ text: 'No noose of mine, no water will ever kill him.', x: 0.6, y: .55, w: 600, size: 29, tail: [0.3, .42] }],
+        box: [{ gift: true, text: 'Gift: no death by water or noose', x: 0.3, y: .76, w: 620, size: 28 }] },
     ]),
-    // 13 · the boons, 2 (7.36.17–25)
-    pg([[1, [1, 1]], [1, [1, 1]], [1.1, [1]]], [
-      { art: 'boonKubera', ink: FACE, note: 'Kubera with his mace.', say: [{ text: 'My mace won\'t kill him.', x: .5, y: .22, w: 340, size: 26, tail: [.5, .44] }] },
-      { art: 'boonShiva', ink: FACE, note: 'Shiva with the trishul.', say: [{ text: 'Neither I nor my weapons.', x: .5, y: .22, w: 340, size: 26, tail: [.5, .44] }] },
-      { art: 'boonBrahma', ink: FACE, note: 'Brahma.', say: [{ text: 'No weapon of mine.', x: .5, y: .22, w: 340, size: 26, tail: [.5, .44] }] },
-      { art: 'boonVishva', ink: FACE, note: 'Vishvakarma with his tools.', say: [{ text: 'Nothing I ever forged.', x: .5, y: .22, w: 340, size: 26, tail: [.5, .44] }] },
+    pg([[1, [1]], [1, [1]], [1, [1]], [1, [1]]], [
+      { art: 'boonYama', ink: FACE, note: 'Yama, lord of death.',
+        title: [{ text: '4 · YAMA', x: 0.4, y: .13, size: 46, col: '#FFE7A6' }, { text: 'lord of death', x: 0.4, y: .28, size: 30, font: 'Kalam' }],
+        say: [{ text: 'My staff won\'t touch him. He\'ll never be ill.', x: 0.4, y: .55, w: 600, size: 29, tail: [0.7, .42] }],
+        box: [{ gift: true, text: 'Gift: safe from Death\'s staff, never ill', x: 0.1, y: .76, w: 620, size: 28 }] },
+      { art: 'boonKubera', ink: FACE, note: 'Kubera, lord of wealth.',
+        title: [{ text: '5 · KUBERA', x: 0.6, y: .13, size: 46, col: '#FFE7A6' }, { text: 'lord of wealth', x: 0.6, y: .28, size: 30, font: 'Kalam' }],
+        say: [{ text: 'My mace won\'t kill him in battle.', x: 0.6, y: .55, w: 600, size: 29, tail: [0.3, .42] }],
+        box: [{ gift: true, text: 'Gift: safe from Kubera\'s mace', x: 0.3, y: .76, w: 620, size: 28 }] },
+      { art: 'boonShiva', ink: FACE, note: 'Shiva, Mahadeva, the great god.',
+        title: [{ text: '6 · SHIVA', x: 0.4, y: .13, size: 46, col: '#FFE7A6' }, { text: 'Mahadeva, the great god', x: 0.4, y: .28, size: 30, font: 'Kalam' }],
+        say: [{ text: 'Neither I nor my weapons will ever kill him.', x: 0.4, y: .55, w: 600, size: 29, tail: [0.7, .42] }],
+        box: [{ gift: true, text: 'Gift: safe from Shiva and his weapons', x: 0.1, y: .76, w: 620, size: 28 }] },
+      { art: 'boonBrahma', ink: FACE, note: 'Brahma, the creator.',
+        title: [{ text: '7 · BRAHMA', x: 0.6, y: .13, size: 46, col: '#FFE7A6' }, { text: 'the creator', x: 0.6, y: .28, size: 30, font: 'Kalam' }],
+        say: [{ text: 'No Brahma-weapon will kill him. He\'ll live long.', x: 0.6, y: .55, w: 600, size: 29, tail: [0.3, .42] }],
+        box: [{ gift: true, text: 'Gift: safe from Brahma\'s weapons, long life', x: 0.3, y: .76, w: 620, size: 28 }] },
+    ]),
+    pg([[1, [1]], [1.6, [1]]], [
+      { art: 'boonVishva', ink: FACE, note: 'Vishvakarma, architect of the gods, who forged their weapons.',
+        title: [{ text: '8 · VISHVAKARMA', x: 0.4, y: .13, size: 44, col: '#FFE7A6' }, { text: 'architect of the gods, who forged their weapons', x: 0.4, y: .28, size: 26, font: 'Kalam' }],
+        say: [{ text: 'Nothing I ever forged will kill him. He\'ll live long.', x: 0.4, y: .55, w: 600, size: 29, tail: [0.7, .42] }],
+        box: [{ gift: true, text: 'Gift: safe from every weapon he forged', x: 0.1, y: .76, w: 620, size: 28 }] },
       { art: 'boonEnd', ink: FACE, note: 'Brahma to Vayu; the boy on Vayu\'s shoulder, grinning hugely.',
-        say: [{ text: 'Your son will be a terror to his enemies. Unconquerable. He will take any form he wants and go anywhere.', x: .48, y: .3, w: 460, tail: [.22, .4] }] },
+        box: [{ text: 'Eight gods. Eight gifts.', x: .34, y: .03, w: 400 }],
+        say: [{ text: 'Your son will be a terror to his enemies. Unconquerable. He will take any form he wants and go anywhere.', x: .5, y: .3, w: 460, tail: [.22, .4] }] },
     ]),
-    // 14 · trouble (7.36.28–31)
-    pg([[1, [1, 1]], [1, [1]], [.4, [1]]], [
+    // trouble (7.36.28–31: Kesari, Vayu and Anjana forbade him, 36.31)
+    pg([[1, [1, 1]], [1.05, [1]], [.4, [1]]], [
       { art: 'ladle', ink: FACE, note: 'A forest ashram. The boy flips a rishi\'s ladle into the air; sacrificial pots flying.', sfx: [{ text: 'CLANG!', x: .7, y: .2, size: 60, rot: .2 }] },
       { art: 'barkSwing', ink: FACE, note: 'He swings on a line of drying bark-cloth until it tears. A rishi\'s face goes red.', sfx: [{ text: 'RRRIP', x: .3, y: .2, size: 56, rot: -.1 }] },
       { art: 'parentsNo', ink: FACE, note: 'Kesari, Vayu and Anjana, all three wagging fingers. The boy already gone; only a tail tip in frame.',
-        say: [{ text: 'NO!', x: .62, y: .14, w: 200, size: 56, tail: [.5, .3] }] },
+        say: [{ text: 'Hanuman! Leave the rishis\' things alone!', x: .19, y: .17, w: 300, size: 30, tail: [.2, .4] }, { text: 'Come back here, right now!', x: .81, y: .17, w: 280, size: 30, tail: [.76, .4] }],
+        title: [{ text: 'KESARI, his father', x: .2, y: .93, size: 28, font: 'Kalam' }, { text: 'VAYU, the Wind', x: .48, y: .93, size: 28, font: 'Kalam' }, { text: 'ANJANA, his mother', x: .77, y: .93, size: 28, font: 'Kalam' }] },
       { art: 'stripDark', note: 'Black strip.',
-        box: [{ text: 'Brahma had made him safe from any rishi\'s curse. So they put up with him. Again. And again.', x: 24, y: 14, w: 900 }] },
+        box: [{ text: 'All three told him no. He did it anyway. And Brahma had made him safe from any rishi\'s curse, so the rishis put up with him. Again. And again.', x: 24, y: 12, w: 980 }] },
     ]),
-    // 15 · the curse (7.36.32–34)
+    // the curse (7.36.32–34)
     pg([[1.1, [1]], [.9, [1]], [1, [1]]], [
       { art: 'rishisCurse', note: 'The rishis of Bhrigu\'s and Angiras\'s lines, hands raised.',
         box: [{ text: 'Then they lost patience. Only a little.', w: 380 }],
         say: [{ text: 'You trouble us because you trust your strength. Then you will not know it. For a long, long time.', x: .68, y: .27, w: 440, tail: [.42, .45] }] },
-      { art: 'eyesDim', ink: FACE, note: 'Close: the boy\'s eyes. The gold light in them goes out.' },
+      { art: 'dizzy', ink: FACE, note: 'The boy sits down hard, head spinning: spiral eyes, little stars circling, his gold glow drifting off him.',
+        box: [{ text: 'He still had all his strength. He just couldn\'t remember it.', x: .03, y: .08, w: 400 }] },
       { art: 'gentle', ink: FACE, note: 'The boy walking gently past the same ashram, carrying a pot of water for them.',
         box: [{ text: 'After that he went through the ashrams gently.', w: 420 }] },
     ]),
-    // 16 · the answer (7.36.38–43)
+    // the answer (7.36.38–43)
     pg([[1, [1]], [1, [1]], [.8, [1]]], [
       { art: 'valiAgain', note: 'The p2 flashback, understood: Vali beating Sugriva; young Hanuman still, fists clenched, nothing coming.',
         box: [{ text: 'So when Vali drove out Sugriva, his closest friend, Hanuman just stood there. He didn\'t know what he was.', w: 560 }] },
@@ -169,16 +200,39 @@ const COMIC = {
         box: [{ text: 'But one day, someone reminded him.', x: .05, y: .4, w: 440 }] },
     ]),
 
-    // ================= Act 2 · Remember (17–21) =================
-    // 17 · the shore (4.64)
-    pg([[1.2, [1]], [1, [1, 1, 1, 1]], [1, [1]]], [
+    // ================= Act 2 · Remember =================
+    // the search (Kishkindha 40–58; 4.64.1–2)
+    pg([[1.1, [1]], [1, [1]], [1, [1]]], [
+      { art: 'searchParty', note: 'Vanaras fanning out over forest and mountains, searching.',
+        box: [{ text: 'Years later, Ravana, king of Lanka, carried off Ram\'s wife Sita. Sugriva sent the vanaras to search the whole earth for her.', w: 600 }] },
       { art: 'shore', note: 'The southern ocean at dusk, endless. A vast army of vanaras on the beach.',
-        box: [{ text: 'Years later. Sita had been taken across this sea: a hundred yojanas of water to Lanka.', w: 560 }] },
-      { art: 'leap10', note: 'A vanara.', say: [{ text: 'Ten yojanas.', x: .5, y: .2, w: 200, tail: [.5, .5] }] },
-      { art: 'leap20', note: 'Another.', say: [{ text: 'Twenty.', x: .5, y: .2, w: 180, tail: [.5, .5] }] },
-      { art: 'leap30', note: 'Another.', say: [{ text: 'Thirty.', x: .5, y: .2, w: 180, tail: [.5, .5] }] },
-      { art: 'leap50', note: 'Another, faces falling.', say: [{ text: 'Fifty.', x: .5, y: .2, w: 180, tail: [.5, .5] }] },
-      { art: 'hanAlone', ink: FACE, note: 'Far from them, alone on a rock, Hanuman sits silent.' },
+        box: [{ text: 'The party that went south, led by Prince Angad, reached the sea. An old vulture, Sampati, told them where she was: Lanka, an island a hundred yojanas across the water.', w: 640 }] },
+      { art: 'angadAsks', ink: FACE, note: 'Angad, the young prince, turning to the army.',
+        say: [{ text: 'Who among us can leap a hundred yojanas?', x: .64, y: .34, w: 420, tail: [.36, .42] }],
+        box: [{ note: true, text: 'A yojana is a measure of distance: several kilometres. A hundred of them is a long way over open sea.', x: .42, y: .66, w: 570 }] },
+    ]),
+    // the leaps (4.64.3–19)
+    pg([[.3, [1]], [1, [1, 1, 1, 1]], [1, [1, 1, 1, 1]], [1.15, [1, 1]]], [
+      { art: 'stripDark', note: 'Black strip.', box: [{ text: 'One by one, the leaders said how far each could leap.', x: 24, y: 12, w: 980 }] },
+      { art: 'leap10', ink: FACE, note: 'Gaja.', say: [{ text: 'Ten yojanas.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'GAJA', x: .5, y: .92, size: 32, col: '#FFE7A6' }] },
+      { art: 'leap20', ink: FACE, note: 'Gavaksha.', say: [{ text: 'Twenty.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'GAVAKSHA', x: .5, y: .92, size: 32, col: '#FFE7A6' }] },
+      { art: 'leap30', ink: FACE, note: 'Gavaya.', say: [{ text: 'Thirty.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'GAVAYA', x: .5, y: .92, size: 32, col: '#FFE7A6' }] },
+      { art: 'leap40', ink: FACE, note: 'Sharabha.', say: [{ text: 'Forty.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'SHARABHA', x: .5, y: .92, size: 32, col: '#FFE7A6' }] },
+      { art: 'leap50', ink: FACE, note: 'Gandhamadana.', say: [{ text: 'Fifty.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'GANDHAMADANA', x: .5, y: .92, size: 23, col: '#FFE7A6' }] },
+      { art: 'leap60', ink: FACE, note: 'Mainda.', say: [{ text: 'Sixty.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'MAINDA', x: .5, y: .92, size: 32, col: '#FFE7A6' }] },
+      { art: 'leap70', ink: FACE, note: 'Dvivida.', say: [{ text: 'Seventy.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'DVIVIDA', x: .5, y: .92, size: 32, col: '#FFE7A6' }] },
+      { art: 'leap80', ink: FACE, note: 'Sushena.', say: [{ text: 'Eighty.', x: .5, y: .17, w: 220, size: 30, tail: [.5, .4] }], title: [{ text: 'SUSHENA', x: .5, y: .92, size: 32, col: '#FFE7A6' }] },
+      { art: 'leap90', ink: FACE, note: 'Jambavan, old.', say: [{ text: 'Ninety. Once I could leap farther. Now I\'m old.', x: .6, y: .22, w: 250, size: 30, tail: [.4, .42] }], title: [{ text: 'JAMBAVAN', x: .5, y: .92, size: 34, col: '#FFE7A6' }] },
+      { art: 'leap100', ink: FACE, note: 'Angad.', say: [{ text: 'A hundred. But I can\'t be sure I\'d make it back.', x: .4, y: .22, w: 250, size: 30, tail: [.6, .42] }], title: [{ text: 'ANGAD', x: .5, y: .92, size: 34, col: '#FFE7A6' }] },
+    ]),
+    // Jambavan (4.64.11–16, 4.65.30; 4.65.1–2)
+    pg([[1.2, [1]], [1, [1]], [1, [1]]], [
+      { art: 'trivikrama', note: 'Gold flashback: Vishnu as Trivikrama, a giant striding across the worlds; a young bear racing round his foot.',
+        box: [{ text: 'Jambavan, king of the bears, was the oldest in the army. Ages ago, when Vishnu grew into Trivikrama and strode across the worlds, young Jambavan ran around him, and around the whole earth, twenty-one times.', x: .03, y: .04, w: 560 }] },
+      { art: 'jambaNow', ink: FACE, note: 'Jambavan now: old, grey, leaning on his staff, looking across the army.',
+        box: [{ text: 'Now he was too old to leap that far. But he remembered things everyone else had forgotten.', x: .45, y: .08, w: 520 }] },
+      { art: 'hanAlone', ink: FACE, note: 'Far from them, alone on a rock, Hanuman sits silent.',
+        box: [{ text: 'And he saw Hanuman, sitting apart from them all, saying nothing.', w: 460 }] },
     ]),
     // 18 · Jambavan (4.65.1–28)
     pg([[1, [1]], [1, [1, 1]], [1, [1]]], [
@@ -372,7 +426,7 @@ const COMIC = {
         say: [{ text: 'Here, they sing his deeds to me.', x: .3, y: .15, w: 380, tail: [.45, .5] }] },
     ]),
     pg(FULL, [{ art: 'lastPage', ink: FACE, note: 'The same old eyes, closed, smiling; the young sun rising red behind the Himalaya.',
-      box: [{ text: 'He asked to live as long as Ram\'s story is told.', x: .08, y: .08, w: 560 }, { text: 'You just read fifty pages of it.', x: .4, y: .86, w: 560 }] }]),
+      box: [{ text: 'He asked to live as long as Ram\'s story is told.', x: .08, y: .08, w: 560 }, { text: 'You just read fifty-three pages of it.', x: .4, y: .86, w: 560 }] }]),
 
     // ================= back matter =================
     pg(FULL, [{ art: 'paper', note: 'Plain dark page.',
@@ -381,8 +435,8 @@ const COMIC = {
         '• Ram\'s question, Agastya\'s answer: 7.35.1–18 · the birth, the leap, Vayu\'s snow: 7.35.19–29\n' +
         '• The Sun spares him; Rahu; Indra on Airavata; the vajra; the left jaw: 7.35.30–47\n' +
         '• The Wind stops; the worlds like hell; Brahma; the cave: 7.35.48–65\n' +
-        '• Revived; the boons and the name: 7.36.1–25 · the ashrams, the curse: 7.36.28–34 · the answer: 7.36.38–43\n' +
-        '• The shore: 4.64 · Jambavan, the death-at-will boon: 4.65.1–35 · he grows: 4.66.1–7\n' +
+        '• Revived; the eight boons and the name: 7.36.1–25 · the ashrams, Kesari, Vayu and Anjana forbid him: 7.36.28–31 · the curse: 7.36.32–34 · the answer: 7.36.38–43\n' +
+        '• The search parties: 4.39–42 · Sampati: Lanka, a hundred yojanas away: 4.57.19–23 · Angad asks; each leader\'s leap, Jambavan\'s 90, Angad\'s 100: 4.64.1–19 · Jambavan round Trivikrama: 4.64.15, 4.65.30 · the death-at-will boon: 4.65.1–35 · he grows: 4.66.1–7\n' +
         '• Mahendra: 5.1.10–21 · Simhika: 5.1.166–179 · Lanka: 5.3.34, 5.10.10 · Ravana\'s threat: 5.20.8–9\n' +
         '• The ring: 5.34.2–4 · the jewel: 5.36.52 · the grove, her tree spared, the kinkaras, the war cry: 5.39–41 · Jambumali, the ministers\' sons, the generals: 5.42–44\n' +
         '• Aksha: 5.45 · Indrajit\'s Brahma weapon: 5.46.37–45 · the crystal throne: 5.47.9 · "a messenger is never killed": 5.50 · the tail: 5.51.3–7 · Sita\'s prayer: 5.51.24–27 · the fire cold as frost: 5.51.29–30\n' +

@@ -190,7 +190,6 @@ function devaHead(c, o = {}) {
     strokePath(c, 'M -46 -130 Q 0 -144 46 -130', '#6A2A1A', 9);
     fillPath(c, `M -78 -14 C -86 -80 -50 -102 0 -102 C 50 -102 86 -80 78 -14 C 70 -40 50 -60 0 -64 C -50 -60 -70 -40 -78 -14 Z`, S.hair);
     if (o.moon) { const M = 'M 26 -170 C 60 -176 80 -150 74 -120 C 66 -142 48 -156 26 -170 Z'; fillPath(c, M, '#F6F2E0'); strokePath(c, M, '#A8A490', 2.5); }
-    if (o.snake) { limb(c, [[-70, -40], [-84, -10], [-70, 20], [-40, 30]], [16, 16, 14, 10], '#3A7A4A'); ellipse(c, -40, 30, 12, 9, '#3A7A4A'); ellipse(c, -36, 28, 2.5, 2.5, '#FFE04A'); }
   }
   c.restore();
 }
@@ -306,6 +305,34 @@ function devaBust(c, o = {}) {
   c.save(); c.translate(0, 0);
   if (o.head) o.head(c, o); else { c.save(); c.translate(0, 0); devaHead(c, { ...o, neck: false }); c.restore(); }
   c.restore();
+  if (o.snake) shivaSnake(c, o);
+}
+// Shiva's snake (Vasuki): coiled once round the neck below the chin, its hood raised beside his face on screen left,
+// looking out: a clear cobra (hood with the spectacle mark, eyes, a forked tongue), never a line across the face.
+// Drawn after the head, in bust units (bodyK applied as the body is).
+function shivaSnake(c, o = {}) {
+  const G = '#3E8A4A', Gs = '#245A30', Gd = '#123A1C', B = '#D8E0A0', bk = o.bodyK ?? .82, side = o.snakeSide ?? -1;
+  c.save(); c.translate(0, 120); c.scale(bk * side * -1, bk); c.translate(0, -120);
+  // the coil round the neck: the back half, then the front half over the throat
+  const C1 = 'M 64 168 C 40 150 -40 150 -64 168', C2 = 'M -70 176 C -40 212 40 212 70 176';
+  strokePath(c, C1, Gd, 34); strokePath(c, C1, Gs, 26);
+  strokePath(c, C2, Gd, 36); strokePath(c, C2, G, 28); strokePath(c, 'M -56 186 C -30 206 30 206 56 186', rgba(B, .7), 6);
+  for (let i = -3; i <= 3; i++) strokePath(c, `M ${i * 18} ${197 + Math.abs(i) * -3} l 6 -12`, rgba(Gd, .6), 2.5);
+  // the body rising from the shoulder to the hood (screen left of the face)
+  const R = [[-70, 176], [-124, 172], [-168, 146], [-188, 108], [-190, 80]];
+  limb(c, R, [36, 34, 32, 30, 28], Gd); limb(c, R, [28, 26, 24, 22, 20], G);
+  strokePath(c, 'M -112 180 C -150 168 -176 140 -182 100', rgba(B, .8), 7);
+  // the hood, spread and facing us: a wide spade, the pale belly scales down its middle, the head on top
+  const H = 'M -204 104 C -232 62 -276 20 -276 -32 C -276 -84 -238 -116 -190 -120 C -142 -116 -104 -84 -104 -32 C -104 20 -148 62 -176 104 Z';
+  fillPath(c, H, G);
+  inside(c, H, () => { shade(c, H, -190, -60, -270, 60, Gs, .5); const BL = ellP(-190, -4, 32, 80); fillPath(c, BL, B); for (let y = -70; y < 76; y += 15) strokePath(c, `M -220 ${y} Q -190 ${y + 6} -160 ${y}`, rgba(Gs, .7), 2.5); });
+  strokePath(c, H, Gd, 4);
+  // the head, raised above the hood and looking at us: big yellow eyes, a forked red tongue
+  const HD = 'M -246 -136 C -252 -190 -128 -190 -134 -136 C -138 -102 -168 -90 -190 -90 C -212 -90 -242 -102 -246 -136 Z';
+  fillPath(c, HD, G); inside(c, HD, () => { ellipse(c, -190, -168, 36, 10, rgba('#7ACA7A', .8)); ellipse(c, -190, -104, 24, 8, rgba(B, .9)); }); strokePath(c, HD, Gd, 4.5);
+  for (const x of [-214, -166]) { ellipse(c, x, -138, 16, 15, '#FFE04A'); strokePath(c, ellP(x, -138, 16, 15), Gd, 3.5); ellipse(c, x, -138, 4.5, 11, '#141008'); ellipse(c, x - 5, -143, 3, 3, '#FFFFFF'); }
+  strokePath(c, 'M -190 -92 L -190 -62 M -190 -62 L -201 -48 M -190 -62 L -179 -48', '#E02A2A', 4.5);
+  c.restore();
 }
 // Rahu: a head with no body, the neck trailing into smoke
 function rahuHead(c, o = {}) {
@@ -412,12 +439,41 @@ function anjanaHead(c, o = {}) {
   c.save(); c.scale(.92, 1.02);
   // the bun and a braid of flowers behind
   fillPath(c, ellP(0, -100, 70, 50), '#3A2414'); for (let i = -2; i <= 2; i++) ellipse(c, i * 26, -136, 10, 10, '#FFFFFF');
-  balHead(c, { expr: o.expr || 'calm', look: o.look, turn: o.turn, tears: o.tears, t: o.t, curl: false, pal: { fur: '#D08A3A', furSh: '#A0621E', furDk: '#6E3E10', furLt: '#F0B868', ...(o.pal || {}) } });
+  balHead(c, { expr: o.expr || 'calm', open: o.open, look: o.look, turn: o.turn, tears: o.tears, t: o.t, curl: false, pal: { fur: '#D08A3A', furSh: '#A0621E', furDk: '#6E3E10', furLt: '#F0B868', eye: '#7A4A22', iris: '#B87A3A', irisLt: '#E8B868', lid: '#5A3018', ...(o.pal || {}) } });
   for (const s of [-1, 1]) { ellipse(c, s * 104, 52, 9, 9, '#F0B83A'); ellipse(c, s * 104, 70, 6, 8, '#F0B83A'); }
   c.strokeStyle = '#F0B83A'; c.lineWidth = 4; c.beginPath(); c.arc((o.turn || 0) * 22 + 14, 34, 9, 0, TAU); c.stroke();
   c.restore();
 }
 
+// Anjana's whole figure: anjanaBust on a long sari skirt to the ankles (pleats in front, a gold border), small feet
+// below the hem, her tail behind. Head at (0, 0), the soles at ~1150. o: anjanaBust's options, plus tail ('curl' |
+// 'up' | false) and basket (true: a fruit basket on her near hip, held by the near arm 'hip').
+const ANJ = { skin: '#D08A3A', skinSh: '#A0621E', skinDk: '#6E3E10', skinLt: '#F0B868', cloth: '#C8302E', clothSh: '#8A1A1A', gold: '#F0B83A' };
+function anjanaFigure(c, o = {}) {
+  if (o.tail !== false) { const T = o.tail === 'up' ? [[0, 640], [150, 680], [260, 560], [270, 380], [220, 300], [180, 330]] : [[0, 660], [170, 720], [300, 700], [360, 600], [330, 520], [290, 550]]; limb(c, T, [40, 36, 32, 26, 20, 14], ANJ.skinDk); limb(c, T, [32, 28, 24, 20, 15, 10], ANJ.skin); }
+  const waist = (c) => {
+    // in devaBust's body space (scaled .82 about y 120): the hem at ~1330 lands at the ankles
+    for (const s of [-1, 1]) { const F = `M ${s * 50 - 40} 1318 C ${s * 50 - 44} 1350 ${s * 50 - 20} 1366 ${s * 50 + s * 40} 1364 C ${s * 50 + s * 64} 1360 ${s * 50 + s * 60} 1336 ${s * 50 + s * 30} 1318 Z`; fillPath(c, F, ANJ.skin); strokePath(c, F, ANJ.skinDk, 3); strokePath(c, `M ${s * 50 - 30} 1330 L ${s * 50 + s * 30} 1330`, ANJ.gold, 4); }
+    const SK = 'M -150 560 C -160 760 -200 1060 -214 1330 C -120 1350 120 1350 214 1330 C 200 1060 160 760 150 560 C 60 580 -60 580 -150 560 Z';
+    fillPath(c, SK, ANJ.cloth);
+    inside(c, SK, () => {
+      shade(c, SK, 120, 600, -200, 1300, ANJ.clothSh, .45);
+      for (const x of [-20, 10, 40, 70]) strokePath(c, `M ${x} 600 C ${x + 6} 900 ${x - 4} 1100 ${x + x * .2} 1340`, rgba(ANJ.clothSh, .9), 4);   // the pleats
+      fillPath(c, 'M -230 1290 C -120 1312 120 1312 230 1290 L 230 1360 L -230 1360 Z', ANJ.gold);
+      fillPath(c, 'M -160 560 C -60 580 60 580 160 560 L 160 600 C 60 620 -60 620 -160 600 Z', ANJ.gold);
+    });
+    strokePath(c, SK, ANJ.clothSh, 3);
+  };
+  anjanaBust(c, { ...o, waist, arms: o.arms || ['down', o.basket ? 'hip' : 'down'] });
+  if (o.basket) {   // a woven basket of fruit on the near hip
+    c.save(); c.translate(178, 520);
+    const BK = 'M -90 -20 C -96 60 -60 96 0 98 C 60 96 96 60 90 -20 Z';
+    for (const [x, y, col] of [[-50, -30, '#E8402A'], [0, -44, '#F2B030'], [46, -28, '#7AA83A'], [-20, -12, '#F2B030'], [28, -10, '#E8402A']]) { ellipse(c, x, y, 30, 28, col); strokePath(c, ellP(x, y, 30, 28), rgba('#3A1A0A', .7), 2.5); }
+    fillPath(c, BK, '#B8864A'); inside(c, BK, () => { for (let y = -10; y < 100; y += 18) strokePath(c, `M -100 ${y} Q 0 ${y + 16} 100 ${y}`, '#7A5226', 4); for (let x = -80; x <= 80; x += 26) strokePath(c, `M ${x} -20 L ${x * .8} 100`, rgba('#7A5226', .6), 3); }); strokePath(c, BK, '#5A3A16', 3.5);
+    fillPath(c, ellP(0, -20, 92, 16), '#C8965A'); strokePath(c, ellP(0, -20, 92, 16), '#5A3A16', 3);
+    c.restore();
+  }
+}
 function anjanaBust(c, o = {}) { devaBust(c, { pal: { skin: '#D08A3A', skinSh: '#A0621E', skinDk: '#6E3E10', skinLt: '#F0B868', cloth: '#C8302E', clothSh: '#8A1A1A' }, dress: 'sari', build: .82, ...o, head: (cc) => { cc.save(); cc.translate(0, -10); cc.scale(.95, .95); anjanaHead(cc, o); cc.restore(); } }); }
 
 // Jambavan, the old bear king: a broad shaggy head, grey with age, a pale muzzle, a big black nose, heavy white brows,
@@ -457,7 +513,7 @@ function jambHead(c, o = {}) {
 function jambBust(c, o = {}) { devaBust(c, { pal: { skin: JB.fur, skinSh: JB.furSh, skinDk: '#1E181E', skinLt: JB.furLt, cloth: '#8A6A3A', clothSh: '#5A4220' }, dress: 'rishi', build: 1.15, ...o, head: (cc) => jambHead(cc, o) }); }
 // vanaras of the army: Hanuman's face in other furs, no crown
 const VFUR = [{ skin: '#9A7A5A', skinSh: '#6A5038' }, { skin: '#C8A050', skinSh: '#987028' }, { skin: '#8A8A8A', skinSh: '#5A5A5A' }, { skin: '#B8603A', skinSh: '#884020' }];
-function vanaraBust(c, o = {}) { const f = VFUR[(o.v || 0) % 4]; devaBust(c, { pal: { ...f, skinDk: '#3A2A1A', cloth: ['#3A7A4A', '#7A3A8A', '#C8802A', '#2A5A8A'][(o.v || 0) % 4], clothSh: '#2A2A2A' }, ...o, head: (cc) => { cc.save(); cc.translate(0, -6); hanHead(cc, { expr: o.expr, look: o.look, turn: o.turn, crown: false, tilak: false, t: o.t, pal: { fur: f.skin, furSh: f.skinSh, furDk: mixCol(f.skinSh, '#000000', .3), ruff: f.skinSh, ruffSh: mixCol(f.skinSh, '#000000', .35), face: mixCol(f.skin, '#F2D0B0', .55), muzzle: mixCol(f.skin, '#F8E4CC', .65) } }); cc.restore(); } }); }
+function vanaraBust(c, o = {}) { const f = VFUR[(o.v || 0) % 4]; devaBust(c, { pal: { ...f, skinDk: '#3A2A1A', cloth: ['#3A7A4A', '#7A3A8A', '#C8802A', '#2A5A8A'][(o.v || 0) % 4], clothSh: '#2A2A2A' }, ...o, head: (cc) => { cc.save(); cc.translate(0, -6); hanHead(cc, { expr: o.expr, look: o.look, turn: o.turn, crown: false, tilak: false, t: o.t, pal: { fur: f.skin, furSh: f.skinSh, furDk: mixCol(f.skinSh, '#000000', .3), ruff: f.skinSh, ruffSh: mixCol(f.skinSh, '#000000', .35), face: mixCol(f.skin, '#F2D0B0', .55), muzzle: mixCol(f.skin, '#F8E4CC', .65), kohl: '#5A3418', irisDk: '#6A3A12' } }); cc.restore(); } }); }
 
 // ---------- the whole figure: devaBust on legs, a dhoti over the hips and thighs (the legs always come out from
 // UNDER the cloth), and a tail for the vanaras. Head at (0, 0); the hips at ~550; standing, the soles at ~1150.

@@ -7,7 +7,7 @@
 // Units: the head's centre at (0, 0), its radius ~100; the belly at about (0, 175); the soles at y ~330 standing.
 //
 //   balHead(c, o)   the head alone. o:
-//     expr   'calm' | 'wonder' | 'wail' | 'grin' | 'giggle' | 'hungry' | 'fierce' | 'hurt' | 'sleep' | 'pout'
+//     expr   'calm' | 'wonder' | 'wail' | 'grin' | 'giggle' | 'hungry' | 'fierce' | 'hurt' | 'sleep' | 'pout' | 'dizzy'
 //     look   [x, y] the irises (-1..1); turn (-1..1) the head turned to screen left/right (the features slide, the far
 //            eye narrows: a cheap three-quarter view); tilt (radians)
 //     tears  0..1; drool 0..1; bruise 0..1 (the broken left jaw, on screen right: his left); red (0..1) the eyes
@@ -39,6 +39,7 @@ const BH_EXPR = {
   hurt: { open: 'shut', brow: 1, mouth: 'frown' },
   sleep: { open: 'shut', brow: .1, mouth: 'small' },
   pout: { open: 1, brow: .8, mouth: 'pout', tears: .5 },
+  dizzy: { open: 'spiral', brow: 1, mouth: 'wobble' },
 };
 
 // a fluffy closed outline: a base ellipse whose edge bulges in n soft scallops (fur)
@@ -110,6 +111,11 @@ function balHead(c, o = {}) {
       strokePath(c, `M ${ex - s * 22 * kx} ${ey - 14} L ${ex + s * 14 * kx} ${ey} L ${ex - s * 22 * kx} ${ey + 12}`, S.lid, 7);
       continue;
     }
+    if (op === 'spiral') {           // @ @ : dizzy, the eyes turned to spirals (each the other way)
+      const EW = ellP(ex, ey, 27 * kx, 30); fillPath(c, EW, S.eyeW); strokePath(c, EW, S.lid, 4.5);
+      let d = ''; for (let i = 0; i <= 40; i++) { const a = i / 40 * TAU * 2.3 * s + t, r = 3 + i / 40 * 20; d += (i ? ' L ' : 'M ') + (ex + Math.cos(a) * r * kx) + ' ' + (ey + Math.sin(a) * r); }
+      strokePath(c, d, S.lid, 4.5); continue;
+    }
     if (op === 'happy') { strokePath(c, `M ${ex - 22 * kx} ${ey + 6} Q ${ex} ${ey - 22} ${ex + 22 * kx} ${ey + 6}`, S.lid, 7); continue; }
     if (op === 'shut') { strokePath(c, `M ${ex - 22 * kx} ${ey - 2} Q ${ex} ${ey + 14} ${ex + 22 * kx} ${ey - 2}`, S.lid, 6); strokePath(c, `M ${ex + s * 20 * kx} ${ey} l ${s * 8} 4`, S.lid, 3.5); continue; }
     const ry = 32 * op, rx = 27 * kx, EW = ellP(ex, ey, rx, ry);
@@ -151,6 +157,7 @@ function balHead(c, o = {}) {
   else if (mo === 'o') { const M = ellP(mx, my + 6, 13, 15); fillPath(c, M, S.mouthDk); inside(c, M, () => ellipse(c, mx, my + 18, 10, 7, S.tongue)); }
   else if (mo === 'pout') { strokePath(c, `M ${mx - 14} ${my + 8} Q ${mx} ${my - 4} ${mx + 14} ${my + 8}`, S.mouthDk, 5); }
   else if (mo === 'frown') strokePath(c, `M ${mx - 14} ${my + 8} Q ${mx} ${my - 2} ${mx + 14} ${my + 8}`, S.mouthDk, 4);
+  else if (mo === 'wobble') strokePath(c, `M ${mx - 18} ${my + 4} q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0`, S.mouthDk, 4.5);
   else if (mo === 'set') { strokePath(c, `M ${mx - 16} ${my + 2} L ${mx + 16} ${my}`, S.mouthDk, 5); }
   else if (mo === 'grin') {
     const M = `M ${mx - 30} ${my - 6} C ${mx - 20} ${my + 30} ${mx + 20} ${my + 30} ${mx + 30} ${my - 6} C ${mx + 14} ${my} ${mx - 14} ${my} ${mx - 30} ${my - 6} Z`;

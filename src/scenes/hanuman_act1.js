@@ -26,27 +26,38 @@ function ashram(c, P) {
 }
 
 // =================== p9 · hell ===================
-ART.hell = (c, P) => {
-  vgrad(c, P, [[0, '#2E3428'], [.45, '#7A7A56'], [1, '#2A2A1E']]);
-  const SICK = { ...lit(DAY()), tint: ['#6A7A4A', .28] };
-  // heaven: the gods on their clouds, choking
-  puffs(c, P.w * .62, P.h * .22, 900, '#A8A88A', 4, 9);
-  [['indra', { crown: 'kirita', stache: true, tilak: 'dot' }, 'throat'], ['surya', { crown: 'sun', tilak: 'line' }, 'chest'], ['kubera', { crown: 'mukut', stache: true, build: 1.25 }, 'throat']].forEach(([w, o, a], i) =>
-    bust(c, P.w * (.42 + i * .2), P.h * (.15 + (i % 2) * .03), .3, { who: w, ...o, expr: i % 2 ? 'pain' : 'shock', look: [0, .4], arms: [a, 'chest'] }, SICK));
-  puffs(c, P.w * .62, P.h * .33, 900, '#B8B898', 7, 9);
-  // a gandharva falling out of the sky
-  c.save(); c.translate(P.w * .18, P.h * .3); c.rotate(2.6); c.scale(.32, .32); figure(c, (c) => devaBust(c, { who: 'indra', pal: { skin: '#E8B890', cloth: '#7A3AA0', clothSh: '#4A1A6A' }, crown: 'mukut', expr: 'scream', arms: ['up', 'up'] }), SICK); c.restore();
-  // earth: a city whose people stand still as walls
-  for (let i = 0; i < 9; i++) { const x = P.w * (i / 8), h = P.h * (.08 + (i % 3) * .03); fillPath(c, `M ${x - 50} ${P.h * .58} L ${x - 50} ${P.h * .58 - h} L ${x} ${P.h * .58 - h - 40} L ${x + 50} ${P.h * .58 - h} L ${x + 50} ${P.h * .58} Z`, '#4A4A36'); }
-  fillPath(c, `M -20 ${P.h * .58} L ${P.w + 20} ${P.h * .58} L ${P.w + 20} ${P.h + 20} L -20 ${P.h + 20} Z`, '#5E5A40');
+const SICK = () => ({ ...lit(DAY()), tint: ['#6A7A4A', .22] });
+function veena(c, x, y, k, a) { c.save(); c.translate(x, y); c.rotate(a); c.scale(k, k); strokePath(c, 'M -160 0 L 160 0', '#6A3A1A', 16); for (const [gx, r] of [[-150, 52], [150, 40]]) { fillPath(c, ellP(gx, 26, r, r), '#B8742E'); strokePath(c, ellP(gx, 26, r, r), '#4A2410', 3); } for (const yy of [-6, 0, 6]) strokePath(c, `M -150 ${yy - 8} L 150 ${yy - 8}`, '#F2E8C8', 1.5); c.restore(); }
+ART.hellHeaven = (c, P) => {
+  vgrad(c, P, [[0, '#4A5A3A'], [1, '#A8AC80']]);
+  // the gods on their clouds, hands at their throats (35.50)
+  [['indra', { crown: 'kirita', stache: true, tilak: 'dot' }, 'shock'], ['surya', { crown: 'sun', tilak: 'line' }, 'pain'], ['varuna', { crown: 'kirita', tilak: 'dot' }, 'scream'], ['kubera', { crown: 'mukut', stache: true, build: 1.2 }, 'pain']].forEach(([w, o, e], i) =>
+    bust(c, P.w * (.4 + i * .17), P.h * (.6 + (i % 2) * .04), .34, { who: w, ...o, expr: e, look: [(i - 1.5) * .3, -.4], arms: ['throat', i % 2 ? 'chest' : 'throat'] }, SICK()));
+  for (let i = 0; i < 7; i++) puffs(c, P.w * (.3 + i * .12), P.h * (.92 + (i % 2) * .04), 300, i % 2 ? '#C8C8A8' : '#B8B898', i + 4, 6);
+};
+ART.hellEarth = (c, P) => {
+  vgrad(c, P, [[0, '#7A7A56'], [1, '#A89A6A']]);
+  // a village behind, its people standing still as walls (35.62)
+  for (let i = 0; i < 6; i++) { const x = P.w * (.06 + i * .17), h = P.h * (.16 + (i % 2) * .05); fillPath(c, `M ${x - 60} ${P.h * .62} L ${x - 60} ${P.h * .62 - h} L ${x} ${P.h * .62 - h - 50} L ${x + 60} ${P.h * .62 - h} L ${x + 60} ${P.h * .62} Z`, '#6A6446'); }
+  fillPath(c, `M -20 ${P.h * .62} L ${P.w + 20} ${P.h * .62} L ${P.w + 20} ${P.h + 20} L -20 ${P.h + 20} Z`, '#8A7E56');
   const R = lcg(8);
-  for (let i = 0; i < 12; i++) { const x = P.w * (.05 + i * .08 + (R() - .5) * .03), y = P.h * (.64 + (i % 2) * .02), k = .12 + R() * .02; c.save(); c.translate(x, y); c.scale(k * (i % 2 ? 1 : -1), k); manSil(c, { pose: 'stand', head: ['knot', 'turban', 'bare'][i % 3], col: '#26261A' }); c.restore(); }
-  // the altar in front: the fire dead, a thread of smoke straight up
-  fillPath(c, `M ${P.w * .08} ${P.h * .96} L ${P.w * .13} ${P.h * .86} L ${P.w * .4} ${P.h * .86} L ${P.w * .45} ${P.h * .96} Z`, '#3A3424');
-  for (let i = 0; i < 5; i++) strokePath(c, `M ${P.w * (.16 + i * .05)} ${P.h * .86} L ${P.w * (.18 + i * .04)} ${P.h * .83}`, '#1A1410', 10);
-  strokePath(c, `M ${P.w * .26} ${P.h * .83} C ${P.w * .26} ${P.h * .76} ${P.w * .26} ${P.h * .72} ${P.w * .26} ${P.h * .64}`, 'rgba(200,200,180,.6)', 8);
-  // the priest at it, choking: close, in colour
-  bust(c, P.w * .7, P.h * .68, .62, { ...RISHI, expr: 'pain', look: [0, -1], tilt: -.25, arms: ['throat', 'throat'] }, SICK);
+  for (let i = 0; i < 9; i++) { const x = P.w * (.5 + i * .055), y = P.h * (.66 + (i % 2) * .02), k = .1; c.save(); c.translate(x, y); c.scale(k * (i % 2 ? 1 : -1), k); manSil(c, { pose: 'stand', head: ['knot', 'turban', 'bare'][i % 3], col: '#3A3826' }); c.restore(); }
+  // two villagers, close, choking
+  bust(c, P.w * .3, P.h * .72, .32, { expr: 'shock', look: [-.3, -.4], arms: ['chest', 'throat'], pal: { cloth: '#3A7A8A', clothSh: '#1A4A5A' } }, SICK(), sitaBust);
+  // the altar: the fire dead, a thread of smoke standing dead straight (no wind)
+  fillPath(c, `M ${P.w * .5} ${P.h * .98} L ${P.w * .54} ${P.h * .88} L ${P.w * .7} ${P.h * .88} L ${P.w * .74} ${P.h * .98} Z`, '#4A3E2A');
+  for (let i = 0; i < 9; i++) ellipse(c, P.w * .62 + (i % 2 ? 4 : -4), P.h * (.84 - i * .05), 16 - i * .6, 20, rgba('#D8D8C8', .75 - i * .05));
+  for (let i = 0; i < 4; i++) strokePath(c, `M ${P.w * (.56 + i * .04)} ${P.h * .88} L ${P.w * (.57 + i * .035)} ${P.h * .85}`, '#2A2018', 8);
+  // the rishi at it, hands at his throat
+  bust(c, P.w * .86, P.h * .5, .46, { ...RISHI, expr: 'pain', look: [-.6, -1], tilt: .15, arms: ['throat', 'throat'] }, SICK());
+};
+ART.hellBelow = (c, P) => {
+  vgrad(c, P, [[0, '#1A1024'], [1, '#3A2A3A']]);
+  // the asuras' hall under the earth: pillars, lamps whose flames stand dead straight
+  for (let i = 0; i < 6; i++) { const x = P.w * (.05 + i * .19); fillPath(c, `M ${x - 30} ${P.h + 20} L ${x - 30} ${P.h * .1} L ${x + 30} ${P.h * .1} L ${x + 30} ${P.h + 20} Z`, '#2E2236'); fillPath(c, `M ${x - 44} ${P.h * .1} L ${x + 44} ${P.h * .1} L ${x + 44} ${P.h * .16} L ${x - 44} ${P.h * .16} Z`, '#3E3046'); }
+  for (const x of [.14, .52, .9]) { glow(c, P.w * x, P.h * .38, 70, '#FFB040', .6); fillPath(c, `M ${P.w * x - 7} ${P.h * .4} C ${P.w * x - 7} ${P.h * .34} ${P.w * x} ${P.h * .28} ${P.w * x} ${P.h * .24} C ${P.w * x} ${P.h * .28} ${P.w * x + 7} ${P.h * .34} ${P.w * x + 7} ${P.h * .4} Z`, '#FFD070'); fillPath(c, `M ${P.w * x - 26} ${P.h * .4} L ${P.w * x + 26} ${P.h * .4} L ${P.w * x + 14} ${P.h * .45} L ${P.w * x - 14} ${P.h * .45} Z`, '#C8963A'); }
+  [[.26, 0, 'scream', ['throat', 'throat']], [.46, 1, 'pain', ['chest', 'throat']], [.66, 2, 'shock', ['throat', 'chest']]].forEach(([x, r, e, a], i) =>
+    bust(c, P.w * x, P.h * (.6 + (i % 2) * .04), .34, { r, expr: e, look: [(i - 1) * .4, -.3], arms: a }, { ...lit(DAY()), tint: ['#4A2A5A', .2] }, rakshasaBust));
 };
 
 // =================== p10 · to Brahma ===================
@@ -117,27 +128,32 @@ ART.brahmaAsks = (c, P) => {
   brahmaAt(c, P.w * .16, P.h * .4, .42, { expr: 'speak', look: [1, 0], arms: ['down', 'open'] }, false);
   vayuWithBoy(c, P.w * .84, P.h * .44, .4, {}, { expr: 'giggle' });
 };
+// one row per god (pp. 12–14): the god in his own colours on one side (L: on the left, the words right), holding
+// what he gives; a soft beam of his light toward the words. Scaled to the row's height.
 const BOON = {
-  boonIndra: [['#9EC2E8', '#E2EEF8'], { who: 'indra', crown: 'kirita', tilak: 'dot', stache: true, expr: 'kind', arms: ['down', 'fist'], hold: 'garland' }],
-  boonSurya: [['#E8603A', '#FFC070'], { who: 'surya', crown: 'sun', tilak: 'line', expr: 'smile', arms: ['down', 'abhaya'] }],
-  boonVaruna: [['#2E6A8A', '#8AC8D8'], { who: 'varuna', crown: 'kirita', tilak: 'dot', expr: 'calm', arms: ['down', 'fist'], hold: 'noose' }],
-  boonYama: [['#2A2A3A', '#6A6A8A'], { who: 'yama', crown: 'mukut', stache: true, tilak: 'line', expr: 'calm', arms: ['down', 'fist'], hold: 'staff' }],
-  boonKubera: [['#2E6A4A', '#B8D8A0'], { who: 'kubera', crown: 'mukut', stache: true, tilak: 'dot', expr: 'smile', build: 1.18, arms: ['down', 'fist'], hold: 'mace' }],
-  boonShiva: [['#3A3A5A', '#A8B8D8'], { who: 'shiva', crown: 'jata', moon: true, snake: true, thirdEye: true, tilak: 'tripundra', dress: 'rishi', expr: 'kind', arms: ['down', 'fist'], hold: 'trishul' }],
-  boonBrahma: [['#E8B870', '#FBE0B0'], null],
-  boonVishva: [['#5A5A6A', '#B8B0A0'], { who: 'vishva', crown: 'mukut', beard: 'long', stache: true, age: .7, tilak: 'line', expr: 'kind', arms: ['down', 'fist'], hold: 'hammer' }],
+  boonIndra: ['L', ['#9EC2E8', '#E2EEF8'], '#FFFFFF', { who: 'indra', crown: 'kirita', tilak: 'dot', stache: true, expr: 'kind', arms: ['down', 'fist'], hold: 'garland' }],
+  boonSurya: ['R', ['#E8603A', '#FFC070'], '#FFF0A0', { who: 'surya', crown: 'sun', tilak: 'line', expr: 'smile', arms: ['down', 'fist'], hold: 'lotus' }],
+  boonVaruna: ['L', ['#2E6A8A', '#8AC8D8'], '#C8F0FF', { who: 'varuna', crown: 'kirita', tilak: 'dot', expr: 'kind', arms: ['down', 'fist'], hold: 'noose' }],
+  boonYama: ['R', ['#2A2A3A', '#6A6A8A'], '#C8C0E8', { who: 'yama', crown: 'mukut', stache: true, tilak: 'line', expr: 'calm', arms: ['down', 'fist'], hold: 'staff' }],
+  boonKubera: ['L', ['#2E6A4A', '#B8D8A0'], '#FFE48A', { who: 'kubera', crown: 'mukut', stache: true, tilak: 'dot', expr: 'smile', build: 1.18, arms: ['down', 'fist'], hold: 'mace' }],
+  boonShiva: ['R', ['#3A3A5A', '#A8B8D8'], '#E8F0FF', { who: 'shiva', crown: 'jata', moon: true, snake: true, snakeSide: 1, thirdEye: true, tilak: 'tripundra', dress: 'rishi', expr: 'kind', arms: ['down', 'fist'], hold: 'trishul' }],
+  boonBrahma: ['L', ['#E8B870', '#FBE0B0'], '#FFF4D0', null],
+  boonVishva: ['R', ['#5A5A6A', '#B8B0A0'], '#FFD8A0', { who: 'vishva', crown: 'mukut', beard: 'long', stache: true, age: .7, tilak: 'line', expr: 'kind', arms: ['down', 'fist'], hold: 'hammer' }],
 };
-for (const [name, [[a, b], o]] of Object.entries(BOON)) {
+for (const [name, [side, [a, b], beam, o]] of Object.entries(BOON)) {
   ART[name] = (c, P) => {
-    vgrad(c, P, [[0, a], [1, b]]);
-    if (!o) { brahmaAt(c, P.w * .5, P.h * .76, .48, { expr: 'kind', arms: ['down', 'abhaya'] }, false); return; }
-    bust(c, P.w * .5, P.h * .78, .5, { ...o, t: P.t }, lit(DAY()));
+    const L = side === 'L', gx = P.w * (L ? .17 : .8), k = .42 * P.h / 330, gy = P.h * .43;
+    const g = c.createLinearGradient(L ? 0 : P.w, 0, L ? P.w : 0, 0); g.addColorStop(0, a); g.addColorStop(1, b); c.fillStyle = g; c.fillRect(0, 0, P.w, P.h);
+    glow(c, gx, gy, 260 * k / .42, beam, .45);
+    if (!o) brahmaAt(c, gx, gy, k, { expr: 'kind', look: [L ? 1 : -1, 0], arms: ['down', 'fist'], hold: 'kamandalu' }, false, lit(DAY()));
+    else bust(c, gx, gy, k, { ...o, look: [L ? .6 : -.6, 0], turn: L ? .2 : -.2, t: P.t }, lit(DAY()));
   };
 }
 ART.boonEnd = (c, P) => {
   vgrad(c, P, [[0, '#F2D8A0'], [1, '#D8A870']]);
-  brahmaAt(c, P.w * .14, P.h * .52, .36, { expr: 'smile', look: [1, 0], arms: ['down', 'open'] }, false);
-  vayuWithBoy(c, P.w * .8, P.h * .5, .46, { expr: 'laugh' }, { expr: 'grin', pose: 'wail' });
+  glow(c, P.w * .8, P.h * .4, 380, '#FFF2C0', .6);
+  brahmaAt(c, P.w * .17, P.h * .5, .74, { expr: 'smile', look: [1, 0], arms: ['down', 'open'] }, false);
+  vayuWithBoy(c, P.w * .78, P.h * .5, .74, { expr: 'laugh' }, { expr: 'grin', pose: 'wail' });
 };
 
 // =================== p14 · trouble ===================
@@ -161,9 +177,9 @@ ART.barkSwing = (c, P) => {
 };
 ART.parentsNo = (c, P) => {
   ashram(c, P);
-  bust(c, P.w * .2, P.h * 0.582, 0.42, { expr: 'fierce', crown: 'mukut', age: .25, arms: ['down', 'point'], pal: { skin: '#C8842E', skinSh: '#985A16', cloth: '#2E5A9A', clothSh: '#1A3A6A' } }, lit(DAY()), hanBust);
-  bust(c, P.w * .48, P.h * 0.582, 0.42, { ...VAYU, expr: 'fierce', arms: ['down', 'point'] }, lit(DAY()));
-  bust(c, P.w * .76, P.h * 0.582, 0.42, { expr: 'pout', look: [1, 0], arms: ['down', 'point'] }, lit(DAY()), anjanaBust);
+  bust(c, P.w * .2, P.h * .66, 0.42, { expr: 'fierce', crown: 'mukut', age: .25, arms: ['down', 'point'], pal: { skin: '#C8842E', skinSh: '#985A16', cloth: '#2E5A9A', clothSh: '#1A3A6A' } }, lit(DAY()), hanBust);
+  bust(c, P.w * .48, P.h * .66, 0.42, { ...VAYU, expr: 'fierce', arms: ['down', 'point'] }, lit(DAY()));
+  bust(c, P.w * .76, P.h * .66, 0.42, { expr: 'pout', look: [1, 0], arms: ['down', 'point'] }, lit(DAY()), anjanaBust);
   // the boy's tail tip vanishing out of frame
   limb(c, [[P.w + 30, P.h * .7], [P.w * .95, P.h * .68], [P.w * .93, P.h * .6], [P.w * .95, P.h * .56]], [20, 18, 14, 10], BH.fur);
 };
@@ -177,11 +193,16 @@ ART.rishisCurse = (c, P) => {
   bust(c, P.w * .38, P.h * .54, .42, { ...RISHI, pal: { beard: '#BEB6AA', hair: '#5A5248' }, beard: 'short', expr: 'fierce', look: [1, .2], arms: ['abhaya', 'down'] }, lit(DAY()));
   baby(c, P.w * .86, P.h * .55, .5, 0, { pose: 'sit', expr: 'wonder', look: [-1, -.4], t: P.t, jewel: true });
 };
-ART.eyesDim = (c, P) => {
-  vgrad(c, P, [[0, '#3A3040'], [1, '#2A2230']]);
-  c.save(); c.translate(P.w * .5, P.h * .78); c.scale(3.2, 3.2);
-  figure(c, (c) => balHead(c, { expr: 'calm', look: [0, .2], t: P.t }), { ...lit(DAY()), tint: ['#6A6080', .3] });
-  c.restore();
+ART.dizzy = (c, P) => {
+  // the curse lands: he sits down hard, his head spinning, the gold glow drifting off him (7.36.33–34)
+  ashram(c, P); c.fillStyle = 'rgba(70,50,90,.35)'; c.fillRect(0, 0, P.w, P.h);
+  const x = P.w * .66, y = P.h * .4;
+  glow(c, x, y + 60, 200, '#FFD27A', .25);
+  const R = lcg(12); for (let i = 0; i < 26; i++) { const a = R() * TAU, r = 90 + R() * 160; ellipse(c, x + Math.cos(a) * r * 1.4, y + 40 + Math.sin(a) * r * .8 - R() * 60, 3 + R() * 4, 3 + R() * 4, rgba('#FFE08A', .35 + R() * .5)); }
+  baby(c, x, y, .62, -.12, { pose: 'sit', expr: 'dizzy', t: P.t, jewel: true, tail: 'limp' });
+  // stars circling his head
+  for (let i = 0; i < 5; i++) { const a = i / 5 * TAU + .4, sx = x + Math.cos(a) * 92, sy = y - 70 + Math.sin(a) * 22; c.save(); c.translate(sx, sy); const st = new Path2D(); for (let j = 0; j < 10; j++) { const r = j % 2 ? 6 : 15, b2 = j / 10 * TAU - Math.PI / 2; j ? st.lineTo(Math.cos(b2) * r, Math.sin(b2) * r) : st.moveTo(Math.cos(b2) * r, Math.sin(b2) * r); } st.closePath(); fillPath(c, st, '#FFE060'); strokePath(c, st, '#8A5A10', 2.5); c.restore(); }
+  strokePath(c, `M ${x - 100} ${y - 70} A 100 24 0 0 0 ${x + 100} ${y - 70}`, rgba('#FFFFFF', .7), 3);
 };
 ART.gentle = (c, P) => {
   ashram(c, P);
