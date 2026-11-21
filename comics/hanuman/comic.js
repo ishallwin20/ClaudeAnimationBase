@@ -26,7 +26,11 @@ const numbered = (L) => Object.fromEntries(L.map((p, i) => [i + 1, p]));
 const FACE = { edge0: .14, edge1: .3 };   // gentler ink on faces (COMIC_GUIDE.md)
 
 const COMIC = {
-  slug: 'hanuman', title: 'Hanuman', series: 'CHIRANJEEVI', issue: 2, lang: 'en',
+  slug: 'hanuman', title: 'Hanuman', series: 'CHIRANJEEVI', issue: 2, lang: 'en', subtitle: 'He could die any day he chose',
+  uuid: 'urn:uuid:0cc3d721-0b20-41f0-b3f6-5630a68cc570',
+  description: 'As a baby, Hanuman leapt at the Sun, thinking it was a fruit. Indra struck him down, the Wind stopped, and the three worlds began to choke. The gods gave the child eight boons; the rishis made him forget his strength; Jambavan made him remember. Then came Lanka. A 58-page comic from the Valmiki Ramayana and the Mahabharata (critical editions), with the verse numbers at the back.',
+  subjects: ['Comics & Graphic Novels / Mythology', 'Hanuman', 'Ramayana', 'Hindu mythology', 'Chiranjeevi'],
+  toc: [[1, 'Cover'], [2, 'The question'], [9, 'Act 1 · The boy who forgot'], [18, 'Act 2 · Remember'], [25, 'Act 3 · Lanka'], [45, 'Act 4 · The war'], [47, 'Act 5 · The choice'], [51, 'Coda · An age later'], [56, 'Facts used'], [57, 'What the texts don\'t say']],
   pages: numbered([
     // ================= FREE PREVIEW (1–8) =================
     // 1 · cover
@@ -332,7 +336,7 @@ const COMIC = {
     ]),
     // 32 · Aksha (5.45.1–25)
     pg([[1, [1]], [1, [1]], [1, [1]]], [
-      { art: 'ravanaLooks', ink: FACE, note: 'Ravana on his throne turning his eyes on his young son.', box: [{ text: 'Then Ravana looked at his young son, Prince Akshakumara.', w: 460 }] },
+      { art: 'ravanaLooks', ink: FACE, note: 'Ravana on his throne turning his eyes on his young son.', box: [{ text: 'Then Ravana looked at his young son, Prince Aksha, whom many know as Akshayakumara.', w: 520 }] },
       { art: 'aksha', ink: FACE, note: 'Aksha: young, beautiful, gold-painted bow, a chariot of eight horses, rising like a fire fed with ghee.',
         box: [{ text: 'Aksha rode out in a chariot of eight horses, blazing like a fire fed with ghee.', x: .5, y: .06, w: 480 }] },
       { art: 'akshaArrows', ink: FACE, note: 'Aksha\'s arrows punch into Hanuman\'s chest. Hanuman roars.', sfx: [{ text: 'THUK THUK', x: .3, y: .3, size: 70 }] },
@@ -477,7 +481,7 @@ const COMIC = {
         '• The search parties: 4.39–42 · Sampati: Lanka, a hundred yojanas away: 4.57.19–23 · Angad asks; each leader\'s leap, Jambavan\'s 90, Angad\'s 100: 4.64.1–19 · Jambavan round Trivikrama: 4.64.15, 4.65.30 · the death-at-will boon: 4.65.1–35 · he grows: 4.66.1–7\n' +
         '• Mahendra: 5.1.10–21 · Simhika: 5.1.166–180 · Lanka: 5.3.34, 5.10.10 · Ravana\'s threat: 5.20.8–9\n' +
         '• The ring "marked with Ram\'s name": 5.34.2–4 · the jewel: 5.36.52 · the grove, her tree spared, the kinkaras, the war cry: 5.39–41 · Jambumali, the ministers\' sons, the generals: 5.42–44\n' +
-        '• Akshakumara: 5.45 · the crystal throne: 5.47.9 · "a messenger is never killed": 5.50 · the tail: 5.51.3–7 · Sita\'s prayer: 5.51.24–27 · the fire cold as frost: 5.51.29–30\n' +
+        '• Prince Aksha (kumāram akṣam; Akshayakumara in later tellings): 5.45 · the crystal throne: 5.47.9 · "a messenger is never killed": 5.50 · the tail: 5.51.3–7 · Sita\'s prayer: 5.51.24–27 · the fire cold as frost: 5.51.29–30\n' +
         '• Indrajit binds him; the ropes; to Ravana: 5.46.35–52 · Lanka burns: 5.52.10–13 · his horror: 5.53.1–12 · the charanas, Sita unharmed: 5.53.18–26, 5.54.1 · Lakshman, the Herb Mountain: 6.88.31–35, 6.89.14–24\n' +
         '• The gifts, his ask, the embrace and the necklace: 7.39.14–21 · Ram\'s last words to him: 7.98.24–25 · the Sarayu: 7.100.5\n' +
         'Mahabharata (critical edition): Draupadi\'s lotus, Gandhamadana, the plantain grove 3.146.8–60; the yugas 3.148.5–37; Bhima and the old monkey 3.146.72–3.147.21; the tail, one hand then both: 3.147.17–20; "so be it" 3.147.37; they sing to him 3.147.39' }] }]),
@@ -490,7 +494,7 @@ const COMIC = {
         '• A throne of his tail in Ravana\'s court, the tail growing as they ran out of cloth: later tellings.\n' +
         '• Hanuman is present wherever the Ramayana is recited: an old prayer, not traced to a source text.\n' +
         '• Hanuman spared the Ashoka grove on purpose: not in Valmiki. He wrecked the grove himself (5.39–40) and, after the fire, feared Sita had burned (5.53); only the rakshasis say her tree was spared (5.40.17–19).\n' +
-        '• Dronagiri and Meghnad: names from later tellings. Valmiki says "the Herb Mountain" and Indrajit.\n' +
+        '• Dronagiri, Meghnad and Akshayakumara: names from later tellings. Valmiki says "the Herb Mountain", Indrajit and Prince Aksha.\n' +
         '• Jambavan says Indra struck him in anger (4.65.21); the Uttara says "not very angry" (7.35.46). The childhood pages follow the Uttara.' }] }]),
     pg(FULL, [{ art: 'backPage', note: 'The Season 1 line-up; Bali lit, holding out his hands to a small brahmin boy.',
       title: [{ text: 'CHIRANJEEVI', y: .12, size: 84, col: '#FFE7A6' }, { text: 'Next: BALI', y: .66, size: 64 }, { text: 'The king who gave away everything', y: .72, size: 40, font: 'Kalam' }],
