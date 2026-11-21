@@ -65,7 +65,8 @@ html, body { margin: 0; padding: 0; background: #000; }
   padding: 10px 16px 9px; font: 700 31px/1.22 Kalam; box-shadow: 4px 5px 0 rgba(0,0,0,.45); width: fit-content; }
 .box { white-space: pre-line; }
 .box.list { font: 400 23px/1.3 Kalam; }
-.title { white-space: nowrap; position: absolute; transform: translate(-50%, -50%); text-align: center; font: 400 96px/1.05 Marcellus; letter-spacing: 6px; paint-order: stroke fill; -webkit-text-stroke: 6px #0B0810; text-shadow: 0 0 30px rgba(0,0,0,.8); }
+.title { white-space: nowrap; position: absolute; transform: translate(-50%, -50%); text-align: center; font: 400 96px/1.05 Marcellus; letter-spacing: 6px; paint-order: stroke fill; -webkit-text-stroke: 6px #0B0810; }
+/* no text-shadow on lettering: Chrome prints it into the PDF as an opaque dark box, which covers the line above it */
 .title.Kalam { font-family: Kalam; font-weight: 700; letter-spacing: 1px; }
 .box.small { font: 700 26px/1.2 Kalam; padding: 7px 12px 6px; }
 /* a note: explains a word or a measure (siddha, yojana); pale blue so it reads as an aside, not the story */

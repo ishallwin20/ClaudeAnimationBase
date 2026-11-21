@@ -43,6 +43,31 @@ changed (new page numbers):
   left out.)
 - Lettering: no word on any page is smaller than 27 px.
 
+## Revision 2, 21 Nov 2026 (the owner's notes 15–34): now 58 pages
+
+- p27 the beings of the sky cheer him: "A fearsome deed! You've killed a mighty creature…" (5.1.178–180).
+- p28 Lanka named and described (5.3.34); he waits for night and makes himself small.
+- p29 the grove captioned; Ravana: "If you still refuse to take me as your husband…" (5.20.8–9; "bed" dropped).
+- p30 Ram's ring on Hanuman's palm; "I am Ram's messenger. See this ring: it bears his name" (5.34.2,
+  *rāmanāmāṅkitam*, *dūto rāmasya*); the hair jewel passing into his hands (5.36.52).
+- p31 "he tore apart the Ashoka grove where Sita was held"; p35 "Prince Akshakumara", then Aksha.
+- p38 Indrajit (later tellings: Meghnad) binds him with the Brahma weapon; it can't harm him and he lets it hold him to
+  meet Ravana; the rakshasas tie him with ropes and bark and drag him to the court (5.46.35–52). Fact check: Aksha was
+  already dead; Indrajit captured him.
+- p39 Hanuman standing, roped round the body; Vibhishana named.
+- p40 NEW splash: the tail wrapped in oiled cloth and lit, Hanuman dragged through Lanka (5.51.3–7). p41 Sita's prayer
+  and the cool fire. p42–43 the burning tail drawn from his hip.
+- p44 fact check: Hanuman did NOT plan to spare the grove. He wrecked it himself (5.39–40), and after the fire he blamed
+  himself for not protecting Sita (5.53.2–12) until the charanas said she wasn't burnt (5.53.25–26); her own
+  goodness protected her (5.53.18–23). Only the rakshasis say her tree was spared (5.40.17–19). Captioned so.
+- p45 the mountain was for Lakshman, struck by Ravana's spear (6.88.31–35); Hanuman brought the Herb Mountain's whole
+  peak (6.89.14–24). Valmiki names it only "the Herb Mountain"; Dronagiri is from later tellings (a note box).
+- p51 NEW: a new age (Treta → Dvapara, 3.148.5–37), the Pandavas in exile, Draupadi's golden lotus (3.146.8–13),
+  BHIMA named, son of the Wind, up Gandhamadana; p52 the plantain grove (3.146.42, 60), the old monkey, his tail across
+  the path; p53 the exchange (3.146.74, 3.147.5–7) and the tail, one hand then both (3.147.17–18), drawn as one tail
+  from the old monkey's hip into Bhima's hands; p54 the apology (3.147.19–21).
+- The back page and the cover: the PDF printed each title's shadow as a dark box that hid the line above; fixed.
+
 ---
 
 ## Why the Ashwatthama preview didn't sell, and what this issue does about it

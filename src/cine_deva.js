@@ -306,6 +306,20 @@ function devaBust(c, o = {}) {
   if (o.head) o.head(c, o); else { c.save(); c.translate(0, 0); devaHead(c, { ...o, neck: false }); c.restore(); }
   c.restore();
   if (o.snake) shivaSnake(c, o);
+  if (o.after) o.after(c);   // drawn last, in bust units: ropes round the body (bindRopes), etc.
+}
+// ropes wound tight round a bound figure's chest, arms and waist (in bust units, after the body): every loop stays
+// inside the body's outline and the knot sits in front, so it reads as rope on him, not lines across the panel
+function bindRopes(c, o = {}) {
+  const R = o.col || '#C8A060', Rd = '#5A3E18', w = o.w ?? 230;
+  for (const y of o.ys || [250, 330, 420]) {
+    const yy = 120 + (y - 120) * .82, P2 = `M ${-w} ${yy - 8} Q 0 ${yy + 34} ${w} ${yy - 8}`;
+    strokePath(c, P2, Rd, 22); strokePath(c, P2, R, 15);
+    for (let x = -w + 20; x < w; x += 28) { const t = (x + w) / (2 * w), yq = (yy - 8) * (1 - t) * (1 - t) + 2 * t * (1 - t) * (yy + 34) + t * t * (yy - 8); strokePath(c, `M ${x - 5} ${yq - 6} L ${x + 5} ${yq + 6}`, Rd, 3); }
+  }
+  const ky = 120 + (o.knot ?? 370 - 120) * .82;
+  ellipse(c, 0, ky, 20, 16, R); strokePath(c, ellP(0, ky, 20, 16), Rd, 3.5);
+  if (o.lead) { const L = `M 0 ${ky + 10} ${o.lead}`; strokePath(c, L, Rd, 16); strokePath(c, L, R, 10); }
 }
 // Shiva's snake (Vasuki): coiled once round the neck below the chin, its hood raised beside his face on screen left,
 // looking out: a clear cobra (hood with the spectacle mark, eyes, a forked tongue), never a line across the face.
@@ -539,10 +553,13 @@ function devaFigure(c, o = {}) {
   };
   // the tail, behind everything
   if (o.tail) {
-    const T = o.tail === 'stream' ? [[0, 520], [-160, 600], [-320, 560], [-460, 470], [-520, 360], [-480, 300]]
+    const T = Array.isArray(o.tail) ? o.tail : o.tail === 'stream' ? [[0, 520], [-160, 600], [-320, 560], [-460, 470], [-520, 360], [-480, 300]]
       : o.tail === 'curl' ? [[0, 520], [-140, 560], [-240, 480], [-240, 360], [-180, 320], [-150, 360]]
       : [[0, 520], [-150, 540], [-250, 420], [-260, 220], [-200, 120], [-150, 150]];
-    limb(c, T, [44, 40, 36, 30, 24, 18], o.fur || S.skin); strokePath(c, 'M ' + T.map(p => p.join(' ')).join(' L '), rgba(S.skinDk, 0), 1);
+    // a custom tail (an array of points from the hip, 0 520) tapers from 44 to 16 over however many points it has
+    const n = T.length, tw = o.tailW ?? 1, wd = T.map((_, i) => (44 - 28 * i / Math.max(1, n - 1)) * tw);
+    limb(c, T, wd.map(x => x + 7), S.skinDk); limb(c, T, wd, o.fur || S.skin);
+    if (o.tailFn) o.tailFn(c, T, wd);   // rags, fire at the tip… drawn on the tail itself, so it stays attached
   }
   const lf = leg(-1, L[0]), ln = leg(1, L[1]);
   // the dhoti: a waist cloth and a pleated tube over each thigh to above the knee

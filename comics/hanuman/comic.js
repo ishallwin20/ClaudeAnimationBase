@@ -272,36 +272,45 @@ const COMIC = {
       { art: 'simhikaMouth', note: 'He grows. Her mouth opens, wide as the sky, deep as the underworld.' },
     ]),
     // 24 · inside (5.1.175–179)
-    pg([[.8, [1]], [1.6, [1]], [.7, [1]]], [
+    pg([[.8, [1]], [1.5, [1]], [.85, [1]]], [
       { art: 'hanShrinks', note: 'He shrinks to nothing and dives into her mouth.',
         box: [{ text: 'The siddhas watched him vanish into her, like the moon swallowed by Rahu.', w: 560 }] },
       { art: 'burstOut', note: 'He bursts out of her body, nails red, her vitals torn out.',
         box: [{ text: 'With his nails he tore out her vitals, and flew out.', x: .5, y: .85, w: 480 }], sfx: [{ text: 'SHRRAKK', x: .3, y: .2, size: 120, rot: -.12 }] },
-      { art: 'simhikaSinks', note: 'She sinks dead.', say: [{ text: 'A terrible thing, and well done.', x: .7, y: .4, w: 380, kind: 'sky' }] },
+      { art: 'simhikaSinks', note: 'She sinks dead.', box: [{ text: 'The beings of the sky cheered him on:', x: .03, y: .08, w: 380 }],
+        say: [{ text: 'A fearsome deed! You\'ve killed a mighty creature. Go on, and do what you came to do.', x: .6, y: .56, w: 500, kind: 'sky' }] },
     ]),
     // 25 · the golden city (5.2–5.10)
     pg([[1.1, [1]], [1, [1]], [1, [1]]], [
-      { art: 'lankaNight', note: 'Lanka at night on its mountain, gold walls, a hundred thousand guards.' },
-      { art: 'roofs', note: 'Hanuman, small now, slipping across moonlit roofs, peering into palaces.' },
+      { art: 'lankaNight', note: 'Lanka at night on its mountain, gold walls, a hundred thousand guards.',
+        box: [{ text: 'He landed on the far shore and saw Lanka: a city of gold on a mountain top, guarded by a hundred thousand rakshasas.', x: .03, y: .6, w: 560 }] },
+      { art: 'roofs', note: 'Hanuman, small now, slipping across moonlit roofs, peering into palaces.',
+        box: [{ text: 'He waited for night, made himself small, and searched every house and palace.', x: .03, y: .06, w: 470 }] },
       { art: 'wallDawn', ink: FACE, note: 'Hanuman on a wall at dawn, nowhere left to look.',
         box: [{ text: 'He looked everywhere. She wasn\'t anywhere.', w: 420 }], say: [{ text: 'Not giving up is the root of every good thing.', x: .7, y: .6, w: 360, kind: 'thought' }] },
     ]),
     // 26 · two months (5.13–5.20)
     pg([[1, [1]], [1.1, [1]], [.9, [1]]], [
-      { art: 'grove', note: 'The Ashoka grove. Sita under a shimshapa tree, thin, rakshasis around her.' },
+      { art: 'grove', note: 'The Ashoka grove. Sita under a shimshapa tree, thin, rakshasis around her.',
+        box: [{ text: 'At last, in Ravana\'s Ashoka grove, he found her: Sita, thin and grieving under a shimshapa tree, rakshasis all around her.', x: .03, y: .05, w: 600 }] },
       { art: 'ravanaThreat', ink: FACE, note: 'Ravana, ten crowned heads, looming over her.',
-        say: [{ text: 'Two months. If you don\'t come to my bed by then, my cooks will cut you up in the kitchen for my breakfast.', x: .35, y: .3, w: 520, tail: [.65, .6] }] },
-      { art: 'eyesLeaves', ink: FACE, note: 'In the leaves above: Hanuman\'s eyes. His fist closes on a branch until the bark splits.', sfx: [{ text: 'krk', x: .75, y: .7, size: 50 }] },
+        say: [{ text: 'Two months. If you still refuse to take me as your husband, my cooks will cut you up in the kitchen for my breakfast.', x: .35, y: .3, w: 520, tail: [.65, .6] }] },
+      { art: 'eyesLeaves', ink: FACE, note: 'In the leaves above: Hanuman\'s eyes. His fist closes on a branch until the bark splits.', sfx: [{ text: 'krk', x: .75, y: .7, size: 50 }],
+        box: [{ text: 'Hidden in the tree above her, Hanuman heard every word.', x: .03, y: .06, w: 420 }] },
     ]),
-    // 27 · the ring (5.33–5.36)
-    pg([[1, [1]], [1, [1, 1]]], [
-      { art: 'ringOffer', ink: FACE, note: 'Hanuman drops softly to her; she recoils. He holds out Ram\'s ring.' },
+    // 27 · the ring (5.34.2–3; the jewel 5.36.52)
+    pg([[1.3, [1]], [1, [1, 1]]], [
+      { art: 'ringOffer', ink: FACE, note: 'Hanuman kneels before her, Ram\'s ring glowing on his open palm.',
+        box: [{ text: 'When Ravana had gone, he came down to her softly.', x: .03, y: .04, w: 420 }],
+        say: [{ text: 'I am Ram\'s messenger. See this ring: it bears his name. He sent me to find you.', x: .66, y: .16, w: 440, tail: [.74, .36] }] },
       { art: 'ringFace', ink: FACE, note: 'Sita holding the ring close, as if he had come (5.34.3–4).',
         box: [{ text: 'She held her husband\'s ring as if he himself had come. Her face shone like the moon set free from Rahu.', x: .05, y: .03, w: .9 }] },
-      { art: 'jewelGive', ink: FACE, note: 'She gives him her hair jewel for Ram.' },
+      { art: 'jewelGive', ink: FACE, note: 'She puts her hair jewel into his hands, for Ram.',
+        box: [{ text: 'She gave him the jewel from her hair, for Ram: proof that he had found her.', x: .05, y: .03, w: .9 }] },
     ]),
     // 28 · a message for Ravana (5.39–5.40)
     pg(FULL, [{ art: 'groveSmash', note: 'Hanuman tearing the grove apart: trees uprooted, pavilions smashed. One tree untouched: hers.',
+      box: [{ text: 'Then, so that Ravana would know who had come, he tore apart the Ashoka grove where Sita was held.', x: .03, y: .86, w: 560 }],
       say: [{ text: 'I found her. Now let them see what Ram\'s messenger is.', x: .3, y: .12, w: 460, kind: 'thought' }], sfx: [{ text: 'KRASSH', x: .7, y: .6, size: 110, rot: .1 }] }]),
     // 29 · eighty thousand (5.40.23–29; 5.41.5–9) · splash
     pg(FULL, [{ art: 'kinkaras', ink: FACE, note: 'Splash: at the grove gate Hanuman, big as a hill, lashes his tail; eighty thousand kinkaras with hammers and maces pour at him like moths into a fire. He roars.',
@@ -323,8 +332,9 @@ const COMIC = {
     ]),
     // 32 · Aksha (5.45.1–25)
     pg([[1, [1]], [1, [1]], [1, [1]]], [
-      { art: 'ravanaLooks', ink: FACE, note: 'Ravana on his throne turning his eyes on his young son.', box: [{ text: 'Then Ravana looked at his son Aksha.', w: 420 }] },
-      { art: 'aksha', ink: FACE, note: 'Aksha: young, beautiful, gold-painted bow, a chariot of eight horses, rising like a fire fed with ghee.' },
+      { art: 'ravanaLooks', ink: FACE, note: 'Ravana on his throne turning his eyes on his young son.', box: [{ text: 'Then Ravana looked at his young son, Prince Akshakumara.', w: 460 }] },
+      { art: 'aksha', ink: FACE, note: 'Aksha: young, beautiful, gold-painted bow, a chariot of eight horses, rising like a fire fed with ghee.',
+        box: [{ text: 'Aksha rode out in a chariot of eight horses, blazing like a fire fed with ghee.', x: .5, y: .06, w: 480 }] },
       { art: 'akshaArrows', ink: FACE, note: 'Aksha\'s arrows punch into Hanuman\'s chest. Hanuman roars.', sfx: [{ text: 'THUK THUK', x: .3, y: .3, size: 70 }] },
     ]),
     // 33 · the young sun (5.45.26–29)
@@ -341,26 +351,35 @@ const COMIC = {
       { art: 'akshaDead', note: 'The body on the ground, broken.',
         box: [{ text: 'The gods and the great rishis stared.', w: 400 }, { text: 'He went back to the gate, like Death at the end of the world, and waited.', x: .45, y: .55, w: 520 }] },
     ]),
-    // 35 · bound (5.46)
+    // 35 · bound (5.46.35–52)
     pg([[1, [1]], [1, [1, 1]]], [
-      { art: 'indrajit', ink: FACE, note: 'Indrajit in his chariot, drawing the Brahma weapon.' },
-      { art: 'bound', note: 'Hanuman wrapped in its coils, falling.' },
-      { art: 'calmEyes', ink: FACE, note: 'His eyes, calm: he lets it hold him, to meet Ravana.' },
+      { art: 'indrajit', ink: FACE, note: 'Indrajit in his chariot, drawing the Brahma weapon.',
+        box: [{ text: 'Then Ravana sent Indrajit, his son who had once beaten Indra himself. (Later tellings call him Meghnad.) He loosed the Brahma weapon.', x: .5, y: .06, w: 480 }] },
+      { art: 'bound', note: 'Hanuman wrapped in its coils, falling.',
+        box: [{ text: 'It bound Hanuman fast. It couldn\'t harm him, and he let it hold him: now he would meet Ravana.', x: .04, y: .05, w: 440 }] },
+      { art: 'calmEyes', ink: FACE, note: 'His eyes, calm: he lets it hold him, to meet Ravana.',
+        box: [{ text: 'The rakshasas tied him with ropes and dragged him to Ravana\'s court.', x: .05, y: .05, w: 420 }] },
     ]),
     // 36 · Ravana's court (5.47–5.51)
     pg([[1.2, [1]], [.8, [1, 1]], [.8, [1, 1]]], [
-      { art: 'court', note: 'Ravana on a crystal throne blazing with gems; Hanuman bound before him.' },
+      { art: 'court', note: 'Ravana on a crystal throne blazing with gems; Hanuman bound before him.',
+        box: [{ text: 'Ravana sat on a throne of crystal, blazing with gems. Hanuman stood before him, tied.', x: .03, y: .04, w: 480 }] },
       { art: 'hanSpeaks', ink: FACE, note: 'Hanuman.', say: [{ text: 'Give Sita back.', x: .5, y: .2, w: 300, tail: [.5, .44] }] },
       { art: 'ravanaKill', ink: FACE, note: 'Ravana.', say: [{ text: 'Kill him.', x: .5, y: .2, w: 220, tail: [.5, .42] }] },
-      { art: 'vibhishana', ink: FACE, note: 'Vibhishana.', say: [{ text: 'A messenger is never killed.', x: .5, y: .2, w: 340, tail: [.5, .46] }] },
+      { art: 'vibhishana', ink: FACE, note: 'Vibhishana.', say: [{ text: 'A messenger is never killed.', x: .5, y: .2, w: 340, tail: [.5, .46] }], title: [{ text: 'VIBHISHANA, Ravana\'s brother', x: .5, y: .93, size: 28, font: 'Kalam' }] },
       { art: 'ravanaBurn', ink: FACE, note: 'Ravana.', say: [{ text: 'Then burn his tail.', x: .5, y: .2, w: 300, tail: [.5, .42] }] },
     ]),
-    // 37 · be cool (5.51)
-    pg([[1, [1]], [1, [1]], [1, [1]]], [
-      { art: 'tailRags', note: 'Oiled rags wound round his tail; torches; the crowd jeering as he\'s dragged through the streets.' },
+    // 37 · the tail (5.51.3–7) · splash
+    pg(FULL, [{ art: 'tailRags', ink: FACE, note: 'Splash: Hanuman bound with ropes, his tail wound in oiled rags and set alight, dragged through Lanka\'s streets by jeering rakshasas with torches.',
+      box: [{ text: 'They wrapped his tail in old cloth soaked in oil, set it on fire, and dragged him through the streets of Lanka.', x: .03, y: .04, w: 560 }],
+      sfx: [{ text: 'FWOOMP', x: .8, y: .3, size: 80, rot: .1 }] }]),
+    // be cool (5.51.24–33)
+    pg([[1, [1]], [1.2, [1]]], [
       { art: 'sitaPrays', ink: FACE, note: 'In the grove, Sita hears and prays to the fire.',
-        say: [{ text: 'If I have been faithful to one husband, be cool for Hanuman.', x: .62, y: .4, w: 440, tail: [.3, .6] }] },
-      { art: 'tailCool', ink: FACE, note: 'The tail in full flame. Hanuman\'s face: surprised. It doesn\'t burn.' },
+        box: [{ text: 'In the grove, Sita heard what they were doing.', x: .03, y: .05, w: 400 }],
+        say: [{ text: 'If I have been faithful to one husband, be cool for Hanuman.', x: .62, y: .5, w: 440, tail: [.3, .6] }] },
+      { art: 'tailCool', ink: FACE, note: 'The tail in full flame. Hanuman\'s face: surprised. It doesn\'t burn.',
+        box: [{ text: 'The fire blazed on his tail, but it felt as cool as snow.', x: .03, y: .05, w: 440 }] },
     ]),
     // 38 · Lanka burns, 1
     pg(FULL, [{ art: 'burn1', note: 'Splash: Hanuman bursts his ropes and runs roof to roof, tail a torch. Palaces of gold catch.',
@@ -374,12 +393,14 @@ const COMIC = {
       { art: 'horror', ink: FACE, note: 'His face in horror.', say: [{ text: 'If Lanka burned, Sita burned. I\'ve killed the one I came to save.', x: .5, y: .22, w: 420, tail: [.5, .44] }] },
       { art: 'wisdom', ink: FACE, note: 'Hanuman, head in hands.', say: [{ text: 'Blessed are those who put out their anger with wisdom, as water puts out fire.', x: .5, y: .26, w: 440, kind: 'thought' }] },
       { art: 'sitaAlive', ink: FACE, note: 'He flies back over the smoke to the grove: Sita, alive, under her tree (5.54.1).',
-        say: [{ text: 'By good fortune, I see you unharmed.', x: .74, y: .14, w: 300, tail: [.76, .32] }] },
+        box: [{ text: 'Then he heard the charanas in the sky: "Lanka is burnt, but Sita is not! A wonder!" The fire hadn\'t touched her.', x: .03, y: .04, w: 520 }],
+        say: [{ text: 'By good fortune, I see you unharmed.', x: .8, y: .2, w: 280, tail: [.76, .42] }] },
     ]),
 
     // ================= Act 4 · The war (41–42) =================
     pg(FULL, [{ art: 'mountain', note: 'Splash: night battlefield, the army dying below; Hanuman crossing the sky holding a whole mountain peak bright as the sun.',
-      box: [{ text: 'In the war, when Ram\'s army lay dying, he brought back a mountain.', w: 520 }] }]),
+      box: [{ text: 'In the war, Ravana\'s spear struck Lakshman down. Hanuman flew to the Himalaya for the Herb Mountain. He couldn\'t tell which herbs were which, so he brought back the whole peak.', w: 560 },
+        { note: true, text: 'Valmiki calls it simply the Herb Mountain. Later tellings name it Dronagiri.', x: .5, y: .88, w: 480 }] }]),
     pg([[1, [1]], [1, [1, 1]]], [
       { art: 'ravanaFalls', note: 'Ravana falls.' },
       { art: 'ramSita', ink: FACE, note: 'Sita and Ram.' },
@@ -408,25 +429,42 @@ const COMIC = {
       { art: 'sarayu', note: 'Ram walking into the Sarayu with all who followed him; on the bank, from behind, one figure who stays.' },
     ]),
 
-    // ================= Coda · An age later (47–50) =================
-    pg([[1, [1]], [1.2, [1]]], [
-      { art: 'bhimaGrove', note: 'Gandhamadana. Bhima smashing through a grove of golden plantains.', box: [{ text: 'An age later. Another son of the Wind.', w: 420 }] },
-      { art: 'oldMonkey', ink: FACE, note: 'An old monkey asleep across the path on a broad stone, his tail across the way; he opens his eyes a little.' },
+    // ================= Coda · An age later =================
+    // a new age (MBh 3.146.1–42; the yugas 3.148)
+    pg([[1, [1]], [1.1, [1]], [1, [1]]], [
+      { art: 'newAge', note: 'The Himalaya at sunrise, the same peaks, centuries on.',
+        box: [{ text: 'An age passed. Ram\'s age, the Treta Yuga, ended. The Dvapara Yuga began: the age of the Mahabharata.', x: .03, y: .05, w: 560 }] },
+      { art: 'draupadiLotus', ink: FACE, note: 'Draupadi in the forest, a golden thousand-petalled lotus in her hands; Bhima beside her.',
+        box: [{ text: 'The five Pandava brothers lived in exile in the Himalaya with their wife Draupadi. One day the wind carried a golden lotus to her, with a wonderful scent.', x: .03, y: .04, w: 520 }],
+        say: [{ text: 'Bhima, bring me more of these.', x: .24, y: .8, w: 320, tail: [.56, .62] }] },
+      { art: 'bhimaSets', ink: FACE, note: 'Bhima with his mace, setting off up the mountain.',
+        box: [{ text: 'BHIMA, the strongest of the brothers, and like Hanuman a son of the Wind, set off up Mount Gandhamadana to find them.', x: .42, y: .06, w: 560 }] },
     ]),
-    pg([[1, [1, 1]], [1, [1, 1]]], [
-      { art: 'tailOneHand', note: 'Bhima takes the tail in one hand, carelessly.' },
-      { art: 'tailTwoHands', ink: FACE, note: 'Both hands; sweat, eyes rolling. It does not move.' },
-      { art: 'bhimaBows', ink: FACE, note: 'Bhima, bowing.', say: [{ text: 'Who are you?', x: .5, y: .2, w: 260, tail: [.5, .44] }] },
-      { art: 'iAmHanuman', ink: FACE, note: 'The old monkey, smiling.', say: [{ text: 'I am Hanuman.', x: .5, y: .2, w: 280, tail: [.5, .44] }] },
-    ]),
     pg([[1, [1]], [1.2, [1]]], [
+      { art: 'bhimaGrove', note: 'Gandhamadana. Bhima smashing through a grove of golden plantains.',
+        box: [{ text: 'He smashed through the forest, roaring, until he reached a grove of plantains many yojanas wide.', x: .03, y: .05, w: 460 }] },
+      { art: 'oldMonkey', ink: FACE, note: 'An old monkey asleep across the path on a broad stone, his tail across the way; he opens his eyes a little.',
+        box: [{ text: 'On a rock across the path lay an old monkey, asleep, his tail right across the way.', x: .45, y: .05, w: 520 }] },
+    ]),
+    // the tail (3.146.74–3.147.21)
+    pg([[.85, [1, 1]], [1.1, [1]], [1.1, [1]]], [
+      { art: 'bhimaRoars', ink: FACE, note: 'Bhima, standing over him, shouting.', say: [{ text: 'Get up, monkey! Give me the path!', x: .5, y: .2, w: 300, tail: [.5, .44] }], title: [{ text: 'BHIMA', x: .5, y: .93, size: 32, col: '#FFE7A6' }] },
+      { art: 'oldSpeaks', ink: FACE, note: 'The old monkey, one eye open.', say: [{ text: 'I\'m old and sick. I can\'t get up. Move my tail aside yourself, and go.', x: .5, y: .22, w: 340, tail: [.5, .5] }] },
+      { art: 'tailOneHand', ink: FACE, note: 'Bhima grips the old monkey\'s tail in his left hand, carelessly.',
+        box: [{ text: 'Bhima took the tail in his left hand, carelessly. It didn\'t move.', x: .03, y: .05, w: 440 }] },
+      { art: 'tailTwoHands', ink: FACE, note: 'Both hands; sweat, eyes rolling. It does not move.',
+        box: [{ text: 'Then both hands. He strained until he sweated. He couldn\'t even lift it.', x: .03, y: .05, w: 440 }] },
+    ]),
+    pg([[1, [1, 1]], [1, [1]], [1.2, [1]]], [
+      { art: 'bhimaBows', ink: FACE, note: 'Bhima, bowing.', say: [{ text: 'Forgive my rude words. Who are you?', x: .5, y: .2, w: 300, tail: [.5, .44] }] },
+      { art: 'iAmHanuman', ink: FACE, note: 'The old monkey, smiling.', say: [{ text: 'I am Hanuman, your brother.', x: .5, y: .2, w: 300, tail: [.5, .44] }] },
       { art: 'oldTells', ink: FACE, note: 'Old Hanuman, telling.',
         say: [{ text: 'When Ram was crowned, I asked him: as long as Ram\'s story is told in the worlds, let me live. He said: so be it.', x: .64, y: .4, w: 520, tail: [.34, .46] }] },
       { art: 'singing', ink: FACE, note: 'Hanuman, eyes closed, in the plantain grove; gandharvas and apsaras singing around him.',
         say: [{ text: 'Here, they sing his deeds to me.', x: .3, y: .15, w: 380, tail: [.45, .5] }] },
     ]),
     pg(FULL, [{ art: 'lastPage', ink: FACE, note: 'The same old eyes, closed, smiling; the young sun rising red behind the Himalaya.',
-      box: [{ text: 'He asked to live as long as Ram\'s story is told.', x: .08, y: .08, w: 560 }, { text: 'You just read fifty-three pages of it.', x: .4, y: .86, w: 560 }] }]),
+      box: [{ text: 'He asked to live as long as Ram\'s story is told.', x: .08, y: .08, w: 560 }, { text: 'You just read fifty-five pages of it.', x: .4, y: .86, w: 560 }] }]),
 
     // ================= back matter =================
     pg(FULL, [{ art: 'paper', note: 'Plain dark page.',
@@ -437,12 +475,12 @@ const COMIC = {
         '• The Wind stops; the worlds like hell; Brahma; the cave: 7.35.48–65\n' +
         '• Revived; the eight boons and the name: 7.36.1–25 · the ashrams, Kesari, Vayu and Anjana forbid him: 7.36.28–31 · the curse: 7.36.32–34 · the answer: 7.36.38–43\n' +
         '• The search parties: 4.39–42 · Sampati: Lanka, a hundred yojanas away: 4.57.19–23 · Angad asks; each leader\'s leap, Jambavan\'s 90, Angad\'s 100: 4.64.1–19 · Jambavan round Trivikrama: 4.64.15, 4.65.30 · the death-at-will boon: 4.65.1–35 · he grows: 4.66.1–7\n' +
-        '• Mahendra: 5.1.10–21 · Simhika: 5.1.166–179 · Lanka: 5.3.34, 5.10.10 · Ravana\'s threat: 5.20.8–9\n' +
-        '• The ring: 5.34.2–4 · the jewel: 5.36.52 · the grove, her tree spared, the kinkaras, the war cry: 5.39–41 · Jambumali, the ministers\' sons, the generals: 5.42–44\n' +
-        '• Aksha: 5.45 · Indrajit\'s Brahma weapon: 5.46.37–45 · the crystal throne: 5.47.9 · "a messenger is never killed": 5.50 · the tail: 5.51.3–7 · Sita\'s prayer: 5.51.24–27 · the fire cold as frost: 5.51.29–30\n' +
-        '• Lanka burns: 5.52.10–13 · his horror: 5.53.1–7 · Sita unharmed: 5.53.20–28, 5.54.1 · the mountain: 6.61.33, 63\n' +
+        '• Mahendra: 5.1.10–21 · Simhika: 5.1.166–180 · Lanka: 5.3.34, 5.10.10 · Ravana\'s threat: 5.20.8–9\n' +
+        '• The ring "marked with Ram\'s name": 5.34.2–4 · the jewel: 5.36.52 · the grove, her tree spared, the kinkaras, the war cry: 5.39–41 · Jambumali, the ministers\' sons, the generals: 5.42–44\n' +
+        '• Akshakumara: 5.45 · the crystal throne: 5.47.9 · "a messenger is never killed": 5.50 · the tail: 5.51.3–7 · Sita\'s prayer: 5.51.24–27 · the fire cold as frost: 5.51.29–30\n' +
+        '• Indrajit binds him; the ropes; to Ravana: 5.46.35–52 · Lanka burns: 5.52.10–13 · his horror: 5.53.1–12 · the charanas, Sita unharmed: 5.53.18–26, 5.54.1 · Lakshman, the Herb Mountain: 6.88.31–35, 6.89.14–24\n' +
         '• The gifts, his ask, the embrace and the necklace: 7.39.14–21 · Ram\'s last words to him: 7.98.24–25 · the Sarayu: 7.100.5\n' +
-        'Mahabharata (critical edition): Bhima and the old monkey 3.146–147; the tail, one hand then both: 3.147.17–20; "so be it" 3.147.37; they sing to him 3.147.39' }] }]),
+        'Mahabharata (critical edition): Draupadi\'s lotus, Gandhamadana, the plantain grove 3.146.8–60; the yugas 3.148.5–37; Bhima and the old monkey 3.146.72–3.147.21; the tail, one hand then both: 3.147.17–20; "so be it" 3.147.37; they sing to him 3.147.39' }] }]),
     pg(FULL, [{ art: 'paper', note: 'Plain dark page.',
       title: [{ text: 'WHAT THE TEXTS DON\'T SAY', y: .05, size: 48 }],
       box: [{ list: true, x: 30, y: .1, w: 970, size: 24, text:
@@ -451,6 +489,8 @@ const COMIC = {
         '• "You\'ll remember your strength when someone reminds you": the popular form of the curse. The text says only "for a long time" (7.36.33); Jambavan\'s reminder is how it ends in the Kishkindha Kanda.\n' +
         '• A throne of his tail in Ravana\'s court, the tail growing as they ran out of cloth: later tellings.\n' +
         '• Hanuman is present wherever the Ramayana is recited: an old prayer, not traced to a source text.\n' +
+        '• Hanuman spared the Ashoka grove on purpose: not in Valmiki. He wrecked the grove himself (5.39–40) and, after the fire, feared Sita had burned (5.53); only the rakshasis say her tree was spared (5.40.17–19).\n' +
+        '• Dronagiri and Meghnad: names from later tellings. Valmiki says "the Herb Mountain" and Indrajit.\n' +
         '• Jambavan says Indra struck him in anger (4.65.21); the Uttara says "not very angry" (7.35.46). The childhood pages follow the Uttara.' }] }]),
     pg(FULL, [{ art: 'backPage', note: 'The Season 1 line-up; Bali lit, holding out his hands to a small brahmin boy.',
       title: [{ text: 'CHIRANJEEVI', y: .12, size: 84, col: '#FFE7A6' }, { text: 'Next: BALI', y: .66, size: 64 }, { text: 'The king who gave away everything', y: .72, size: 40, font: 'Kalam' }],

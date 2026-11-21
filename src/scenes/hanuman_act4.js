@@ -207,21 +207,62 @@ ART.bhimaGrove = (c, P) => {
   bust(c, P.w * .7, P.h * 0.64, 0.4, { ...BHIMA, expr: 'fierce', look: [-1, 0], turn: -.3, arms: ['down', 'up'], hold: 'mace' }, lit(DAY()));
 };
 function stone(c, P, y) { const S = `M ${P.w * .05} ${y} C ${P.w * .1} ${y - 70} ${P.w * .7} ${y - 80} ${P.w * .82} ${y - 20} L ${P.w * .86} ${y + 60} L ${P.w * .02} ${y + 60} Z`; fillPath(c, S, '#8A8478'); inside(c, S, () => fillPath(c, `M -20 ${y + 10} L ${P.w} ${y + 10} L ${P.w} ${y + 80} L -20 ${y + 80} Z`, '#6A645A')); strokePath(c, S, '#3A3630', 4); }
+// a figure lying on its back along screen x (fig() turned -1.4): its tail from the hip, routed through screen points
+// (so it can run along the path and into someone's hands) and given back in figure units, so it stays attached
+const LIE = -1.4;
+function lyingTail(x0, y0, k, pts) { const c1 = Math.cos(-LIE), s1 = Math.sin(-LIE); return [[0, 520], [-90, 700], ...pts.map(([X, Y]) => { const dx = (X - x0) / k, dy = (Y - y0) / k; return [dx * c1 - dy * s1, dx * s1 + dy * c1]; })]; }
+const OLDPAL = { skin: '#C8B490', skinSh: '#9A866A' };
+function oldLying(c, x, y, k, tailPts, o = {}) {
+  fig(c, x, y, k, { ...OLD, legs: [[1.65, .1], [1.55, .2]], arms: ['side', [1.9, -2.4, 'rest']], expr: o.expr || 'calm', look: o.look || [1, .6], pal: OLDPAL, fur: OLDPAL.skin, tailW: o.tailW ?? 1.5, tail: lyingTail(x, y, k, tailPts) }, lit(DAY()), hanFigure, LIE);
+}
 ART.oldMonkey = (c, P) => {
   grove2(c, P); stone(c, P, P.h * .72);
-  // the old monkey lying along the stone, his tail across the path
-  limb(c, [[P.w * .6, P.h * .7], [P.w * .78, P.h * .78], [P.w * .9, P.h * .9], [P.w + 30, P.h * .92]], [36, 34, 30, 26], '#C8B490');
-  fig(c, P.w * .16, P.h * .56, .3, { ...OLD, legs: [[1.65, .1], [1.55, .2]], arms: ['side', [1.9, -2.4, 'rest']], expr: 'calm', look: [1, .6], tail: false, pal: { skin: '#C8B490', skinSh: '#9A866A' } }, lit(DAY()), hanFigure, -1.4);
+  // the old monkey asleep along the stone, his tail running from his hip across the path and out of the panel
+  oldLying(c, P.w * .14, P.h * .58, .3, [[P.w * .5, P.h * .8], [P.w * .75, P.h * .86], [P.w * .92, P.h * .88], [P.w + 60, P.h * .9]], { expr: 'sleep', tailW: 2.8 });
 };
-const TAILG = (c, P, y) => limb(c, [[-30, P.h * y], [P.w * .4, P.h * (y + .02)], [P.w + 30, P.h * (y - .02)]], [44, 42, 38], '#C8B490');
 // the hands where devaBust's 'down' arm ends (build 1.22, bodyK .82): (±145, 549) in bust units
 function gripTail(c, x, y, k, sides, S = devaPal({ who: 'bhima' })) { for (const s of sides) { c.save(); c.translate(x + s * 145 * k, y + 549 * k); c.scale(k * .82 * 1.22 * (s < 0 ? -1 : 1), k * .82 * 1.22); devaHand(c, [0, 0], 1.7, 'fist', S); c.restore(); } }
-ART.tailOneHand = (c, P) => { grove2(c, P); const y = P.h * .36, k = .52; bust(c, P.w * .5, y, k, { ...BHIMA, expr: 'smile', look: [.2, 1], arms: ['hip', 'down'] }, lit(DAY())); TAILG(c, P, (y + 560 * k) / P.h); gripTail(c, P.w * .5, y, k, [1]); };
-ART.tailTwoHands = (c, P) => {
+// Bhima pulling at the tail (3.147.17–18): a wide row; the old monkey lies on the left, his tail runs into Bhima's hands
+function tailPull(c, P, two) {
+  grove2(c, P); stone(c, P, P.h * .8);
+  const k = .46, bx = P.w * .74, by = P.h * .34, gy = by + 549 * k, gx = bx + 145 * k;
+  oldLying(c, P.w * .05, P.h * .7, .24, [[P.w * .38, P.h * .9], [P.w * .55, gy + 16], [two ? bx - 145 * k : gx - 70, gy + 4], [gx, gy], [gx + 70, gy - 6]], { expr: 'calm', look: [1, -.2], tailW: 3.4 });
+  bust(c, bx, by, k, { ...BHIMA, expr: two ? 'pain' : 'smile', look: two ? [0, -.4] : [-.6, .9], arms: two ? ['down', 'down'] : ['hip', 'down'] }, lit(DAY()));
+  for (let i = 0; i < 6; i++) puffs(c, P.w * (.5 + i * .1), P.h * 1.04, 200, i % 2 ? '#3E6A34' : '#4A7A3A', i + 50, 6);
+  gripTail(c, bx, by, k, two ? [-1, 1] : [1]);
+  if (two) for (const [x, y] of [[.62, .2], [.86, .18], [.84, .34], [.64, .36]]) fillPath(c, `M ${P.w * x} ${P.h * y} q -8 14 0 18 q 8 -4 0 -18 Z`, '#BEE6FF');
+}
+ART.tailOneHand = (c, P) => tailPull(c, P, false);
+ART.tailTwoHands = (c, P) => tailPull(c, P, true);
+ART.bhimaRoars = (c, P) => { grove2(c, P); bust(c, P.w * .5, P.h * .44, .44, { ...BHIMA, expr: 'rage', look: [0, .6], arms: ['down', 'point'] }, lit(DAY())); };
+ART.oldSpeaks = (c, P) => {
+  grove2(c, P); stone(c, P, P.h * .8);
+  c.save(); c.translate(P.w * .5, P.h * .76); c.rotate(-.35); c.scale(.88, .88); figure(c, (c) => hanHead(c, { expr: 'calm', look: [.3, -.6], age: 1, crown: false, t: P.t }), lit(DAY())); c.restore();
+};
+// a new age: the Pandavas in the Himalaya (MBh 3.146)
+ART.newAge = (c, P) => {
+  vgrad(c, P, [[0, '#3A2A5A'], [.5, '#E8907A'], [1, '#F8D8A8']]);
+  redSun(c, P.w * .72, P.h * .5, 70);
+  himalaya(c, P, P.h * .5, '#EEF2FA', '#A8B8D4', 4);
+  for (let i = 0; i < 9; i++) puffs(c, P.w * (i + .5) / 9, P.h * (.9 + (i % 3) * .03), 220, i % 2 ? '#3E6A34' : '#4A7A3A', i + 60, 6);
+};
+const DRAUPADI = { pal: { skin: '#9A6440', skinSh: '#7A4A2C', skinDk: '#4A2A18', skinLt: '#C08A62', cloth: '#B8243A', clothSh: '#7A1424' } };
+ART.draupadiLotus = (c, P) => {
   grove2(c, P);
-  const y = P.h * .36, k = .52; bust(c, P.w * .5, y, k, { ...BHIMA, expr: 'pain', look: [0, -.4], arms: ['down', 'down'] }, lit(DAY())); TAILG(c, P, (y + 560 * k) / P.h); gripTail(c, P.w * .5, y, k, [-1, 1]);
-  for (const s of [-1, 1]) strokePath(c, `M ${P.w * .5 + s * 160} ${P.h * .96} q ${s * 20} -14 ${s * 40} 0 M ${P.w * .5 + s * 150} ${P.h * .99} q ${s * 26} -18 ${s * 52} 0`, '#5A4A2A', 3);
-  for (const [x, y] of [[.36, .3], [.66, .28], [.62, .4], [.4, .44]]) fillPath(c, `M ${P.w * x} ${P.h * y} q -8 14 0 18 q 8 -4 0 -18 Z`, '#BEE6FF');
+  const dx = P.w * .62, dy = P.h * .42, k = .5;
+  sitaAt(c, dx, dy, k, { ...DRAUPADI, expr: 'smile', look: [.4, .6], turn: .2, arms: ['down', 'chest'] }, lit(DAY()));
+  // the golden lotus of a thousand petals at her breast, glowing
+  const lx = dx + 50 * k, ly = dy + 330 * k;
+  glow(c, lx, ly, 120, '#FFE08A', .8);
+  for (let L = 0; L < 3; L++) for (let i = -4; i <= 4; i++) { c.save(); c.translate(lx, ly + 10); c.rotate(i * .3); const r = 52 - L * 14, Pt = `M 0 0 C -14 -8 -16 -${r * .7} 0 -${r} C 16 -${r * .7} 14 -8 0 0 Z`; fillPath(c, Pt, ['#F0B030', '#F8D050', '#FFF0A0'][L]); strokePath(c, Pt, '#9A6A10', 2); c.restore(); }
+  bust(c, P.w * .88, P.h * .46, .48, { ...BHIMA, expr: 'smile', look: [-1, 0], turn: -.3, arms: ['down', 'down'] }, lit(DAY()));
+};
+ART.bhimaSets = (c, P) => {
+  vgrad(c, P, [[0, '#7AA8D8'], [1, '#E8E0C0']]);
+  himalaya(c, P, P.h * .55, '#EEF2FA', '#A8B8D4', 8);
+  fillPath(c, `M -20 ${P.h + 20} L -20 ${P.h * .86} L ${P.w * .5} ${P.h * .62} L ${P.w + 20} ${P.h * .4} L ${P.w + 20} ${P.h + 20} Z`, '#4A6A3A');
+  for (let i = 0; i < 6; i++) tree(c, P.w * (.5 + i * .09), P.h * (.62 - i * .04), P.h * .3, '#2E5A2E', i + 7, 1.1);
+  fig(c, P.w * .22, P.h * .12, .3, { ...BHIMA, legs: 'stride', arms: ['down', 'fist'], hold: 'mace', expr: 'fierce', look: [1, -.3], turn: .3, dhoti: '#7A5A1E' }, lit(DAY()), devaFigure, -.12);
 };
 ART.bhimaBows = (c, P) => { grove2(c, P); bust(c, P.w * .5, P.h * .84, .5, { ...BHIMA, expr: 'kind', look: [0, .3], tilt: .1, arms: ['namaste', 'namaste'] }, lit(DAY())); };
 ART.iAmHanuman = (c, P) => { grove2(c, P); bust(c, P.w * .5, P.h * .84, .5, { ...OLD, expr: 'smile', look: [0, 0], arms: ['down', 'down'] }, lit(DAY()), hanBust); };

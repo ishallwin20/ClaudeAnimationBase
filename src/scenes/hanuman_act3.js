@@ -243,24 +243,62 @@ ART.eyesLeaves = (c, P) => {
 };
 
 // =================== p27 · the ring ===================
-ART.ringOffer = (c, P) => {
-  groveBg(c, P, { seed: 2 });
-  sitaAt(c, P.w * .26, P.h * 0.5, 0.608, { expr: 'shock', look: [1, 0], turn: .3, arms: ['chest', 'open'] }, NIGHTL());
-  bust(c, P.w * .76, P.h * 0.5, 0.608, { expr: 'tender', look: [-1, 0], turn: -.3, arms: ['reach', 'down'], crown: 'band' }, NIGHTL(), hanBust);
-  // the ring held out on his fingers, glinting
-  const rx = P.w * .76 - 330 * .608 * .82 - 40, ry = P.h * .5 + 150 * .608;
-  glow(c, rx, ry, 60, '#FFE08A', .9); c.strokeStyle = '#F0B83A'; c.lineWidth = 7; c.beginPath(); c.arc(rx, ry, 13, 0, TAU); c.stroke(); ellipse(c, rx, ry - 14, 6, 6, '#C21E2A');
-};
 ART.ringFace = (c, P) => {
   vgrad(c, P, [[0, '#1A2440'], [1, '#3A3A5A']]); glow(c, P.w * .5, P.h * .55, 320, '#FFE8B0', .35);
   sitaAt(c, P.w * .5, P.h * .5, .62, { expr: 'kind', look: [.4, .6], arms: ['down', 'chest'] }, lit(DAY()));
   glow(c, P.w * .6, P.h * .8, 50, '#FFE08A', .9); c.strokeStyle = '#F0B83A'; c.lineWidth = 7; c.beginPath(); c.arc(P.w * .6, P.h * .8, 12, 0, TAU); c.stroke();
 };
+// ---------- the tail on fire (pp. 40–43): drawn by devaFigure's tailFn, on the tail itself, so it stays attached
+// rags wound round it every so often, soot, and a fire at the tip (sizes in figure units)
+function ragFire(o = {}) {
+  return (c, T, wd) => {
+    const seg = []; let L = 0; for (let i = 1; i < T.length; i++) { const d = Math.hypot(T[i][0] - T[i - 1][0], T[i][1] - T[i - 1][1]); seg.push(d); L += d; }
+    const at = (u) => { let d = u * L; for (let i = 0; i < seg.length; i++) { if (d <= seg[i] || i === seg.length - 1) { const k = seg[i] ? d / seg[i] : 0, a = T[i], b = T[i + 1]; return [lerp(a[0], b[0], k), lerp(a[1], b[1], k), Math.atan2(b[1] - a[1], b[0] - a[0]), lerp(wd[i], wd[i + 1], k)]; } d -= seg[i]; } };
+    for (let j = 0; j < (o.bands ?? 9); j++) {
+      const [x, y, a, w] = at(.22 + j * .085); c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2 + (j % 2 ? .25 : -.2));
+      const B = `M ${-w * .75} -12 L ${w * .75} -18 L ${w * .8} 14 L ${-w * .7} 18 Z`; fillPath(c, B, j % 2 ? '#D8C8A0' : '#C8B080'); strokePath(c, B, '#5A4A2A', 4);
+      ellipse(c, (j % 3 - 1) * w * .3, 0, w * .18, 6, 'rgba(60,40,30,.6)'); c.restore();
+    }
+    // the fire itself is drawn outside the figure's layer (inside it, the layer's ink edge turns flames into scratches):
+    // remember the tip in device pixels; tipFires(c) draws it after the figure
+    if (o.fire !== false) { const [x, y] = T[T.length - 1], m = c.getTransform(), pt = m.transformPoint(new DOMPoint(x, y)), k = Math.hypot(m.a, m.b); TIPS.push([pt.x, pt.y, (o.fw ?? 260) * k, (o.fh ?? 420) * k, o.seed ?? 3]); }
+  };
+}
+const TIPS = [];
+function tipFires(c) {
+  const m = c.getTransform(), inv = m.inverse(), k = Math.hypot(m.a, m.b);
+  for (const [X, Y, fw, fh, seed] of TIPS.splice(0)) { const p = inv.transformPoint(new DOMPoint(X, Y)), w = fw / k, h = fh / k; glow(c, p.x, p.y, w * 1.3, '#FF8A1E', .9); blaze(c, p.x, p.y + h * .3, w, h, seed); }
+}
+// a palm's centre for devaBust's 'reach' arm (s = 1 the near arm, to screen right; -1 the far, to screen left), in bust units
+function reachPalm(s, b = 1) {
+  const ua = s > 0 ? .35 : Math.PI - .35, ba = s > 0 ? -.25 : .25, sx = s * 176 * b, sy = 206;
+  const ex = sx + Math.cos(ua) * 190 * b, ey = sy + Math.sin(ua) * 190 * b, wx = ex + Math.cos(ua + ba) * 170 * b, wy = ey + Math.sin(ua + ba) * 170 * b;
+  const px = wx + Math.cos(ua + ba) * 28, py = wy + Math.sin(ua + ba) * 28;
+  return [px * .82, 120 + (py - 120) * .82];
+}
+function ringOn(c, x, y, r) {
+  glow(c, x, y, r * 5, '#FFE08A', .9);
+  c.strokeStyle = '#7A5410'; c.lineWidth = r * .62; c.beginPath(); c.ellipse(x, y, r, r * .55, 0, 0, TAU); c.stroke();
+  c.strokeStyle = '#F6C84A'; c.lineWidth = r * .42; c.beginPath(); c.ellipse(x, y, r, r * .55, 0, 0, TAU); c.stroke();
+  ellipse(c, x, y - r * .6, r * .42, r * .36, '#C21E2A'); ellipse(c, x - r * .12, y - r * .7, r * .12, r * .1, '#FFC0B0');
+}
+ART.ringOffer = (c, P) => {
+  groveBg(c, P, { seed: 2 });
+  const k = .62, sx = P.w * .25, hx = P.w * .74, y = P.h * .56;
+  sitaAt(c, sx, y, k, { expr: 'shock', look: [1, .2], turn: .3, arms: ['chest', 'down'] }, NIGHTL());
+  bust(c, hx, y + 10, k, { expr: 'tender', look: [-1, .3], turn: -.3, arms: ['reach', 'down'], crown: 'band' }, NIGHTL(), hanBust);
+  // Ram's ring on his open palm, held out to her
+  const [px, py] = reachPalm(-1); ringOn(c, hx + px * k, y + 10 + (py - 34) * k, 22);
+};
 ART.jewelGive = (c, P) => {
   vgrad(c, P, [[0, '#1A2440'], [1, '#3A3A5A']]);
-  sitaAt(c, P.w * .3, P.h * 0.63, 0.45, { expr: 'grief', look: [1, .4], turn: .3, arms: ['down', 'reach'] }, lit(DAY()));
-  glow(c, P.w * .7, P.h * .7, 90, '#9AE8FF', .8); ellipse(c, P.w * .7, P.h * .7, 20, 20, '#E8FAFF'); fillPath(c, `M ${P.w * .7} ${P.h * .7 - 16} l 12 16 l -12 16 l -12 -16 Z`, '#5AC8F0');
-  c.save(); c.translate(P.w * .82, P.h * .78); c.scale(-1.1, 1.1); devaHand(c, [0, 0], -.4, 'open', { skin: '#E39A34', skinDk: '#7A4410' }); c.restore();
+  const k = .36, y = P.h * .66, sx = P.w * .2, hx = P.w * .86;
+  sitaAt(c, sx, y, k, { expr: 'grief', look: [1, .2], turn: .3, arms: ['down', 'reach'] }, lit(DAY()));
+  bust(c, hx, y, k, { expr: 'tender', look: [-1, .2], turn: -.3, arms: ['reach', 'down'], crown: 'band' }, lit(DAY()), hanBust);
+  // the hair jewel passing from her hand into his
+  const [sx2, sy2] = reachPalm(1, .9), jx = sx + sx2 * k + 8, jy = y + (sy2 - 30) * k;
+  glow(c, jx, jy, 90, '#9AE8FF', .9); ellipse(c, jx, jy, 17, 17, '#E8FAFF'); strokePath(c, ellP(jx, jy, 17, 17), '#3A7A9A', 3);
+  fillPath(c, `M ${jx} ${jy - 13} l 10 13 l -10 13 l -10 -13 Z`, '#5AC8F0'); ellipse(c, jx - 4, jy - 5, 4, 3, '#FFFFFF');
 };
 
 // =================== p28 · the grove smashed ===================
@@ -463,29 +501,31 @@ ART.court = (c, P) => {
   ravAt(c, P.w * .5, P.h * .48, .4, { expr: 'fierce', look: [-.6, .6], arms: ['down', 'down'], extra: 4 }, FIREL());
   { const ST = `M ${P.w * .5 - 330} ${P.h + 20} L ${P.w * .5 - 310} ${P.h * .8} L ${P.w * .5 + 310} ${P.h * .8} L ${P.w * .5 + 330} ${P.h + 20} Z`; fillPath(c, ST, '#B8D8F0'); inside(c, ST, () => { fillPath(c, `M ${P.w * .5 + 80} ${P.h * .78} L ${P.w * .5 + 340} ${P.h * .78} L ${P.w * .5 + 340} ${P.h + 20} L ${P.w * .5 + 120} ${P.h + 20} Z`, 'rgba(90,130,170,.5)'); for (let i = -5; i <= 5; i++) ellipse(c, P.w * .5 + i * 52, P.h * .86, 8, 8, ['#C21E2A', '#1E8A5A', '#3A6AE8', '#F0B83A'][(i + 5) % 4]); }); strokePath(c, ST, '#E8F4FF', 4); }
   // Hanuman bound before him, small, seen from behind and to the side
-  bust(c, P.w * .14, P.h * .78, .3, { expr: 'calm', look: [1, -.3], turn: .4, arms: ['side', 'side'], crown: 'band' }, FIREL(), hanBust);
-  rope(c, [[P.w * .02, P.h * .86], [P.w * .26, P.h * .82], [P.w * .04, P.h * .94], [P.w * .26, P.h * .92]]);
+  fig(c, P.w * .15, P.h * .4, .21, { legs: 'stand', arms: ['side', 'side'], expr: 'calm', look: [1, -.3], turn: .4, tail: 'curl', crown: 'band', after: (c) => bindRopes(c) }, FIREL());
   [.84, .94].forEach((x, i) => rakAt(c, P.w * x, P.h * .8, .22, { r: i + 1, expr: 'laugh', look: [-1, 0], turn: -.3, arms: ['down', 'down'] }, FIREL()));
 };
-ART.hanSpeaks = (c, P) => { hall(c, P); bust(c, P.w * .5, P.h * .8, .36, { expr: 'fierce', look: [.6, 0], turn: .2, arms: ['side', 'side'], crown: 'band' }, FIREL(), hanBust); rope(c, [[P.w * .25, P.h * .98], [P.w * .75, P.h * .9]]); };
+ART.hanSpeaks = (c, P) => { hall(c, P); bust(c, P.w * .5, P.h * .8, .36, { expr: 'fierce', look: [.6, 0], turn: .2, arms: ['side', 'side'], crown: 'band', after: (c) => bindRopes(c, { ys: [260, 360] }) }, FIREL(), hanBust); };
 ART.ravanaKill = (c, P) => { hall(c, P); ravAt(c, P.w * .5, P.h * .82, .3, { expr: 'rage', look: [-.6, 0], arms: ['down', 'point'], extra: 3 }, FIREL()); };
 ART.vibhishana = (c, P) => { hall(c, P); bust(c, P.w * .5, P.h * .8, .34, { ...VIBHI, expr: 'speak', look: [.6, 0], turn: .2, arms: ['down', 'abhaya'] }, FIREL()); };
 ART.ravanaBurn = (c, P) => { hall(c, P); ravAt(c, P.w * .5, P.h * .82, .3, { expr: 'laugh', look: [0, 0], arms: ['down', 'fist'], extra: 3 }, FIREL()); };
 
 // =================== p37 · be cool ===================
 ART.tailRags = (c, P) => {
-  vgrad(c, P, [[0, '#1A1020'], [1, '#5A3A3A']]);
-  lankaCity(c, P, P.h * .72, .45, { seed: 9, night: true });
-  // torches
-  for (const x of [.08, .36, .62, .92]) { strokePath(c, `M ${P.w * x} ${P.h} L ${P.w * x} ${P.h * .58}`, '#3A2A1A', 10); glow(c, P.w * x, P.h * .56, 70, '#FF9A2A', .7); blaze(c, P.w * x, P.h * .6, 40, 60, Math.round(x * 100)); }
-  // Hanuman led through the streets, the tail wound in rags and lit
-  bust(c, P.w * .5, P.h * 0.606, 0.32, { expr: 'calm', look: [-.4, 0], arms: ['side', 'side'], crown: 'band' }, FIREL(), hanBust);
-  rope(c, [[P.w * .42, P.h * .82], [P.w * .58, P.h * .78], [P.w * .2, P.h * .74]]);
-  const T = [[P.w * .54, P.h * .8], [P.w * .7, P.h * .7], [P.w * .8, P.h * .5], [P.w * .86, P.h * .3]];
-  limb(c, T, [30, 34, 34, 30], '#E39A34');
-  for (let i = 0; i < 8; i++) { const k = .2 + i * .1, a = [lerp(T[1][0], T[3][0], k), lerp(T[1][1], T[3][1], k)]; c.save(); c.translate(a[0], a[1]); c.rotate(.5 + (i % 2) * .3); const B = 'M -34 -12 L 34 -20 L 36 2 L -32 12 Z'; fillPath(c, B, i % 2 ? '#D8C8A0' : '#C8B080'); strokePath(c, B, '#5A4A2A', 3); ellipse(c, (i % 3 - 1) * 12, -2, 9, 5, 'rgba(60,40,20,.55)'); c.restore(); }
-  glow(c, P.w * .84, P.h * .32, 120, '#FF8A1E', .9); blaze(c, P.w * .85, P.h * .36, 90, 150, 3);
-  [.08, .2, .34, .66, .8, .94].forEach((x, i) => rakAt(c, P.w * x, P.h * .92, .15, { r: i % 4, expr: i % 2 ? 'laugh' : 'smile', look: [x < .5 ? 1 : -1, -.4], turn: x < .5 ? .3 : -.3, arms: ['up', 'fist'] }, FIREL()));
+  // a full page: a street of Lanka at night; Hanuman, roped, his tail wound in rags and lit, dragged by jeering rakshasas
+  vgrad(c, P, [[0, '#120A1A'], [.6, '#3A1E2A'], [1, '#5A3A3A']]);
+  lankaCity(c, P, P.h * .62, .55, { seed: 9, night: true });
+  fillPath(c, `M -20 ${P.h * .62} L ${P.w + 20} ${P.h * .62} L ${P.w + 20} ${P.h + 20} L -20 ${P.h + 20} Z`, '#3A2A2A');
+  for (const x of [.06, .3, .66, .95]) { strokePath(c, `M ${P.w * x} ${P.h * .66} L ${P.w * x} ${P.h * .44}`, '#3A2A1A', 10); glow(c, P.w * x, P.h * .42, 80, '#FF9A2A', .7); blaze(c, P.w * x, P.h * .45, 44, 70, Math.round(x * 100)); }
+  // the lead rope, from the knot on his chest to the rakshasa pulling him
+  strokePath(c, `M ${P.w * .44} ${P.h * .44} Q ${P.w * .3} ${P.h * .5} ${P.w * .16} ${P.h * .5}`, '#5A3E18', 16); strokePath(c, `M ${P.w * .44} ${P.h * .44} Q ${P.w * .3} ${P.h * .5} ${P.w * .16} ${P.h * .5}`, '#C8A060', 10);
+  rakAt(c, P.w * .12, P.h * .5, .3, { r: 2, expr: 'laugh', look: [1, 0], turn: .3, arms: ['down', 'reach'] }, FIREL());
+  // Hanuman, whole, roped; the tail from his hip up behind him, wrapped and burning at the tip
+  fig(c, P.w * .44, P.h * .24, .5, { legs: 'stride', arms: ['side', 'side'], expr: 'calm', look: [-.5, .2], turn: -.2, crown: 'band', tailW: 1.7,
+    tail: [[0, 520], [170, 600], [330, 540], [430, 360], [440, 140], [380, -60], [420, -260]], tailFn: ragFire({ fw: 420, fh: 620, seed: 5 }),
+    after: (c) => bindRopes(c, { knot: 360 }) }, FIREL());
+  tipFires(c);
+  // the crowd in front, jeering, torches up
+  [.06, .22, .38, .62, .78, .94].forEach((x, i) => rakAt(c, P.w * x, P.h * (.9 + (i % 2) * .03), .3, { r: i % 4, expr: i % 2 ? 'laugh' : 'smile', look: [x < .46 ? 1 : -1, -.4], turn: x < .46 ? .3 : -.3, arms: ['up', 'fist'] }, FIREL()));
 };
 ART.sitaPrays = (c, P) => {
   groveBg(c, P, { seed: 3 });
@@ -510,10 +550,10 @@ ART.burn1 = (c, P) => {
   smoke(c, P, 8, 3, '#2A1A1E');
   lankaCity(c, P, P.h * .78, .9, { seed: 4, burn: .8, bg: '#6A1A14' }); lankaCity(c, P, P.h * 1.04, 1.5, { seed: 5, burn: .8, bg: '#6A1A14' });
   // roof to roof, the tail a torch
-  const T = [[P.w * .6, P.h * .42], [P.w * .4, P.h * .48], [P.w * .2, P.h * .44], [P.w * .06, P.h * .36]];
-  limb(c, T, [34, 32, 28, 22], '#E39A34'); glow(c, P.w * .06, P.h * .36, 140, '#FF8A1E', .9); blaze(c, P.w * .07, P.h * .38, 120, 200, 11);
   glow(c, P.w * .62, P.h * .32, 300, '#FFD27A', .35);
-  fig(c, P.w * .7, P.h * .24, .26, { legs: 'leap', arms: ['reach', 'up'], expr: 'roar', look: [1, 0], tail: false, crown: 'band' }, FIREL(), hanFigure, 1.0);
+  fig(c, P.w * .72, P.h * .22, .26, { legs: 'leap', arms: ['reach', 'up'], expr: 'roar', look: [1, 0], crown: 'band',
+    tailW: 1.5, tail: [[0, 520], [-80, 760], [-60, 1020], [60, 1260], [220, 1420], [300, 1620]], tailFn: ragFire({ bands: 6, fw: 320, fh: 480, seed: 11 }) }, FIREL(), hanFigure, 1.0);
+  tipFires(c);
 };
 ART.burn2 = (c, P) => {
   vgrad(c, P, [[0, '#0A0408'], [.3, '#4A1410'], [1, '#2A0A08']]);
@@ -529,8 +569,8 @@ ART.burn2 = (c, P) => {
   const RR = lcg(12);
   for (let x = -30; x < P.w + 60; x += 120 + RR() * 90) { const w = 60 + RR() * 50, Y = P.h * (1.0 + RR() * .03), hh = 30 + RR() * 50, D = `M ${x - w} ${P.h + 20} L ${x - w} ${Y - hh} C ${x - w} ${Y - hh - w} ${x} ${Y - hh - w * 1.4} ${x} ${Y - hh - w * 1.8} C ${x} ${Y - hh - w * 1.4} ${x + w} ${Y - hh - w} ${x + w} ${Y - hh} L ${x + w} ${P.h + 20} Z`; fillPath(c, D, '#120608'); if (RR() > .35) blaze(c, x, Y - hh - w * .6, w * 2, 90 + RR() * 80, Math.round(x)); }
   glow(c, P.w * .5, P.h * .14, 200, '#FFE08A', .3);
-  fig(c, P.w * .52, P.h * .1, .1, { legs: 'leap', arms: ['reach', 'reach'], expr: 'roar', tail: 'stream', crown: 'band' }, FIREL(), hanFigure, 1.2);
-  glow(c, P.w * .46, P.h * .11, 70, '#FF8A1E', .8);
+  fig(c, P.w * .52, P.h * .1, .1, { legs: 'leap', arms: ['reach', 'reach'], expr: 'roar', crown: 'band', tail: [[0, 520], [-60, 760], [-40, 1000], [60, 1200]], tailFn: ragFire({ bands: 3, fw: 360, fh: 520, seed: 4 }) }, FIREL(), hanFigure, 1.2);
+  tipFires(c);
 };
 
 // =================== p40 · Sita ===================
@@ -539,8 +579,8 @@ ART.shoreLooks = (c, P) => {
   lankaCity(c, P, P.h * .62, .55, { seed: 7, burn: .9, bg: '#8A2A1A' }); smoke(c, P, 3, 2, '#2A1A1E');
   for (let i = 0; i < 6; i++) strokePath(c, `M ${P.w * (.1 + i * .15)} ${P.h * (.7 + i * .03)} q 60 -6 120 0`, 'rgba(255,140,80,.5)', 3);
   fillPath(c, `M ${P.w * .55} ${P.h + 20} Q ${P.w * .75} ${P.h * .76} ${P.w + 20} ${P.h * .8} L ${P.w + 20} ${P.h + 20} Z`, '#3A2E26');
+  for (const [w, col] of [[30, '#7A4410'], [22, '#E39A34']]) strokePath(c, `M ${P.w * .74} ${P.h + 20} C ${P.w * .66} ${P.h * .84} ${P.w * .5} ${P.h * .8} ${P.w * .38} ${P.h + 20}`, col, w);
   bust(c, P.w * .8, P.h * .72, .3, { expr: 'calm', look: [-1, -.3], turn: -.5, arms: ['down', 'down'], crown: 'band' }, FIREL(), hanBust);
-  strokePath(c, `M ${P.w * .7} ${P.h * .96} C ${P.w * .6} ${P.h * .9} ${P.w * .5} ${P.h * .94} ${P.w * .42} ${P.h * .88}`, '#E39A34', 22);
 };
 ART.horror = (c, P) => { vgrad(c, P, [[0, '#3A0A0A'], [1, '#C8501E']]); c.save(); c.translate(P.w * .5, P.h * .8); c.scale(.95, .95); figure(c, (c) => hanHead(c, { expr: 'grief', look: [0, .5], crown: 'band', t: P.t }), FIREL()); c.restore(); };
 ART.wisdom = (c, P) => { vgrad(c, P, [[0, '#2A0A0A'], [1, '#6A2A1A']]); bust(c, P.w * .5, P.h * .84, .3, { expr: 'grief', look: [0, 1], tilt: .15, arms: ['throat', 'throat'], crown: 'band' }, FIREL(), hanBust); };
