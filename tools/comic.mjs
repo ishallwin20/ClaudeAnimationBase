@@ -67,7 +67,11 @@ html, body { margin: 0; padding: 0; background: #000; }
 .box.list { font: 400 23px/1.3 Kalam; }
 .title { white-space: nowrap; position: absolute; transform: translate(-50%, -50%); text-align: center; font: 400 96px/1.05 Marcellus; letter-spacing: 6px; paint-order: stroke fill; -webkit-text-stroke: 6px #0B0810; text-shadow: 0 0 30px rgba(0,0,0,.8); }
 .title.Kalam { font-family: Kalam; font-weight: 700; letter-spacing: 1px; }
-.box.small { font: 400 19px/1.2 Kalam; padding: 5px 10px 4px; background: rgba(241,231,210,.9); border-width: 2px; box-shadow: none; }
+.box.small { font: 700 26px/1.2 Kalam; padding: 7px 12px 6px; }
+/* a note: explains a word or a measure (siddha, yojana); pale blue so it reads as an aside, not the story */
+.box.note { background: #DDEAF0; font-weight: 400; }
+/* a gift tag: gold, for the boons */
+.box.gift { background: #F6D77A; padding: 6px 14px 5px; }
 .bal { position: absolute; transform: translate(-50%, -50%); text-align: center; color: #15110E; font: 700 33px/1.18 Kalam; width: fit-content; }
 .bal.whisper { font-weight: 400; font-style: italic; }
 .bal.sky { color: #FFE7A6; }
@@ -76,16 +80,19 @@ html, body { margin: 0; padding: 0; background: #000; }
 .wm { position: absolute; right: 26px; bottom: 3px; font: 400 15px/1 Marcellus; letter-spacing: 1px; color: rgba(241,231,210,.55); }
 `;
 // positions in panel units; a number in (0, 1] is a fraction of the panel (x of its width, y of its height)
+// the smallest lettering a phone can read: a 1080-wide page is ~390 pt on a phone, so 27 px ≈ 10 pt (owner, 21 Nov:
+// 19-px caption boxes "look small on phone"). Balloons and boxes below it are raised to it; the back-matter lists aren't.
+const MIN_TEXT = 27;
 const fr = (v, size) => typeof v === 'number' && v > 0 && v <= 1 ? v * size : v;
 function pageHtml(n) {
   const pg = COMIC.pages[n]; let h = `<section class="page" id="p${n}"><img class="art" src="a${n}.jpg"><svg width="${PW}" height="${PH}" viewBox="0 0 ${PW} ${PH}"></svg>`;
   for (const pn of pg.panels) {
     const [px, py, pw, ph] = pn.r, X = v => px + fr(v, pw), Y = v => py + fr(v, ph);
-    for (const b of pn.box || []) h += `<div class="box${b.small ? ' small' : ''}${b.list ? ' list' : ''}" style="left:${X(b.x ?? 24)}px;top:${Y(b.y ?? 22)}px;max-width:${fr(b.w ?? .5, pw)}px${b.size ? `;font-size:${b.size}px` : ''}">${esc(b.text)}</div>`;
+    for (const b of pn.box || []) h += `<div class="box${b.small ? ' small' : ''}${b.list ? ' list' : ''}${b.note ? ' note' : ''}${b.gift ? ' gift' : ''}" style="left:${X(b.x ?? 24)}px;top:${Y(b.y ?? 22)}px;max-width:${fr(b.w ?? .5, pw)}px${b.size ? `;font-size:${b.list ? b.size : Math.max(b.size, MIN_TEXT)}px` : ''}">${esc(b.text)}</div>`;
     for (const t of pn.title || []) h += `<div class="title${t.font ? ' ' + t.font : ''}" style="left:${X(t.x ?? .5)}px;top:${Y(t.y)}px;font-size:${t.size || 96}px;color:${t.col || '#F1E7D2'};${t.w ? `width:${fr(t.w, pw)}px;` : ''}">${esc(t.text)}</div>`;
     for (const b of pn.say || []) {
       const [tx, ty] = b.tail ? [X(b.tail[0]), Y(b.tail[1])] : ['', ''];
-      h += `<div class="bal ${b.kind || 'speech'}" data-kind="${b.kind || 'speech'}" data-tx="${tx}" data-ty="${ty}" style="left:${X(b.x)}px;top:${Y(b.y)}px;max-width:${fr(b.w ?? .45, pw)}px${b.size ? `;font-size:${b.size}px` : ''}">${esc(b.text)}</div>`;
+      h += `<div class="bal ${b.kind || 'speech'}" data-kind="${b.kind || 'speech'}" data-tx="${tx}" data-ty="${ty}" style="left:${X(b.x)}px;top:${Y(b.y)}px;max-width:${fr(b.w ?? .45, pw)}px${b.size ? `;font-size:${Math.max(b.size, MIN_TEXT)}px` : ''}">${esc(b.text)}</div>`;
     }
     for (const f of pn.sfx || []) h += `<div class="sfx" style="left:${X(f.x)}px;top:${Y(f.y)}px;font-size:${f.size || 44}px;color:${f.col || '#FFE7A6'};transform:translate(-50%,-50%) rotate(${f.rot || 0}rad)">${esc(f.text)}</div>`;
   }
