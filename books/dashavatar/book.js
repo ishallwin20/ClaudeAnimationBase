@@ -1,6 +1,6 @@
 // book.js: the words of the Dashavatar book and where they sit on each page (tools/book.mjs reads it). Positions are
 // in mm from the top-left of the page's TRIM: a page is 6 × 9 in (152.4 × 228.6 mm), no bleed, no border; the picture
-// stops 0.25 in (6.35 mm) inside the trim on the outer edges and runs across the fold. Text keeps 12 mm inside the
+// runs to the trim and across the fold. The owner's 0.25 in (6.35 mm) margin is for the words; we keep text 12 mm inside the
 // trim and 10 mm off the fold (BOOK.safe; book.mjs warns otherwise): on a left page x 13 … 141, on a right page
 // x 11.4 … 139.4. The PDFs are converted to CMYK for print (BOOK.cmyk). No transliteration anywhere: verses are in
 // Devanagari with their meaning in English (owner, 22 Nov).

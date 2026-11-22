@@ -1,8 +1,8 @@
 // dasha_book.js: the Dashavatar book's pages, one slot per spread (rendered at t = slot + .5 by tools/book.mjs
 // --page=book_dasha_pages.html): slot 0 = the inside front cover | p. 1, slot n = pp. 2n | 2n + 1. A page is 6 × 9 in
-// (152.4 × 228.6 mm; the spread 12 × 9 in, 3600 × 2700 px at 300 dpi), no bleed, no border: the picture stops 0.25 in
-// (6.35 mm) inside the trim on the outer edges and runs on across the fold, where nothing important may sit (faces and
-// eyes stay 12 mm or more off it). Drawn in the book's design space (DW × DH = half the canvas, under scale 2);
+// (152.4 × 228.6 mm; the spread 12 × 9 in, 3600 × 2700 px at 300 dpi), no bleed, no border: the picture runs to the
+// trim on every edge and on across the fold, where nothing important may sit (faces and eyes stay 12 mm or more off
+// it). The 0.25 in (6.35 mm) margin is for the words only: no text within it of an edge or the fold (owner, 22 Nov). Drawn in the book's design space (DW × DH = half the canvas, under scale 2);
 // positions are given in mm on the trim through XL / XR (the left and right pages) and Y. The words sit over the art as
 // live text (books/dashavatar/book.js): every page leaves their zones quiet. Cast: src/po_dasha_gods.js,
 // src/po_dasha_world.js; furniture: src/po_dasha_frame.js. The introduction (pp. 1–11) is books/dashavatar/INTRO.md.
@@ -10,15 +10,13 @@
   const DW = W / 2, DH = H / 2, K = W / DW;
   PT.k = K;
   Object.assign(LOOK, { bloom: .04, vignette: 0, grain: .02 });
-  const TW = 152.4, MM = DW / (2 * TW), PG = TW * MM, MG = 6.35 * MM;
+  const TW = 152.4, MM = DW / (2 * TW), PG = TW * MM;
   const Y = mm => mm * MM, XL = mm => mm * MM, XR = mm => PG + mm * MM;
   const PAPER = '#FFFFFF';
-  // a spread's draw, in the design space; then the paper margin round the picture (o.blankL: the left page all paper)
+  // a spread's draw, in the design space, the art to the trim (o.blankL: the left page left as plain paper)
   const spread = (fn, o = {}) => c => {
     c.save(); c.scale(K, K); fn(c);
-    const p = new Path2D(); p.rect(-10, -10, DW + 20, DH + 20); p.rect(o.blankL ? PG : MG, MG, DW - MG - (o.blankL ? PG : MG), DH - 2 * MG);
-    c.fillStyle = PAPER; c.fill(p, 'evenodd');
-    if (o.blankL) c.fillRect(-10, -10, PG + 10, DH + 20);
+    if (o.blankL) { c.fillStyle = PAPER; c.fillRect(-10, -10, PG + 10, DH + 20); }
     c.restore();
   };
   const front = (c, x, y, s, fn, o = {}) => { c.save(); c.translate(x, y); c.scale(s, s); c.translate(0, -PF_SOLE); fn(c, o); c.restore(); };
