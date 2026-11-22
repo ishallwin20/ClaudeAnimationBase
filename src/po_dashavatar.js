@@ -67,21 +67,26 @@ function pdHand(c, x, y, a, pal, kind = 'open', o = {}) {
 // ---------- the head ----------
 const PD_FACE = {
   man: [[22, -50], [32, -34], [38, -18], [37, -10], [44, 3], [50, 12, 1], [44, 16], [45, 19.5], [42, 22.5, 1], [44.5, 26], [39.5, 30.5], [41.5, 37], [35, 45], [18, 48], [-4, 42], [-18, 28], [-40, 6], [-44, -20], [-34, -46], [-6, -56]],
+  woman: [[22, -50], [32, -34], [37, -18], [36, -10], [42, 2], [46.5, 10.5, 1], [41.5, 14.5], [43, 18.5], [40.5, 21.5, 1], [43, 25], [38.5, 29.5], [39.5, 35], [33, 43], [17, 46], [-4, 41], [-18, 28], [-40, 6], [-44, -20], [-34, -46], [-6, -56]],
   boy: [[24, -50], [35, -34], [40, -18], [39, -8], [44, 1], [47, 7, 1], [42, 11], [43.5, 15.5], [40.5, 18.5, 1], [42.5, 22], [37.5, 27], [38, 32], [31, 40], [16, 44], [-4, 40], [-22, 28], [-46, 6], [-52, -22], [-42, -50], [-10, -62]],
 };
+PD_FACE.girl = PD_FACE.boy;
 function pdHead(c, o = {}) {
-  const sk = o.sk || PO.skin, G = PO.gold, boy = o.face === 'boy', ink = 'rgba(28,22,30,.9)';
+  const sk = o.sk || PO.skin, G = PO.gold, boy = o.face === 'boy' || o.face === 'girl', ink = 'rgba(28,22,30,.9)';
   const hairBack = o.hair === 'jata' ? PD.white.base : PO.hair;
   // hair falling behind the shoulders (drawn first, under the head)
   if (o.hair === 'crown' || o.hair === 'kirita') poFill(c, [[-20, -40], [-46, -20], [-54, 20], [-50, 64], [-34, 78], [-22, 50], [-14, 20]], PO.hair, { hi: [-3, -3, 4, 'rgba(110,100,110,.35)'] });
   if (o.hair === 'jata') poFill(c, [[-20, -44], [-48, -20], [-58, 24], [-56, 74], [-40, 92], [-28, 60], [-16, 20]], PD.white.base, { sh: [6, 6, 8, rgba(PD.white.dk, .8)] });
+  if (typeof pdHairBack === 'function') pdHairBack(c, o);
   // the face
-  const F = PD_FACE[boy ? 'boy' : 'man'];
+  const F = PD_FACE[o.face] || PD_FACE.man, fem = o.face === 'woman' || o.face === 'girl';
   poFill(c, F, sk.base, { sh: [[-14, 6, 14, rgba(sk.dk, .65)], [0, 10, 6, rgba(sk.dk, .35)]], hi: [6, -4, 6, rgba(sk.lt, .7)] });
-  if (boy) ellipse(c, 24, 18, 10, 7, 'rgba(206,110,120,.22)');                                   // a child's cheek
+  if (boy || o.blush) ellipse(c, 24, 18, 10, 7, 'rgba(206,110,120,.22)');                                   // a child's cheek
   // the ear and a kundala
   poFill(c, [[-12, -12], [-4, -6], [-4, 8], [-10, 14], [-18, 6], [-18, -6]], sk.base, { sh: [-3, 3, 3, rgba(sk.dk, .7)] });
-  if (o.hair !== 'jata') { poFill(c, [[-12, 14], [-3, 18], [0, 28], [-6, 38], [-15, 36], [-11, 28], [-16, 22]], G.base, { sh: [3, 2, 3, rgba(G.dk, .8)], hi: [-2, -2, 2, rgba(G.lt, .8)] }); ellipse(c, -6, 28, 2.4, 2.4, PO.red); }
+  if (fem) { poFill(c, [[-14, 12], [-2, 12], [2, 26], [-8, 40], [-20, 26]], PO.gold.base, { sh: [3, 2, 3, rgba(PO.gold.dk, .8)], hi: [-2, -2, 2, rgba(PO.gold.lt, .8)] }); poDots(c, [[-18, 38], [-8, 44], [2, 38]], 2, 4.4, '#F2EEE2', false); }
+  else if (o.hair === 'pagri' || o.hair === 'bald' || o.hair === 'veil') { }
+  else if (o.hair !== 'jata') { poFill(c, [[-12, 14], [-3, 18], [0, 28], [-6, 38], [-15, 36], [-11, 28], [-16, 22]], G.base, { sh: [3, 2, 3, rgba(G.dk, .8)], hi: [-2, -2, 2, rgba(G.lt, .8)] }); ellipse(c, -6, 28, 2.4, 2.4, PO.red); }
   else { for (let i = 0; i < 3; i++) ellipse(c, -9, 18 + i * 7, 3.2, 3.2, '#5A2E24'); }        // a rudraksha in his ear
   // the eye
   const e = o.eye || 'open', bx = boy ? 1.12 : 1, ex = boy ? 2 : 0;
@@ -140,6 +145,7 @@ function pdHead(c, o = {}) {
     for (const [x, y] of poAlong([[12, -54], [-12, -58], [-38, -52]], 6)) ellipse(c, x, y, 2.6, 2.6, '#5A2E24');
   } else if (o.hair === 'kirita') pdKirita(c);
   else if (o.hair === 'crown') pdCrown(c);
+  if (typeof pdHairFront === 'function') pdHairFront(c, o);
 }
 // Vishnu's kirita: a tall gold crown, lotus-petal points, a tier, a finial; a spiked fan at the back
 function pdKirita(c) {
