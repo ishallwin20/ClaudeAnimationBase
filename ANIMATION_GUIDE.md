@@ -502,6 +502,7 @@ These are the things that make a Clawd video look generated. Check your storyboa
 - plain p5 shapes, gradients or digital glows mixed into the paint (use `paint`/`inkLine`/`glow`)
 - muddy green-grey glows from painting yellow over blue
 - props floating near a hand instead of touching it
+- twisted arms: on the character rigs (bal_krishna / ayyappa, parvati, narada and the rigs built on it, mahishasura, aarav) `bendL` / `bendR` = 1 bends the elbow OUT on both sides; `bendR: -1` is not the mirror of `bendL: 1`, it folds the elbow inward and the hand looks wrung. Use positive bends unless a pose wants elbows in, grep the scene for `bend[LR]: -1` before rendering, and check arm poses in full-res crops. Folded hands on the kids: `pray: true`, never two open hands pushed together
 - every shot a different world with nothing linking them
 
 ## About the demo
