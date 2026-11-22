@@ -16,6 +16,35 @@ sheets are in `out/books/dashavatar_out/cast/` (render: `node render.mjs --page=
 | 04 furniture | the border (wilted / in bloom), the ten avatar medallions, Vishnu's four treasures, the verse scroll, the "Dharma wisdom" box, the golden lotus | `src/po_dasha_frame.js` |
 | 05 mock-ups | p. 1 (night, the Ocean of Milk, the golden lotus, ten lights, the chakra rising) and p. 8 (Vishnu rising over the clouds, the ten forms faint in an arc) | `src/scenes/dasha_cast.js` |
 
+## The pages (first draft, 22 Nov)
+
+The art is `book_dasha_pages.html` (`src/scenes/dasha_book.js`, one slot per spread), the words are live text in
+`books/dashavatar/book.js`, and the review spreads are in `out/books/dashavatar_out/intro/spreads/` (with the print
+interior PDF, the reader preview PDF and the EPUB):
+
+```
+node tools/book.mjs --book=books/dashavatar --pages=1,2,3,4,5,6,7,8,9,10,11 --render=all --page=book_dasha_pages.html --art=out/book_dashavatar/art_pages --out=out/books/dashavatar_out/intro --jpg
+```
+
+In print, a spread is always an even page on the left and an odd page on the right, with p. 1 alone on the right. So
+the plot's pp. 7–8 spread would be split by a page turn. To keep it whole, the introduction is 11 pages, not 9:
+
+| pages | what | why it moved |
+|---|---|---|
+| inside cover, 1 | an indigo endpaper of gold lotus rosettes; the title page | |
+| 2–3 | The Silent Ocean, one picture across the spread (the plot's "wide, majestic scene"); the verse on a scroll | was p. 2; the wordiest page, it now has two |
+| 4 | The One Who Is Everywhere; the four treasures as medallions round Vishnu, each with its line | was p. 3 |
+| 5 | What Is Dharma?; the dharma tree with its four scenes in gold roundels; the verse in the Dharma Wisdom box | was p. 4 |
+| 6 | When the World Grew Heavy (border wilted) | was p. 5 |
+| 7 | The Ocean of Milk (border half wilted) | was p. 6 |
+| 8–9 | The Promise, one picture; the left border wilted, the right in bloom | was pp. 7–8 |
+| 10–11 | Ten Times He Came: five medallions and lines a page, on scrolls | was p. 9; ten lines on one page would need tiny type |
+
+The first story then opens on a fresh spread (pp. 12–13), so "Turn the page" still holds. Art choices on these pages:
+the gold verse on p. 8 sits on the left page, not across the fold (it would vanish into the binding); Vishnu's face
+above the ten medallions is replaced by a small Vishnu on Shesha at the foot of p. 11, the Silent Ocean returning; the
+"Karna Parva" verse number is left off the page until it is checked against the Critical Edition.
+
 ## The words, with the changes made for accuracy
 
 Most of the text is the owner's as given. Changes:

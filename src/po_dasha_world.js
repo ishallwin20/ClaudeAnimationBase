@@ -11,6 +11,8 @@
 //     o.prop { near: 'stick' | 'purse' | 'basket' | 'leaf' | 'bowl' | 'grain', far: ... }
 //   pdLakshmi(c, o): Lakshmi seated on her heels, in profile; o.pose 'seat' (a lotus in her hands) | 'serve' (her
 //     hands forward, as at his feet)
+//   pdAnanta(c, x, y, s): Vishnu asleep on Shesha (po_cast.js) in the book's cloud blue, Brahma on a slender navel
+//     lotus; (x, y) is the top centre of the coil bed
 //   pdBhumiCow(c, o): the Earth as a gentle cow, in profile; o.mood 'sad' (the head low, a tear) | 'hope' (the head
 //     up); o.glow (0..1)
 const PW = {
@@ -291,4 +293,21 @@ function pdBhumiCow(c, o = {}) {
   // a tilak of kumkum and a garland on the brow
   ellipse(c, 76, -32, 4, 6, PO.red);
   c.restore();
+}
+
+// ---------- Vishnu asleep on Shesha ----------
+function pdAnanta(c, x, y, s, o = {}) {
+  const keep = { ...PO.skin }; Object.assign(PO.skin, PDX.vishnu);
+  Object.assign(PO_ANANTA, { armCol: PDX.vishnu.base, simpleHand: true, malaDrape: true });
+  c.save(); c.translate(x, y); c.scale(s, s); c.translate(-566, -1340);
+  pdHalo(c, ...PO_ANANTA.halo, PO_ANANTA.haloR * 1.05, { a: .9 });
+  poAnantaHood(c); poAnantaBed(c);
+  // the navel lotus: a slender stalk, a small flower, Brahma seated in it
+  const [nx, ny] = PO_ANANTA.navel, lx = nx + 120, ly = ny - 250;
+  poFill(c, poLimb([[nx, ny + 2], [nx + 14, ny - 70], [nx + 60, ny - 160], [lx, ly + 30]], [5, 4.6, 4.2, 4]), '#5E7444', { sh: [2, 0, 2, rgba(PO.leaf.dk, .8)] });
+  poLotus(c, lx, ly + 34, 40, 1);
+  if (o.glow) glow(c, lx, ly - 30, 90, '#FFE6A0', .6 * o.glow, 'source-over');
+  c.save(); c.translate(lx, ly + 10); c.scale(.12, .12); c.translate(0, -190); pdBrahma(c, { pose: 'seat', halo: .8 }); c.restore();
+  c.restore();
+  Object.assign(PO.skin, keep); Object.assign(PO_ANANTA, { armCol: null, simpleHand: false, malaDrape: false });
 }

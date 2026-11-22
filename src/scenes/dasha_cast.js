@@ -22,26 +22,11 @@
   }
   SHOTS.push({ a: 0, b: 1, draw: gods });
 
-  // Vishnu asleep on Shesha (po_cast.js) recoloured to the book's cloud blue, Brahma on the navel lotus
-  function ananta(c, x, y, s, o = {}) {
-    const keep = { ...PO.skin }; Object.assign(PO.skin, PDX.vishnu);
-    Object.assign(PO_ANANTA, { armCol: PDX.vishnu.base, simpleHand: true, malaDrape: true });
-    c.save(); c.translate(x, y); c.scale(s, s); c.translate(-566, -1340);
-    pdHalo(c, ...PO_ANANTA.halo, PO_ANANTA.haloR * 1.05, { a: .9 });
-    poAnantaHood(c); poAnantaBed(c);
-    // the navel lotus: a slender stalk, a small flower, Brahma seated in it
-    const [nx, ny] = PO_ANANTA.navel, lx = nx + 120, ly = ny - 250;
-    poFill(c, poLimb([[nx, ny + 2], [nx + 14, ny - 70], [nx + 60, ny - 160], [lx, ly + 30]], [5, 4.6, 4.2, 4]), '#5E7444', { sh: [2, 0, 2, rgba(PO.leaf.dk, .8)] });
-    poLotus(c, lx, ly + 34, 40, 1);
-    c.save(); c.translate(lx, ly + 10); c.scale(.12, .12); c.translate(0, -190); pdBrahma(c, { pose: 'seat', halo: .8 }); c.restore();
-    c.restore();
-    Object.assign(PO.skin, keep); Object.assign(PO_ANANTA, { armCol: null, simpleHand: false, malaDrape: false });
-  }
   function gods2(c) {
     paper(c, 4);
     c.save(); c.scale(K, K);
     const gy = 1230;
-    ananta(c, 520, 1060, .78);
+    pdAnanta(c, 520, 1060, .78);
     side(c, 1090, gy - 40, .62, pdLakshmi, { pose: 'serve' }, true);
     side(c, 1400, gy, .62, pdLakshmi, { pose: 'seat' });
     side(c, 1790, gy - 10, .62, pdBhumiCow, { mood: 'sad' });

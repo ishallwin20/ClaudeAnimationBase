@@ -13,8 +13,9 @@
 //   pdGoldenLotus(c, x, y, r, o): a vast golden lotus opening on the water, seen from the side (o.open 0..1)
 //   pdNightSky(c, x0, y0, x1, y1, o): a Pichwai indigo night, deepest at the top, with stars (o.seed, o.stars, o.dawn)
 //   pdMilkOcean(c, x0, y0, x1, y1, o): the Ocean of Milk: pearl water glowing from within, rows of scalloped waves in
-//     cream and gold (o.t phase)
-//   pdCloud(c, x, y, w, seed, a, col, shc): a Pothi cloud, round lobes on a flat base
+//     cream and gold (o.t phase; o.stops a twilight tint, o.glowCol / o.glow / o.gx the light on the water)
+//   pdCloud(c, x, y, w, seed, a, col, shc, hic): a Pothi cloud, round lobes on a flat base (hic: the lit rim; dim it for
+//     storm clouds)
 const PFR = {
   indigo: '#1C2150', indigoLt: '#2C3470', indigoDk: '#10142E',
   gold: PDX.gold, dull: { base: '#9C8452', lt: '#BCA672', dk: '#6A5630' },
@@ -210,13 +211,14 @@ function pdIcon(c, icon, o = {}) {
 
 // ---------- verse banners ----------
 function pdBanner(c, x, y, w, h, o = {}) {
-  const G = PFR.gold, F = o.field || { base: '#F6EEDC', lt: '#FFFBF0', dk: '#D8C8A6' };
+  // o.roll: how thick the rolled ends are (a tall scroll keeps slim rolls; h by default)
+  const G = PFR.gold, F = o.field || { base: '#F6EEDC', lt: '#FFFBF0', dk: '#D8C8A6' }, e = Math.min(h, o.roll ?? h), hy = h / 2 + e * .12;
   c.save(); c.translate(x, y);
   // the rolled ends
   for (const s of [-1, 1]) {
     c.save(); c.translate(s * w / 2, 0);
-    poFill(c, [[0, -h * .62, 1], [s * h * .18, -h * .62], [s * h * .3, -h * .4], [s * h * .3, h * .4], [s * h * .18, h * .62], [0, h * .62, 1]], G.base, { sh: [s * 4, 0, 6, rgba(G.dk, .9)], hi: [-s * 2, -3, 4, rgba(G.lt, .9)] });
-    for (const yy of [-.62, .62]) { ellipse(c, s * h * .14, yy * h, h * .1, h * .1, G.dk); pdGem(c, s * h * .14, yy * h, h * .06, PDX.ruby); }
+    poFill(c, [[0, -hy, 1], [s * e * .18, -hy], [s * e * .3, -hy + e * .22], [s * e * .3, hy - e * .22], [s * e * .18, hy], [0, hy, 1]], G.base, { sh: [s * 4, 0, 6, rgba(G.dk, .9)], hi: [-s * 2, -3, 4, rgba(G.lt, .9)] });
+    for (const yy of [-hy, hy]) { ellipse(c, s * e * .14, yy, e * .1, e * .1, G.dk); pdGem(c, s * e * .14, yy, e * .06, PDX.ruby); }
     c.restore();
   }
   // the sheet, a little waved
@@ -269,9 +271,9 @@ function pdNightSky(c, x0, y0, x1, y1, o = {}) {
 function pdMilkOcean(c, x0, y0, x1, y1, o = {}) {
   const G = PFR.gold, t = o.t || 0;
   c.save();
-  c.fillStyle = ptLin(c, 0, y0, 0, y1, [[0, '#F6F0E4'], [.3, '#E8E2EE'], [1, '#B8B2D2']]);
+  c.fillStyle = ptLin(c, 0, y0, 0, y1, o.stops || [[0, '#F6F0E4'], [.3, '#E8E2EE'], [1, '#B8B2D2']]);
   c.fillRect(x0, y0, x1 - x0, y1 - y0);
-  glow(c, (x0 + x1) / 2, y0 + 20, (x1 - x0) * .5, '#FFF6DA', .7, 'source-over');
+  glow(c, o.gx ?? (x0 + x1) / 2, y0 + 20, (x1 - x0) * .5, o.glowCol || '#FFF6DA', o.glow ?? .7, 'source-over');
   // rows of scalloped waves, smaller toward the horizon (the Pichwai pattern)
   let y = y0 + 14, row = 0;
   while (y < y1 + 20) {
@@ -284,7 +286,7 @@ function pdMilkOcean(c, x0, y0, x1, y1, o = {}) {
   }
   c.restore();
 }
-function pdCloud(c, x, y, w, seed = 1, a = 1, col = '#F7F1E6', shc = 'rgba(150,140,172,.6)') {
+function pdCloud(c, x, y, w, seed = 1, a = 1, col = '#F7F1E6', shc = 'rgba(150,140,172,.6)', hic = 'rgba(255,255,252,.95)') {
   // a row of round puffs: the top is the puffs' outline, the bottom a shallow curve, both closing into a round lobe at
   // each end (no straight sides)
   const R = lcg(seed), n = Math.max(3, Math.round(w / 60)), C = [];
@@ -294,5 +296,5 @@ function pdCloud(c, x, y, w, seed = 1, a = 1, col = '#F7F1E6', shc = 'rgba(150,1
   const Hm = Math.max(...T.map(p => p[1])), mid = y - Hm * .22, P = [];
   for (const [px, h] of T) { const u = (px - x) / (w / 2), e = Math.sqrt(Math.max(0, 1 - u * u)); P.push([px, mid - (mid - (y - Math.max(h, Hm * .22))) * Math.pow(e, 1.1)]); }
   for (let k = T.length - 1; k >= 0; k--) { const px = T[k][0], u = (px - x) / (w / 2), e = Math.sqrt(Math.max(0, 1 - u * u)); P.push([px, mid + (y - mid) * Math.pow(e, .9)]); }
-  c.save(); c.globalAlpha *= a; poFill(c, P, col, { sh: [0, 14, 10, shc], hi: [0, -8, 6, 'rgba(255,255,252,.95)'] }); c.restore();
+  c.save(); c.globalAlpha *= a; poFill(c, P, col, { sh: [0, 14, 10, shc], hi: [0, -8, 6, hic] }); c.restore();
 }

@@ -17,7 +17,8 @@
 //   <slug>_cover.pdf      the cover sheet with bleed: outside (back | front), inside (inside front | inside back)
 //   <slug>_preview.pdf    reader spreads at trim size, no bleed (for reviewing and sharing)
 //   <slug>.epub           fixed-layout EPUB 3 (pre-paginated, spreads), 10 px per mm, fonts embedded
-// Fonts: assets/fonts (Andika for the story, Marcellus for titles; both SIL OFL).
+// Fonts: assets/fonts (Andika for the story, Marcellus for titles, Tiro Devanagari Sanskrit for verses and their
+// transliteration, font: 'deva'; all SIL OFL). --jpg also writes the preview spreads as JPEGs for review.
 import puppeteer from 'puppeteer-core';
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, copyFileSync } from 'node:fs';
@@ -82,12 +83,16 @@ for (const k of keys) {
 if (!sample) IMG.outside = { print: await crop(artOf(9), [0, 0, SW, TH + 2 * BL], 300 / 25.4, `${TMP}/p_outside.jpg`) };
 
 // ---- page markup. U() turns mm into the unit of the medium: mm in the PDFs, px (10 per mm) in the EPUB
-const FONTS = { story: 'Andika', title: 'Marcellus' };
+const FONTS = { story: 'Andika', title: 'Marcellus', deva: 'Tiro' };
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+// a text line: escaped, with *words* set in the block's emphasis colour (gold names over the art)
+const rich = (s, em) => esc(s).replace(/\*([^*]+)\*/g, `<span style="color:${em || BOOK.em || BOOK.accent}">$1</span>`);
 function fontCSS(base) {
   return `@font-face { font-family: Andika; src: url(${base}Andika-Regular.ttf); }
 @font-face { font-family: Andika; font-weight: bold; src: url(${base}Andika-Bold.ttf); }
-@font-face { font-family: Marcellus; src: url(${base}Marcellus-Regular.ttf); }`;
+@font-face { font-family: Marcellus; src: url(${base}Marcellus-Regular.ttf); }
+@font-face { font-family: Tiro; src: url(${base}TiroDevanagariSanskrit-Regular.ttf); }
+@font-face { font-family: Tiro; font-style: italic; src: url(${base}TiroDevanagariSanskrit-Italic.ttf); }`;
 }
 // a speech bubble's tail, from the bubble's edge nearest the point it speaks from to that point
 function tailPath(b, h, U) {
@@ -111,8 +116,13 @@ function pageInner(k, U, ox, oy, heights, src = p => url(p)) {
   for (const b of P.text || []) {
     const f = FONTS[b.font || 'story'], sz = b.size || BOOK.size;
     const pan = args.panels && (b.font || 'story') === 'story' && !b.size;
-    h += `<div class="tx${pan ? ' pan' : ''}" style="left:${n(ox + b.x)};top:${n(oy + b.y)};width:${n(b.w)};font-family:${f};font-size:${pt(sz)};text-align:${b.align || 'left'};color:${pan ? BOOK.ink : b.color || BOOK.ink}${pan ? `;padding:${n(3)} ${n(4)};border-radius:${n(6)};box-shadow:0 0 ${n(4)} ${n(2.5)} rgba(255,250,240,.86)` : ''}">`
-      + b.lines.map(l => `<p style="margin:0 0 ${pt(sz * .45)}">${esc(l)}</p>`).join('') + '</div>';
+    // extra block styles: italic, weight, lh (line height), gap (space after a paragraph, in ems), ls (letter
+    // spacing, in ems), glow (a soft halo of that colour behind the letters, for words over busy or dark art), em,
+    // mid (y is the block's vertical centre)
+    const sty = (b.italic ? ';font-style:italic' : '') + (b.weight ? `;font-weight:${b.weight}` : '') + (b.lh ? `;line-height:${b.lh}` : '')
+      + (b.ls ? `;letter-spacing:${b.ls}em` : '') + (b.mid ? ';transform:translateY(-50%)' : '') + (b.glow ? `;text-shadow:0 0 ${n(1.2)} ${b.glow},0 0 ${n(2.6)} ${b.glow},0 0 ${n(4)} ${b.glow}` : '');
+    h += `<div class="tx${pan ? ' pan' : ''}" style="left:${n(ox + b.x)};top:${n(oy + b.y)};width:${n(b.w)};font-family:${f};font-size:${pt(sz)};text-align:${b.align || 'left'};color:${pan ? BOOK.ink : b.color || BOOK.ink}${sty}${pan ? `;padding:${n(3)} ${n(4)};border-radius:${n(6)};box-shadow:0 0 ${n(4)} ${n(2.5)} rgba(255,250,240,.86)` : ''}">`
+      + b.lines.map((l, i) => `<p style="margin:0 0 ${i === b.lines.length - 1 ? 0 : pt(sz * (b.gap ?? .45))}">${rich(l, b.em)}</p>`).join('') + '</div>';
   }
   (P.bubbles || []).forEach((b, i) => {
     const sz = b.size || BOOK.size - 2, bh = heights?.[`${k}.${i}`];
@@ -156,6 +166,17 @@ const pgP = k => `<section class="pg"><img src="${url(IMG[k].print)}">${pageInne
 await pdf(doc(pages.map(pgP).join(''), PW, PH), `${S}_interior`, PW, PH);
 const half = (k, dx) => `<div style="position:absolute;left:${dx}mm;top:0;width:${TW}mm;height:${TH}mm;overflow:hidden"><img src="${url(IMG[k].screen)}" style="width:100%;height:100%;position:absolute">${pageInner(k, MM, 0, 0, HT)}</div>`;
 await pdf(doc(SPREADS.map(([a, b]) => `<section class="pg">${half(a, 0)}${half(b, TW)}</section>`).join(''), 2 * TW, TH), `${S}_preview`, 2 * TW, TH);
+// --jpg: the preview spreads as JPEGs for review (spreads/<left>-<right>.jpg, --jpg=<px wide>, 3000 by default)
+if (args.jpg) {
+  const px = args.jpg === true ? 3000 : +args.jpg, mm = 96 / 25.4; mkdirSync(join(OUT, 'spreads'), { recursive: true });
+  await page.setViewport({ width: Math.ceil(2 * TW * mm), height: Math.ceil(TH * mm), deviceScaleFactor: px / (2 * TW * mm) });
+  for (const [a, b] of SPREADS) {
+    const f = `${TMP}/spread.html`; writeFileSync(f, doc(`<section class="pg">${half(a, 0)}${half(b, TW)}</section>`, 2 * TW, TH));
+    await page.goto(url(f), { waitUntil: 'load' }); await page.evaluate(() => document.fonts.ready);
+    const dst = join(OUT, 'spreads', `${String(a).padStart(2, '0')}-${String(b).padStart(2, '0')}.jpg`);
+    await (await page.$('.pg')).screenshot({ path: dst, type: 'jpeg', quality: 90 }); console.log('wrote', dst);
+  }
+}
 if (!sample) {
   const CW = 2 * TW + 2 * BL, side = (k, dx) => `<div style="position:absolute;left:${dx}mm;top:0;width:${PW}mm;height:${PH}mm">${pageInner(k, MM, BL, BL, HT)}</div>`;
   const outside = `<section class="pg"><img src="${url(IMG.outside.print)}">${side('back', 0)}${side('front', TW)}</section>`;
@@ -170,7 +191,7 @@ if (!sample) {
   mkdirSync(`${E}/META-INF`, { recursive: true }); mkdirSync(`${E}/OEBPS/img`, { recursive: true }); mkdirSync(`${E}/OEBPS/fonts`, { recursive: true });
   writeFileSync(`${E}/mimetype`, 'application/epub+zip');
   writeFileSync(`${E}/META-INF/container.xml`, `<?xml version="1.0" encoding="UTF-8"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>`);
-  for (const f of ['Andika-Regular.ttf', 'Andika-Bold.ttf', 'Marcellus-Regular.ttf']) copyFileSync(`assets/fonts/${f}`, `${E}/OEBPS/fonts/${f}`);
+  for (const f of ['Andika-Regular.ttf', 'Andika-Bold.ttf', 'Marcellus-Regular.ttf', 'TiroDevanagariSanskrit-Regular.ttf', 'TiroDevanagariSanskrit-Italic.ttf']) copyFileSync(`assets/fonts/${f}`, `${E}/OEBPS/fonts/${f}`);
   writeFileSync(`${E}/OEBPS/book.css`, `${fontCSS('fonts/')}\n${baseCSS}\nbody { width: ${TW * 10}px; height: ${TH * 10}px; position: relative; overflow: hidden; }`);
   const order = sample ? pages : ['front', ...ALL, 'ibc', 'back'], VW = TW * 10, VH = TH * 10;
   const name = k => `p_${k}`, PICS = new Map();
@@ -200,7 +221,7 @@ if (!sample) {
 <manifest>
 <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
 <item id="css" href="book.css" media-type="text/css"/>
-${['Andika-Regular', 'Andika-Bold', 'Marcellus-Regular'].map((f, i) => `<item id="f${i}" href="fonts/${f}.ttf" media-type="font/ttf"/>`).join('\n')}
+${['Andika-Regular', 'Andika-Bold', 'Marcellus-Regular', 'TiroDevanagariSanskrit-Regular', 'TiroDevanagariSanskrit-Italic'].map((f, i) => `<item id="f${i}" href="fonts/${f}.ttf" media-type="font/ttf"/>`).join('\n')}
 ${order.map(k => `<item id="${name(k)}" href="${name(k)}.xhtml" media-type="application/xhtml+xml"${BOOK.pages[k]?.bubbles?.length ? ' properties="svg"' : ''}/>
 <item id="${k === order[0] ? 'cover-img' : 'i_' + k}" href="img/${name(k)}.jpg" media-type="image/jpeg"${k === order[0] ? ' properties="cover-image"' : ''}/>`).join('\n')}
 ${[...PICS.keys()].map((f, i) => `<item id="pic${i}" href="img/${f}" media-type="${f.endsWith('.png') ? 'image/png' : 'image/jpeg'}"/>`).join('\n')}
