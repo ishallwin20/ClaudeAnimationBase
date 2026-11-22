@@ -138,11 +138,20 @@ function poAnantaBed(c) {
   poFill(c, poLimb([[622, 1298], [640, 1290], [656, 1290]], [10, 8, 6]), arm, { hi: [0, -3, 2, rgba(sk.lt, .8)] });
 
   // ---- the vanamala: a tulsi garland with gold beads, from his neck along his side to the knee
+  if (PO_ANANTA.malaDrape) {
+    // (the Dashavatar book) a thinner garland that hangs like a mala: from his neck it sags in a soft curve across his
+    // chest and belly, then rises over the thigh toward the knee
+    const Gd = []; for (let i = 0; i <= 24; i++) { const t = i / 24, x = 350 + t * 390, y = 1246 + (1212 - 1246) * t + 64 * Math.sin(Math.PI * Math.pow(t, .8)); Gd.push([x, y]); }
+    limb(c, Gd, Gd.map(() => 7), '#5A7650', false);
+    for (const [x, y] of poAlong(Gd, 4.5)) ellipse(c, x, y - 1, 2.6, 2.6, '#7E9C6A');
+    poAlong(Gd, 40).forEach(([x, y], k) => { ellipse(c, x, y, 3.8, 3.8, ['#EDE6D4', '#9A2E36', '#E0901C'][k % 3]); ellipse(c, x, y, 1.4, 1.4, G.lt); });
+  } else {
   const Gm = [[350, 1246], [392, 1228], [450, 1232], [520, 1266], [580, 1278], [640, 1258], [690, 1234], [730, 1210]];
   limb(c, Gm, Gm.map(() => 12), '#5A7650', false);
   for (const [x, y] of poAlong(Gm, 5)) ellipse(c, x, y - 2, 3.8, 3.8, '#7E9C6A');
   for (const [x, y] of poAlong(Gm, 8)) ellipse(c, x + 1, y + 3, 1.7, 1.7, G.base);
   poAlong(Gm, 90).forEach(([x, y], k) => { ellipse(c, x, y, 5.5, 5.5, k % 2 ? '#EDE6D4' : '#9A2E36'); ellipse(c, x, y, 2, 2, G.lt); });
+  }
 
   // ---- the neck and the head, the face lifted toward his feet
   poFill(c, [H(-20, 22), H(16, 44), [354, 1238], [340, 1252], [312, 1248], [300, 1238]], sk.base, { sh: [-8, 8, 10, rgba(sk.dk, .8)] });

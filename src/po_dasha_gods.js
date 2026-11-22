@@ -340,9 +340,9 @@ function pfJaneu(c, o = {}) {
 // the vanamala: a garland of leaves and flowers from the shoulders to the knees
 function pfVanamala(c, o = {}) {
   const lo = o.lo ?? 330, vm = [[-78, -300], [-96, -200], [-104, -40], [-96, 140], [-66, lo - 10], [-30, lo], [0, lo + 6], [30, lo], [66, lo - 10], [96, 140], [104, -40], [96, -200], [78, -300]];
-  limb(c, vm, vm.map(() => 13), '#4E6E46', false);
-  for (const [x, y] of poAlong(vm, 6)) ellipse(c, x, y - 1, 4.4, 4.4, '#7E9C6A');
-  poAlong(vm, 38).forEach(([x, y], i) => { ellipse(c, x, y, 6.2, 6.2, ['#EDE6D4', '#C0303C', '#E0901C'][i % 3]); ellipse(c, x, y, 2.2, 2.2, PDX.gold.lt); });
+  limb(c, vm, vm.map(() => 8), '#4E6E46', false);
+  for (const [x, y] of poAlong(vm, 5)) ellipse(c, x, y - 1, 2.9, 2.9, '#7E9C6A');
+  poAlong(vm, 34).forEach(([x, y], i) => { ellipse(c, x, y, 4.4, 4.4, ['#EDE6D4', '#C0303C', '#E0901C'][i % 3]); ellipse(c, x, y, 1.6, 1.6, PDX.gold.lt); });
 }
 
 // the gada upside down: the head resting on the ground at (gx, gy), the shaft up to the handle's knob at (x, y)

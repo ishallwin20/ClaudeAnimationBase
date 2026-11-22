@@ -97,7 +97,7 @@ function pdHead(c, o = {}) {
     const h = e === 'wide' ? 1.5 : e === 'narrow' ? .55 : 1;
     const top = -6.8 - 2.8 * h, bot = -6.8 + 2.5 * h;
     const eye = poPath([[35, -6.8], [29, top], [21, top], [16, -6.8], [21, bot], [29, bot]]);
-    c.save(); c.fillStyle = '#F1E8D8'; c.fill(eye); c.clip(eye); ellipse(c, 28.5, -6.8 + (e === 'narrow' ? 1 : 0), e === 'wide' ? 2.2 : 2.7, e === 'wide' ? 2.2 : 2.7, '#221A1E'); c.restore();
+    c.save(); c.fillStyle = '#F1E8D8'; c.fill(eye); c.clip(eye); ellipse(c, 28.5, -6.8 + (e === 'narrow' ? 1 : 0), e === 'wide' ? 3.3 : 2.7, e === 'wide' ? 3.3 : 2.7, '#221A1E'); c.restore();
     poLine(c, [[36, -6.8], [29, top - .9], [21, top - .9], [14, -6.6]], ink, 2);
     if (e === 'wide') poLine(c, [[33, bot + .8], [25, bot + 1.4], [18, bot]], 'rgba(28,22,30,.35)', 1);
   }

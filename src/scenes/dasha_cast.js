@@ -25,7 +25,7 @@
   // Vishnu asleep on Shesha (po_cast.js) recoloured to the book's cloud blue, Brahma on the navel lotus
   function ananta(c, x, y, s, o = {}) {
     const keep = { ...PO.skin }; Object.assign(PO.skin, PDX.vishnu);
-    Object.assign(PO_ANANTA, { armCol: PDX.vishnu.base, simpleHand: true });
+    Object.assign(PO_ANANTA, { armCol: PDX.vishnu.base, simpleHand: true, malaDrape: true });
     c.save(); c.translate(x, y); c.scale(s, s); c.translate(-566, -1340);
     pdHalo(c, ...PO_ANANTA.halo, PO_ANANTA.haloR * 1.05, { a: .9 });
     poAnantaHood(c); poAnantaBed(c);
@@ -35,7 +35,7 @@
     poLotus(c, lx, ly + 34, 40, 1);
     c.save(); c.translate(lx, ly + 10); c.scale(.12, .12); c.translate(0, -190); pdBrahma(c, { pose: 'seat', halo: .8 }); c.restore();
     c.restore();
-    Object.assign(PO.skin, keep); Object.assign(PO_ANANTA, { armCol: null, simpleHand: false });
+    Object.assign(PO.skin, keep); Object.assign(PO_ANANTA, { armCol: null, simpleHand: false, malaDrape: false });
   }
   function gods2(c) {
     paper(c, 4);
