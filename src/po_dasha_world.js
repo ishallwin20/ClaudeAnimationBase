@@ -156,6 +156,7 @@ function pdPerson(c, o = {}) {
   }
   c.save(); upper();
   if (sit) { F = arm(o.far, true); hand(F, true); prop(F, o.prop && o.prop.far); }
+  pdNeck(c, sk);
   // the torso (a kurta, a choli with the pallu, or bare with a thread)
   const TS = PD_TORSO.map(([x, y]) => [x * (fem ? .86 : 1), y]);
   poFill(c, TS, sk.base, { ...pdL(sk, 110), inside: () => { if (kind !== 'elder' && !fem) pdFold(c, [[66, -600], [40, -580], [10, -584]], 5, rgba(sk.dk, .45), 5); } });
@@ -176,9 +177,8 @@ function pdPerson(c, o = {}) {
   }
   if (wear === 'robe') { poFill(c, [[-56, -660], [-20, -698], [20, -692], [52, -560], [56, -470], [20, -464], [24, -560], [-6, -650], [-40, -630]], cloth.base, { ...pdL(cloth, 50) }); for (const [x, y] of poAlong([[30, -690], [50, -650], [58, -600], [54, -560]], 9)) ellipse(c, x, y, 4, 4, '#5A2E24'); }
   // neck and head
-  poFill(c, [[-20, -690], [22, -690], [26, -722], [-12, -728]], sk.base, { sh: [6, 4, 6, rgba(sk.dk, .7)] });
   const hs = child ? 1.12 * 1.45 : 1.12;
-  c.save(); c.translate(10, child ? -770 : -752); c.rotate((o.tilt || 0) + (kind === 'elder' ? .15 : 0)); c.scale(hs, hs);
+  c.save(); c.translate(10, child ? -774 : -762); c.rotate((o.tilt || 0) + (kind === 'elder' ? .15 : 0)); c.scale(hs, hs);
   const hair = o.hair || { man: 'pagri', woman: 'bun', boy: 'tuft', girl: 'braid', elder: 'veil', sage: 'jata' }[kind];
   pdHead(c, { sk, face: kind === 'boy' ? 'boy' : kind === 'girl' ? 'girl' : fem ? 'woman' : 'man', hair, beard: kind === 'sage' ? 'sage' : o.beard, eye: o.eye || 'open', mouth: o.mouth || 'smile', brow: o.brow || 0,
     age: kind === 'elder' || kind === 'sage' ? 1 : 0, hairCol: kind === 'elder' ? '#D8D2CA' : o.hairCol, veil: o.veil || (kind === 'elder' ? PW.cotton : null), trim: trim.base, pagri: o.pagri, nath: o.nath ?? (kind === 'woman'), bindi: fem, tilak: kind === 'sage' ? 'tri' : o.tilak });
@@ -188,6 +188,12 @@ function pdPerson(c, o = {}) {
   prop(N, o.prop && o.prop.near);
   c.restore();
   c.restore();
+}
+
+// the neck in profile, drawn before the torso so its base disappears into the shoulders: the back runs on from the skull,
+// the front from under the jaw, a soft shadow under the chin (no collar ring)
+function pdNeck(c, sk) {
+  poFill(c, [[-26, -664], [28, -664], [27, -700], [22, -724], [2, -738], [-16, -746], [-26, -716]], sk.base, { sh: [0, 12, 10, rgba(sk.dk, .55)], hi: [-4, 0, 6, rgba(sk.lt, .5)] });
 }
 
 // ---------- Lakshmi, seated on her heels ----------
@@ -208,10 +214,12 @@ function pdLakshmi(c, o = {}) {
   poBorder(c, [[46, -256], [30, -190], [70, -130], [150, -96], [206, -70]], 6, G);
   c.save(); c.translate(0, dy);
   const TS = PD_TORSO.map(([x, y]) => [x * .86, y]);
+  pdNeck(c, sk);
   // the far arm
-  const fa = serve ? [[-8, -650], [40, -560], [130, -560]] : [[-8, -650], [30, -560], [96, -520]];
+  // (seated with the lotus: the far arm rests down behind her body, out of sight, so only the lotus hand shows)
+  const fa = serve ? [[-8, -650], [40, -560], [130, -560]] : [[-8, -650], [-4, -560], [14, -490]];
   pdLimb(c, fa.slice(0, 2), [46, 38], sk, { col: sk.far }); pdLimb(c, fa.slice(1), [38, 30], sk, { col: sk.far });
-  pdHand(c, ...fa[2], serve ? .1 : -.2, sk, serve ? 'open' : 'up', { col: sk.far });
+  pdHand(c, ...fa[2], serve ? .1 : 1.3, sk, 'open', { col: sk.far });
   poFill(c, TS, sk.base, pdL(sk, 110));
   poFill(c, [[-34, -560], [50, -560], [56, -600], [58, -634], [40, -672], [-6, -684], [-36, -664]], PDX.maroon.base, pdL(PDX.maroon, 80));
   // the pallu across the chest and over her shoulder
@@ -222,17 +230,17 @@ function pdLakshmi(c, o = {}) {
   poDots(c, [[24, -688], [40, -640], [46, -600], [40, -560]], 3, 7, PDX.pearl, false);
   pdGem(c, 46, -604, 6, PDX.ruby);
   poBorder(c, [[-48, -476], [0, -472], [46, -476]], 9, G);
-  // neck and head
-  poFill(c, [[-20, -690], [22, -690], [26, -722], [-12, -728]], sk.base, { sh: [6, 4, 6, rgba(sk.dk, .7)] });
+  // the head
   c.save(); c.translate(10, -752); c.rotate(o.tilt ?? (serve ? .2 : .06)); c.scale(1.16, 1.16);
   pdHead(c, { sk, face: 'woman', hair: 'mukut', eye: o.eye || 'low', mouth: 'smile', nath: true, bindi: true });
   c.restore();
   // the near arm; a lotus (seat) or both hands forward (serve)
-  const na = serve ? [[6, -650], [56, -560], [150, -540]] : [[6, -650], [40, -560], [110, -500]];
+  // the near arm; seated, the forearm raised, the lotus held up on its stalk beside her face; serving, reaching forward
+  const na = serve ? [[6, -650], [56, -560], [150, -540]] : [[6, -650], [36, -560], [98, -600]];
   pdLimb(c, na.slice(0, 2), [50, 40], sk); pdLimb(c, na.slice(1), [40, 30], sk);
   poBorder(c, [[16, -606], [34, -602], [50, -606]], 8, G);
-  if (!serve) { poLine(c, [[110, -500], [120, -560], [128, -640]], PO.leaf.dk, 4); poLotus(c, 128, -650, 34, .8, { base: '#C2506A', lt: '#E888A0', dk: '#7E2440' }); }
-  pdHand(c, ...na[2], serve ? .05 : -.5, sk, serve ? 'open' : 'grip');
+  if (!serve) { poLine(c, [[112, -590], [116, -660], [114, -716]], PO.leaf.dk, 4); poLotus(c, 114, -724, 34, .8, { base: '#C2506A', lt: '#E888A0', dk: '#7E2440' }); }
+  pdHand(c, ...na[2], serve ? .05 : -.6, sk, serve ? 'open' : 'grip');
   c.restore();
 }
 
@@ -246,7 +254,7 @@ function pdBhumiCow(c, o = {}) {
   // the tail
   poLine(c, [[-250, -360], [-290, -300], [-296, -180], [-284, -90]], C.dk, 8);
   poFill(c, [[-296, -110], [-276, -100], [-270, -60], [-290, -40], [-304, -70]], '#5A4A48');
-  // the body: the back, the belly, the hump at the withers, the dewlap
+  // the body: the back, the belly, the hump at the withers
   const B = [[-260, -370], [-170, -400], [-40, -396], [90, -410], [150, -470], [196, -476], [236, -430], [270, -360], [264, -280], [240, -220], [180, -190], [60, -200], [-80, -196], [-200, -210], [-256, -260], [-272, -320]];
   poFill(c, B, C.base, { sh: [[0, 26, 26, rgba(C.dk, .75)], [24, 0, 20, rgba(C.dk, .4)]], hi: [0, -16, 16, rgba(C.lt, .95)],
     inside: () => { pdFold(c, [[-200, -300], [-160, -240]], 10, rgba(C.dk, .4), 10); pdFold(c, [[130, -400], [160, -260]], 10, rgba(C.dk, .3), 10); } });
@@ -259,11 +267,11 @@ function pdBhumiCow(c, o = {}) {
   leg(-210, 14); leg(200, -8);
   // the neck and head, lowered when sad
   c.save(); c.translate(250, -380); c.rotate(sad ? .42 : -.12);
-  poFill(c, [[-60, -70], [40, -60], [120, -30], [150, 20], [110, 70], [20, 110], [-40, 140], [-70, 60]], C.base, { sh: [0, 18, 18, rgba(C.dk, .7)], hi: [0, -10, 10, rgba(C.lt, .9)] });
-  // the dewlap folds and a bell
-  poFill(c, [[-40, 100], [20, 110], [10, 170], [-30, 200], [-60, 160]], C.base, { sh: [10, 10, 12, rgba(C.dk, .7)] });
-  poLine(c, [[-46, 60], [20, 90], [60, 60]], PDX.maroon.base, 6);
-  c.save(); c.translate(-6, 100); poFill(c, [[-12, -6], [12, -6], [16, 20], [-16, 20]], G.base, pdL(G, 30)); ellipse(c, 0, 22, 4, 4, G.dk); c.restore();
+  // a smooth neck, its underside running straight into the chest (no dewlap)
+  poFill(c, [[-70, -74], [40, -62], [120, -32], [150, 18], [124, 58], [60, 74], [0, 96], [-40, 124], [-80, 120], [-90, 40]], C.base, { sh: [0, 18, 18, rgba(C.dk, .7)], hi: [0, -10, 10, rgba(C.lt, .9)] });
+  // a cord with a bell round the neck
+  poLine(c, [[-20, -50], [10, 20], [40, 74]], PDX.maroon.base, 6);
+  c.save(); c.translate(40, 78); c.rotate(sad ? -.42 : .12); poFill(c, [[-11, -4], [11, -4], [15, 20], [-15, 20]], G.base, pdL(G, 30)); ellipse(c, 0, 22, 4, 4, G.dk); c.restore();
   // the head: a long gentle face
   c.translate(130, 0);
   poFill(c, [[-34, -44], [10, -52], [70, -34], [130, -12], [154, 18], [150, 54], [116, 68], [50, 66], [-10, 58], [-44, 24]], C.base, { sh: [[0, 14, 14, rgba(C.dk, .7)], [10, 0, 10, rgba(C.dk, .4)]], hi: [0, -8, 8, rgba(C.lt, .95)] });

@@ -59,8 +59,10 @@
     side(c, 200, gy, s, pdPerson, { kind: 'elder', legs: 'walk', near: { to: H, hand: 'grip' }, far: { to: [118, -430], hand: 'grip' }, prop: { far: 'stick' }, eye: 'low' });
     side(c, 200 + bx * s, gy, s, pdPerson, { kind: 'boy', legs: 'walk', far: { to: [H[0] - bx, H[1] + 6], hand: 'grip' }, near: [.1, .15, 'open'], tilt: -.12, top: PW.leafCloth });
     // a farmer sharing grain with a woman
-    side(c, 680, gy, s, pdPerson, { kind: 'man', near: [.9, 1.5, 'grip'], far: [.8, 1.3, 'grip'], prop: { near: 'basket', far: 'grain' }, tilt: .1, lean: .1 });
-    side(c, 1000, gy, s, pdPerson, { kind: 'woman', near: [.7, 1.4, 'up'], far: [.6, 1.3, 'up'], prop: { near: 'bowl' }, tilt: .05 }, true);
+    // (he tips grain from his basket, held in both hands at his chest, down into the bowl she holds out; her far arm
+    // stays down behind her, so the four hands never tangle)
+    side(c, 680, gy, s, pdPerson, { kind: 'man', near: { to: [150, -520], hand: 'grip' }, far: { to: [130, -545], hand: 'grip' }, prop: { near: 'basket', far: 'grain' }, tilt: .1, lean: .06 });
+    side(c, 1000, gy, s, pdPerson, { kind: 'woman', near: { to: [150, -470], hand: 'up' }, far: [.05, .1, 'open'], prop: { near: 'bowl' }, tilt: .1 }, true);
     // a teacher under a banyan with two students
     side(c, 1300, gy, s, pdPerson, { kind: 'sage', legs: 'sit', near: [.5, 1.6, 'open'], far: [.4, 1.2, 'up'], prop: { far: 'leaf' } });
     side(c, 1560, gy, s, pdPerson, { kind: 'girl', legs: 'sit', near: [.3, 1.1, 'grip'], far: [.3, 1, 'up'], prop: { near: 'leaf' }, tilt: -.1 }, true);
