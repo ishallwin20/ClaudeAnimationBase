@@ -18,6 +18,8 @@
 //           dips), walk (phase, stand), shake (radians: the head shakes "no"), wiggle (-1..1: the bottom swings)
 //   arms:   handL / handR = [x, y] in body u (2-bone arms; out-of-reach targets are pulled in), bendL / bendR (1 elbows
 //           out, -1 in), handShapeL / handShapeR (Aarav's: 'open' | 'fist' | 'claw' | 'point' | 'hold'), handAL / handAR.
+//           pray: true folds his hands (namaste): the palms pressed together, fingers up, at his chest (the hand
+//           targets default to the chest; handL / handR still move the wrists)
 //           Without targets, aL / aR (feel()'s arm angles) swing them; resting they hang by his tummy.
 //   face:   eyes, mouth, lookX / lookY, squint, blush, brows (-1 cross .. +1 raised), worry 0..1, mouthK (size of 'aam' /
 //           'open' / 'wail'), seed, tint + tintK. His own eyes: 'normal' / 'look' / 'wide' / 'happy' / 'closed' /
@@ -50,6 +52,7 @@ const BK_SH = [2.05, -7.7];
 function bkArm(o, s) {
   const up = BK_UP[o.pose || 'stand'] ?? 0, sh = [s * BK_SH[0], BK_SH[1] + up], L1 = 1.85, L2 = 1.8;
   let h = s < 0 ? o.handL : o.handR;
+  if (!h && o.pray) h = [s * .5, -6.75];   // folded hands: the wrists meet under the joined palms
   if (h) h = [h[0], h[1] + up];
   else { const a = (s < 0 ? o.aL : o.aR) ?? -1.2, ang = -1.25 + (clamp(a, -1.5, 1.6) + 1.2) * .6; h = [sh[0] + s * Math.cos(ang) * 3.3, sh[1] - Math.sin(ang) * 3.3]; }
   let dx = h[0] - sh[0], dy = h[1] - sh[1], d = Math.hypot(dx, dy) || 1e-3;
@@ -365,7 +368,14 @@ function balKrishna(x, y, u, o = {}) {
   pop();   // head
 
   if (o.held) { rs('held'); o.held(u, sw); }
-  for (const A of arms) {
+  if (o.pray) {   // namaste: the two palms pressed together, fingers up, at the chest (one shape, a seam and two thumbs)
+    rs('pray');
+    const py = -6.75 + up, P = pts => pts.map(([a, b]) => [a * u, (b + py) * u]), sk = arms[1].sk;
+    paint(P([[-.62, .1], [-.66, -.6], [-.55, -1.35], [-.32, -1.95], [0, -2.2], [.32, -1.95], [.55, -1.35], [.66, -.6], [.62, .1], [0, .25]]), { wash: sk, fill: dk, fillOp: 20, ink: INK, sw: sw * .8, curv: .5 });
+    inkLine(P([[0, -2.05], [0, .1]]), sw * .55, INK, 'inkfine', .3);
+    for (const s of [-1, 1]) paint(P([[s * .58, -.1], [s * .82, -.55], [s * .74, -.95], [s * .5, -.8], [s * .46, -.35]]), { wash: sk, ink: INK, sw: sw * .6, curv: .5 });
+  }
+  for (const A of (o.pray ? [] : arms)) {
     rs('hand' + A.s);
     const shape = (A.s < 0 ? o.handShapeL : o.handShapeR) || 'open';
     const a = (A.s < 0 ? o.handAL : o.handAR) ?? Math.atan2(A.ha[1] - A.el[1], A.ha[0] - A.el[0]);
