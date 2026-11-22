@@ -25,13 +25,17 @@
   // Vishnu asleep on Shesha (po_cast.js) recoloured to the book's cloud blue, Brahma on the navel lotus
   function ananta(c, x, y, s, o = {}) {
     const keep = { ...PO.skin }; Object.assign(PO.skin, PDX.vishnu);
+    Object.assign(PO_ANANTA, { armCol: PDX.vishnu.base, simpleHand: true });
     c.save(); c.translate(x, y); c.scale(s, s); c.translate(-566, -1340);
     pdHalo(c, ...PO_ANANTA.halo, PO_ANANTA.haloR * 1.05, { a: .9 });
     poAnantaHood(c); poAnantaBed(c);
-    poAnantaNavel(.3, 1)(c);
-    const [lx, ly] = PO_ANANTA.lotus; c.save(); c.translate(lx, ly - 6); c.scale(.17, .17); c.translate(0, -190); pdBrahma(c, { pose: 'seat', halo: .8 }); c.restore();
+    // the navel lotus: a slender stalk, a small flower, Brahma seated in it
+    const [nx, ny] = PO_ANANTA.navel, lx = nx + 120, ly = ny - 250;
+    poFill(c, poLimb([[nx, ny + 2], [nx + 14, ny - 70], [nx + 60, ny - 160], [lx, ly + 30]], [5, 4.6, 4.2, 4]), '#5E7444', { sh: [2, 0, 2, rgba(PO.leaf.dk, .8)] });
+    poLotus(c, lx, ly + 34, 40, 1);
+    c.save(); c.translate(lx, ly + 10); c.scale(.12, .12); c.translate(0, -190); pdBrahma(c, { pose: 'seat', halo: .8 }); c.restore();
     c.restore();
-    Object.assign(PO.skin, keep);
+    Object.assign(PO.skin, keep); Object.assign(PO_ANANTA, { armCol: null, simpleHand: false });
   }
   function gods2(c) {
     paper(c, 4);
@@ -40,8 +44,8 @@
     ananta(c, 520, 1060, .78);
     side(c, 1090, gy - 40, .62, pdLakshmi, { pose: 'serve' }, true);
     side(c, 1400, gy, .62, pdLakshmi, { pose: 'seat' });
-    side(c, 1920, gy - 10, .62, pdBhumiCow, { mood: 'sad' });
-    side(c, 2360, gy - 10, .5, pdBhumiCow, { mood: 'hope' }, true);
+    side(c, 1790, gy - 10, .62, pdBhumiCow, { mood: 'sad' });
+    side(c, 2330, gy - 10, .5, pdBhumiCow, { mood: 'hope' });
     front(c, 1650, 620, .42, pdBrahma, { pose: 'seat' });
     c.restore();
   }
@@ -50,8 +54,10 @@
     c.save(); c.scale(K, K);
     const gy = 1230, s = .78;
     // a child helping an elder across the path
-    side(c, 200, gy, s, pdPerson, { kind: 'elder', legs: 'walk', near: [.5, .3, 'grip'], far: [.4, -.2, 'up'], prop: { near: 'stick' }, eye: 'low' });
-    side(c, 340, gy, s, pdPerson, { kind: 'boy', legs: 'walk', far: [-.6, -1.4, 'up'], near: [.2, .3, 'open'], tilt: -.15, top: PW.leafCloth });
+    // (hand in hand: her near hand and his far hand meet at H, in her units; he walks ahead and looks back at her)
+    const H = [92, -400], bx = 230;
+    side(c, 200, gy, s, pdPerson, { kind: 'elder', legs: 'walk', near: { to: H, hand: 'grip' }, far: { to: [118, -430], hand: 'grip' }, prop: { far: 'stick' }, eye: 'low' });
+    side(c, 200 + bx * s, gy, s, pdPerson, { kind: 'boy', legs: 'walk', far: { to: [H[0] - bx, H[1] + 6], hand: 'grip' }, near: [.1, .15, 'open'], tilt: -.12, top: PW.leafCloth });
     // a farmer sharing grain with a woman
     side(c, 680, gy, s, pdPerson, { kind: 'man', near: [.9, 1.5, 'grip'], far: [.8, 1.3, 'grip'], prop: { near: 'basket', far: 'grain' }, tilt: .1, lean: .1 });
     side(c, 1000, gy, s, pdPerson, { kind: 'woman', near: [.7, 1.4, 'up'], far: [.6, 1.3, 'up'], prop: { near: 'bowl' }, tilt: .05 }, true);
@@ -60,8 +66,10 @@
     side(c, 1560, gy, s, pdPerson, { kind: 'girl', legs: 'sit', near: [.3, 1.1, 'grip'], far: [.3, 1, 'up'], prop: { near: 'leaf' }, tilt: -.1 }, true);
     side(c, 1700, gy, s, pdPerson, { kind: 'boy', legs: 'sit', near: [.3, 1.2, 'join'], far: [.3, 1.2, 'join'], tilt: -.1 }, true);
     // a boy returning a lost purse
-    side(c, 1950, gy, s, pdPerson, { kind: 'boy', near: [1.2, 1.5, 'up'], far: [.2, .3, 'open'], prop: { near: 'purse' }, top: PW.rust });
-    side(c, 2200, gy, s, pdPerson, { kind: 'man', near: [.5, 1.2, 'open'], far: [.2, .2, 'open'], tilt: .2, eye: 'wide', brow: 1, mouth: 'smile', pagri: PW.rust }, true);
+    // (the boy holds the purse up; the man bends to take it, his open hand under it; his far arm hangs behind him)
+    const P = [150, -440], mx = 2180;
+    side(c, 1950, gy, s, pdPerson, { kind: 'boy', near: { to: P, hand: 'grip' }, far: [.1, .2, 'open'], prop: { near: 'purse' }, top: PW.rust });
+    side(c, mx, gy, s, pdPerson, { kind: 'man', near: { to: [(mx - 1950) / s - P[0] - 46, P[1] + 40], hand: 'up' }, far: [.05, .1, 'open'], lean: .12, tilt: .2, eye: 'wide', brow: 1, mouth: 'smile', pagri: PW.rust }, true);
     // worried villagers
     side(c, 2420, gy, s, pdPerson, { kind: 'woman', near: [.3, 2.6, 'open'], far: [.2, 2.5, 'open'], eye: 'wide', brow: -1, mouth: 'calm', tilt: -.25, cloth: PW.leafCloth, top: PW.rust }, true);
     c.restore();

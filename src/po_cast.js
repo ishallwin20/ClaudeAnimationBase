@@ -123,14 +123,18 @@ function poAnantaBed(c) {
   const up = poLimb([[350, 1262], [392, 1280], [436, 1296], [476, 1306]], [46, 42, 36, 29]);
   const fore = poLimb([[474, 1306], [526, 1314], [574, 1316], [604, 1312]], [29, 31, 26, 21]);
   c.save(); c.filter = 'blur(6px)'; c.translate(0, 8); c.fillStyle = rgba(sk.dk, .7); c.fill(poPath(up)); c.fill(poPath(fore)); c.restore();
-  const arm = '#8E8BA2';
+  const arm = PO_ANANTA.armCol || '#8E8BA2';
   poFill(c, fore, arm, { sh: [0, 10, 8, rgba(sk.dk, .75)], hi: [0, -6, 6, rgba(sk.lt, .85)] });
   poFill(c, up, arm, { sh: [0, 12, 10, rgba(sk.dk, .75)], hi: [0, -8, 8, rgba(sk.lt, .9)] });
   poBorder(c, [[404, 1266], [410, 1286], [414, 1306]], 8);                                  // the armlet
   poDots(c, [[404, 1268], [412, 1306]], 2.2, 6, PO.red, false);
   poBorder(c, [[586, 1300], [588, 1314], [590, 1328]], 6); poBorder(c, [[596, 1300], [598, 1314], [598, 1326]], 4);
+  if (PO_ANANTA.simpleHand) // one soft mitten shape, the fingers together (the Dashavatar book)
+    poFill(c, [[598, 1302], [624, 1295], [654, 1297], [680, 1304], [694, 1314], [686, 1324], [656, 1328], [626, 1327], [602, 1324]], arm, { sh: [0, 7, 6, rgba(sk.dk, .7)], hi: [0, -5, 4, rgba(sk.lt, .85)] });
+  else {
   for (let i = 3; i >= 0; i--) poFill(c, poLimb([[646, 1303 + i * 4.5], [668, 1305 + i * 4.6], [686 - i * 3, 1310 + i * 4.6], [694 - i * 4, 1316 + i * 4.4]], [8, 7, 6, 4.6]), i ? mixCol(arm, sk.dk, .12 * i) : arm, { sh: [0, 3, 2, rgba(sk.dk, .6)] });
   poFill(c, [[598, 1302], [620, 1295], [640, 1297], [652, 1304], [652, 1322], [630, 1326], [604, 1324]], arm, { sh: [0, 7, 6, rgba(sk.dk, .7)], hi: [0, -5, 4, rgba(sk.lt, .85)] });
+  }
   poFill(c, poLimb([[622, 1298], [640, 1290], [656, 1290]], [10, 8, 6]), arm, { hi: [0, -3, 2, rgba(sk.lt, .8)] });
 
   // ---- the vanamala: a tulsi garland with gold beads, from his neck along his side to the knee

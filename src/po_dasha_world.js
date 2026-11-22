@@ -93,7 +93,46 @@ function pdPerson(c, o = {}) {
     else pdFoot(c, a[0], a[1], sk, { col: far ? sk.far : sk.base, a: far ? LG.fa[1] : LG.fa[0], alta: fem, anklet: fem || child });
   };
   if (!sit) { leg(LG.f, sk, true); leg(LG.n, sk, false); }
-  // the garment over the legs (sitting: a lap with one foot showing in front)
+  // (seated: no feet, the lap hides them)
+  // ---- the upper body, about the hip, leaning
+  const upper = () => { c.translate(0, off); c.translate(hip[0], -450); c.rotate(lean); c.translate(-hip[0], 450); };
+  // an arm as [a1, a2, hand] (angles from straight down, toward the face) or { to: [x, y], hand, elbow: 'up' }: the
+  // hand placed at (x, y) in the caller's units (feet at the origin, before the child scale), the elbow bent down
+  const solve = (A, sx, sy) => {
+    let [tx, ty] = A.to; if (child) { tx /= .62; ty /= .62; } ty -= off;
+    const ca = Math.cos(-lean), sa = Math.sin(-lean), rx = tx - hip[0], ry = ty + 450;
+    tx = hip[0] + rx * ca - ry * sa; ty = -450 + rx * sa + ry * ca;
+    const dx = tx - sx, dy = ty - sy, d = Math.min(Math.hypot(dx, dy), PP.L1 + PP.L2 - 1), th = Math.atan2(dx, dy);
+    const al = Math.acos(Math.max(-1, Math.min(1, (PP.L1 ** 2 + d * d - PP.L2 ** 2) / (2 * PP.L1 * d))));
+    const pick = (a) => sy + Math.cos(a) * PP.L1, b1 = th - al, b2 = th + al;
+    const a1 = (pick(b1) > pick(b2)) !== (A.elbow === 'up') ? b1 : b2;
+    const ex = sx + Math.sin(a1) * PP.L1, ey = sy + Math.cos(a1) * PP.L1, wx = sx + Math.sin(th) * d, wy = sy + Math.cos(th) * d;
+    return [a1, Math.atan2(wx - ex, wy - ey), A.hand];
+  };
+  const arm = (A, far) => {
+    const [sx, sy] = far ? PP.shF : PP.sh;
+    const [a1, a2, hand] = A && A.to ? solve(A, sx, sy) : A || [.08, .14, 'open'];
+    const ex = sx + Math.sin(a1) * PP.L1, ey = sy + Math.cos(a1) * PP.L1, wx = ex + Math.sin(a2) * PP.L2, wy = ey + Math.cos(a2) * PP.L2;
+    const col = far ? sk.far : sk.base, sleeve = o.top && !fem;
+    pdLimb(c, [[sx, sy], [ex, ey]], [50, 42], sk, { col: sleeve ? o.top.base : col });
+    pdLimb(c, [[ex, ey], [wx, wy]], [42, 32], sk, { col });
+    return [wx, wy, Math.atan2(wy - ey, wx - ex), hand, col];
+  };
+  const hand = ([x, y, a, kind, col], far) => pdHand(c, x, y, kind === 'join' ? a - .3 : a, sk, kind || 'open', { col, s: 1, bangle: fem });
+  const prop = (w, what) => {
+    if (!what) return;
+    const [x, y] = w;
+    if (what === 'stick') { const gy = -off; poLine(c, [[x + 6, y - 20], [x + 30, gy + (sit ? 0 : 0)]], PD.wood.dk, 10); poLine(c, [[x + 6, y - 20], [x + 30, gy]], PD.wood.base, 6); }
+    if (what === 'purse') { c.save(); c.translate(x + 28, y + 14); if (child) c.scale(1.5, 1.5); poFill(c, [[-14, -10], [14, -10], [20, 10], [12, 24], [-12, 24], [-20, 10]], '#8E3A3A', pdL({ dk: '#5A1E1E', lt: '#B85A50' }, 40)); poLine(c, [[-14, -10], [0, -4], [14, -10]], PO.gold.base, 3); poDots(c, [[-12, 8], [0, 12], [12, 8]], 2, 6, PO.gold.base, false); c.restore(); }
+    if (what === 'basket') { c.save(); c.translate(x + 30, y - 10); poFill(c, [[-56, -20], [56, -20], [46, 30], [-46, 30]], '#B08A4E', { ...pdL({ dk: '#6E5226', lt: '#D4B07A' }, 80), inside: () => { for (let k = -50; k < 56; k += 10) poLine(c, [[k, -20], [k * .84, 30]], 'rgba(110,80,40,.5)', 1.4); } }); for (let i = 0; i < 9; i++) ellipse(c, -44 + i * 11, -22 - Math.sin(i) * 3, 7, 5, '#E8C46A'); c.restore(); }
+    if (what === 'grain') { for (let i = 0; i < 14; i++) ellipse(c, x + 46 + Math.sin(i * 3) * 6, y + 10 + i * 9, 2.4, 2, '#E4BE60'); }
+    if (what === 'bowl') { c.save(); c.translate(x + 34, y - 6); poFill(c, [[-34, -8], [34, -8], [26, 14], [-26, 14]], '#9A6A44', pdL({ dk: '#5E3E24', lt: '#C08A5E' }, 50)); poFill(c, [[-30, -8], [30, -8], [20, -14], [-20, -14]], '#E4BE60'); c.restore(); }
+    if (what === 'leaf') { c.save(); c.translate(x + 30, y - 8); c.rotate(-.5); poFill(c, [[-40, -8, 1], [40, -8, 1], [40, 8, 1], [-40, 8, 1]], '#D8C08A', { sh: [0, 4, 3, 'rgba(120,90,50,.8)'], inside: () => { for (const yy of [-3, 3]) poLine(c, [[-34, yy], [34, yy]], 'rgba(120,90,50,.55)', 1); } }); c.restore(); }
+  };
+  // the far arm, behind the body (standing: behind the garment too, so a hanging far hand stays hidden)
+  let F = null;
+  if (!sit) { c.save(); upper(); F = arm(o.far, true); hand(F, true); prop(F, o.prop && o.prop.far); c.restore(); }
+  // the garment over the legs (sitting: a flat lap, the feet hidden under it)
   const fold = (P, col) => pdFold(c, P, 5, rgba(col.dk, .5), 5);
   if (wear === 'dhoti' || wear === 'short' || wear === 'robe') {
     const ln = wear === 'short' ? -250 : wear === 'robe' ? -60 : -130;
@@ -115,30 +154,8 @@ function pdPerson(c, o = {}) {
     if (!sit) poBorder(c, [[104, -20], [40, -14], [-20, -16], [-78, -22]], 9, trim);
     else poBorder(c, [[204, -10], [60, -4], [-62, -6]], 8, trim);
   }
-  if (sit) { c.save(); c.translate(120, -40); c.rotate(.1); c.scale(-1, 1); pdFoot(c, 0, 0, sk, { alta: fem, anklet: fem }); c.restore(); }
-  // ---- the upper body, about the hip, leaning
-  c.save(); c.translate(0, off); c.translate(hip[0], -450); c.rotate(lean); c.translate(-hip[0], 450);
-  const arm = (A, far) => {
-    const [a1, a2, hand] = A || [.08, .14, 'open'], [sx, sy] = far ? PP.shF : PP.sh;
-    const ex = sx + Math.sin(a1) * PP.L1, ey = sy + Math.cos(a1) * PP.L1, wx = ex + Math.sin(a2) * PP.L2, wy = ey + Math.cos(a2) * PP.L2;
-    const col = far ? sk.far : sk.base, sleeve = o.top && !fem;
-    pdLimb(c, [[sx, sy], [ex, ey]], [50, 42], sk, { col: sleeve ? o.top.base : col });
-    pdLimb(c, [[ex, ey], [wx, wy]], [42, 32], sk, { col });
-    return [wx, wy, Math.atan2(wy - ey, wx - ex), hand, col];
-  };
-  const hand = ([x, y, a, kind, col], far) => pdHand(c, x, y, kind === 'join' ? a - .3 : a, sk, kind || 'open', { col, s: 1, bangle: fem });
-  const prop = (w, what) => {
-    if (!what) return;
-    const [x, y] = w;
-    if (what === 'stick') { const gy = -off; poLine(c, [[x + 6, y - 20], [x + 30, gy + (sit ? 0 : 0)]], PD.wood.dk, 10); poLine(c, [[x + 6, y - 20], [x + 30, gy]], PD.wood.base, 6); }
-    if (what === 'purse') { c.save(); c.translate(x + 28, y + 14); poFill(c, [[-14, -10], [14, -10], [20, 10], [12, 24], [-12, 24], [-20, 10]], '#8E3A3A', pdL({ dk: '#5A1E1E', lt: '#B85A50' }, 40)); poLine(c, [[-14, -10], [0, -4], [14, -10]], PO.gold.base, 3); poDots(c, [[-12, 8], [0, 12], [12, 8]], 2, 6, PO.gold.base, false); c.restore(); }
-    if (what === 'basket') { c.save(); c.translate(x + 30, y - 10); poFill(c, [[-56, -20], [56, -20], [46, 30], [-46, 30]], '#B08A4E', { ...pdL({ dk: '#6E5226', lt: '#D4B07A' }, 80), inside: () => { for (let k = -50; k < 56; k += 10) poLine(c, [[k, -20], [k * .84, 30]], 'rgba(110,80,40,.5)', 1.4); } }); for (let i = 0; i < 9; i++) ellipse(c, -44 + i * 11, -22 - Math.sin(i) * 3, 7, 5, '#E8C46A'); c.restore(); }
-    if (what === 'grain') { for (let i = 0; i < 14; i++) ellipse(c, x + 46 + Math.sin(i * 3) * 6, y + 10 + i * 9, 2.4, 2, '#E4BE60'); }
-    if (what === 'bowl') { c.save(); c.translate(x + 34, y - 6); poFill(c, [[-34, -8], [34, -8], [26, 14], [-26, 14]], '#9A6A44', pdL({ dk: '#5E3E24', lt: '#C08A5E' }, 50)); poFill(c, [[-30, -8], [30, -8], [20, -14], [-20, -14]], '#E4BE60'); c.restore(); }
-    if (what === 'leaf') { c.save(); c.translate(x + 30, y - 8); c.rotate(-.5); poFill(c, [[-40, -8, 1], [40, -8, 1], [40, 8, 1], [-40, 8, 1]], '#D8C08A', { sh: [0, 4, 3, 'rgba(120,90,50,.8)'], inside: () => { for (const yy of [-3, 3]) poLine(c, [[-34, yy], [34, yy]], 'rgba(120,90,50,.55)', 1); } }); c.restore(); }
-  };
-  const F = arm(o.far, true); hand(F, true);
-  prop(F, o.prop && o.prop.far);
+  c.save(); upper();
+  if (sit) { F = arm(o.far, true); hand(F, true); prop(F, o.prop && o.prop.far); }
   // the torso (a kurta, a choli with the pallu, or bare with a thread)
   const TS = PD_TORSO.map(([x, y]) => [x * (fem ? .86 : 1), y]);
   poFill(c, TS, sk.base, { ...pdL(sk, 110), inside: () => { if (kind !== 'elder' && !fem) pdFold(c, [[66, -600], [40, -580], [10, -584]], 5, rgba(sk.dk, .45), 5); } });
@@ -189,8 +206,6 @@ function pdLakshmi(c, o = {}) {
   } });
   poBorder(c, [[200, -6], [60, -4], [-100, -4]], 10, G);
   poBorder(c, [[46, -256], [30, -190], [70, -130], [150, -96], [206, -70]], 6, G);
-  // a foot peeping out behind her, the sole up
-  c.save(); c.translate(-128, -22); c.rotate(.2); c.scale(-1, 1); pdFoot(c, 0, 0, sk, { alta: true }); c.restore();
   c.save(); c.translate(0, dy);
   const TS = PD_TORSO.map(([x, y]) => [x * .86, y]);
   // the far arm

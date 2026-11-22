@@ -285,9 +285,14 @@ function pdMilkOcean(c, x0, y0, x1, y1, o = {}) {
   c.restore();
 }
 function pdCloud(c, x, y, w, seed = 1, a = 1, col = '#F7F1E6', shc = 'rgba(150,140,172,.6)') {
+  // a row of round puffs: the top is the puffs' outline, the bottom a shallow curve, both closing into a round lobe at
+  // each end (no straight sides)
   const R = lcg(seed), n = Math.max(3, Math.round(w / 60)), C = [];
   for (let i = 0; i < n; i++) { const u = (i + .5) / n, r = (22 + R() * 22) * (.55 + .45 * Math.sin(Math.PI * u)) * w / 300 + 14; C.push([x - w / 2 + u * w, y - r * .35, r]); }
-  const P = [[x + w / 2 + 6, y, 1], [x - w / 2 - 6, y, 1]];
-  for (let px = x - w / 2; px <= x + w / 2; px += 5) { let top = y; for (const [cx, cy, r] of C) { const d = px - cx; if (Math.abs(d) < r) top = Math.min(top, cy - Math.sqrt(r * r - d * d)); } P.push([px, Math.min(top, y - 4)]); }
+  const T = [];
+  for (let px = x - w / 2; px <= x + w / 2 + .1; px += 5) { let top = y; for (const [cx, cy, r] of C) { const d = px - cx; if (Math.abs(d) < r) top = Math.min(top, cy - Math.sqrt(r * r - d * d)); } T.push([px, y - top]); }
+  const Hm = Math.max(...T.map(p => p[1])), mid = y - Hm * .22, P = [];
+  for (const [px, h] of T) { const u = (px - x) / (w / 2), e = Math.sqrt(Math.max(0, 1 - u * u)); P.push([px, mid - (mid - (y - Math.max(h, Hm * .22))) * Math.pow(e, 1.1)]); }
+  for (let k = T.length - 1; k >= 0; k--) { const px = T[k][0], u = (px - x) / (w / 2), e = Math.sqrt(Math.max(0, 1 - u * u)); P.push([px, mid + (y - mid) * Math.pow(e, .9)]); }
   c.save(); c.globalAlpha *= a; poFill(c, P, col, { sh: [0, 14, 10, shc], hi: [0, -8, 6, 'rgba(255,255,252,.95)'] }); c.restore();
 }

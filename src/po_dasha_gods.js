@@ -345,13 +345,25 @@ function pfVanamala(c, o = {}) {
   poAlong(vm, 38).forEach(([x, y], i) => { ellipse(c, x, y, 6.2, 6.2, ['#EDE6D4', '#C0303C', '#E0901C'][i % 3]); ellipse(c, x, y, 2.2, 2.2, PDX.gold.lt); });
 }
 
+// the gada upside down: the head resting on the ground at (gx, gy), the shaft up to the handle's knob at (x, y)
+function pdGadaDown(c, x, y, gx, gy) {
+  const G = PO.gold;
+  poLine(c, [[x, y], [gx, gy]], G.dk, 16); poLine(c, [[x, y], [gx, gy]], G.base, 11); poLine(c, [[x + 3, y], [gx + 3, gy]], rgba(G.lt, .8), 2.4);
+  ellipse(c, x, y - 2, 11, 9, G.dk); ellipse(c, x, y - 3, 8, 7, G.base);                       // the knob at the handle's end
+  poBorder(c, [[gx - 12, gy - 70], [gx + 12, gy - 70]], 5);                                   // a collar above the head
+  c.save(); c.translate(gx, gy - 10);
+  poFill(c, [[-48, 0], [-40, -30], [-14, -46], [14, -46], [40, -30], [48, 0], [40, 30], [14, 44], [-14, 44], [-40, 30]], G.base, { sh: [6, 12, 12, rgba(G.dk, .9)], hi: [-6, -10, 10, rgba(G.lt, .9)],
+    inside: () => { for (const xx of [-28, -8, 12, 32]) pdFold(c, [[xx, -44], [xx + 3, 0], [xx, 44]], 3, rgba(G.dk, .55), 2); poBorder(c, [[-50, 0], [50, 0]], 5); } });
+  c.restore();
+}
+
 // ---------- Vishnu standing on the lotus ----------
 function pdVishnuStand(c, o = {}) {
   const sk = PDX.vishnu, Y = PDX.pita, G = PDX.gold;
   if (o.halo !== 0) pdHalo(c, 0, -470, 196, { a: o.halo ?? 1 });
   if (o.seat !== false) pdLotusSeat(c, 0, PF_SOLE - 8, 330, { back: true });
-  // the gada standing at his left (screen right), under his lower left hand
-  pdGada(c, 214, 40, 226, PF_SOLE);
+  // the gada standing on its head at his left (screen right), his lower left hand on the handle's end
+  pdGadaDown(c, 218, -40, 226, PF_SOLE - 40);
   // the upper arms, behind the shoulders: chakra (his right, screen left), shankha (his left, screen right)
   pfArm(c, [[-104, -290], [-196, -250], [-218, -352]], sk, { col: sk.far, w: [42, 34, 26] });
   pfArm(c, [[104, -290], [196, -250], [218, -352]], sk, { col: sk.far, w: [42, 34, 26] });
@@ -371,8 +383,8 @@ function pdVishnuStand(c, o = {}) {
   // the lower arms, in front: his right holds the padma (or blesses), his left rests on the gada
   if (o.bless) { pfArm(c, [[-124, -270], [-160, -170], [-140, -96]], sk); pfHand(c, -140, -96, -.1, sk, 'palm'); }
   else { pfArm(c, [[-124, -270], [-176, -160], [-150, -214]], sk); pdPadma(c, -150, -200, -152, -300, 36); pfHand(c, -150, -214, .1, sk, 'fist'); }
-  pfArm(c, [[124, -270], [176, -170], [204, -70]], sk);
-  pfHand(c, 210, -48, 3.3, sk, 'fist', { mir: true });
+  pfArm(c, [[124, -270], [176, -170], [206, -84]], sk);
+  pfHand(c, 212, -62, 3.3, sk, 'fist', { mir: true });
   // the head
   c.save(); c.translate(0, PF_HEAD[0]); c.scale(PF_HEAD[1], PF_HEAD[1]);
   pfHead(c, { sk, eye: o.eye || 'half', mouth: o.mouth || 'smile', tilak: 'u' });
