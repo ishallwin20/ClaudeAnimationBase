@@ -11,8 +11,8 @@
 //     o.prop { near: 'stick' | 'purse' | 'basket' | 'leaf' | 'bowl' | 'grain', far: ... }
 //   pdLakshmi(c, o): Lakshmi seated on her heels, in profile; o.pose 'seat' (a lotus in her hands) | 'serve' (her
 //     hands forward, as at his feet)
-//   pdAnanta(c, x, y, s): Vishnu asleep on Shesha (po_cast.js) in the book's cloud blue, Brahma on a slender navel
-//     lotus; (x, y) is the top centre of the coil bed
+//   pdAnanta(c, x, y, s, o): Vishnu asleep on Shesha (po_cast.js) in the book's cloud blue, Brahma on a slender navel
+//     lotus (o.brahma scales him and his lotus; o.glow lights him); (x, y) is the top centre of the coil bed
 //   pdBhumiCow(c, o): the Earth as a gentle cow, in profile; o.mood 'sad' (the head low, a tear) | 'hope' (the head
 //     up); o.glow (0..1)
 const PW = {
@@ -247,51 +247,52 @@ function pdLakshmi(c, o = {}) {
 }
 
 // ---------- Bhumi Devi as a cow ----------
+// one smooth silhouette from the rump over the back, up the neck, round the face and back along the throat and belly:
+// no joint between the neck and the body (owner, 22 Nov). Sad, the head and the front of the neck swing down about the
+// shoulder; the points blend from the body (weight 0) to the head (weight 1), so the outline stays one curve.
 function pdBhumiCow(c, o = {}) {
   const C = PW.cow, G = PDX.gold, sad = o.mood !== 'hope', glw = o.glow ?? 1;
+  const PV = [140, -390], ang = sad ? .48 : 0;
+  const rot = ([x, y, k], w) => { const a = ang * w, dx = x - PV[0], dy = y - PV[1]; return [PV[0] + dx * Math.cos(a) - dy * Math.sin(a), PV[1] + dx * Math.sin(a) + dy * Math.cos(a), k]; };
   if (glw) glow(c, 40, -280, 520, '#FFE9B8', .4 * glw, 'source-over');
-  // the far legs
-  const legF = (x, k) => { pdLimb(c, [[x, -260], [x + k, -150], [x + k * .7, -70], [x + k * .6, -22]], [66, 40, 28, 26], C, { col: C.far }); ellipse(c, x + k * .6, -12, 17, 13, '#5A4A48'); };
-  legF(-180, -10); legF(170, 6);
+  // the legs: plain tapered posts, a dark hoof; all four tuck under the body, the far pair a shade darker
+  const leg = (x, col, hoof) => { poFill(c, [[x - 30, -300], [x + 30, -300], [x + 20, -60], [x + 18, -24, 1], [x - 18, -24, 1], [x - 22, -60]], col.base ?? col, { sh: [8, 0, 10, rgba(C.dk, .55)] }); poFill(c, [[x - 19, -28, 1], [x + 19, -28, 1], [x + 23, -6], [x + 16, 0, 1], [x - 20, 0, 1], [x - 22, -8]], hoof); };
+  leg(-160, { base: C.far }, '#5A4A48'); leg(166, { base: C.far }, '#5A4A48');
   // the tail
-  poLine(c, [[-250, -360], [-290, -300], [-296, -180], [-284, -90]], C.dk, 8);
-  poFill(c, [[-296, -110], [-276, -100], [-270, -60], [-290, -40], [-304, -70]], '#5A4A48');
-  // the body: the back, the belly, the hump at the withers
-  const B = [[-260, -370], [-170, -400], [-40, -396], [90, -410], [150, -470], [196, -476], [236, -430], [270, -360], [264, -280], [240, -220], [180, -190], [60, -200], [-80, -196], [-200, -210], [-256, -260], [-272, -320]];
-  poFill(c, B, C.base, { sh: [[0, 26, 26, rgba(C.dk, .75)], [24, 0, 20, rgba(C.dk, .4)]], hi: [0, -16, 16, rgba(C.lt, .95)],
-    inside: () => { pdFold(c, [[-200, -300], [-160, -240]], 10, rgba(C.dk, .4), 10); pdFold(c, [[130, -400], [160, -260]], 10, rgba(C.dk, .3), 10); } });
+  poLine(c, [[-262, -350], [-284, -290], [-288, -190], [-280, -110]], C.dk, 8);
+  poFill(c, [[-290, -130], [-270, -122], [-266, -80], [-282, -58], [-298, -86]], '#5A4A48');
+  // the far horn and ear, behind the head
+  const H = (x, y) => rot([x, y], 1);
+  c.save(); c.translate(...PV); c.rotate(ang); c.translate(-PV[0], -PV[1]);
+  poFill(c, poLimb([[270, -498], [262, -524], [276, -540]], [16, 11, 5]), '#AE9264', { sh: [3, 0, 3, 'rgba(110,80,50,.7)'] });
+  c.restore();
+  leg(-212, C, '#4A3C3A'); leg(200, C, '#4A3C3A');
+  // the silhouette: [x, y, weight]
+  const S = [[-250, -378, 0], [-150, -402, 0], [-10, -398, 0], [96, -410, 0], [170, -440, .45], [222, -478, .8], [262, -506, 1], [302, -512, 1],
+    [338, -490, 1], [364, -448, 1], [386, -410, 1], [394, -378, 1], [384, -350, 1], [350, -338, 1], [300, -346, 1], [258, -364, .8], [228, -346, .5],
+    [208, -296, .2], [196, -244, 0], [120, -210, 0], [-30, -204, 0], [-170, -212, 0], [-238, -244, 0], [-266, -310, 0]];
+  const P = S.map(([x, y, w]) => rot([x, y], w));
+  poFill(c, P, C.base, { sh: [[0, 26, 26, rgba(C.dk, .7)], [20, 0, 18, rgba(C.dk, .35)]], hi: [0, -16, 16, rgba(C.lt, .95)] });
   // the cloth on her back: red with a gold border and a lotus
-  poFill(c, [[-150, -398], [80, -408], [100, -330], [76, -250], [-130, -240], [-170, -320]], PDX.sari.base, { ...pdL(PDX.sari, 120), inside: () => { const R = lcg(3); for (let i = 0; i < 16; i++) ellipse(c, -130 + R() * 200, -380 + R() * 120, 3, 3.6, G.base); } });
-  poBorder(c, [[-150, -398], [-170, -320], [-130, -240], [76, -250], [100, -330], [80, -408]], 8, G);
-  poLotus(c, -36, -320, 30, 1, { base: '#E0B04C', lt: '#F6D88A', dk: '#A07624' });
-  // the near legs
-  const leg = (x, k) => { pdLimb(c, [[x, -270], [x + k, -150], [x + k * .7, -70], [x + k * .6, -22]], [74, 44, 30, 28], C); ellipse(c, x + k * .6, -10, 18, 13, '#4A3C3A'); poDots(c, [[x + k * .6 - 16, -34], [x + k * .6, -38], [x + k * .6 + 16, -34]], 3, 6, G.base); };
-  leg(-210, 14); leg(200, -8);
-  // the neck and head, lowered when sad
-  c.save(); c.translate(250, -380); c.rotate(sad ? .42 : -.12);
-  // a smooth neck, its underside running straight into the chest (no dewlap)
-  poFill(c, [[-70, -74], [40, -62], [120, -32], [150, 18], [124, 58], [60, 74], [0, 96], [-40, 124], [-80, 120], [-90, 40]], C.base, { sh: [0, 18, 18, rgba(C.dk, .7)], hi: [0, -10, 10, rgba(C.lt, .9)] });
-  // a cord with a bell round the neck
-  poLine(c, [[-20, -50], [10, 20], [40, 74]], PDX.maroon.base, 6);
-  c.save(); c.translate(40, 78); c.rotate(sad ? -.42 : .12); poFill(c, [[-11, -4], [11, -4], [15, 20], [-15, 20]], G.base, pdL(G, 30)); ellipse(c, 0, 22, 4, 4, G.dk); c.restore();
-  // the head: a long gentle face
-  c.translate(130, 0);
-  poFill(c, [[-34, -44], [10, -52], [70, -34], [130, -12], [154, 18], [150, 54], [116, 68], [50, 66], [-10, 58], [-44, 24]], C.base, { sh: [[0, 14, 14, rgba(C.dk, .7)], [10, 0, 10, rgba(C.dk, .4)]], hi: [0, -8, 8, rgba(C.lt, .95)] });
-  poFill(c, [[110, 6], [150, 12], [160, 36], [150, 58], [116, 62]], '#BFA0A2', { sh: [4, 4, 4, 'rgba(120,80,90,.6)'] });   // the muzzle
-  ellipse(c, 142, 32, 5, 3.4, '#6A3A3A');
-  // horns, small and painted, and the ears (drooping when sad)
-  for (const [hx, k] of [[-4, 0], [10, 1]]) poFill(c, poLimb([[hx, -38], [hx - 6, -70], [hx + 10, -96]], [16, 12, 4]), k ? '#C6A878' : '#AE9264', { sh: [3, 0, 3, 'rgba(110,80,50,.7)'] });
-  poBorder(c, [[-12, -66], [2, -62], [16, -66]], 5, G);
-  c.save(); c.translate(-14, -10); c.rotate(sad ? -1.35 : -.75);
-  poFill(c, [[0, -10], [-30, -16], [-70, -4], [-80, 10], [-60, 18], [-20, 14]], C.base, { sh: [0, 6, 6, rgba(C.dk, .8)], inside: () => poFill(c, [[-10, -4], [-60, 0], [-64, 8], [-20, 8]], '#E2B4B0') });
+  const CL = [[-150, -398], [70, -404], [86, -330], [66, -262], [-130, -252], [-166, -324]];
+  poFill(c, CL, PDX.sari.base, { ...pdL(PDX.sari, 120), inside: () => { const R = lcg(3); for (let i = 0; i < 14; i++) ellipse(c, -130 + R() * 190, -380 + R() * 110, 3, 3.6, G.base); } });
+  poBorder(c, [CL[0], CL[5], CL[4], CL[3], CL[2], CL[1]], 8, G);
+  poLotus(c, -40, -322, 28, 1, { base: '#E0B04C', lt: '#F6D88A', dk: '#A07624' });
+  // the face, in the head's frame
+  c.save(); c.translate(...PV); c.rotate(ang); c.translate(-PV[0], -PV[1]);
+  poFill(c, [[346, -414], [384, -412], [396, -380], [386, -352], [352, -344], [340, -376]], '#D8BCBC', { sh: [4, 4, 4, 'rgba(140,100,110,.5)'] });   // the muzzle
+  ellipse(c, 378, -392, 5.5, 3.6, '#7A4A4A');
+  // the near horn, small and painted, and the ear (drooping when sad)
+  poFill(c, poLimb([[288, -502], [282, -528], [298, -546]], [18, 12, 5]), '#C6A878', { sh: [3, 0, 3, 'rgba(110,80,50,.7)'] });
+  c.save(); c.translate(270, -476); c.rotate(sad ? -.75 : .05);
+  poFill(c, [[0, -12], [-40, -22], [-78, -10], [-84, 6], [-60, 18], [-18, 14]], C.base, { sh: [0, 6, 6, rgba(C.dk, .7)], inside: () => poFill(c, [[-10, -5], [-62, -6], [-70, 4], [-22, 8]], '#E2B4B0') });
   c.restore();
   // the eye: big, dark, lashed; a tear when sad
-  ellipse(c, 44, -8, 13, 10, '#2A1E22'); ellipse(c, 40, -12, 3.4, 2.6, 'rgba(255,255,255,.85)');
-  poLine(c, [[30, -14], [44, sad ? -16 : -19], [60, -12]], 'rgba(30,20,24,.9)', 3);
-  for (let i = 0; i < 4; i++) poLine(c, [[34 + i * 7, -16 + (sad ? 0 : -2)], [32 + i * 7, -24]], 'rgba(30,20,24,.8)', 1.4);
-  if (sad) { poLine(c, [[40, 4], [36, 20], [38, 34]], 'rgba(200,226,246,.9)', 3); ellipse(c, 38, 38, 4, 5.4, 'rgba(210,232,250,.95)'); }
-  // a tilak of kumkum and a garland on the brow
-  ellipse(c, 76, -32, 4, 6, PO.red);
+  ellipse(c, 312, -462, 12, 10, '#2A1E22'); ellipse(c, 308, -466, 3.4, 2.6, 'rgba(255,255,255,.85)');
+  poLine(c, [[296, -468], [310, sad ? -470 : -473], [325, -466]], 'rgba(30,20,24,.9)', 3);
+  for (let i = 0; i < 4; i++) poLine(c, [[300 + i * 7, -470 + (sad ? 0 : -2)], [298 + i * 7, -478]], 'rgba(30,20,24,.8)', 1.4);
+  if (sad) { poLine(c, [[306, -450], [302, -434], [304, -420]], 'rgba(200,226,246,.9)', 3); ellipse(c, 304, -416, 4, 5.4, 'rgba(210,232,250,.95)'); }
+  ellipse(c, 336, -490, 3.6, 5.4, PO.red);   // a tilak of kumkum
   c.restore();
 }
 
@@ -303,11 +304,11 @@ function pdAnanta(c, x, y, s, o = {}) {
   pdHalo(c, ...PO_ANANTA.halo, PO_ANANTA.haloR * 1.05, { a: .9 });
   poAnantaHood(c); poAnantaBed(c);
   // the navel lotus: a slender stalk, a small flower, Brahma seated in it
-  const [nx, ny] = PO_ANANTA.navel, lx = nx + 120, ly = ny - 250;
+  const bk = o.brahma || 1, [nx, ny] = PO_ANANTA.navel, lx = nx + 120 + 30 * (bk - 1), ly = ny - 250 - 60 * (bk - 1);
   poFill(c, poLimb([[nx, ny + 2], [nx + 14, ny - 70], [nx + 60, ny - 160], [lx, ly + 30]], [5, 4.6, 4.2, 4]), '#5E7444', { sh: [2, 0, 2, rgba(PO.leaf.dk, .8)] });
-  poLotus(c, lx, ly + 34, 40, 1);
-  if (o.glow) glow(c, lx, ly - 30, 90, '#FFE6A0', .6 * o.glow, 'source-over');
-  c.save(); c.translate(lx, ly + 10); c.scale(.12, .12); c.translate(0, -190); pdBrahma(c, { pose: 'seat', halo: .8 }); c.restore();
+  poLotus(c, lx, ly + 34, 40 * bk ** .8, 1);
+  if (o.glow) glow(c, lx, ly - 30 * bk, 90 * bk, '#FFE6A0', .6 * o.glow, 'source-over');
+  c.save(); c.translate(lx, ly + 10); c.scale(.12 * bk, .12 * bk); c.translate(0, -190); pdBrahma(c, { pose: 'seat', halo: .8 }); c.restore();
   c.restore();
   Object.assign(PO.skin, keep); Object.assign(PO_ANANTA, { armCol: null, simpleHand: false, malaDrape: false });
 }

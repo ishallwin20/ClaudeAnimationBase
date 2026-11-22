@@ -111,3 +111,14 @@ song called the Bhagavad Gita. Here are the words, as they were sung.
 Art choices that claim no plot fact: the golden lotus and the ten lights on the title page, the chakra like a rising
 sun, the indigo-and-gold border wilting and blooming, the medallions, everyone's clothes and jewels, Indra among the
 gods on p. 6 (the Bhagavata says "the gods"), the dharma tree.
+
+## Owner notes, 22 Nov (format and pages)
+
+- Format: 6 × 9 in pages (spread 12 × 9), no bleed, no border; the picture stops 0.25 in inside the trim on the outer
+  edges and runs across the fold; text and faces stay off the fold. PDFs in CMYK (Ghostscript, default CMYK profile).
+- No transliteration anywhere, ever: verses in Devanagari with the English meaning only.
+- pp. 2–3: Lakshmi removed from the picture (the words on p. 3 still say she sat beside him; owner to confirm), Brahma
+  on the navel lotus larger, the verse meaning set larger.
+- p. 8: the gods on the shore larger.
+- Inside front cover: blank for now (it backs the cover).
+- Bhumi Devi's cow redrawn simpler: one smooth outline from tail to nose, plain legs, no neck joint.

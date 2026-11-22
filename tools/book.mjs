@@ -17,6 +17,10 @@
 //   <slug>_cover.pdf      the cover sheet with bleed: outside (back | front), inside (inside front | inside back)
 //   <slug>_preview.pdf    reader spreads at trim size, no bleed (for reviewing and sharing)
 //   <slug>.epub           fixed-layout EPUB 3 (pre-paginated, spreads), 10 px per mm, fonts embedded
+// BOOK.cmyk: the interior and preview PDFs are converted to CMYK by Ghostscript (brew install ghostscript), the art and
+// the text alike (the EPUB stays RGB, for screens); --jpg then rasterizes the CMYK preview, so the review JPEGs show
+// the printed colours. BOOK.safe = { edge, fold } (mm): every text block must sit that far inside the trim and off the
+// fold, or the layout warns.
 // Fonts: assets/fonts (Andika for the story, Marcellus for titles, Tiro Devanagari Sanskrit for verses and their
 // transliteration, font: 'deva'; all SIL OFL). --jpg also writes the preview spreads as JPEGs for review.
 import puppeteer from 'puppeteer-core';
@@ -149,7 +153,21 @@ async function pdf(html, file, w, h) {
   const f = `${TMP}/${file}.html`; writeFileSync(f, html);
   await page.goto(url(f), { waitUntil: 'load' }); await page.evaluate(() => document.fonts.ready);
   await page.pdf({ path: join(OUT, file + '.pdf'), width: `${w}mm`, height: `${h}mm`, printBackground: true, pageRanges: '' });
-  console.log('wrote', join(OUT, file + '.pdf'));
+  if (BOOK.cmyk && file !== `${S}_cover`) cmyk(join(OUT, file + '.pdf'), w, h);
+  console.log('wrote', join(OUT, file + '.pdf'), BOOK.cmyk ? '(CMYK)' : '');
+}
+// RGB → CMYK through Ghostscript's default CMYK profile: vector text keeps its fonts, the images are re-encoded as
+// high-quality JPEG (QFactor .15, no chroma subsampling) at their full resolution. Chrome makes every PDF page about
+// 0.96 pt wider and taller than asked, the slack on the left and top; the page is cut back to exactly w × h mm here
+function cmyk(f, w, h) {
+  const tmp = f.replace(/\.pdf$/, '.rgb.pdf'); copyFileSync(f, tmp);
+  const pt = v => v / 25.4 * 72, mb = /\/MediaBox \[0 0 ([\d.]+) ([\d.]+)\]/.exec(readFileSync(tmp, 'latin1')), dx = mb ? Math.max(0, +mb[1] - pt(w)) : 0;
+  const r = spawnSync('gs', ['-q', '-dNOPAUSE', '-dBATCH', '-dSAFER', '-sDEVICE=pdfwrite', '-dCompatibilityLevel=1.6', '-dAutoRotatePages=/None',
+    `-dDEVICEWIDTHPOINTS=${pt(w).toFixed(3)}`, `-dDEVICEHEIGHTPOINTS=${pt(h).toFixed(3)}`, '-dFIXEDMEDIA',
+    '-sColorConversionStrategy=CMYK', '-sProcessColorModel=DeviceCMYK', '-dDownsampleColorImages=false', '-dAutoFilterColorImages=false',
+    '-dColorImageFilter=/DCTEncode', `-sOutputFile=${f}`, '-c', `<< /PageOffset [${(-dx).toFixed(3)} 0] >> setpagedevice << /ColorImageDict << /QFactor 0.15 /Blend 1 /HSamples [1 1 1 1] /VSamples [1 1 1 1] >> >> setdistillerparams`, '-f', tmp], { stdio: 'inherit' });
+  if (r.status) { console.error('Ghostscript failed on', f, '(brew install ghostscript)'); process.exit(1); }
+  rmSync(tmp);
 }
 const doc = (body, w, h) => `<!doctype html><html><head><meta charset="utf-8"><style>${fontCSS(url('assets/fonts') + '/')}
 @page { size: ${w}mm ${h}mm; margin: 0; } ${baseCSS} .pg { width: ${w}mm; height: ${h}mm; }</style></head><body>${body}</body></html>`;
@@ -161,13 +179,30 @@ writeFileSync(`${TMP}/measure.html`, measureHTML);
 await page.goto(url(`${TMP}/measure.html`), { waitUntil: 'load' }); await page.evaluate(() => document.fonts.ready);
 const HT = await page.evaluate(() => { const o = {}, mm = 96 / 25.4; document.querySelectorAll('.bb').forEach(e => { o[e.dataset.k] = e.getBoundingClientRect().height / mm; }); return o; });
 
+// ---- every text block inside the safe area (BOOK.safe: mm from the trim's edges and from the fold)
+if (BOOK.safe) {
+  const SF = BOOK.safe, R = await page.evaluate(() => { const mm = 96 / 25.4; return [...document.querySelectorAll('section.pg')].map(sec => { const o = sec.getBoundingClientRect(); return [...sec.querySelectorAll('.tx,.bx,.bb')].map(e => { const r = e.getBoundingClientRect(); return [(r.left - o.left) / mm, (r.top - o.top) / mm, (r.right - o.left) / mm, (r.bottom - o.top) / mm, e.textContent.slice(0, 40)]; }); }); });
+  keys.forEach((k, i) => {
+    const right = typeof k === 'number' ? k % 2 : k === 'ibc' || k === 'front', lo = BL + (right ? SF.fold : SF.edge), hi = BL + TW - (right ? SF.edge : SF.fold);
+    for (const [x0, y0, x1, y1, t] of R[i] || []) if (x0 < lo - .05 || x1 > hi + .05 || y0 < BL + SF.edge - .05 || y1 > BL + TH - SF.edge + .05)
+      console.warn(`  p. ${k}: text outside the safe area (x ${x0.toFixed(1)}–${x1.toFixed(1)}, y ${(y0 - BL).toFixed(1)}–${(y1 - BL).toFixed(1)} mm): "${t}…"`);
+  });
+}
+
 // ---- interior, preview, cover
 const pgP = k => `<section class="pg"><img src="${url(IMG[k].print)}">${pageInner(k, MM, BL, BL, HT)}</section>`;
 await pdf(doc(pages.map(pgP).join(''), PW, PH), `${S}_interior`, PW, PH);
 const half = (k, dx) => `<div style="position:absolute;left:${dx}mm;top:0;width:${TW}mm;height:${TH}mm;overflow:hidden"><img src="${url(IMG[k].screen)}" style="width:100%;height:100%;position:absolute">${pageInner(k, MM, 0, 0, HT)}</div>`;
 await pdf(doc(SPREADS.map(([a, b]) => `<section class="pg">${half(a, 0)}${half(b, TW)}</section>`).join(''), 2 * TW, TH), `${S}_preview`, 2 * TW, TH);
-// --jpg: the preview spreads as JPEGs for review (spreads/<left>-<right>.jpg, --jpg=<px wide>, 3000 by default)
-if (args.jpg) {
+// --jpg: the preview spreads as JPEGs for review (spreads/<left>-<right>.jpg, --jpg=<px wide>, 3000 by default); a CMYK
+// book's are rasterized from the CMYK preview by Ghostscript, so they show the converted colours
+const nm = v => String(v).padStart(2, '0');
+if (args.jpg && BOOK.cmyk) {
+  const px = args.jpg === true ? 3000 : +args.jpg, D = join(OUT, 'spreads'); rmSync(D, { recursive: true, force: true }); mkdirSync(D, { recursive: true });
+  spawnSync('gs', ['-q', '-dNOPAUSE', '-dBATCH', '-dSAFER', '-sDEVICE=jpeg', '-dJPEGQ=90', '-dTextAlphaBits=4', '-dGraphicsAlphaBits=4', `-r${(px / (2 * TW / 25.4)).toFixed(2)}`,
+    `-sOutputFile=${D}/s%02d.jpg`, join(OUT, `${S}_preview.pdf`)], { stdio: 'inherit' });
+  SPREADS.forEach(([a, b], i) => { const f = `${D}/s${nm(i + 1)}.jpg`; if (existsSync(f)) { copyFileSync(f, `${D}/${nm(a)}-${nm(b)}.jpg`); rmSync(f); console.log('wrote', `${D}/${nm(a)}-${nm(b)}.jpg`); } });
+} else if (args.jpg) {
   const px = args.jpg === true ? 3000 : +args.jpg, mm = 96 / 25.4; mkdirSync(join(OUT, 'spreads'), { recursive: true });
   await page.setViewport({ width: Math.ceil(2 * TW * mm), height: Math.ceil(TH * mm), deviceScaleFactor: px / (2 * TW * mm) });
   for (const [a, b] of SPREADS) {
