@@ -28,6 +28,14 @@
 //                                a gold prabhavali), the kids' blue and face, smiling; o.glow
 //   celThali(c, x, y, s, o)      a brass plate of ladoos (o.n 0..6) with tulsi on top, (x, y) the plate's middle;
 //                                celLadoo(c, x, y, r) one ladoo
+//   Kaliya (Bhagavata 10.16):    celKaliya(c, x, y, s, P, o) a little five-hooded naga (violet, a cream belly), coiled,
+//                                his base's middle at (x, y), about 420 px to the top of his middle hood at s = 1: P like a
+//                                kid's face (eyes, mouth, look, lid, brow, tilt, blush, talk) on the middle hood, side
+//                                ('open' | 'happy' | 'sleep' | 'dizzy' | 'flat') the four small heads' faces, lean (the hoods
+//                                sway), squash (a stomp), tongue 0..1 (a forked flick), prints 0..1 (tiny blue footprints on
+//                                his hoods, 10.16.63), tail [x, y] (its tip, local px), stick (the tail curled round a stick),
+//                                stickRot. Returns { stand (where a kid stands on the middle hood), head, top, tail, heads }
+//   celStick(c, x, y, len, rot) Yashoda's stick (a thin bamboo cane, Bhagavata 10.9.9), gripped at (x, y), rot from upright
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -45,7 +53,7 @@
 //   handL, handR    'open' | 'fist' | 'point' (the forearm's direction) | 'butter' (a blob of butter on the palm) |
 //                   'pray' (a palm standing up: both hands in front of the chest are folded hands)
 //   eyes            'open' | 'happy' (^ ^) | 'closed' (smug ‿ ‿) | 'squeeze' (> <) | 'wide' (shock) | 'sparkle' |
-//                   'puppy' (huge, glossy, "who, ME?"); or [screen left, screen right]
+//                   'puppy' (huge, glossy, "who, ME?") | 'dizzy' (spirals); or [screen left, screen right]
 //   look [x, y]     -1..1, where the eyes look; lid 0..1 the upper lids down (deadpan); brow (-1..1 lower / raise);
 //   tilt            -1 cross .. 1 worried (the brows' inner ends); browR: a different raise for the screen-right brow
 //   mouth           'smile' | 'cat' (:3) | 'grin' | 'open' | 'o' | 'flat' | 'pout' | 'smug' | 'wobble' | 'frown' | 'wail' |
@@ -53,6 +61,9 @@
 //   talk            1: the mouth flaps (a new shape every two drawings) over the pose's mouth
 //   blush           0..1 extra; sweat 0..1 (a drop by the temple); butter 0..1 (Kanha: butter smeared on his face);
 //                   mud 0..1 (Kanha: mud on his face); belly 0..1 (Kanha: a round full tummy)
+//                   cry 0..1 (tears: two streams down the cheeks and drops flying off, anime-style; with eyes 'squeeze'
+//                   and mouth 'wail' he bawls); kajal 0..1 (the black eye-ointment smeared down his cheeks by his
+//                   crying and rubbing, Bhagavata 10.9.11)
 // A tiny kid (s ≈ .2) keeps a readable line with CEL.inkK (ink width × k, cel.js) set round the call.
 
 // ---------- acting ----------
@@ -94,6 +105,7 @@ function celEye(c, ex, ey, kind, P, C, sd, k = 1, lashes = false) {
     if (lashes) celLine(c, [[ex + sd * 25 * k, ey], [ex + sd * 38 * k, ey - 8 * k]], 4 * k);
     return;
   }
+  if (kind === 'dizzy') { const sp = []; for (let i = 0; i <= 26; i++) { const a = i / 26 * TAU * 2.2 + sd * CEL.d * .9, r = (4 + i * 1.05) * k; sp.push([ex + Math.cos(a) * r * sd, ey + Math.sin(a) * r * 1.15]); } celLine(c, sp, 6 * k, { taper: .2, boil: .3 }); return; }
   if (kind === 'squeeze') { celLine(c, [[ex + sd * 22 * k, ey - 18 * k], [ex - sd * 20 * k, ey], [ex + sd * 22 * k, ey + 18 * k]], 7.5 * k, { taper: .3 }); return; }
   const ox = look[0] * 7 * k, oy = look[1] * 6 * k;
   if (kind === 'wide') {
@@ -407,6 +419,8 @@ function celKid(c, x, y, s, P, o, who) {
     const b = clamp(P.butter);
     celButter(c, -110, 52, 24 * b, C, 1); celButter(c, 40, 110, 21 * b, C, 2); celButter(c, 6, 54, 12 * b, C, 3); celButter(c, 104, 116, 15 * b, C, 4); celButter(c, -40, 134, 12 * b, C, 5); celButter(c, 120, -60, 16 * b, C, 6);
   }
+  if ((P.kajal || 0) > .02) celKajal(c, clamp(P.kajal), R ? 7 : 0);
+  if ((P.cry || 0) > .02) celTears(c, clamp(P.cry), td);
   if ((P.sweat || 0) > .02) celSweat(c, -160, -60, clamp(P.sweat) * 1.4);
   c.restore();   // head
 
@@ -522,6 +536,8 @@ function celMiniFace(c, x, y, k, kind = 'open', blush = '#FF7FA8') {
     const ex = x + sd * 18 * k, ey = y;
     if (kind === 'happy') celLine(c, [[ex - 7 * k, ey + 3 * k], [ex, ey - 5 * k], [ex + 7 * k, ey + 3 * k]], 3.4 * k, { taper: .3, boil: .4 });
     else if (kind === 'sleep') celLine(c, [[ex - 7 * k, ey - 1 * k], [ex, ey + 5 * k], [ex + 7 * k, ey - 1 * k]], 3.4 * k, { taper: .3, boil: .4 });
+    else if (kind === 'dizzy') { const sp = []; for (let i = 0; i <= 14; i++) { const a = i / 14 * TAU * 1.8 + sd * CEL.d, r = (1.5 + i * .55) * k; sp.push([ex + Math.cos(a) * r, ey + Math.sin(a) * r]); } celLine(c, sp, 3 * k, { taper: .2, boil: .3 }); }
+    else if (kind === 'flat') celLine(c, [[ex - 7 * k, ey], [ex + 7 * k, ey]], 3.4 * k, { taper: .3, boil: .4 });
     else { ellipse(c, ex, ey, 5.5 * k, 7.5 * k, CEL.ink); ellipse(c, ex - 1.8 * k, ey - 2.8 * k, 2.3 * k, 2.5 * k, '#FFFFFF'); }
     c.save(); c.globalAlpha = .6; ellipse(c, x + sd * 29 * k, y + 10 * k, 7.5 * k, 4.2 * k, blush); c.restore();
   }
@@ -803,4 +819,94 @@ function celShrineBell(c, x, y, s = 1, swing = 0) {
   celShape(c, [[-10, 102], [-16, 120], [-24, 146], [-32, 152], [32, 152], [24, 146], [16, 120], [10, 102]], '#E0A93A', { n: 3, w: 3.5, shade: ['#B07C1E', 5, 3], lt: ['#FFE08A', 3, 3] });
   celOval(c, 0, 158, 7, 7, '#B07C1E', { w: 2.5 });
   c.restore();
+}
+
+// ---------- tears and smeared kajal (Bhagavata 10.9.11: crying, he rubbed his eyes and smeared the ointment) ----------
+// head coordinates, drawn over the face
+function celKajal(c, b, seed = 0) {
+  const p = new Path2D(), blob = (x, y, rx, ry, r = 0) => { p.moveTo(x + rx * b * Math.cos(r), y + rx * b * Math.sin(r)); p.ellipse(x, y, rx * b, ry * b, r, 0, TAU); };
+  for (const sd of [-1, 1]) {
+    for (let i = 0; i <= 6; i++) { const u = i / 6; blob(sd * (64 + 10 * Math.sin(u * 5 + sd)), 62 + u * 74, 13 - u * 5, 11, 0); }   // a streak down each cheek
+    for (let i = 0; i <= 4; i++) { const u = i / 4; blob(sd * lerp(40, 128, u), 66 + Math.sin(u * 3) * 10, 12, 8 - u * 2, sd * .3); }   // rubbed sideways
+  }
+  c.save(); c.globalAlpha *= .42; c.fillStyle = '#2B2550'; c.fill(p); c.restore();
+}
+function celTears(c, k, td) {
+  const blue = '#9ED8FF';
+  for (const sd of [-1, 1]) {
+    // a stream from under the eye down the cheek, wobbling
+    const P = []; for (let i = 0; i <= 5; i++) { const u = i / 5; P.push([sd * (70 + 6 * Math.sin(u * 4 + td * 9)), 50 + u * 96 * k]); }
+    celShape(c, celTube(P, [22, 20, 18, 16, 15, 14].map(w => w * (.6 + .4 * k))), blue, { dense: true, w: 3.5, boil: .4, over: q => { q.strokeStyle = 'rgba(255,255,255,.85)'; q.lineWidth = 4; q.beginPath(); q.moveTo(sd * 66 - 3, 58); q.lineTo(sd * 64 - 3, 50 + 80 * k); q.stroke(); } });
+    // drops flying off the outer corners
+    for (let i = 0; i < 4; i++) {
+      const u = (td * 1.7 + i / 4 + (sd > 0 ? .13 : 0)) % 1, x = sd * (92 + 170 * u), y = 20 - 90 * u + 260 * u * u, r = (13 - 5 * u) * k;
+      if (r > 2) celShape(c, [[x, y - r * 1.5], [x + r, y], [x, y + r], [x - r, y]], blue, { n: 5, w: 3, boil: .3, over: q => ellipse(q, x - r * .3, y - r * .1, r * .25, r * .35, '#FFFFFF') });
+    }
+  }
+}
+
+// ---------- Kaliya (Bhagavata 10.16) and Yashoda's stick (10.9.9) ----------
+const CEL_KALIYA = { skin: '#7464CC', sh: '#5446A6', lt: '#A79CEC', belly: '#F6E7B8', bellySh: '#DFC78E', hood: '#BCB2F2', iris: '#241A3A', iris2: '#5E46B0', blush: '#FF8AB6', mouth: '#5A1E3A', tongue: '#F04E6A', print: '#5B8FE0' };
+function celStick(c, x, y, len = 300, rot = 0) {
+  c.save(); c.translate(x, y); c.rotate(rot);
+  const a = [0, len * .22], b = [0, -len * .78];
+  celShape(c, celTube([a, b], [15, 12]), '#C68D4C', { dense: true, w: 4, shade: ['#94612E', 4, 0], lt: ['#E8B678', 2, 0] });
+  for (let i = 1; i < 5; i++) { const yy = lerp(a[1], b[1], i / 5); celLine(c, [[-8, yy + 2], [0, yy - 1], [8, yy + 2]], 3.2, { taper: .2, boil: .3 }); }
+  c.restore();
+}
+function celKaliya(c, x, y, s, P, o = {}) {
+  const C = { ...CEL_KALIYA, ...(o.pal || {}) }, td = P.td ?? o.t ?? 0, A = {}, body = { shade: [C.sh, 8, 10], lt: [C.lt, 4, 5] };
+  celBegin(td); CEL.n = o.seed ?? 1300;
+  const land = P.land ?? 9, hit = land >= 0 ? Math.exp(-land * 10) : 0, sq = clamp((P.squash || 0) + hit * .3, -1, 1), br = Math.sin(td * TAU / 2.8);
+  c.save(); c.translate(x, y); c.scale(s, s);
+  const at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  // the tail: out of the lower coil along the ground, its tip curling up (round a stick)
+  const tip = P.tail || [262, -18], tm = [lerp(170, tip[0], .5), Math.min(-14, lerp(-40, tip[1], .5) + 10)];
+  celShape(c, celTube([[150, -54], [196, -28], tm, [tip[0] - 14, tip[1] + 8], tip], [64, 46, 30, 20, 14]), C.skin, { dense: true, ...body });
+  if (P.stick) {
+    const sr = P.stickRot ?? 0; celStick(c, tip[0], tip[1] - 4, P.stickLen ?? 320, sr);
+    celShape(c, celTube([[tip[0] - 18, tip[1] + 6], [tip[0] - 20, tip[1] - 18], [tip[0], tip[1] - 26], [tip[0] + 18, tip[1] - 12], [tip[0] + 8, tip[1] + 6]], [16, 15, 14, 12, 10]), C.skin, { dense: true, w: 4, shade: [C.sh, 3, 4] });
+  }
+  A.tail = at(...tip);
+  // two coils, each its back half then its front half; the cream belly peeks along the front of the lower one
+  const coil = (cy, rx, ry, w) => {
+    const arc = (a0, a1) => { const Q = []; for (let i = 0; i <= 8; i++) { const a = lerp(a0, a1, i / 8); Q.push([Math.cos(a) * rx, cy + Math.sin(a) * ry]); } return Q; };
+    celShape(c, celTube(arc(Math.PI * 1.04, Math.PI * 1.96), [w * .9, w * .86, w * .9]), C.skin, { dense: true, ...body });
+    celShape(c, celTube(arc(-.06, Math.PI + .06), [w, w * 1.05, w]), C.skin, { dense: true, ...body, over: q => { q.strokeStyle = C.belly; q.lineWidth = w * .15; q.lineCap = 'round'; q.beginPath(); for (let i = 2; i <= 6; i++) { const a = lerp(0, Math.PI, i / 8); q.lineTo(Math.cos(a) * rx * .98, cy + Math.sin(a) * ry + w * .3); } q.stroke(); } });
+    for (let i = 1; i < 8; i++) { const a = lerp(.1, Math.PI - .1, i / 8); ellipse(c, Math.cos(a) * rx, cy + Math.sin(a) * ry - w * .12, 6, 4, rgba(C.lt, .9)); }
+  };
+  coil(-58, 176, 30, 98); coil(-142, 128, 24, 84);
+  // the hoods sway on the neck (lean, about its root) and squash on a stomp
+  c.save(); c.translate(0, -150); c.rotate((P.lean || 0) + br * .015); c.scale(1 + sq * .08, 1 - sq * .12 + br * .008);
+  const neck = (tx, ty, w) => celShape(c, celTube([[0, 8], [tx * .3, -40], [tx * .7, ty + 70], [tx, ty + 20]], [w, w * .92, w * .84, w * .8]), C.skin, { dense: true, ...body, over: q => { q.fillStyle = C.belly; for (let i = 0; i < 4; i++) { const u = .25 + i * .18; ellipse(q, tx * u * .95, lerp(-10, ty + 40, u), w * .26, 7, C.belly); } } });
+  const hood = (hx, hy, r, rot, face) => {
+    c.save(); c.translate(hx, hy); c.rotate(rot);
+    celShape(c, [[0, -r * .96], [r * .72, -r * .76], [r, -r * .12], [r * .84, r * .56], [r * .36, r * .96], [-r * .36, r * .96], [-r * .84, r * .56], [-r, -r * .12], [-r * .72, -r * .76]], C.skin, { ...body, over: q => {
+      ellipse(q, 0, r * .18, r * .62, r * .66, C.hood);
+      for (let i = 0; i < 3; i++) celLine(q, [[-r * .42, r * (.42 + i * .17)], [0, r * (.52 + i * .17)], [r * .42, r * (.42 + i * .17)]], 2.6, { col: rgba(C.sh, .6), boil: .3, taper: .3 });
+      const pr = clamp(P.prints || 0); if (pr > .02) for (const sd of [-1, 1]) { const fx = sd * r * .52, fy = -r * .42; q.save(); q.globalAlpha = .75 * pr; ellipse(q, fx, fy, r * .1, r * .15, C.print, sd * .2); for (let j = 0; j < 4; j++) ellipse(q, fx - r * .07 + j * r * .05, fy - r * .2 - Math.abs(j - 1.5) * -r * .015, r * .025, r * .03, C.print); q.restore(); }
+    } });
+    face(r); c.restore();
+    return at(hx, hy);
+  };
+  const side = P.side || 'open', heads = [];
+  const small = (r) => { celMiniFace(c, 0, -r * .2, r / 52, side, C.blush); if (side === 'dizzy' || side === 'flat') return; };
+  for (const sd of [-1, 1]) neck(sd * 210, -150, 50);
+  for (const sd of [-1, 1]) heads.push(hood(sd * 210, -150, 62, sd * .32, small));
+  for (const sd of [-1, 1]) neck(sd * 118, -205, 58);
+  for (const sd of [-1, 1]) heads.push(hood(sd * 118, -205, 74, sd * .16, small));
+  neck(0, -228, 72);
+  const MH = [0, -236], MR = 96;
+  heads.splice(2, 0, hood(MH[0], MH[1], MR, 0, r => {
+    c.save(); c.translate(0, -r * .26);
+    celFace(c, P, C, { face: { ex: 70, ey: 0, my: 64, bx: 104, by: 40, k: .52 }, seed: 13 });
+    const tg = clamp(P.tongue || 0);
+    if (tg > .02) { const L = 46 * tg, ty = 64 * .52 + 10; celLine(c, [[0, ty], [0, ty + L]], 5, { col: C.tongue, taper: .1, boil: .3 }); celLine(c, [[0, ty + L], [-9, ty + L + 12]], 4, { col: C.tongue, taper: .3, boil: .3 }); celLine(c, [[0, ty + L], [9, ty + L + 12]], 4, { col: C.tongue, taper: .3, boil: .3 }); }
+    c.restore();
+  }));
+  A.head = at(MH[0], MH[1] - MR * .26); A.stand = at(MH[0], MH[1] - MR * .9); A.top = at(0, MH[1] - MR);
+  c.restore();
+  A.heads = heads;
+  c.restore();
+  return A;
 }
