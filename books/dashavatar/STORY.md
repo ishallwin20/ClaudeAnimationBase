@@ -2,7 +2,7 @@
 
 A ~100-page Dashavatar picture book for ages 3–12 is planned: square 216 × 216 mm pages (8.5″), 2:1 spreads, with
 narration, a little dialogue and short explainers over the art. Rama and Krishna get the biggest shares. Before
-choosing the art style, the same two spreads of the Vamana chapter are drawn in **Storybook**, **Painterly** and **Cinematic** (the film-lit look: golden hour and the yagna fire, then the cosmos; cast in `src/cine_dashavatar.js`).
+choosing the art style, the same two spreads of the Vamana chapter are drawn in **Storybook**, **Painterly**, **Cinematic** (the film-lit look: golden hour and the yagna fire, then the cosmos; cast in `src/cine_dashavatar.js`) and **Pothi** (22 Nov: flat silhouettes with soft inner shading on laid paper, the look of the Hanuman Udaan wallpaper; engine `src/pothi.js` from `reel/ekadashi-loops`, cast in `src/po_dashavatar.js`, all side on).
 
 | spread | pages | art | words |
 |---|---|---|---|
@@ -15,6 +15,7 @@ Render and lay out (each style into its own folder):
 node tools/book.mjs --book=books/dashavatar --pages=2,3,4,5 --render=all --page=book_storybook.html --art=out/book_dashavatar/art_sb --out=out/books/dashavatar_test_out/storybook
 node tools/book.mjs --book=books/dashavatar --pages=2,3,4,5 --render=all --page=book_painterly.html --art=out/book_dashavatar/art_pt --variant=painterly --out=out/books/dashavatar_test_out/painterly
 node tools/book.mjs --book=books/dashavatar --pages=2,3,4,5 --render=all --page=book_cinematic.html --art=out/book_dashavatar/art_cine --variant=cine --out=out/books/dashavatar_test_out/cinematic
+node tools/book.mjs --book=books/dashavatar --pages=2,3,4,5 --render=all --page=book_pothi.html --art=out/book_dashavatar/art_po --variant=pothi --out=out/books/dashavatar_test_out/pothi
 ```
 
 ## Facts used
@@ -34,5 +35,5 @@ All from the Bhagavata Purana, Canto 8 (chapters given; check verse numbers agai
 | Pleased, Vishnu made Bali king of Sutala and promised to guard his door himself | 8.22–23 |
 | Vāmana = "the small one" (dwarf); Trivikrama = "of the three strides"; Vamana is the fifth of the ten avatars | the names; the standard Dashavatara order (Matsya, Kurma, Varaha, Narasimha, Vamana …) |
 
-Art choices that claim no plot fact: the mango-leaf toran, the river at golden hour, the sun, moon and planets the
+Art choices that claim no plot fact: the mango-leaf toran (Pothi: over the fire), the kamandalu's and umbrella's shapes, Shukracharya's staff and tripundra, the river at golden hour, the sun, moon and planets the
 second step strides past, the colours of everyone's clothes.

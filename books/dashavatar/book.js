@@ -5,6 +5,7 @@
 //   Storybook: --page=book_storybook.html (src/scenes/dasha_book_sb.js)
 //   Painterly: --page=book_painterly.html --variant=painterly (src/scenes/dasha_book_pt.js): cream text on the night
 //              sky, bubbles placed for that art.
+//   Pothi:     --page=book_pothi.html --variant=pothi (src/scenes/dasha_book_po.js), the same way.
 // A page:  text:    [{ x, y, w, lines: ['…', …] (one paragraph each), size (pt, default BOOK.size), align, color, font }]
 //          bubbles: [{ x, y, w, text, tail: [x, y] (the point it speaks from), size }]
 //          boxes:   [{ x, y, w, kind: 'fact' ("Did you know?") | 'find' ("Can you find…?"), text, size }]
@@ -39,6 +40,13 @@ const BOOK = {
       4: { text: [{ x: 12, y: 12, w: 126, color: CREAM, lines: ['“That boy is Vishnu!” warned Bali’s guru, Shukracharya.', 'But Bali had made a promise, and he kept it.'] }],
            bubbles: [{ x: 92, y: 126, w: 62, text: 'Place your third step on my head.', tail: [138, 170] }] },
       5: { text: [{ x: 112, y: 12, w: 94, color: CREAM, lines: ['The little boy grew… and grew… and grew!', 'With one step he covered the earth. With the second, the whole sky.'] }] },
+    } },
+    // Pothi (--page=book_pothi.html, src/scenes/dasha_book_po.js): dark ink on the evening paper, cream on the night sky
+    pothi: { pages: {
+      3: { bubbles: [{ x: 16, y: 92, w: 66, text: 'Just three steps of land, please. Measured by my own small feet!', tail: [88, 134] }] },
+      4: { text: [{ x: 12, y: 12, w: 140, color: CREAM, lines: ['“That boy is Vishnu!” warned Bali’s guru, Shukracharya.', 'But Bali had made a promise, and he kept it.'] }],
+           bubbles: [{ x: 84, y: 118, w: 62, text: 'Place your third step on my head.', tail: [122, 158] }] },
+      5: { text: [{ x: 108, y: 12, w: 98, color: CREAM, lines: ['The little boy grew… and grew… and grew!', 'With one step he covered the earth. With the second, the whole sky.'] }] },
     } },
     painterly: { pages: {
       3: { bubbles: [{ x: 104, y: 108, w: 70, text: 'Just three steps of land, please. Measured by my own small feet!', tail: [96, 150] }] },
