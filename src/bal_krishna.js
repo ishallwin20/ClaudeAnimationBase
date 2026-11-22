@@ -18,6 +18,8 @@
 //           dips), walk (phase, stand), shake (radians: the head shakes "no"), wiggle (-1..1: the bottom swings)
 //   arms:   handL / handR = [x, y] in body u (2-bone arms; out-of-reach targets are pulled in), bendL / bendR (1 elbows
 //           out, -1 in), handShapeL / handShapeR (Aarav's: 'open' | 'fist' | 'claw' | 'point' | 'hold'), handAL / handAR.
+//           pray: true folds his hands (namaste): the palms pressed together, fingers up, at his chest (the hand
+//           targets default to the chest; handL / handR still move the wrists)
 //           Without targets, aL / aR (feel()'s arm angles) swing them; resting they hang by his tummy.
 //   face:   eyes, mouth, lookX / lookY, squint, blush, brows (-1 cross .. +1 raised), worry 0..1, mouthK (size of 'aam' /
 //           'open' / 'wail'), seed, tint + tintK. His own eyes: 'normal' / 'look' / 'wide' / 'happy' / 'closed' /
@@ -28,6 +30,9 @@
 //   cosmos: 0..1 inside the 'aam' mouth there is NIGHT: stars, a swirl of galaxy, a little sun and moon (BhP 10.8.37)
 //   mud:    0..1 mud smudged round his mouth, on a cheek and on his right hand (he ate some)
 //   cheeks: puff 0..1 (the cheeks balloon out)
+//   other boys on the rig (ayyappa() in ayyappa_series.js): tilak 'u' (default) | 'ash' (a small tripundra and a red
+//           dot) | false; pendant 'crescent' (default) | 'bell' (a gold bell on a dark cord, pal.cord; bellSwing radians)
+//           | false; pearls (default true)
 //   extras: feather (default true), featherWob (phase), flute (default true: tucked in the kardhani), glowK (a soft
 //           blue-gold aura, drawn first), emote + emoteK + emoteAge, hooks behind(u, sw) (body space, first) / hat(u, sw)
 //           (head space) / held(u, sw) (body space, under the hands), boilKey, noShadow, swMul
@@ -47,6 +52,7 @@ const BK_SH = [2.05, -7.7];
 function bkArm(o, s) {
   const up = BK_UP[o.pose || 'stand'] ?? 0, sh = [s * BK_SH[0], BK_SH[1] + up], L1 = 1.85, L2 = 1.8;
   let h = s < 0 ? o.handL : o.handR;
+  if (!h && o.pray) h = [s * .5, -6.75];   // folded hands: the wrists meet under the joined palms
   if (h) h = [h[0], h[1] + up];
   else { const a = (s < 0 ? o.aL : o.aR) ?? -1.2, ang = -1.25 + (clamp(a, -1.5, 1.6) + 1.2) * .6; h = [sh[0] + s * Math.cos(ang) * 3.3, sh[1] - Math.sin(ang) * 3.3]; }
   let dx = h[0] - sh[0], dy = h[1] - sh[1], d = Math.hypot(dx, dy) || 1e-3;
@@ -131,10 +137,19 @@ function balKrishna(x, y, u, o = {}) {
   paint(ellPts(.5 * u, (-6.2 + up) * u, 1.1 * u, 1.2 * u, 16, J), { wash: lt, washOp: 90, ink: null });   // the tummy's light
   inkLine(B([[-.18, -5.0], [0, -4.85], [.18, -5.0]]), sw * .5, dk, 'inkfine', .5);   // navel
   rs('pearls');
-  for (let i = 0; i <= 10; i++) { const k = i / 10, a = Math.PI * (1 - k); paint(ellPts(Math.cos(a) * 1.75 * u, (-7.95 + Math.sin(a) * 1.05 + up) * u, .17 * u, .17 * u, 7), { wash: C.pearl, ink: INK, sw: sw * .25 }); }
-  inkLine(B([[-1.9, -8.0], [-1.2, -6.95], [0, -6.55], [1.2, -6.95], [1.9, -8.0]]), sw * .9, C.gold, 'ink', .6);
-  paint(B([[-.55, -6.6], [0, -6.35], [.55, -6.6], [.3, -6.0], [0, -5.85], [-.3, -6.0]]), { wash: C.goldLt, ink: INK, sw: sw * .4, curv: .5 });   // the crescent
-  paint(ellPts(0, (-6.1 + up) * u, .14 * u, .14 * u, 7), { wash: C.gem, ink: null });
+  if (o.pearls !== false) for (let i = 0; i <= 10; i++) { const k = i / 10, a = Math.PI * (1 - k); paint(ellPts(Math.cos(a) * 1.75 * u, (-7.95 + Math.sin(a) * 1.05 + up) * u, .17 * u, .17 * u, 7), { wash: C.pearl, ink: INK, sw: sw * .25 }); }
+  if (o.pendant === 'bell') {   // a gold bell on a dark cord (Ayyappa, Manikanta: "the one with a bell at his throat")
+    const sway = o.bellSwing ?? Math.sin(T * 2.6) * .12, bx = Math.sin(sway) * .9, by = -5.55 + Math.cos(sway) * .1;
+    inkLine(B([[-1.85, -8.05], [-1.0, -6.9], [bx * .5, -6.45], [1.0, -6.9], [1.85, -8.05]]), sw * .8, C.cord || '#2A1E2A', 'ink', .6);
+    inkLine(B([[0, -6.5], [bx, by - .55]]), sw * .6, C.cord || '#2A1E2A', 'inkfine', 0);
+    paint(B([[bx - .2, by - .6], [bx + .2, by - .6], [bx + .55, by - .2], [bx + .7, by + .45], [bx + .85, by + .65], [bx - .85, by + .65], [bx - .7, by + .45], [bx - .55, by - .2]]), { wash: C.gold, fill: C.goldDk, fillOp: 55, tex: .4, ink: INK, sw: sw * .5, curv: .45 });
+    paint(ellPts((bx - .22) * u, (by - .1 + up) * u, .14 * u, .3 * u, 8), { wash: C.goldLt, washOp: 220, ink: null });   // its shine
+    paint(ellPts(bx * u, (by + .78 + up) * u, .2 * u, .17 * u, 8), { wash: C.goldDk, ink: INK, sw: sw * .3 });   // the clapper
+  } else if (o.pendant !== false) {
+    inkLine(B([[-1.9, -8.0], [-1.2, -6.95], [0, -6.55], [1.2, -6.95], [1.9, -8.0]]), sw * .9, C.gold, 'ink', .6);
+    paint(B([[-.55, -6.6], [0, -6.35], [.55, -6.6], [.3, -6.0], [0, -5.85], [-.3, -6.0]]), { wash: C.goldLt, ink: INK, sw: sw * .4, curv: .5 });   // the crescent
+    paint(ellPts(0, (-6.1 + up) * u, .14 * u, .14 * u, 7), { wash: C.gem, ink: null });
+  }
 
   // ---------------- the pitambar: a yellow wrap, a front pleat, a red border; the gold kardhani with bells
   rs('pitambar');
@@ -233,9 +248,14 @@ function balKrishna(x, y, u, o = {}) {
   inkLine(Hd([[-.6, -4.8], [-.1, -5.2], [.5, -4.95]]), sw * .4, C.hairLt, 'inkfine', .6);
   paint(Hd(ribbon([[-1.2, -4.0], [0, -3.85], [1.2, -4.0]], .34, .34)), { wash: C.gold, ink: INK, sw: sw * .4 });
   for (let i = 0; i < 5; i++) paint(ellPts((-.9 + i * .45) * u, (-3.93 + Math.abs(i - 2) * .03) * u, .12 * u, .12 * u, 6), { wash: C.pearl, ink: null });
-  rs('tilak');   // the Vaishnava tilak: a white U with a red line, in the parting of the fringe
-  paint(Hd([[-.4, -3.0], [-.3, -1.85], [0, -1.55], [.3, -1.85], [.4, -3.0], [.2, -3.0], [.14, -2.0], [0, -1.85], [-.14, -2.0], [-.2, -3.0]]), { wash: C.tilak, ink: null, curv: .3 });
-  paint(Hd([[-.07, -2.9], [.07, -2.9], [.06, -2.05], [-.06, -2.05]]), { wash: C.tilakRed, ink: null });
+  rs('tilak');
+  if (o.tilak === 'ash') {   // a small ash tripundra across the brow and a red dot under it (Shaiva: Ayyappa's bhasma mark)
+    for (const yy of [-2.05, -1.78, -1.51]) paint(Hd(ribbon([[-.85, yy + .04], [0, yy - .03], [.85, yy + .04]], .15, .15)), { wash: C.tilak, ink: null });
+    paint(ellPts(0, -1.17 * u, .16 * u, .16 * u, 8), { wash: C.tilakRed, ink: null });
+  } else if (o.tilak !== false) {   // the Vaishnava tilak: a white U with a red line, in the parting of the fringe
+    paint(Hd([[-.4, -3.0], [-.3, -1.85], [0, -1.55], [.3, -1.85], [.4, -3.0], [.2, -3.0], [.14, -2.0], [0, -1.85], [-.14, -2.0], [-.2, -3.0]]), { wash: C.tilak, ink: null, curv: .3 });
+    paint(Hd([[-.07, -2.9], [.07, -2.9], [.06, -2.05], [-.06, -2.05]]), { wash: C.tilakRed, ink: null });
+  }
   rs('nazar');
   paint(ellPts(-2.55 * u, -1.15 * u, .2 * u, .2 * u, 10), { wash: C.kajal, ink: null });   // the kajal nazar dot
 
@@ -348,7 +368,14 @@ function balKrishna(x, y, u, o = {}) {
   pop();   // head
 
   if (o.held) { rs('held'); o.held(u, sw); }
-  for (const A of arms) {
+  if (o.pray) {   // namaste: the two palms pressed together, fingers up, at the chest (one shape, a seam and two thumbs)
+    rs('pray');
+    const py = -6.75 + up, P = pts => pts.map(([a, b]) => [a * u, (b + py) * u]), sk = arms[1].sk;
+    paint(P([[-.62, .1], [-.66, -.6], [-.55, -1.35], [-.32, -1.95], [0, -2.2], [.32, -1.95], [.55, -1.35], [.66, -.6], [.62, .1], [0, .25]]), { wash: sk, fill: dk, fillOp: 20, ink: INK, sw: sw * .8, curv: .5 });
+    inkLine(P([[0, -2.05], [0, .1]]), sw * .55, INK, 'inkfine', .3);
+    for (const s of [-1, 1]) paint(P([[s * .58, -.1], [s * .82, -.55], [s * .74, -.95], [s * .5, -.8], [s * .46, -.35]]), { wash: sk, ink: INK, sw: sw * .6, curv: .5 });
+  }
+  for (const A of (o.pray ? [] : arms)) {
     rs('hand' + A.s);
     const shape = (A.s < 0 ? o.handShapeL : o.handShapeR) || 'open';
     const a = (A.s < 0 ? o.handAL : o.handAR) ?? Math.atan2(A.ha[1] - A.el[1], A.ha[0] - A.el[0]);

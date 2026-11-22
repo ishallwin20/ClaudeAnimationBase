@@ -39,6 +39,7 @@ audio cut from someone else's reel either: if it's an AI remix, its watermark co
 |---|---|
 | `src/cel.js` | the engine, over `src/cine.js` (and `src/painterly.js` for sets): `celShape`, `celEll`/`celOval`, `celTube`, `celLine`, `celBand`, `celIK`, `celDance`, `celMirror`, `celHold`, `CEL` |
 | `src/cel_cast.js` | `celShiva` and `CEL_SHIVA_POSES` (`CEL_SHIVA_DANCE`: eight of them); sets `celSnowfield`, `celStormfield`, `celCloudBank`; effects `celDamaru`, `celTrishulGlow`, `celChakra`, `celFlameRing`, `celCracks` |
+| `src/cel_vraj.js` | the Vraja cast for acted skits ("Kanha vs Radha", RADHA_KANHA_SERIES.md): `celKeys` (timed key poses, each listing only what changes), `celKanha`, `celRadha`, `celMonkey`, `celMatki`, `celButter`; the shared face `celFace` (eyes open/happy/closed/squeeze/wide/sparkle/puppy, lids, brows, eleven mouths, `talk`); effects `celHeart`, `celSparkle`, `celSweat`, `celMark`, `celPuff`; mud (`mud` on Kanha's face, `celSmudge`, `celClod`); the cosmos (`celSpace`, `celGalaxy`, `celPlanet` with little faces, `celSun`, `celMoon`, `celEarth` with Vraja on top, the 'aah' mouth with `cosmos` in it); Govardhan (`celGovardhan` the lifted hill with its roots, `celRainCloud` with a grumpy face, `celRain`), a water pot (`celMatki(…, { water: true })`); a little Vishnu shrine (`celShrine` with its bell `celShrineBell`, the murti `celVishnuMurti`), a plate of ladoos (`celThali`, `celLadoo`, `celTulsi`), folded hands (`handL/handR: 'pray'`), a full tummy (`belly`); Kaliya (`celKaliya`: a little five-hooded naga, dizzy / mini faces on the side heads, footprints, a tail that holds a stick), Yashoda's stick (`celStick`), tears (`cry`) and smeared kajal (`kajal`) on the kids, 'dizzy' spiral eyes |
 | `cel.html` | the studio; on main it plays `src/scenes/cel_demo.js` (8 s: calm, then Rudra) |
 | `docs/cel_sheet.jpg` | the reference sheet |
 
@@ -117,10 +118,23 @@ Build it like `celShiva`: an IK rig of tubes and shapes, drawn back to front:
 Keep the head huge (chibi) and the limbs short and thick. Give every part its own `celShape` so it gets its own ink
 line. Draw the features with `celLine` and keep them simple. Faces read at reel size, but under about 4 px a line is lost.
 
+## Acted skits (not dances)
+
+`celKeys(t, [[time, pose], ...])` acts a character instead of dancing it: each key lands at its time with an overshoot and
+lists only what changes. The kids are about 560 px tall at s = 1 with the head half of that; at s = 1.1 two of them fill
+the frame side by side (feet y 1478, x 300 and 742). What makes them cute (owner: "extremely cute"): huge all-iris eyes
+with two highlights and a kajal edge, blush with hatch strokes, a held-on-threes bounce, a deadpan lid for Radha, puppy
+eyes and `:3` for Kanha, a talk flap while a line is up, and a babble SFX (pitched blips per speaker) in place of a voice.
+The lines are handwritten (Kalam 700, 76 px) in the speaker's colour on a cream halo, re-wobbled each drawing.
+
 ## What worked
 
 - Changing pose every two beats with a bounce on the beat between kept him always moving, like the example; one pose
   every beat at 150 BPM would be frantic.
+- A tiny kid (s ≈ .25, the Radha on the Earth in Kanha vs Radha #2) needs `CEL.inkK ≈ 2.2` round the call, or its ink
+  goes hairline.
+- A prop a kid must reach (the shrine's bell) has to sit beside her head, not behind it, and anything hung in front of
+  a face (a bell chain) is drawn over the kid only while she touches it.
 - Raised hands are lost against the big head (short chibi arms): send them out to the sides.
 - A leg that crosses in front has to be drawn over the dhoti (`front`), or it reads as behind his body (owner).
 - The fierce version: no blush, the third eye opening on the stomps, lightning on the strong hits, a ring of fire, and
