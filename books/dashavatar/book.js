@@ -8,11 +8,11 @@
 //
 // A page:  text: [{ x, y, w, lines: ['…', …] (one paragraph each; *words* in the emphasis colour), size (pt), align,
 //                   color, em, font ('story' Andika | 'title' Marcellus | 'deva' Tiro Devanagari Sanskrit), italic,
-//                   lh, gap, ls, glow, mid (y is the block's middle) }]
+//                   lh, gap, ls, mid (y is the block's middle) }]
 const INK = '#3A1F22', CREAM = '#FFF3E0', GOLD = '#F2CF78', RUST = '#A0402A', INDIGO = '#1C2150';
 // ready-made blocks
 const T = (x, y, w, txt, o = {}) => ({ x, y, w, font: 'title', size: 24, lines: [txt], color: o.dark ? GOLD : '#7A2A22', lh: 1.1, ...o });
-const P = (x, y, w, lines, o = {}) => ({ x, y, w, size: 14, lines, lh: 1.34, gap: .5, ...(o.dark ? { color: CREAM, em: GOLD, glow: 'rgba(16,18,44,.55)' } : { color: INK, em: RUST }), ...o });
+const P = (x, y, w, lines, o = {}) => ({ x, y, w, size: 14, lines, lh: 1.34, gap: .5, ...(o.dark ? { color: CREAM, em: GOLD } : { color: INK, em: RUST }), ...o });
 const DEVA = (x, y, w, lines, o = {}) => ({ x, y, w, font: 'deva', size: 15, lh: 1.42, gap: 0, align: 'center', lines, ...o });
 const IAST = (x, y, w, lines, o = {}) => ({ x, y, w, font: 'deva', italic: true, size: 10.5, lh: 1.3, gap: 0, align: 'center', lines, ...o });
 const BOOK = {
@@ -28,8 +28,8 @@ const BOOK = {
   pages: {
     // ---------- p. 1: the title ----------
     1: { text: [
-      { x: 16, y: 33, w: 184, font: 'title', size: 50, ls: .08, align: 'center', color: GOLD, lh: 1, glow: 'rgba(10,12,40,.9)', lines: ['DASHAVATAR'] },
-      { x: 16, y: 55, w: 184, font: 'title', size: 17, align: 'center', color: CREAM, lh: 1.1, glow: 'rgba(10,12,40,.9)', lines: ['The Ten Descents of Lord Vishnu'] },
+      { x: 16, y: 33, w: 184, font: 'title', size: 50, ls: .08, align: 'center', color: GOLD, lh: 1, lines: ['DASHAVATAR'] },
+      { x: 16, y: 55, w: 184, font: 'title', size: 17, align: 'center', color: CREAM, lh: 1.1, lines: ['The Ten Descents of Lord Vishnu'] },
       DEVA(16, 171, 184, ['ॐ नमो भगवते वासुदेवाय'], { size: 21, color: INDIGO }),
       IAST(16, 183, 184, ['Om Namo Bhagavate Vāsudevāya'], { size: 12, color: '#4A4270' }),
     ] },
@@ -99,11 +99,11 @@ const BOOK = {
       P(18, 29, 180, ['“Do not be afraid,” said Brahma to the gods and to Bhumi Devi. “The Lord has heard us. He will come himself, born on Earth in a form this world can touch and see, to take away the weight from her.”',
         'And so he did: he was born as *Krishna*. It was not the first time the Lord had come, and it would not be the last.',
         'As Krishna, he later spoke this promise aloud to a young prince named *Arjuna*, on a great battlefield, in the sacred song called the *Bhagavad Gita*. Here are the words, as they were sung.'], { dark: true, size: 13.5 }),
-      DEVA(18, 102, 180, ['यदा यदा हि धर्मस्य ग्लानिर्भवति भारत ।', 'अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥', 'परित्राणाय साधूनां विनाशाय च दुष्कृताम् ।', 'धर्मसंस्थापनार्थाय सम्भवामि युगे युगे ॥'], { size: 17, color: GOLD, glow: 'rgba(16,14,40,.8)' }),
-      IAST(18, 143, 180, ['Yadā yadā hi dharmasya glānir bhavati Bhārata', 'abhyutthānam adharmasya tadātmānaṃ sṛjāmy aham', 'paritrāṇāya sādhūnāṃ vināśāya ca duṣkṛtām', 'dharma-saṃsthāpanārthāya sambhavāmi yuge yuge'], { size: 11, color: CREAM, glow: 'rgba(16,14,40,.8)' }),
+      DEVA(18, 102, 180, ['यदा यदा हि धर्मस्य ग्लानिर्भवति भारत ।', 'अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥', 'परित्राणाय साधूनां विनाशाय च दुष्कृताम् ।', 'धर्मसंस्थापनार्थाय सम्भवामि युगे युगे ॥'], { size: 17, color: GOLD }),
+      IAST(18, 143, 180, ['Yadā yadā hi dharmasya glānir bhavati Bhārata', 'abhyutthānam adharmasya tadātmānaṃ sṛjāmy aham', 'paritrāṇāya sādhūnāṃ vināśāya ca duṣkṛtām', 'dharma-saṃsthāpanārthāya sambhavāmi yuge yuge'], { size: 11, color: CREAM }),
     ] },
     9: { text: [
-      P(26, 176, 164, ['“Whenever goodness grows weak and wrong grows strong, I come. To protect the good, to stop those who do harm, and to set dharma firmly in place again, I appear, age after age.”'], { size: 13, align: 'center', color: '#3A2440', em: RUST, glow: 'rgba(255,248,236,.9)' }),
+      P(26, 176, 164, ['“Whenever goodness grows weak and wrong grows strong, I come. To protect the good, to stop those who do harm, and to set dharma firmly in place again, I appear, age after age.”'], { size: 13, align: 'center', color: '#3A2440', em: RUST }),
       { x: 26, y: 199, w: 164, size: 9.5, align: 'center', color: '#6A4A5A', lines: ['Bhagavad Gita 4.7–8'] },
     ] },
 

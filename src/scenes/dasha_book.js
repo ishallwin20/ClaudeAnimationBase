@@ -279,7 +279,7 @@
     // the left: the storm still over the world, lifting toward the fold
     c.save(); c.fillStyle = ptLin(c, XL(0), 0, XR(30), 0, [[0, 'rgba(14,14,34,.92)'], [.55, 'rgba(20,18,44,.75)'], [1, 'rgba(20,18,44,0)']]); c.fillRect(-60, -60, XR(30) + 60, DH + 120); c.restore();
     const SC = ['#2C2C46', 'rgba(8,8,20,.7)', 'rgba(130,120,160,.4)'];
-    for (const [x, y, w, sd] of [[24, 30, 120, 3], [140, 18, 120, 5], [70, 90, 140, 7], [180, 70, 90, 11]]) pdCloud(c, XL(x), Y(y), w * MM, sd, .9, ...SC);
+    for (const [x, y, w, sd] of [[24, 30, 120, 3], [140, 18, 120, 5], [70, 90, 140, 7], [168, 70, 70, 11]]) pdCloud(c, XL(x), Y(y), w * MM, sd, .9, ...SC);
     // the right: gold light bursting; the ten forms faint in an arc; Vishnu rising over the clouds
     glow(c, XR(108), Y(92), 900, '#FFD88A', .7, 'source-over');
     glow(c, XR(108), Y(92), 420, '#FFF2C8', .5, 'source-over');
@@ -297,7 +297,7 @@
     front(c, XL(150), Y(201), .15, pdIndra, { halo: .6 });
     side(c, XL(186), Y(203), .14, pdBhumiCow, { mood: 'hope', glow: .8 });
     // the cloud bank Vishnu rises from; the meaning sits on it
-    for (const [x, y, w, sd] of [[60, 212, 150, 4], [160, 214, 150, 7], [108, 184, 170, 9], [26, 196, 90, 12], [196, 192, 80, 15]]) pdCloud(c, XR(x), Y(y), w * MM, sd, 1, '#FAF0E8', 'rgba(170,130,150,.55)');
+    for (const [x, y, w, sd] of [[60, 212, 150, 4], [160, 214, 150, 7], [108, 184, 170, 9], [26, 196, 90, 12], [196, 192, 80, 15], [108, 206, 196, 17]]) pdCloud(c, XR(x), Y(y), w * MM, sd, 1, '#FAF0E8', 'rgba(170,130,150,.55)');
     c.restore();
     frame(c, 'S', { split: true, left: { wilt: 1 }, right: { bloom: 1 }, seed: 7 });
   }

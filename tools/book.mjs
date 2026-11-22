@@ -117,10 +117,10 @@ function pageInner(k, U, ox, oy, heights, src = p => url(p)) {
     const f = FONTS[b.font || 'story'], sz = b.size || BOOK.size;
     const pan = args.panels && (b.font || 'story') === 'story' && !b.size;
     // extra block styles: italic, weight, lh (line height), gap (space after a paragraph, in ems), ls (letter
-    // spacing, in ems), glow (a soft halo of that colour behind the letters, for words over busy or dark art), em,
-    // mid (y is the block's vertical centre)
+    // spacing, in ems), em, mid (y is the block's vertical centre). No text-shadow: Chrome prints a blurred shadow as
+    // stacked dark boxes in the PDF, so words over busy art get a quiet patch in the art instead
     const sty = (b.italic ? ';font-style:italic' : '') + (b.weight ? `;font-weight:${b.weight}` : '') + (b.lh ? `;line-height:${b.lh}` : '')
-      + (b.ls ? `;letter-spacing:${b.ls}em` : '') + (b.mid ? ';transform:translateY(-50%)' : '') + (b.glow ? `;text-shadow:0 0 ${n(1.2)} ${b.glow},0 0 ${n(2.6)} ${b.glow},0 0 ${n(4)} ${b.glow}` : '');
+      + (b.ls ? `;letter-spacing:${b.ls}em` : '') + (b.mid ? ';transform:translateY(-50%)' : '');
     h += `<div class="tx${pan ? ' pan' : ''}" style="left:${n(ox + b.x)};top:${n(oy + b.y)};width:${n(b.w)};font-family:${f};font-size:${pt(sz)};text-align:${b.align || 'left'};color:${pan ? BOOK.ink : b.color || BOOK.ink}${sty}${pan ? `;padding:${n(3)} ${n(4)};border-radius:${n(6)};box-shadow:0 0 ${n(4)} ${n(2.5)} rgba(255,250,240,.86)` : ''}">`
       + b.lines.map((l, i) => `<p style="margin:0 0 ${i === b.lines.length - 1 ? 0 : pt(sz * (b.gap ?? .45))}">${rich(l, b.em)}</p>`).join('') + '</div>';
   }
