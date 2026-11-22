@@ -139,12 +139,16 @@ function poAnantaBed(c) {
 
   // ---- the vanamala: a tulsi garland with gold beads, from his neck along his side to the knee
   if (PO_ANANTA.malaDrape) {
-    // (the Dashavatar book) a thinner garland that hangs like a mala: from his neck it sags in a soft curve across his
-    // chest and belly, then rises over the thigh toward the knee
-    const Gd = []; for (let i = 0; i <= 24; i++) { const t = i / 24, x = 350 + t * 390, y = 1246 + (1212 - 1246) * t + 64 * Math.sin(Math.PI * Math.pow(t, .8)); Gd.push([x, y]); }
+    // (the Dashavatar book) a thinner, shorter garland that hangs like a mala: from his neck the near strand sags
+    // across his chest to the belly, turns and climbs back up to the left, slipping over the edge of his body (the far
+    // strand is out of sight); the climb is clipped to the torso so it vanishes behind him
+    const Gd = poAlong([[346, 1246], [376, 1262], [410, 1280], [446, 1292], [478, 1295], [502, 1286], [510, 1268], [500, 1248], [478, 1230]], 6);
+    c.save();
+    const clip = poPath(torso); clip.rect(0, 0, 440, 2000); c.clip(clip);
     limb(c, Gd, Gd.map(() => 7), '#5A7650', false);
     for (const [x, y] of poAlong(Gd, 4.5)) ellipse(c, x, y - 1, 2.6, 2.6, '#7E9C6A');
     poAlong(Gd, 40).forEach(([x, y], k) => { ellipse(c, x, y, 3.8, 3.8, ['#EDE6D4', '#9A2E36', '#E0901C'][k % 3]); ellipse(c, x, y, 1.4, 1.4, G.lt); });
+    c.restore();
   } else {
   const Gm = [[350, 1246], [392, 1228], [450, 1232], [520, 1266], [580, 1278], [640, 1258], [690, 1234], [730, 1210]];
   limb(c, Gm, Gm.map(() => 12), '#5A7650', false);
