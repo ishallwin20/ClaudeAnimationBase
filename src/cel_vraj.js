@@ -43,6 +43,12 @@
 //   celCalf(c, x, y, s, P, o)    a little calf (white with tan patches, a red cord and a gold bell), side-on with its head
 //                                turned to us: P like a kid's face plus dir, walk / stride (a trot), hop, lean, head, hx / hy
 //                                (a nuzzle), ears 0..1 (floppy .. perked up), wag, milk 0..1 (10.21.13); 'heart' eyes (kids too)
+//   the birthday (#7):           celHut(c, x, y, s, t, o) a Vraja hut front with a curtained doorway (o.curtain, shake, heap,
+//                                toran, light; o.part 'back' | 'front' to stand a kid in the doorway between them);
+//                                celDiya(c, x, y, s, t, k); celGift(c, x, y, s, 'box' | 'ball' | 'potli', o); celPetal,
+//                                celScrap (bits of flowers and cloth); celPeacockFeather(c, C); on Radha P.feather (his
+//                                feather in her hair), P.wreath (a crown of flowers), P.mala (a garland like his), all 0..1,
+//                                and o.pal: CEL_RADHA_PIT (dressed in his colours: pitambar yellow, his red border, his blue)
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -100,6 +106,9 @@ const CEL_RADHA = {
   mouth: '#7A1E36', tongue: '#F27C90', flower: '#FFFDF4', rose: '#F2578A', roseSh: '#C23466', leaf: '#4FA25A', pearl: '#FFF8EC',
   butter: '#FFEFAE', butterSh: '#EBC860',
 };
+// Radha dressed in Kanha's colours (o.pal): a yellow pitambar lehenga with his red border, a blue odhni, his mala's colours
+const CEL_RADHA_PIT = { lehenga: '#F7C744', lehSh: '#DA9A22', lehLt: '#FFE48E', hem: '#E04A36', dot: '#E04A36', choli: '#F7C744', choliSh: '#DA9A22', choliLt: '#FFE48E',
+  odhni: '#5B8FE0', odhniSh: '#3F6DC4', odhniLt: '#92BCF8' };
 
 // ---------- the face (shared) ----------
 // in head coordinates (the face's centre at 0, 0; about ±172 wide, -166 .. +148 tall)
@@ -342,9 +351,9 @@ function celKid(c, x, y, s, P, o, who) {
     const sw = Math.sin(td * 2.6) * 4 - (lag.lean || 0) * 70, hl = fx0 - 76 + sw, hr = fx1 + 76 + sw;
     const H = []; for (let i = 0; i <= 8; i++) H.push([lerp(hl, hr, i / 8), hy + (i % 2 ? 7 : -3) + Math.sin(i / 8 * Math.PI) * 6]);
     const border = q => {
-      q.strokeStyle = C.gold; q.lineWidth = 34; q.lineJoin = 'round'; q.beginPath(); H.forEach((p, i) => i ? q.lineTo(...p) : q.moveTo(...p)); q.stroke();
-      q.strokeStyle = C.red; q.lineWidth = 5; q.beginPath(); H.forEach((p, i) => i ? q.lineTo(p[0], p[1] - 19) : q.moveTo(p[0], p[1] - 19)); q.stroke();
-      for (let i = 0; i < 9; i++) { const u = (i + .5) / 9, yy = lerp(-40, hy - 30, (i % 3) / 3 + .2); ellipse(q, lerp(lerp(Wp([-50, 0])[0], hl, .7), lerp(Wp([50, 0])[0], hr, .7), u), yy, 5, 5, C.gold); }
+      q.strokeStyle = C.hem || C.gold; q.lineWidth = 34; q.lineJoin = 'round'; q.beginPath(); H.forEach((p, i) => i ? q.lineTo(...p) : q.moveTo(...p)); q.stroke();
+      q.strokeStyle = C.hem ? C.gold : C.red; q.lineWidth = 5; q.beginPath(); H.forEach((p, i) => i ? q.lineTo(p[0], p[1] - 19) : q.moveTo(p[0], p[1] - 19)); q.stroke();
+      for (let i = 0; i < 9; i++) { const u = (i + .5) / 9, yy = lerp(-40, hy - 30, (i % 3) / 3 + .2); ellipse(q, lerp(lerp(Wp([-50, 0])[0], hl, .7), lerp(Wp([50, 0])[0], hr, .7), u), yy, 5, 5, C.dot || C.gold); }
     };
     celShape(c, [Wp([-58, -40]), Wp([-66, -8]), [hl + 6, hy - 14], ...H, [hr - 6, hy - 14], Wp([66, -8]), Wp([58, -40])], C.lehenga, { n: 3, shade: sh(C.lehSh), lt: lt(C.lehLt), over: border });
     for (const k of [-.5, 0, .5]) celLine(c, [Wp([k * 60, -30]), [lerp(hl, hr, .5 + k * .62), hy - 26]], 3, { col: rgba(CEL.ink, .7) });
@@ -369,6 +378,8 @@ function celKid(c, x, y, s, P, o, who) {
     const od = [[56, -148], [14, -104], [-42, -58], [-74, -20], [-92 + sw * .5, 30], [-98 + sw, 72]];
     celShape(c, celTube(od, [34, 36, 38, 40, 42, 40]), C.odhni, { dense: true, shade: sh(C.odhniSh), lt: lt(C.odhniLt) });
     const Q = through(od, 4); for (let i = 1; i < Q.length - 1; i += 2) ellipse(c, Q[i][0], Q[i][1], 3.6, 3.6, C.gold);
+    // P.mala 0..1: a garland like his vaijayanti, the beads popping on one by one
+    const mk = clamp(P.mala || 0); if (mk > .02) for (let i = 0; i <= 12; i++) { const a = Math.PI * i / 12, k = clamp(mk * 13 - i); if (k > .05) celOval(c, -50 * Math.cos(a), -150 + 96 * Math.sin(a), 9.5 * k, 9.5 * k, CEL_KANHA.mala[i % 4], { w: 2.4, boil: .3 }); }
   } else {
     // the vaijayanti mala
     for (let i = 0; i <= 12; i++) { const a = Math.PI * i / 12; celOval(c, -50 * Math.cos(a), -150 + 96 * Math.sin(a), 9.5, 9.5, C.mala[i % 4], { w: 2.4, boil: .3 }); }
@@ -383,6 +394,9 @@ function celKid(c, x, y, s, P, o, who) {
   });
   A.head = at(0, 0); A.mouth = at(0, 92); A.cheekL = at(-112, 72); A.cheekR = at(112, 72);
   if (R) {
+    // P.feather 0..1: his peacock feather tucked in her hair (screen right), behind the front locks; it pops up
+    const fk = clamp(P.feather || 0);
+    if (fk > .02) { c.save(); c.translate(118, -150); c.rotate(.5 + Math.sin(td * 2) * .04 + (lag.head || 0) * .3 - (P.head || 0) * .25); c.scale(fk * .9, fk * .9); celPeacockFeather(c, CEL_KANHA); c.restore(); }
     // the hair: a centre parting, two soft sides over her ears; the maang tikka, flowers, jhumkas
     for (const sd of [-1, 1]) {
       celShape(c, [[sd * 4, -178], [sd * 80, -180], [sd * 150, -142], [sd * 186, -60], [sd * 188, 30], [sd * 176, 96], [sd * 152, 70], [sd * 148, 0], [sd * 132, -70], [sd * 92, -116], [sd * 38, -134], [sd * 4, -140]], C.hair, { over: sheen(sd * 90, -150, 70, 26) });
@@ -401,6 +415,17 @@ function celKid(c, x, y, s, P, o, who) {
     celOval(c, -168, -96, 21, 19, C.rose, { w: 3, shade: [C.roseSh, 4, 5], over: q => { q.strokeStyle = C.roseSh; q.lineWidth = 3; q.beginPath(); q.arc(-168, -96, 9, 0, 5); q.stroke(); } });
     celShape(c, [[-150, -84], [-128, -72], [-146, -66]], C.leaf, { n: 2, w: 2.5, boil: .3 });
     ellipse(c, 0, -60, 6, 7, C.red);   // the bindi
+    // P.wreath 0..1: a crown of flowers over her head (mogra, marigolds, little roses, leaves), popping on from her left
+    const wk = clamp(P.wreath || 0);
+    if (wk > .02) for (let i = 0; i < 13; i++) {
+      const a = Math.PI * (1 - i / 12), k = backOut(clamp(wk * 14 - i), 2), fx = 172 * Math.cos(a), fy = -92 - 98 * Math.sin(a);
+      if (k < .05) continue;
+      if (i % 2 === 0 && i < 12) celShape(c, [[fx, fy], [fx + 14 * k, fy - 16 * k], [fx + 30 * k, fy - 6 * k], [fx + 14 * k, fy + 4 * k]], C.leaf, { n: 3, w: 2.4, boil: .3 });
+      const kind = i % 3, r = (kind === 1 ? 16 : 14) * k;
+      if (kind === 0) { for (let j = 0; j < 5; j++) { const b = j / 5 * TAU - Math.PI / 2; celOval(c, fx + Math.cos(b) * r * .55, fy + Math.sin(b) * r * .55, r * .5, r * .5, C.flower, { w: 2.2, boil: .25 }); } ellipse(c, fx, fy, r * .26, r * .26, C.gold); }
+      else if (kind === 1) celOval(c, fx, fy, r, r * .92, '#FF9B1E', { w: 2.6, boil: .3, over: q => { for (let j = 0; j < 7; j++) { const b = j / 7 * TAU; ellipse(q, fx + Math.cos(b) * r * .5, fy + Math.sin(b) * r * .45, r * .24, r * .2, '#FFC23A'); } } });
+      else celOval(c, fx, fy, r * .9, r * .85, C.rose, { w: 2.4, shade: [C.roseSh, 3, 3], over: q => { q.strokeStyle = C.roseSh; q.lineWidth = 2.4; q.beginPath(); q.arc(fx, fy, r * .4, 0, 5); q.stroke(); } });
+    }
   } else {
     // the curls over his forehead, parted in the middle for the tilak; locks by his cheeks
     celShape(c, [[-182, 10], [-180, -72], [-142, -150], [-72, -188], [0, -194], [72, -188], [142, -150], [180, -72], [182, 10], [162, -6], [152, -58], [122, -72], [104, -112], [62, -104], [38, -142], [0, -150], [-38, -142], [-62, -104], [-104, -112], [-122, -72], [-152, -58], [-162, -6]], C.hair, { over: sheen(-80, -160, 90, 34) });
@@ -412,13 +437,7 @@ function celKid(c, x, y, s, P, o, who) {
     celLine(c, [[0, -114], [0, -82]], 5, { col: C.red, taper: .3, boil: .3 });
     // the feather (behind the bun), then the topknot with its pearls
     const fw = Math.sin(td * 2) * .05 + (lag.head || 0) * .4 - (P.head || 0) * .3 + (lag.lean || 0) * .5 - lean * .4;
-    c.save(); c.translate(26, -214); c.rotate(.38 + fw);
-    celShape(c, [[0, 6], [-20, -60], [-30, -130], [-16, -196], [0, -214], [16, -196], [30, -130], [20, -60]], C.feather, { w: 4, shade: ['#2A7444', 6, 4], over: q => {
-      q.strokeStyle = rgba(C.featherLt, .9); q.lineWidth = 2.5; for (let i = 0; i < 9; i++) { const yy = -30 - i * 18; q.beginPath(); q.moveTo(0, yy); q.lineTo(-22, yy - 14); q.moveTo(0, yy); q.lineTo(22, yy - 14); q.stroke(); }
-      ellipse(q, 0, -158, 22, 28, C.fEye1); ellipse(q, 0, -156, 15, 20, C.fEye2); ellipse(q, 0, -152, 8, 11, C.fEye3);
-    } });
-    celLine(c, [[0, 4], [0, -150]], 3, { col: '#1E5A34', taper: .3, boil: .4 });
-    c.restore();
+    c.save(); c.translate(26, -214); c.rotate(.38 + fw); celPeacockFeather(c, C); c.restore();
     celOval(c, 0, -200, 64, 46, C.hair, { over: sheen(-20, -220, 50, 24) });
     for (let i = 0; i < 9; i++) { const u = -56 + i * 14; celOval(c, u, -172 - Math.sqrt(Math.max(0, 1 - (u / 64) ** 2)) * 6, 7.5, 7.5, C.pearl, { w: 2.2, boil: .25 }); }
   }
@@ -470,6 +489,15 @@ function celKid(c, x, y, s, P, o, who) {
   c.restore();   // upper body
   c.restore();
   return A;
+}
+
+// a peacock feather, its quill's end at (0, 0), pointing up (about 214 px long); C a palette with Kanha's feather colours
+function celPeacockFeather(c, C = CEL_KANHA) {
+  celShape(c, [[0, 6], [-20, -60], [-30, -130], [-16, -196], [0, -214], [16, -196], [30, -130], [20, -60]], C.feather, { w: 4, shade: ['#2A7444', 6, 4], over: q => {
+    q.strokeStyle = rgba(C.featherLt, .9); q.lineWidth = 2.5; for (let i = 0; i < 9; i++) { const yy = -30 - i * 18; q.beginPath(); q.moveTo(0, yy); q.lineTo(-22, yy - 14); q.moveTo(0, yy); q.lineTo(22, yy - 14); q.stroke(); }
+    ellipse(q, 0, -158, 22, 28, C.fEye1); ellipse(q, 0, -156, 15, 20, C.fEye2); ellipse(q, 0, -152, 8, 11, C.fEye3);
+  } });
+  celLine(c, [[0, 4], [0, -150]], 3, { col: '#1E5A34', taper: .3, boil: .4 });
 }
 
 // ---------- a little monkey ----------
@@ -1029,4 +1057,125 @@ function celCalf(c, x, y, s, P, o = {}) {
   c.restore();
   c.restore();
   return A;
+}
+
+// ---------- a Vraja hut with a curtained doorway, diyas, gifts, petals and cloth scraps (#7, the birthday) ----------
+// a mud-walled hut front, the middle of its doorway's sill at (x, y), about 820 px to the thatch's top at s = 1; the wall
+// runs from 330 left of the door to 430 right of it (let it run off the frame). o.curtain 0..1 (shut .. drawn aside and
+// tied), o.shake 0..1 (someone busy behind it: the cloth bulges), o.heap 0..1 (petals and cloth scraps spilling out under
+// it), o.toran 0..1 (a marigold toran over the door, popping on left to right), o.light 0..1 (lamplight inside), t the
+// time; o.part 'back' (the hut without the curtain and the heap) or 'front' (only those), to put a kid in the doorway
+// between them. Returns { door (the doorway's middle), top (the arch's top), sill } in screen px
+function celHut(c, x, y, s = 1, t = 0, o = {}) {
+  const A = {}, at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  const mud = '#F3D3A4', mudSh = '#E2B47E', mudLt = '#FBE7C6', geru = '#C9573A', chalk = '#FFF8EA';
+  c.save(); c.translate(x, y); c.scale(s, s);
+  const back = o.part !== 'front', front = o.part !== 'back';
+  // the wall, a geru plinth, chalk mandana dots and triangles
+  if (back) {
+  celShape(c, [[-330, 0], [-330, -640], [430, -640], [430, 0]], mud, { n: 1, w: 4.5, shade: [mudSh, 0, 10], lt: [mudLt, 6, 0], over: q => {
+    q.fillStyle = geru; q.fillRect(-340, -46, 790, 50);
+    q.fillStyle = chalk; for (let i = 0; i < 16; i++) { const px = -310 + i * 48; q.beginPath(); q.moveTo(px, -46); q.lineTo(px + 24, -70); q.lineTo(px + 48, -46); q.closePath(); q.globalAlpha = .55; q.fill(); }
+    q.globalAlpha = 1; for (let i = 0; i < 15; i++) ellipse(q, -300 + i * 50, -96, 4, 4, rgba(chalk, .8));
+    // a chalk rangoli flower by the door on each side
+    for (const sx of [-250, 300]) { for (let j = 0; j < 8; j++) { const a = j / 8 * TAU; ellipse(q, sx + Math.cos(a) * 20, -300 + Math.sin(a) * 20, 8, 5, rgba(chalk, .7), a); } ellipse(q, sx, -300, 7, 7, rgba(geru, .8)); }
+  } });
+  // the thatch: a deep roof over the wall, straw strokes, a ridge
+  const th = []; for (let i = 0; i <= 12; i++) { const u = i / 12; th.push([lerp(-400, 500, u), -604 + Math.sin(u * Math.PI * 9) * 6]); }
+  celShape(c, [...th, [500, -760], [380, -808], [-200, -820], [-330, -780]], '#DDA94E', { n: 2, w: 4.5, shade: ['#B57C2C', 0, 12], lt: ['#F2CC7A', 0, -8], over: q => {
+    q.strokeStyle = 'rgba(150,96,34,.55)'; q.lineWidth = 3; for (let i = 0; i < 34; i++) { const px = -390 + i * 27, py = -606 - (i * 37 % 5) * 6; q.beginPath(); q.moveTo(px, py); q.lineTo(px + 6, py - 70 - (i % 3) * 22); q.stroke(); }
+  } });
+  celLine(c, [[-330, -780], [-200, -820], [380, -808], [500, -760]], 8, { under: '#C08A3A', taper: .2 });
+  // the doorway: an arch, dark and warm inside (lamplight with o.light)
+  const D = [[-152, 0], [-152, -420]]; for (let i = 0; i <= 14; i++) { const a = Math.PI * (1 + i / 14); D.push([Math.cos(a) * 152, -420 + Math.sin(a) * 150]); } D.push([152, -420], [152, 0]);
+  const li = o.light || 0;
+  celShape(c, D, '#5E3226', { n: 1, w: 5, over: q => {
+    const g = q.createRadialGradient(0, -260, 0, 0, -260, 330); g.addColorStop(0, `rgba(255,${170 + 50 * li | 0},110,${.35 + .5 * li})`); g.addColorStop(1, 'rgba(80,36,26,0)'); q.fillStyle = g; q.fillRect(-170, -600, 340, 600);
+  } });
+  // the geru frame round the arch with chalk dots
+  const fr = []; for (let i = 0; i <= 14; i++) { const a = Math.PI * (1 + i / 14); fr.push([Math.cos(a) * 176, -420 + Math.sin(a) * 174]); }
+  celLine(c, [[-176, -2], ...fr, [176, -2]], 22, { under: geru, taper: 0 });
+  for (let i = 0; i < 22; i++) { const u = i / 21, a = Math.PI * (1 + u); ellipse(c, Math.cos(a) * 176, -420 + Math.sin(a) * 174, 3.5, 3.5, chalk); }
+  }
+  if (front) {
+  // the curtain on its rod: two halves, bulging when someone is busy behind it, drawn aside and tied when open
+  const ck = clamp(o.curtain || 0), sk = o.shake || 0, rodY = -452;
+  celLine(c, [[-168, rodY], [168, rodY]], 9, { under: '#8A5A34', taper: 0 });
+  for (const sd of [-1, 1]) {
+    // the inner edge, top (u 0) to bottom (u 1): straight down the middle when shut, pinched at the tie when open
+    const outer = sd * 156, tieU = .55, bot = -6;
+    const openX = u => u < tieU ? lerp(100, 134, u / tieU) : lerp(134, 108, (u - tieU) / (1 - tieU));
+    const inX = u => sd * lerp(2, openX(u), ck) + sk * sd * (Math.sin(t * 9 + sd * 1.3 + u * 3) * 14 + Math.sin(t * 23 + u * 7) * 5) * u * (1 - ck);
+    const P = [[outer, rodY], [outer, bot]];
+    for (let i = 8; i >= 0; i--) { const u = i / 8; P.push([inX(u), lerp(rodY, bot, u) + (i === 8 ? 0 : 0)]); }
+    celShape(c, P, '#F27BA3', { n: 1, w: 4.5, shade: ['#D2507E', -sd * 10, 0], over: q => {
+      for (let r = 0; r < 9; r++) for (let k = 0; k < 7; k++) { const px = sd * (8 + k * 24) + (r % 2) * 12 * sd, py = rodY + 30 + r * 50; ellipse(q, px, py, 5, 5, '#FFD95A'); }
+      q.strokeStyle = 'rgba(160,40,80,.35)'; q.lineWidth = 3; for (let k = 1; k < 4; k++) { q.beginPath(); for (let i = 0; i <= 8; i++) { const u = i / 8; q.lineTo(lerp(inX(u), outer, k / 4), lerp(rodY, bot, u)); } q.stroke(); }
+    } });
+    if (ck > .6) celOval(c, lerp(inX(tieU), outer, .4), lerp(rodY, bot, tieU), 12, 9, '#F2B52E', { w: 3 });
+  }
+  for (let i = 0; i < 7; i++) celOval(c, -150 + i * 50, rodY, 7, 7, '#F2B52E', { w: 2.4, boil: .3 });   // the rings
+  // the heap at the sill: petals and scraps spilling out under the curtain
+  const hk = clamp(o.heap || 0);
+  for (let i = 0; i < 26; i++) {
+    if (hash(i * 2.3) > hk * 1.05) continue;
+    const px = (hash(i * 1.7) - .5) * 330 * (.5 + .5 * hk), py = -6 - hash(i * 3.1) * 34 * (1 - Math.abs(px) / 200);
+    const kind = i % 3, col = ['#FFFDF4', '#FF9B1E', '#F2578A', '#F7C744', '#5B8FE0', '#E04A36'][i % 6];
+    if (kind === 2) celScrap(c, px, py, 16, hash(i) * 6, col); else celPetal(c, px, py, 12, hash(i * 5) * 6, col);
+  }
+  }
+  // the toran: three swags of marigolds over the arch, mango leaves hanging between them
+  const tk = clamp(o.toran || 0);
+  if (tk > .01 && back) for (let k = 0; k < 3; k++) {
+    const x0 = -210 + k * 140, x1 = x0 + 140;
+    for (let i = 0; i <= 9; i++) { const u = i / 9, px = lerp(x0, x1, u), py = -612 + Math.sin(u * Math.PI) * 40, kk = backOut(clamp(tk * 34 - (k * 10 + i)), 2); if (kk > .05) celOval(c, px, py, 12 * kk, 12 * kk, i % 2 ? '#FFB020' : '#FF8A1E', { w: 2.6, boil: .3 }); }
+    const lk = backOut(clamp(tk * 3 - k), 2); if (lk > .05) for (const lx of [x0, x1]) celShape(c, [[lx - 8, -614], [lx, -614 + 46 * lk], [lx + 8, -614]], '#3F9A4E', { n: 3, w: 2.6, boil: .3 });
+  }
+  A.door = at(0, -260); A.top = at(0, -570); A.sill = at(0, 0);
+  c.restore();
+  return A;
+}
+// a clay diya, its base at (x, y), the flame flickering at t; k 0..1 lit
+function celDiya(c, x, y, s = 1, t = 0, k = 1) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  const fl = 1 + .12 * Math.sin(t * 13 + x) + .06 * Math.sin(t * 29);
+  if (k > .02) glow(c, 0, -30, 90, '#FFD27A', .55 * k);
+  celShape(c, [[-34, -22], [34, -22], [22, -4], [0, 0], [-22, -4]], '#C96A36', { n: 2, w: 3.5, shade: ['#9A4A22', 0, 4], over: q => { q.strokeStyle = '#F2B52E'; q.lineWidth = 3; q.beginPath(); q.moveTo(-26, -15); q.lineTo(26, -15); q.stroke(); } });
+  if (k > .02) { c.save(); c.translate(0, -24); c.scale(k, k); celShape(c, [[-7, 0], [-8, -14], [0, -36 * fl], [8, -14], [7, 0]], '#FFC23A', { n: 3, w: 2.6, boil: .3, over: q => ellipse(q, 0, -10, 3.5, 7, '#FFF6C8') }); c.restore(); }
+  c.restore();
+}
+// a gift, its base's middle at (x, y): kind 'box' (wrapped, a ribbon cross and a bow; o.col, o.rib), 'ball' (a striped
+// cloth ball), 'potli' (a tied cloth pouch; o.col); o.rot
+function celGift(c, x, y, s = 1, kind = 'box', o = {}) {
+  c.save(); c.translate(x, y); c.rotate(o.rot || 0); c.scale(s, s);
+  if (kind === 'ball') {
+    const cols = ['#E04A36', '#F7C744', '#5B8FE0', '#3FA45E'];
+    celOval(c, 0, -48, 48, 48, '#FFF6E8', { w: 4.5, shade: ['#E8D6BE', 8, 8], over: q => { for (let i = 0; i < 4; i++) { q.fillStyle = cols[i]; q.beginPath(); q.moveTo(0, -48); q.arc(0, -48, 50, i * Math.PI / 2 + .25, i * Math.PI / 2 + .25 + .7); q.closePath(); q.fill(); } ellipse(q, -16, -66, 12, 8, 'rgba(255,255,255,.7)', -.5); } });
+  } else if (kind === 'potli') {
+    const col = o.col || '#3FA45E';
+    celShape(c, [[-46, -4], [-58, -46], [-40, -86], [-14, -96], [14, -96], [40, -86], [58, -46], [46, -4], [0, 2]], col, { n: 4, w: 4.5, shade: [o.sh || '#2E7E46', 8, 6], over: q => { for (let i = 0; i < 7; i++) ellipse(q, -36 + i * 12, -46 + (i % 2) * 14, 4, 4, '#FFD95A'); } });
+    celShape(c, [[-18, -94], [-30, -128], [-8, -116], [0, -132], [8, -116], [30, -128], [18, -94]], col, { n: 3, w: 4, shade: [o.sh || '#2E7E46', 3, 3] });
+    celLine(c, [[-22, -96], [0, -92], [22, -96]], 8, { under: '#E04A36', taper: 0 });
+  } else {
+    const col = o.col || '#F27BA3', rib = o.rib || '#F7C744', w = o.w || 120, h = o.h || 92;
+    celShape(c, [[-w / 2, 0], [-w / 2, -h], [w / 2, -h], [w / 2, 0]], col, { n: 1, w: 4.5, shade: [o.sh || rgba('#000000', .14), 8, 0], over: q => { q.fillStyle = rib; q.fillRect(-10, -h, 20, h); q.fillRect(-w / 2, -h * .55 - 9, w, 18); } });
+    celShape(c, [[-w / 2 - 6, -h], [-w / 2 - 6, -h - 22], [w / 2 + 6, -h - 22], [w / 2 + 6, -h]], col, { n: 1, w: 4.5, over: q => { q.fillStyle = rib; q.fillRect(-10, -h - 24, 20, 26); } });
+    for (const sd of [-1, 1]) celShape(c, [[0, -h - 24], [sd * 30, -h - 52], [sd * 44, -h - 34], [sd * 20, -h - 22]], rib, { n: 3, w: 3.5 });
+    celOval(c, 0, -h - 26, 10, 9, rib, { w: 3 });
+  }
+  c.restore();
+}
+// a petal (a soft teardrop) and a scrap of cloth (pinked edges), r their size
+function celPetal(c, x, y, r, rot = 0, col = '#F2578A', a = 1) {
+  if (r <= 1 || a <= .02) return;
+  c.save(); c.translate(x, y); c.rotate(rot); c.globalAlpha *= a;
+  celShape(c, [[0, -r], [r * .62, -r * .1], [r * .4, r * .7], [0, r * .9], [-r * .4, r * .7], [-r * .62, -r * .1]], col, { n: 4, w: Math.max(1.8, r * .16), boil: .3, shade: [rgba('#000000', .12), r * .15, r * .2] });
+  c.restore();
+}
+function celScrap(c, x, y, r, rot = 0, col = '#F7C744', a = 1) {
+  if (r <= 1 || a <= .02) return;
+  c.save(); c.translate(x, y); c.rotate(rot); c.globalAlpha *= a;
+  const P = []; for (let i = 0; i <= 6; i++) P.push([-r + i * r / 3, -r * .55 + (i % 2) * r * .16]); for (let i = 0; i <= 6; i++) P.push([r - i * r / 3, r * .5 - (i % 2) * r * .16]);
+  celShape(c, P, col, { dense: true, w: Math.max(1.8, r * .14), boil: .3, shade: [rgba('#000000', .12), 0, r * .2] });
+  c.restore();
 }
