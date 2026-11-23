@@ -36,6 +36,13 @@
 //                                his hoods, 10.16.63), tail [x, y] (its tip, local px), stick (the tail curled round a stick),
 //                                stickRot. Returns { stand (where a kid stands on the middle hood), head, top, tail, heads }
 //   celStick(c, x, y, len, rot) Yashoda's stick (a thin bamboo cane, Bhagavata 10.9.9), gripped at (x, y), rot from upright
+//   the flute (Bhagavata 10.21): P.flute 'play' on a kid (the flute at the lips, held by both hands: hL ≈ [-120, -120], hR ≈
+//                                [-28, -164]; its far end points toward hL), 'none' (not tucked in at the waist), 'tuck' (default);
+//                                celFlute(c, x, y, len, rot, td) a flute held at (x, y); celFluteAt(c, a, b, C, td) one from a to b;
+//                                celNote(c, x, y, r, o) a music note (o.kind 1 | 2, o.col, o.rot, o.a)
+//   celCalf(c, x, y, s, P, o)    a little calf (white with tan patches, a red cord and a gold bell), side-on with its head
+//                                turned to us: P like a kid's face plus dir, walk / stride (a trot), hop, lean, head, hx / hy
+//                                (a nuzzle), ears 0..1 (floppy .. perked up), wag, milk 0..1 (10.21.13); 'heart' eyes (kids too)
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -53,7 +60,7 @@
 //   handL, handR    'open' | 'fist' | 'point' (the forearm's direction) | 'butter' (a blob of butter on the palm) |
 //                   'pray' (a palm standing up: both hands in front of the chest are folded hands)
 //   eyes            'open' | 'happy' (^ ^) | 'closed' (smug ‿ ‿) | 'squeeze' (> <) | 'wide' (shock) | 'sparkle' |
-//                   'puppy' (huge, glossy, "who, ME?") | 'dizzy' (spirals); or [screen left, screen right]
+//                   'puppy' (huge, glossy, "who, ME?") | 'dizzy' (spirals) | 'heart'; or [screen left, screen right]
 //   look [x, y]     -1..1, where the eyes look; lid 0..1 the upper lids down (deadpan); brow (-1..1 lower / raise);
 //   tilt            -1 cross .. 1 worried (the brows' inner ends); browR: a different raise for the screen-right brow
 //   mouth           'smile' | 'cat' (:3) | 'grin' | 'open' | 'o' | 'flat' | 'pout' | 'smug' | 'wobble' | 'frown' | 'wail' |
@@ -105,6 +112,7 @@ function celEye(c, ex, ey, kind, P, C, sd, k = 1, lashes = false) {
     if (lashes) celLine(c, [[ex + sd * 25 * k, ey], [ex + sd * 38 * k, ey - 8 * k]], 4 * k);
     return;
   }
+  if (kind === 'heart') { const pu = 1 + .08 * Math.sin(CEL.d * 1.7 + sd); celHeart(c, ex, ey + 4 * k, 34 * k * pu, { rot: sd * .12 }); return; }
   if (kind === 'dizzy') { const sp = []; for (let i = 0; i <= 26; i++) { const a = i / 26 * TAU * 2.2 + sd * CEL.d * .9, r = (4 + i * 1.05) * k; sp.push([ex + Math.cos(a) * r * sd, ey + Math.sin(a) * r * 1.15]); } celLine(c, sp, 6 * k, { taper: .2, boil: .3 }); return; }
   if (kind === 'squeeze') { celLine(c, [[ex + sd * 22 * k, ey - 18 * k], [ex - sd * 20 * k, ey], [ex + sd * 22 * k, ey + 18 * k]], 7.5 * k, { taper: .3 }); return; }
   const ox = look[0] * 7 * k, oy = look[1] * 6 * k;
@@ -260,7 +268,7 @@ function celSmudge(c, x, y, r, S, seed = 0) {
 function celKanha(c, x, y, s, P, o = {}) { return celKid(c, x, y, s, P, o, 'kanha'); }
 function celRadha(c, x, y, s, P, o = {}) { return celKid(c, x, y, s, P, o, 'radha'); }
 function celKid(c, x, y, s, P, o, who) {
-  const R = who === 'radha', C = { ...(R ? CEL_RADHA : CEL_KANHA), ...(o.pal || {}) }, A = {}, td = P.td ?? o.t ?? 0;
+  const R = who === 'radha', C = { flute: CEL_KANHA.flute, fluteSh: CEL_KANHA.fluteSh, ...(R ? CEL_RADHA : CEL_KANHA), ...(o.pal || {}) }, A = {}, td = P.td ?? o.t ?? 0;
   const sh = col => [col, 7, 9], lt = col => [col, 4, 5], skin = { shade: sh(C.sh), lt: lt(C.lt) };
   celBegin(td); CEL.n = o.seed ?? (R ? 500 : 0);
   c.save(); c.translate(x, y); c.scale(s, s);
@@ -346,9 +354,11 @@ function celKid(c, x, y, s, P, o, who) {
     c.save(); c.translate(hip[0], hip[1]); c.rotate(lean);
     celLine(c, [[-72, -40], [0, -30], [72, -40]], 15, { under: C.gold, taper: 0 });
     for (let i = 0; i < 5; i++) { const u = -52 + i * 26; celOval(c, u, -24 + Math.abs(u) * -.1, 6.5, 7, C.gold, { w: 2.4, boil: .3 }); }
-    celShape(c, celTube([[-94, -78], [40, -24]], [17, 17]), C.flute, { dense: true, w: 4, shade: [C.fluteSh, 0, 5] });
-    for (const u of [.42, .54, .66, .78]) { const p = v2.lerp([-94, -78], [40, -24], u); ellipse(c, p[0], p[1] - 2, 3, 3, '#3A2414'); }
-    celBand(c, [-94, -78], [40, -24], .12, 22, 6, C.red); celBand(c, [-94, -78], [40, -24], .9, 22, 6, C.red);
+    if (!P.flute || P.flute === 'tuck') {
+      celShape(c, celTube([[-94, -78], [40, -24]], [17, 17]), C.flute, { dense: true, w: 4, shade: [C.fluteSh, 0, 5] });
+      for (const u of [.42, .54, .66, .78]) { const p = v2.lerp([-94, -78], [40, -24], u); ellipse(c, p[0], p[1] - 2, 3, 3, '#3A2414'); }
+      celBand(c, [-94, -78], [40, -24], .12, 22, 6, C.red); celBand(c, [-94, -78], [40, -24], .9, 22, 6, C.red);
+    }
     c.restore();
   }
 
@@ -423,6 +433,15 @@ function celKid(c, x, y, s, P, o, who) {
   if ((P.cry || 0) > .02) celTears(c, clamp(P.cry), td);
   if ((P.sweat || 0) > .02) celSweat(c, -160, -60, clamp(P.sweat) * 1.4);
   c.restore();   // head
+
+  // playing the flute (P.flute 'play'): from just right of the lips, down across the chin toward the screen-left hand (hL),
+  // under the arms so both hands hold it; a little red tassel swings from its far end
+  if (P.flute === 'play') {
+    const h = P.head || 0, lx = 34 * sx, ly = (-138 + 96) * sy, S = [NECK[0] + lx * Math.cos(h) - ly * Math.sin(h), NECK[1] + lx * Math.sin(h) + ly * Math.cos(h)];
+    const d = v2.norm(v2.sub(P.hL || [-120, -120], S)), a = v2.add(S, v2.mul(d, -18)), b = v2.add(S, v2.mul(d, 290));
+    celFluteAt(c, a, b, C, td);
+    A.fluteLip = at(...a); A.fluteEnd = at(...b);
+  }
 
   // the arms, last (they reach across the face)
   for (const sd of [-1, 1]) {
@@ -907,6 +926,107 @@ function celKaliya(c, x, y, s, P, o = {}) {
   A.head = at(MH[0], MH[1] - MR * .26); A.stand = at(MH[0], MH[1] - MR * .9); A.top = at(0, MH[1] - MR);
   c.restore();
   A.heads = heads;
+  c.restore();
+  return A;
+}
+
+// ---------- the flute, music notes and a calf (Bhagavata 10.21: the flute song; 10.21.13 the calves stand still) ----------
+// the bansuri from a (the blowing end) to b: a cane with six holes, red bands at both ends, a red tassel swinging from b
+function celFluteAt(c, a, b, C = CEL_KANHA, td = 0) {
+  const d = v2.norm(v2.sub(b, a)), L = v2.len(v2.sub(b, a)), red = C.red || '#E2452B';
+  celShape(c, celTube([a, b], [17, 16]), C.flute, { dense: true, w: 4, shade: [C.fluteSh, 0, 5] });
+  ellipse(c, ...v2.add(a, v2.mul(d, 26)), 3.6, 3.6, '#3A2414');   // the blowing hole
+  for (let i = 0; i < 6; i++) { const p = v2.add(a, v2.mul(d, L * (.42 + i * .085))); ellipse(c, p[0], p[1] - 1, 3.2, 3.2, '#3A2414'); }
+  celBand(c, a, b, .05, 22, 6, red); celBand(c, a, b, .93, 22, 6, red);
+  const sw = Math.sin(td * 3.1) * 8, e = v2.add(b, v2.mul(d, -8));
+  celLine(c, [e, [e[0] + sw * .3, e[1] + 22], [e[0] + sw * .6, e[1] + 40]], 3.4, { col: red, taper: .1, boil: .4 });
+  celShape(c, [[e[0] + sw * .6 - 9, e[1] + 40], [e[0] + sw * .6 + 9, e[1] + 40], [e[0] + sw + 12, e[1] + 76], [e[0] + sw - 12, e[1] + 76]], red, { n: 3, w: 3.5, shade: ['#B0222C', 4, 4] });
+  celOval(c, e[0] + sw * .6, e[1] + 38, 8, 7, C.gold || '#F2B52E', { w: 3 });
+}
+// a flute held in a hand: gripped at (x, y), pointing along rot (0: to screen right), len long (a third behind the grip)
+function celFlute(c, x, y, len = 300, rot = 0, td = 0) {
+  const d = [Math.cos(rot), Math.sin(rot)];
+  celFluteAt(c, [x - d[0] * len * .3, y - d[1] * len * .3], [x + d[0] * len * .7, y + d[1] * len * .7], CEL_KANHA, td);
+}
+// a music note (o.kind 1: a quaver, 2: two beamed quavers), r the note head's size, o.col, o.rot, o.a
+function celNote(c, x, y, r, o = {}) {
+  if (r <= 1 || (o.a ?? 1) <= .02) return;
+  const col = o.col || '#5B8FE0', w = Math.max(2.5, r * .12);
+  c.save(); c.translate(x, y); c.rotate(o.rot || 0); c.globalAlpha *= (o.a ?? 1);
+  const stem = (hx, top) => celShape(c, celTube([[hx + r * .48, -r * .1], [hx + r * .48, top]], [r * .2, r * .2]), col, { dense: true, w, boil: .3 });
+  const head = hx => celOval(c, hx, 0, r * .62, r * .44, col, { rot: -.4, w, boil: .3, over: q => ellipse(q, hx - r * .2, -r * .12, r * .16, r * .09, 'rgba(255,255,255,.8)', -.4) });
+  if (o.kind === 2) {
+    stem(0, -r * 1.7); stem(r * 1.3, -r * 1.9);
+    celShape(c, [[r * .38, -r * 1.7 - r * .1], [r * 1.88, -r * 1.9 - r * .1], [r * 1.88, -r * 1.9 + r * .3], [r * .38, -r * 1.7 + r * .3]], col, { n: 2, w, boil: .3 });
+    head(0); head(r * 1.3);
+  } else {
+    stem(0, -r * 1.8);
+    celShape(c, celTube([[r * .48, -r * 1.75], [r * .95, -r * 1.35], [r * 1.05, -r * .9], [r * .8, -r * .6]], [r * .3, r * .26, r * .2, r * .1]), col, { dense: true, w, boil: .3 });
+    head(0);
+  }
+  c.restore();
+}
+// a little calf (about 330 px tall to its ears at s = 1), its feet's middle at (x, y), side-on with its head turned to us.
+// P like a kid's face (eyes, mouth, look, lid, brow, tilt, blush, talk) plus dir (1 faces screen right, -1 left), walk (the
+// trot's phase, radians) and stride 0..1, hop, lean, head (tilt), hx / hy (the head pushed forward / down: a nuzzle),
+// ears 0..1 (floppy .. perked up "like cups", 10.21.13), wag (the tail), milk 0..1 (milk dribbling from its mouth, 10.21.13).
+// Returns { head, top, mouth, nose }
+const CEL_CALF = { skin: '#FFF8F0', sh: '#EBDACB', lt: '#FFFFFF', patch: '#DDA066', patchSh: '#BC7E46', hoof: '#6B4A3C', muzzle: '#F8C1B6', muzzleSh: '#EA9F96', nostril: '#B8656A', ear: '#F7AAB4', horn: '#F2DFB2', hornSh: '#D9BE84', iris: '#1E1410', iris2: '#6A4024', blush: '#FF8AA6', mouth: '#6A1E3A', tongue: '#F27C90', red: '#E2343E', gold: '#F2B52E' };
+function celCalf(c, x, y, s, P, o = {}) {
+  const C = { ...CEL_CALF, ...(o.pal || {}) }, td = P.td ?? o.t ?? 0, A = {}, dir = P.dir ?? 1;
+  const coat = { shade: [C.sh, 7, 9], lt: [C.lt, 4, 4] };
+  celBegin(td); CEL.n = o.seed ?? 1700;
+  const land = P.land ?? 9, hit = land >= 0 ? Math.exp(-land * 10) : 0, br = Math.sin(td * TAU / 2.4), st = P.stride || 0, ph = P.walk || 0;
+  const bob = -Math.abs(Math.sin(ph)) * 10 * st + hit * 6 + br * 1.5;
+  c.save(); c.translate(x, y - (P.hop || 0)); c.scale(s * dir, s);
+  const at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  const leg = (lx, off, far) => {
+    const u = ph + off, fx = lx + Math.sin(u) * 22 * st, fy = -Math.max(0, Math.cos(u)) * 18 * st;
+    celShape(c, celTube([[lx, -100 + bob], [lx + (fx - lx) * .5 + (lx > 0 ? 7 : -7), -50 + bob * .5], [fx, fy - 12]], [46, 36, 34]), far ? C.sh : C.skin, { dense: true, w: 4.5, shade: [far ? '#D6C2B0' : C.sh, 5, 4] });
+    celOval(c, fx + 3, fy - 6, 21, 12, C.hoof, { w: 4 });
+  };
+  // the far legs, the tail, the body, the near legs
+  leg(70, Math.PI, true); leg(-52, 0, true);
+  const wag = Math.sin(td * 7) * (P.wag ?? .4);
+  celShape(c, celTube([[-108, -150 + bob], [-132, -142 + bob], [-146 + wag * 14, -116 + bob], [-150 + wag * 26, -88 + bob]], [16, 13, 11, 9]), C.skin, { dense: true, w: 4 });
+  celOval(c, -150 + wag * 28, -80 + bob, 13, 17, C.patchSh, { w: 3.5, rot: wag * .3 });
+  c.save(); c.translate(0, bob); c.rotate(P.lean || 0);
+  celShape(c, [[-120, -138], [-104, -176], [-44, -190], [40, -188], [96, -172], [122, -132], [110, -92], [60, -76], [0, -72], [-70, -76], [-114, -96]], C.skin, { ...coat, over: q => {
+    ellipse(q, -48, -156, 44, 30, C.patch, -.2); ellipse(q, 34, -104, 24, 16, C.patch, .3); ellipse(q, -92, -112, 16, 12, C.patch);
+  } });
+  c.restore();
+  leg(46, 0, false); leg(-76, Math.PI, false);
+  // the neck and the head, turned to us
+  const hc = [104 + (P.hx || 0), -258 + (P.hy || 0) + bob];
+  celShape(c, celTube([[70, -150 + bob], [92, -190 + bob], [hc[0] - 6, hc[1] + 30]], [80, 72, 66]), C.skin, { dense: true, ...coat });
+  c.save(); c.translate(...hc); c.rotate((P.head || 0) * dir); c.scale(dir, 1);   // the face is not mirrored
+  const ea = lerp(.62, -.42, clamp(P.ears ?? 0)) + br * .03;
+  for (const sd of [-1, 1]) {
+    const b0 = [sd * 66, -36], tip = [b0[0] + sd * Math.cos(ea) * 78, b0[1] + Math.sin(ea) * 78], mid = v2.lerp(b0, tip, .5);
+    celShape(c, celTube([b0, mid, tip], [38, 42, 12]), C.skin, { dense: true, ...coat });
+    celShape(c, celTube([v2.lerp(b0, tip, .2), v2.lerp(b0, tip, .5), v2.lerp(b0, tip, .82)], [16, 22, 8]), C.ear, { dense: true, ink: false });
+    celOval(c, sd * 36, -82, 13, 16, C.horn, { w: 4, shade: [C.hornSh, 3, 4], rot: sd * .25 });
+  }
+  celShape(c, [[-80, -52], [-50, -76], [0, -82], [50, -76], [80, -52], [90, 0], [78, 44], [46, 70], [0, 78], [-46, 70], [-78, 44], [-90, 0]], C.skin, { shade: [C.sh, 8, 10], lt: [C.lt, 4, 4], over: q => ellipse(q, -46, -16, 38, 42, C.patch, .2) });
+  celShape(c, [[-18, -72], [-12, -94], [4, -102], [16, -90], [8, -80], [20, -72]], C.skin, { n: 3, w: 4, boil: .5 });   // a curl on the forehead
+  celOval(c, 0, 40, 56, 34, C.muzzle, { w: 4.5, shade: [C.muzzleSh, 4, 6], over: q => ellipse(q, -20, 24, 14, 7, 'rgba(255,255,255,.6)', -.2) });
+  for (const sd of [-1, 1]) ellipse(c, sd * 17, 34, 6, 8.5, C.nostril, sd * .3);
+  const look = P.look || [0, 0];
+  celFace(c, { ...P, look: [look[0] * dir, look[1]] }, C, { face: { ex: 70, ey: -26, my: 92, bx: 106, by: 18, k: .58 }, seed: 17, lashes: true });
+  const mk = clamp(P.milk || 0);
+  if (mk > .02) {
+    // a round drop of milk at the corner of its mouth (a smear along the lips reads as teeth)
+    const r = 5 + 5 * mk; celShape(c, [[30, 56], [30 + r, 62 + r], [30, 62 + r * 2], [30 - r, 62 + r]], '#FFFFFF', { n: 5, w: 3, boil: .3 });
+  }
+  A.head = at(0, 0); A.top = at(0, -90); A.mouth = at(0, 54); A.nose = at(0, 40);
+  // a red cord round the neck and a little gold bell
+  celLine(c, [[-46, 66], [0, 84], [46, 66]], 12, { under: C.red, taper: 0 });
+  const bs = Math.sin(td * 5) * .2;
+  c.save(); c.translate(0, 86); c.rotate(bs);
+  celShape(c, [[-14, 2], [-12, 18], [-18, 30], [18, 30], [12, 18], [14, 2], [0, -4]], C.gold, { n: 3, w: 4, shade: ['#C98E1C', 4, 3] });
+  celOval(c, 0, 33, 5, 5, '#8A5E12', { w: 2.5 });
+  c.restore();
+  c.restore();
   c.restore();
   return A;
 }
