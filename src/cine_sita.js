@@ -9,7 +9,8 @@
 //     screen right; the sari's hem and the pallu flying) | 'kneel' (sitting back on her heels, bent toward screen
 //     right over something in her lap, both hands down to it)
 //   t, reach (0..1 'carried': how far the arm is flung out), lean (radians, + toward screen right), wind (0..1),
-//   eyes, tears (0..1), look ([x, y] irises), col (one colour: a silhouette), pal (colours over SITA's: Parvati in red); cradle (with 'stand': the arms folded
+//   eyes, tears (0..1), look ([x, y] irises), col (one colour: a silhouette), pal (colours over SITA's: Parvati in red);
+//   with 'kneel': grip ([[x, y], [x, y]] root units: the hands reach and hold there), before(c) (drawn behind her arms); cradle (with 'stand': the arms folded
 //   across the chest holding o.inArms(c), drawn between the under arm and the over arm, about (-130..160, -680..-540))
 const SITA = {
   skin: '#B47A56', skinSh: '#8C5A3E', skinDk: '#6A402A', palm: '#C89070', lip: '#8E2A2E', lipLo: '#B03A3C',
@@ -32,7 +33,7 @@ function stArm(c, S, C, P, w, hand) {
 }
 
 function sita(c, o = {}) {
-  const S = { ...SITA, ...(o.pal || {}) }, one = o.col, C = (k) => one || S[k]; C.one = !!one;
+  const R0 = c.getTransform(), S = { ...SITA, ...(o.pal || {}) }, one = o.col, C = (k) => one || S[k]; C.one = !!one;
   const t = o.t || 0, pose = o.pose || 'stand', wd = o.wind ?? .4, gust = wd * (1 + .35 * Math.sin(t * 2.3) + .2 * Math.sin(t * 5.1));
   const kneel = pose === 'kneel', carried = pose === 'carried', rc = o.reach ?? 1;
   c.save(); c.rotate(o.lean || 0);
@@ -92,8 +93,20 @@ function sita(c, o = {}) {
     if (o.inArms) o.inArms(c);
     stArm(c, S, C, [[-80, -690], [-130, -600], [40, -628]], 40, 'push');
   } else if (kneel) {
-    stArm(c, S, C, [[-78, -690], [-60, -580], [30, -520]], 38, 'push');
-    stArm(c, S, C, [[78, -690], [130, -590], [150, -500]], 38, 'push');
+    // o.before(c): drawn in front of her lap but behind her arms, in her root units (feet at 0, 0); o.grip: [[x, y],
+    // [x, y]] in root units, where the screen-left and screen-right hands hold on (round a linga, a child, a pot)
+    if (o.before) { const m = c.getTransform(); c.setTransform(R0); o.before(c); c.setTransform(m); }
+    if (o.grip) {
+      const inv = c.getTransform().invertSelf().multiply(R0);
+      o.grip.forEach(([gx, gy], i) => {
+        const sx = i ? 78 : -78, sy = -690, q = inv.transformPoint(new DOMPoint(gx, gy)), mx = (sx + q.x) / 2, my = (sy + q.y) / 2;
+        const dx = q.x - sx, dy = q.y - sy, L = Math.hypot(dx, dy) || 1, out = i ? 1 : -1;
+        stArm(c, S, C, [[sx, sy], [mx - dy / L * 34 * out * -1 + out * 26, my + dx / L * 12], [q.x, q.y]], 38, 'push');
+      });
+    } else {
+      stArm(c, S, C, [[-78, -690], [-60, -580], [30, -520]], 38, 'push');
+      stArm(c, S, C, [[78, -690], [130, -590], [150, -500]], 38, 'push');
+    }
   } else {
     stArm(c, S, C, [[-80, -690], [-110, -580], [-100, -470]], 40, 'push');
     stArm(c, S, C, [[80, -690], [110, -580], [100, -470]], 40, 'push');
