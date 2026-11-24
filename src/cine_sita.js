@@ -9,7 +9,7 @@
 //     screen right; the sari's hem and the pallu flying) | 'kneel' (sitting back on her heels, bent toward screen
 //     right over something in her lap, both hands down to it)
 //   t, reach (0..1 'carried': how far the arm is flung out), lean (radians, + toward screen right), wind (0..1),
-//   eyes, tears (0..1), look ([x, y] irises), col (one colour: a silhouette); cradle (with 'stand': the arms folded
+//   eyes, tears (0..1), look ([x, y] irises), col (one colour: a silhouette), pal (colours over SITA's: Parvati in red); cradle (with 'stand': the arms folded
 //   across the chest holding o.inArms(c), drawn between the under arm and the over arm, about (-130..160, -680..-540))
 const SITA = {
   skin: '#B47A56', skinSh: '#8C5A3E', skinDk: '#6A402A', palm: '#C89070', lip: '#8E2A2E', lipLo: '#B03A3C',
@@ -32,7 +32,7 @@ function stArm(c, S, C, P, w, hand) {
 }
 
 function sita(c, o = {}) {
-  const S = SITA, one = o.col, C = (k) => one || S[k]; C.one = !!one;
+  const S = { ...SITA, ...(o.pal || {}) }, one = o.col, C = (k) => one || S[k]; C.one = !!one;
   const t = o.t || 0, pose = o.pose || 'stand', wd = o.wind ?? .4, gust = wd * (1 + .35 * Math.sin(t * 2.3) + .2 * Math.sin(t * 5.1));
   const kneel = pose === 'kneel', carried = pose === 'carried', rc = o.reach ?? 1;
   c.save(); c.rotate(o.lean || 0);

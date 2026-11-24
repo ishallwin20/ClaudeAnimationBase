@@ -6,7 +6,10 @@
 // devi(c, o): the whole figure. o (all optional):
 //   t (seconds), light (1 lit from screen right, -1 from the left), wind (-1..1, + blows to screen right)
 //   eyes (0 closed .. 1 open), fire (0..1 the irises burn gold), look ([x, y] irises)
-//   arms: 4 (two raised behind, holding orbs of bees; the front right in abhaya, the front left on the trishul)
+//   arms: 4 (two raised behind, holding orbs of bees; the front right in abhaya, the front left on the trishul) | 2
+//     (Parvati: no raised arms, no trishul unless front asks for it); front: [screen left, screen right] modes, each
+//     'abhaya' | 'trishul' | 'lotus' (hanging, a lotus held by its stem) | 'down', or ['pray'] (palms joined at the chest)
+//   pal: colours over DEVI's (skin, sari, border, blouse…: bark-cloth for tapas)
 //   upper ('bees' | 'open'): the raised hands, cupping a swarm or open; bees (0..1): how many bees swirl in them and
 //   stream from her hair (needs cine_sets.js: beeCloud, beeStream)
 //   durga (true): Durga with eight arms and the gods' gifts: four more arms fanned behind (Kala's sword, Vayu's bow,
@@ -155,8 +158,24 @@ function deviCrown(c, t, S = DEVI) {
 }
 
 // ---------- the body ----------
+// both arms bent to the chest, the palms joined (namaskara): tapas, prayer
+function prayHands(c, S, L, fx) {
+  figure(c, (a) => {
+    for (const s of [-1, 1]) {
+      ellipse(a, s * 108, -680, 26, 36, S.skin, s * -.2);
+      limb(a, [[s * 108, -688], [s * 120, -622], [s * 112, -562]], [46, 40, 36], S.skin);
+      limb(a, [[s * 112, -562], [s * 66, -584], [s * 16, -614]], [36, 30, 24], S.skin);
+      if (s === -L) limb(a, [[s * 112, -690], [s * 126, -622], [s * 118, -566]], [20, 17, 14], rgba(S.skinSh, .9));
+      ellipse(a, s * 120, -612, 21, 6, S.gold, s * .1); ellipse(a, s * 40, -600, 15, 5.5, S.gold, s * -.9);
+    }
+    const PALMS = 'M -16 -600 C -20 -630 -14 -676 0 -704 C 14 -676 20 -630 16 -600 C 8 -594 -8 -594 -16 -600 Z';
+    fillPath(a, PALMS, S.skin); strokePath(a, 'M 0 -700 L 0 -604', rgba(S.skinSh, .9), 2);
+    fillPath(a, 'M -16 -600 C -20 -630 -14 -676 0 -704 L 0 -600 Z', rgba(S.skinSh, L > 0 ? .5 : 0));
+    fillPath(a, 'M 16 -600 C 20 -630 14 -676 0 -704 L 0 -600 Z', rgba(S.skinSh, L < 0 ? .5 : 0));
+  }, fx);
+}
 function devi(c, o = {}) {
-  const t = o.t || 0, L = o.light ?? 1, wind = o.wind ?? .35, S = { ...DEVI, ...(o.skin ? { skin: o.skin } : {}), ...(o.sari ? { sari: o.sari } : {}) };
+  const t = o.t || 0, L = o.light ?? 1, wind = o.wind ?? .35, S = { ...DEVI, ...(o.pal || {}), ...(o.skin ? { skin: o.skin } : {}), ...(o.sari ? { sari: o.sari } : {}) };
   const br = Math.sin(t * 1.5) * 1, gust = wind * (1 + .35 * Math.sin(t * 2.3) + .2 * Math.sin(t * 5.1)), bees = o.bees ?? 0;
   // long hair behind, a dark fall to the waist, its ends lifting in the wind
   fillPath(c, 'M -46 -880 C -84 -856 -110 -790 -116 -700 C -122 -620 -118 -540 -104 -470 L 104 -470 C 118 -540 122 -620 116 -700 C 110 -790 84 -856 46 -880 Z', S.hair);
@@ -216,7 +235,8 @@ function devi(c, o = {}) {
     }
     for (const [x, y] of [A[2], B[2]]) { ellipse(c, x, y, 21, 23, S.skin); ellipse(c, x + s * 6, y - 4, 9, 11, rgba(S.skinSh, .7)); }
   }
-  const orbs = [upper(-1), upper(1)];
+  const two = o.arms === 2, fr = o.front || (two ? ['abhaya', 'lotus'] : ['abhaya', 'trishul']);
+  const orbs = two ? [] : [upper(-1), upper(1)];
   // Durga's raised hands: Vishnu's chakra spinning on one, Varuna's conch in the other
   if (o.durga) {
     const [cx, cy] = orbs[0], [sx, sy] = orbs[1];
@@ -232,6 +252,7 @@ function devi(c, o = {}) {
   }
   // the trishul, held by the front left hand (screen right), behind that hand
   const X = 222;
+  if (fr[1] === 'trishul') {
   fillPath(c, `M ${X - 4.5} 10 L ${X - 4.5} -1100 L ${X + 4.5} -1100 L ${X + 4.5} 10 Z`, S.steelSh);
   fillPath(c, `M ${X - 1} 10 L ${X - 1} -1100 L ${X + 4} -1100 L ${X + 4} 10 Z`, S.steel);
   fillPath(c, `M ${X - 42} -1108 C ${X - 48} -1138 ${X - 44} -1170 ${X - 31} -1192 C ${X - 35} -1166 ${X - 33} -1138 ${X - 20} -1116 Z M ${X + 42} -1108 C ${X + 48} -1138 ${X + 44} -1170 ${X + 31} -1192 C ${X + 35} -1166 ${X + 33} -1138 ${X + 20} -1116 Z`, S.steel);
@@ -240,6 +261,7 @@ function devi(c, o = {}) {
   fillPath(c, `M ${X} -1232 C ${X + 13} -1206 ${X + 11} -1150 ${X + 5} -1110 L ${X} -1110 Z`, S.steelSh);
   fillPath(c, `M ${X - 9} -1090 L ${X + 9} -1090 L ${X + 9} -1074 L ${X - 9} -1074 Z`, S.gold);
   limb(c, [[X, -1082], [X + 18 + gust * 20, -1070 + Math.sin(t * 6) * 6], [X + 40 + gust * 44, -1066 + Math.sin(t * 6 - 1) * 10], [X + 58 + gust * 66, -1052 + Math.sin(t * 6 - 2) * 14]], [12, 14, 10, 2], S.sariLt, false);
+  }
   // feet peeping out under the hem, with anklets and alta
   for (const s of [-1, 1]) {
     const foot = 'M 18 -26 C 16 -12 14 -4 18 0 L 70 0 C 74 -7 66 -13 56 -17 C 48 -20 44 -24 42 -28 Z';
@@ -299,7 +321,22 @@ function devi(c, o = {}) {
   // the front arms, each lit on its own
   const front = (s, mode) => figure(c, (a) => {
     ellipse(a, s * 108, -680, 26, 36, S.skin, s * -.2);
-    if (mode === 'trishul') {
+    if (mode === 'lotus' || mode === 'down') {
+      // the arm hanging relaxed by the side, the hand turned out (kataka) holding a lotus by its stem, or open
+      limb(a, [[s * 108, -688], [s * 130, -620], [s * 140, -556]], [52, 46, 40], S.skin);
+      limb(a, [[s * 140, -556], [s * 150, -500], [s * 158, -444]], [40, 36, 30], S.skin);
+      if (s === -L) limb(a, [[s * 112, -690], [s * 136, -620], [s * 146, -556], [s * 156, -500], [s * 162, -446]], [22, 20, 18, 16, 12], rgba(S.skinSh, .9));
+      const hx = s * 160, hy = -430;
+      if (mode === 'lotus') {
+        limb(a, [[hx + s * 4, hy - 4], [hx + s * 22, hy - 70], [hx + s * 30, hy - 150]], [6, 5, 4], '#3E7A3A', false);
+        for (const r of [-.7, -.35, 0, .35, .7]) { a.save(); a.translate(hx + s * 30, hy - 150); a.rotate(r * .8); fillPath(a, 'M 0 0 C -13 -12 -12 -34 0 -46 C 12 -34 13 -12 0 0 Z', r ? '#F2A2B8' : '#F7C2D0'); fillPath(a, 'M 0 0 C -4 -12 -4 -30 0 -40 C 4 -30 4 -12 0 0 Z', rgba('#E07A98', .5)); a.restore(); }
+        ellipse(a, hx + s * 30, hy - 152, 7, 4, '#FFD86A');
+      }
+      fillPath(a, `M ${hx - 16} ${hy - 14} C ${hx - 20} ${hy + 4} ${hx - 14} ${hy + 22} ${hx} ${hy + 26} C ${hx + 14} ${hy + 22} ${hx + 20} ${hy + 4} ${hx + 16} ${hy - 14} Z`, S.skin);
+      for (let k = 0; k < 3; k++) limb(a, [[hx - s * (8 - k * 8), hy + 18], [hx - s * (6 - k * 9), hy + 38 - Math.abs(k - 1) * 4]], [9, 7.4], S.skin);
+      limb(a, [[hx + s * 12, hy - 2], [hx + s * 20, hy + 10], [hx + s * 18, hy + 24]], [11, 9, 7], S.skin);
+      ellipse(a, s * 134, -612, 24, 6, S.gold, s * .3); ellipse(a, hx, hy - 12, 16, 5.5, S.gold); ellipse(a, hx, hy - 20, 15, 4.5, S.ruby);
+    } else if (mode === 'trishul') {
       limb(a, [[s * 108, -688], [s * 128, -620], [s * 150, -560]], [52, 46, 40], S.skin);
       limb(a, [[s * 150, -560], [s * 176, -516], [s * 202, -486]], [40, 36, 30], S.skin);
       if (s === -L) limb(a, [[s * 110, -690], [s * 134, -620], [s * 156, -560], [s * 182, -516], [s * 206, -486]], [22, 20, 18, 16, 12], rgba(S.skinSh, .9));
@@ -319,8 +356,8 @@ function devi(c, o = {}) {
       ellipse(a, s * 138, -616, 24, 6, S.gold, s * .35); ellipse(a, hx, hy + 4, 16, 5.5, S.gold);
     }
   }, o.armFx || {});
-  front(-1, 'abhaya');
-  front(1, 'trishul');
+  if (fr[0] === 'pray') prayHands(c, S, L, o.armFx || {});
+  else { front(-1, fr[0]); front(1, fr[1]); }
   // bees: an orb swirling in each raised hand, streams curling off the ends of her hair
   if (bees > 0 && typeof beeCloud === 'function') {
     for (const [x, y] of orbs) beeCloud(c, x, y, 46, t, { n: Math.round(60 * bees), seed: x, k: 1.1 });

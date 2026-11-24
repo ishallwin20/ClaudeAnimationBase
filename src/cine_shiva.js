@@ -5,7 +5,8 @@
 //
 // o (all optional): t (seconds, for wind and breathing), eyes (0 closed .. 1 open), third (0..1 the third eye opening),
 // wind (-1..1 strength, + blows to screen right), light (1 = lit from screen right, -1 from the left),
-// arm ('abhaya' raised blessing hand | 'down'), trishul (true), look ([-1..1, -1..1] where the irises point).
+// arm ('abhaya' raised blessing hand | 'down'), trishul (true), look ([-1..1, -1..1] where the irises point),
+// pal (colours over SHV's: { skin, skinSh, skinDk, throat, palm, lip, lipLo } turn him camphor-white for Ardhanarishvara).
 const SHV = {
   skin: '#5C88C6', skinSh: '#3F67A0', skinDk: '#2E4D80', throat: '#2B427A', palm: '#7E9FD0',
   hair: '#17192B', hairLt: '#2C3050', lip: '#34467C', lipLo: '#4F64A0', eyeW: '#E9E3D8', iris: '#2B1C14',
@@ -21,7 +22,7 @@ const mirrorX = d => d.replace(/(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)/g, (m, x, _a, 
 const SHV_FACE = 'M 0 -746 C 9 -746 16 -748 22 -752 C 32 -760 40 -773 44 -788 C 47 -800 48.5 -812 48.5 -824 C 49 -844 46 -861 38 -872 C 28 -883 -28 -883 -38 -872 C -46 -861 -49 -844 -48.5 -824 C -48.5 -812 -47 -800 -44 -788 C -40 -773 -32 -760 -22 -752 C -16 -748 -9 -746 0 -746 Z';
 const SHV_NECK = 'M -31 -700 C -29 -728 -31 -756 -36 -792 L 36 -792 C 31 -756 29 -728 31 -700 Z';
 function shivaHead(c, o = {}) {
-  const t = o.t || 0, eyes = o.eyes ?? 0, third = o.third ?? 0, L = o.light ?? 1, g = o.wind ?? 0, S = SHV;
+  const t = o.t || 0, eyes = o.eyes ?? 0, third = o.third ?? 0, L = o.light ?? 1, g = o.wind ?? 0, S = { ...SHV, ...(o.pal || {}) };
   // neck: Neelkantha's throat, the jaw's shadow, the far side in shade
   fillPath(c, SHV_NECK, S.skin);
   inside(c, SHV_NECK, () => {
@@ -126,7 +127,7 @@ function cobra(c, x, y, rot, t, k = 1) {
 
 // ---------- body (front view) ----------
 function shiva(c, o = {}) {
-  const t = o.t || 0, L = o.light ?? 1, wind = o.wind ?? .4, S = SHV, br = Math.sin(t * 1.6) * 1.2;   // breathing
+  const t = o.t || 0, L = o.light ?? 1, wind = o.wind ?? .4, S = { ...SHV, ...(o.pal || {}) }, br = Math.sin(t * 1.6) * 1.2;   // breathing
   const gust = wind * (1 + .35 * Math.sin(t * 2.3) + .2 * Math.sin(t * 5.1));
   // hair behind the shoulders: a fall of heavy locks, narrower than the shoulders, the ends lifted by the wind
   const g = gust;
