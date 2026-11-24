@@ -277,7 +277,7 @@ function celSmudge(c, x, y, r, S, seed = 0) {
 function celKanha(c, x, y, s, P, o = {}) { return celKid(c, x, y, s, P, o, 'kanha'); }
 function celRadha(c, x, y, s, P, o = {}) { return celKid(c, x, y, s, P, o, 'radha'); }
 function celKid(c, x, y, s, P, o, who) {
-  const R = who === 'radha', C = { flute: CEL_KANHA.flute, fluteSh: CEL_KANHA.fluteSh, ...(R ? CEL_RADHA : CEL_KANHA), ...(o.pal || {}) }, A = {}, td = P.td ?? o.t ?? 0;
+  const R = who === 'radha', G = !R && o.gopa, C = { flute: CEL_KANHA.flute, fluteSh: CEL_KANHA.fluteSh, ...(R ? CEL_RADHA : CEL_KANHA), ...(G ? G.pal || {} : {}), ...(o.pal || {}) }, A = {}, td = P.td ?? o.t ?? 0;
   const sh = col => [col, 7, 9], lt = col => [col, 4, 5], skin = { shade: sh(C.sh), lt: lt(C.lt) };
   celBegin(td); CEL.n = o.seed ?? (R ? 500 : 0);
   c.save(); c.translate(x, y); c.scale(s, s);
@@ -361,8 +361,14 @@ function celKid(c, x, y, s, P, o, who) {
   } else {
     // the kardhani with little bells, and the flute tucked in at the waist
     c.save(); c.translate(hip[0], hip[1]); c.rotate(lean);
-    celLine(c, [[-72, -40], [0, -30], [72, -40]], 15, { under: C.gold, taper: 0 });
-    for (let i = 0; i < 5; i++) { const u = -52 + i * 26; celOval(c, u, -24 + Math.abs(u) * -.1, 6.5, 7, C.gold, { w: 2.4, boil: .3 }); }
+    if (G) {
+      // a gopa's cloth sash, knotted at the side, its ends hanging
+      celLine(c, [[-74, -42], [0, -32], [74, -42]], 18, { under: G.sash, taper: 0 });
+      celShape(c, [[44, -40], [58, -12], [50, 14], [40, -14]], G.sash, { n: 3, w: 3.5 }); celShape(c, [[54, -40], [76, -16], [74, 8], [62, -18]], G.sash, { n: 3, w: 3.5 });
+    } else {
+      celLine(c, [[-72, -40], [0, -30], [72, -40]], 15, { under: C.gold, taper: 0 });
+      for (let i = 0; i < 5; i++) { const u = -52 + i * 26; celOval(c, u, -24 + Math.abs(u) * -.1, 6.5, 7, C.gold, { w: 2.4, boil: .3 }); }
+    }
     if (!P.flute || P.flute === 'tuck') {
       celShape(c, celTube([[-94, -78], [40, -24]], [17, 17]), C.flute, { dense: true, w: 4, shade: [C.fluteSh, 0, 5] });
       for (const u of [.42, .54, .66, .78]) { const p = v2.lerp([-94, -78], [40, -24], u); ellipse(c, p[0], p[1] - 2, 3, 3, '#3A2414'); }
@@ -380,6 +386,11 @@ function celKid(c, x, y, s, P, o, who) {
     const Q = through(od, 4); for (let i = 1; i < Q.length - 1; i += 2) ellipse(c, Q[i][0], Q[i][1], 3.6, 3.6, C.gold);
     // P.mala 0..1: a garland like his vaijayanti, the beads popping on one by one
     const mk = clamp(P.mala || 0); if (mk > .02) for (let i = 0; i <= 12; i++) { const a = Math.PI * i / 12, k = clamp(mk * 13 - i); if (k > .05) celOval(c, -50 * Math.cos(a), -150 + 96 * Math.sin(a), 9.5 * k, 9.5 * k, CEL_KANHA.mala[i % 4], { w: 2.4, boil: .3 }); }
+  } else if (G) {
+    // a black thread with a little gold amulet (a taveez)
+    const th = []; for (let i = 0; i <= 12; i++) { const a = Math.PI * i / 12; th.push([-44 * Math.cos(a), -152 + 70 * Math.sin(a)]); }
+    celLine(c, th, 3.4, { taper: 0, boil: .3 });
+    celShape(c, [[-9, -86], [9, -86], [7, -66], [0, -60], [-7, -66]], C.gold, { n: 2, w: 2.6, boil: .3 });
   } else {
     // the vaijayanti mala
     for (let i = 0; i <= 12; i++) { const a = Math.PI * i / 12; celOval(c, -50 * Math.cos(a), -150 + 96 * Math.sin(a), 9.5, 9.5, C.mala[i % 4], { w: 2.4, boil: .3 }); }
@@ -426,6 +437,27 @@ function celKid(c, x, y, s, P, o, who) {
       else if (kind === 1) celOval(c, fx, fy, r, r * .92, '#FF9B1E', { w: 2.6, boil: .3, over: q => { for (let j = 0; j < 7; j++) { const b = j / 7 * TAU; ellipse(q, fx + Math.cos(b) * r * .5, fy + Math.sin(b) * r * .45, r * .24, r * .2, '#FFC23A'); } } });
       else celOval(c, fx, fy, r * .9, r * .85, C.rose, { w: 2.4, shade: [C.roseSh, 3, 3], over: q => { q.strokeStyle = C.roseSh; q.lineWidth = 2.4; q.beginPath(); q.arc(fx, fy, r * .4, 0, 5); q.stroke(); } });
     }
+  } else if (G) {
+    // a gopa: short curly hair with locks by the cheeks, and a turban (pagdi: a wrapped dome, its folds, a little fan at
+    // the side) or, bare-headed, a small topknot tied with a red thread; G.feather: a peacock feather peeking out of it
+    for (const sd of [-1, 1]) celShape(c, celTube([[sd * 166, -20], [sd * 186, 30], [sd * 176, 80], [sd * 158, 94]], [36, 30, 20, 10]), C.hair, { dense: true, lt: [C.hairLt, -3, 4] });
+    const fk = clamp(G.feather || 0), fw = Math.sin(td * 2.2) * .05 + (lag.head || 0) * .3 - (P.head || 0) * .25;
+    const feather = (fx, fy, r0) => { if (fk > .02) { c.save(); c.translate(fx, fy); c.rotate(r0 + fw); c.scale(.62 * fk, .62 * fk); celPeacockFeather(c, CEL_KANHA); c.restore(); } };
+    if (G.turban) {
+      feather(-118, -170, -.55);
+      celShape(c, [[-184, -30], [-190, -112], [-156, -184], [-84, -222], [0, -232], [84, -222], [156, -184], [190, -112], [184, -30], [150, -58], [84, -82], [0, -90], [-84, -82], [-150, -58]], G.turban, { shade: [G.turbanSh, 8, 10], lt: [G.turbanLt, 5, 5] });
+      for (const [y0, y1, k] of [[-120, -150, 1], [-160, -196, .8]]) celLine(c, [[-176 * k, y0 + 30], [-90 * k, y1 + 6], [0, y1], [90 * k, y1 + 6], [176 * k, y0 + 30]], 3.4, { col: rgba(CEL.ink, .75), boil: .4 });
+      celLine(c, [[-150, -70], [-60, -150], [40, -206]], 3.2, { col: rgba(CEL.ink, .6), boil: .4 });
+      celShape(c, [[96, -206], [120, -262], [150, -270], [158, -240], [130, -204]], G.turban, { n: 3, w: 4, shade: [G.turbanSh, 4, 4] });   // the fan
+      celOval(c, 112, -200, 16, 13, G.turbanSh, { w: 3.5 });
+    } else {
+      feather(40, -214, .45);
+      celShape(c, [[-182, 10], [-180, -72], [-142, -150], [-72, -188], [0, -194], [72, -188], [142, -150], [180, -72], [182, 10], [160, -10], [146, -64], [110, -98], [70, -88], [40, -120], [-6, -112], [-46, -126], [-80, -94], [-118, -100], [-148, -62], [-162, -10]], C.hair, { over: sheen(-80, -160, 90, 34) });
+      for (const [cx, cy] of [[-120, -132], [-40, -160], [60, -160], [128, -126]]) celLine(c, [[cx - 14, cy + 6], [cx - 6, cy - 8], [cx + 8, cy - 6], [cx + 6, cy + 6]], 3, { col: rgba(C.hairLt, .9), boil: .4 });
+      celOval(c, 0, -206, 44, 34, C.hair, { over: sheen(-14, -220, 36, 18) });
+      celLine(c, [[-36, -180], [0, -174], [36, -180]], 9, { under: C.red, taper: 0 });
+    }
+    if (G.tilak) ellipse(c, 0, -60, 7, 8, G.tilak);
   } else {
     // the curls over his forehead, parted in the middle for the tilak; locks by his cheeks
     celShape(c, [[-182, 10], [-180, -72], [-142, -150], [-72, -188], [0, -194], [72, -188], [142, -150], [180, -72], [182, 10], [162, -6], [152, -58], [122, -72], [104, -112], [62, -104], [38, -142], [0, -150], [-38, -142], [-62, -104], [-104, -112], [-122, -72], [-152, -58], [-162, -6]], C.hair, { over: sheen(-80, -160, 90, 34) });
@@ -1178,4 +1210,82 @@ function celScrap(c, x, y, r, rot = 0, col = '#F7C744', a = 1) {
   const P = []; for (let i = 0; i <= 6; i++) P.push([-r + i * r / 3, -r * .55 + (i % 2) * r * .16]); for (let i = 0; i <= 6; i++) P.push([r - i * r / 3, r * .5 - (i % 2) * r * .16]);
   celShape(c, P, col, { dense: true, w: Math.max(1.8, r * .14), boil: .3, shade: [rgba('#000000', .12), 0, r * .2] });
   c.restore();
+}
+
+// ---------- Brahma (#8, Brahma-vimohana, Bhagavata 10.13) ----------
+// a tiny chibi Brahma seated on a pink lotus, the lotus's base at (x, y), about 420 px to his crowns at s = 1: four heads
+// (the front one big, two side heads turned out, the fourth hidden behind), gold crowns, fluffy white beards, a saffron
+// dhoti and a red uttariya; the back hands hold a palm-leaf pothi (the Vedas) and a kamandalu, the front hands follow P.
+// P like a kid's face for the front head (eyes, look, lid, brow, tilt, mouth, talk, blush, sweat) plus side ('open' |
+// 'dizzy' | 'happy' | 'flat': the side heads' faces), swivel -1..1 (the side heads lean as he looks about), hL / hR (the
+// front hands, local px; shoulders at [±58, -196]), handL / handR ('open' | 'point' | 'fist'), hop, lean, td.
+// Returns { head, top, handL, handR }
+const CEL_BRAHMA = { skin: '#F7C08C', sh: '#DE9A62', lt: '#FFDDB8', beard: '#FFFFFF', beardSh: '#DCE0EE', dhoti: '#F08A2E', dhotiSh: '#C8641A', dhotiLt: '#FFB46A',
+  cloth: '#D8364A', clothSh: '#A82236', gold: '#F2B52E', goldSh: '#C98A1A', goldLt: '#FFE48E', lotus: '#F57DA8', lotusSh: '#D6528A', lotusLt: '#FFB6D0',
+  iris: '#2A1A14', iris2: '#8A5A30', blush: '#FF8AA6', mouth: '#7A1E36', tongue: '#F27C90', leaf: '#E8C27A', pot: '#C98A3A' };
+function celBrahma(c, x, y, s, P, o = {}) {
+  const C = { ...CEL_BRAHMA, ...(o.pal || {}) }, td = P.td ?? 0, A = {}, sk = { shade: [C.sh, 6, 7], lt: [C.lt, 3, 4] };
+  celBegin(td); CEL.n = o.seed ?? 1900;
+  c.save(); c.translate(x, y); c.scale(s, s);
+  const at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  const land = P.land ?? 9, hit = land >= 0 ? Math.exp(-land * 10) : 0, br = Math.sin(td * TAU / 2.2);
+  // the lotus: back petals, then he sits, then the front petals
+  const petal = (px, py, w, h, rot, col) => { c.save(); c.translate(px, py); c.rotate(rot); celShape(c, [[-w, 0], [-w * .7, -h * .6], [0, -h], [w * .7, -h * .6], [w, 0], [0, h * .12]], col, { n: 3, w: 4, shade: [C.lotusSh, 4, 5], over: q => celLine(q, [[0, -h * .15], [0, -h * .8]], 2.4, { col: rgba(C.lotusSh, .6), boil: .3 }) }); c.restore(); };
+  for (const [px, rot] of [[-120, -.9], [120, .9], [-60, -.35], [60, .35], [0, 0]]) petal(px, -40, 46, 100, rot, C.lotusLt);
+  c.save(); c.translate(0, -(P.hop || 0) + hit * 6 + br * 1.5); c.rotate(P.lean || 0);
+  // the back arms: the pothi (screen left) and the kamandalu (screen right), raised
+  const arm = (S, H) => celShape(c, celTube([S, v2.lerp(S, H, .5), H], [36, 32, 28]), C.skin, { dense: true, ...sk });
+  arm([-50, -190], [-140, -250]); arm([50, -190], [140, -250]);
+  c.save(); c.translate(-150, -270); c.rotate(-.25 + br * .03);
+  celShape(c, [[-58, -16], [58, -16], [58, 16], [-58, 16]], C.leaf, { n: 1, w: 4, shade: ['#C49A52', 0, 5], over: q => { q.strokeStyle = 'rgba(110,70,30,.6)'; q.lineWidth = 2.4; for (const yy of [-6, 4]) { q.beginPath(); q.moveTo(-48, yy); q.lineTo(48, yy); q.stroke(); } } });
+  celLine(c, [[-14, -18], [-14, 18]], 5, { under: C.cloth, taper: 0 }); c.restore();
+  celOval(c, -140, -250, 18, 16, C.skin, { w: 3.5 });
+  c.save(); c.translate(150, -262); celShape(c, [[-30, 18], [-34, -10], [-18, -30], [18, -30], [34, -10], [30, 18], [0, 26]], C.pot, { n: 3, w: 4, shade: ['#94601E', 6, 5], lt: ['#E8B060', 3, 3] }); celOval(c, 0, -32, 16, 6, '#94601E', { w: 3 }); celLine(c, [[30, -6], [52, -24], [56, -40]], 7, { under: C.pot, taper: 0 }); c.restore();
+  celOval(c, 140, -250, 18, 16, C.skin, { w: 3.5 });
+  // sitting cross-legged: the dhoti over the folded legs, the torso, the uttariya across
+  celShape(c, [[-130, -54], [-120, -100], [-60, -122], [0, -118], [60, -122], [120, -100], [130, -54], [80, -34], [0, -30], [-80, -34]], C.dhoti, { n: 3, shade: [C.dhotiSh, 6, 8], lt: [C.dhotiLt, 4, 4] });
+  for (const sd of [-1, 1]) celOval(c, sd * 96, -48, 30, 18, C.skin, { ...sk, rot: sd * -.2 });
+  celShape(c, [[-62, -110], [-66, -170], [-48, -206], [0, -214], [48, -206], [66, -170], [62, -110], [0, -104]], C.skin, sk);
+  celShape(c, celTube([[50, -206], [10, -168], [-34, -128], [-60, -108]], [30, 32, 34, 32]), C.cloth, { dense: true, shade: [C.clothSh, 4, 5] });
+  celLine(c, [[-66, -116], [0, -108], [66, -116]], 12, { under: C.gold, taper: 0 });
+  // the side heads, turned out (behind the front one), then the front head
+  const head = (hx, hy, r, sd, face) => {
+    c.save(); c.translate(hx, hy); c.rotate(sd * .22 + (P.head || 0));
+    // the crown
+    celShape(c, [[-r * .7, -r * .55], [-r * .62, -r * 1.2], [-r * .3, -r * 1.36], [0, -r * 1.62], [r * .3, -r * 1.36], [r * .62, -r * 1.2], [r * .7, -r * .55]], C.gold, { n: 3, w: 4, shade: [C.goldSh, 5, 4], lt: [C.goldLt, 3, 3], over: q => { ellipse(q, 0, -r * .95, r * .1, r * .12, '#E2452B'); q.strokeStyle = C.goldSh; q.lineWidth = 3; q.beginPath(); q.moveTo(-r * .66, -r * .72); q.quadraticCurveTo(0, -r * .8, r * .66, -r * .72); q.stroke(); } });
+    celOval(c, 0, 0, r, r * .94, C.skin, { shade: [C.sh, 6, 8], lt: [C.lt, 4, 4] });
+    celShape(c, [[-r * .92, -r * .05], [-r * .82, -r * .52], [-r * .4, -r * .72], [r * .4, -r * .72], [r * .82, -r * .52], [r * .92, -r * .05], [r * .6, -r * .38], [0, -r * .46], [-r * .6, -r * .38]], '#F4F4FA', { n: 3, w: 3.5, shade: [C.beardSh, 3, 4] });   // white hair under the crown
+    // the beard: a fluffy cloud from ear to ear under the face
+    const B = []; for (let i = 0; i <= 10; i++) { const a = Math.PI * (i / 10), rr = r * (1 + .1 * (i % 2)); B.push([Math.cos(a) * rr * .95, r * .25 + Math.sin(a) * rr * .85]); }
+    celShape(c, [[-r * .95, r * .1], ...B.reverse(), [r * .95, r * .1], [r * .5, r * .52], [0, r * .6], [-r * .5, r * .52]], C.beard, { n: 3, w: 3.5, shade: [C.beardSh, 3, 5] });
+    face(r);
+    c.restore();
+  };
+  const sw = P.swivel || 0;
+  for (const sd of [-1, 1]) head(sd * 104 + sw * 10, -292 + Math.abs(sw) * sd * sw * 6, 70, sd, r => {
+    const ik = CEL.inkK; CEL.inkK = (ik ?? 1) * 1.2;
+    celMiniFace(c, sd * r * .32, -r * .08, r / 52, P.side || 'open', C.blush);
+    CEL.inkK = ik;
+  });
+  head(sw * 14, -300, 92, 0, r => {
+    const ik = CEL.inkK; CEL.inkK = (ik ?? 1) * 1.25;
+    celFace(c, { ...P, blush: P.blush ?? .3 }, C, { face: { ex: 66, ey: 4, my: 76, bx: 112, by: 48, k: r / 170 } , seed: 19 });
+    if ((P.sweat || 0) > .02) celSweat(c, -r * .9, -r * .3, clamp(P.sweat) * .8);
+    CEL.inkK = ik;
+    A.head = at(0, 0); A.top = at(0, -r * 1.62);
+  });
+  // the front arms
+  for (const sd of [-1, 1]) {
+    const S = [sd * 58, -196], T = (sd < 0 ? P.hL : P.hR) || [sd * 70, -120], [el, wr] = celIK(S, T, 46, 44, [sd, .5]);
+    celShape(c, celTube([S, el, wr], [36, 32, 28]), C.skin, { dense: true, ...sk });
+    celBand(c, el, wr, .76, 32, 8, C.gold);
+    const d = v2.norm(v2.sub(wr, el)), hc = v2.add(wr, v2.mul(d, 12)), rot = Math.atan2(d[1], d[0]), kind = (sd < 0 ? P.handL : P.handR) || 'open';
+    if (kind === 'point') celShape(c, celTube([hc, v2.add(hc, v2.mul(d, 34))], [13, 11]), C.skin, { dense: true, w: 3.5 });
+    celOval(c, hc[0], hc[1], kind === 'open' ? 20 : 17, 15, C.skin, { ...sk, rot });
+    A[sd < 0 ? 'handL' : 'handR'] = at(...hc);
+  }
+  c.restore();
+  for (const [px, rot] of [[-150, -1.2], [150, 1.2], [-84, -.6], [84, .6], [-26, -.15], [26, .15]]) petal(px, -10, 44, 70, rot, C.lotus);
+  c.restore();
+  return A;
 }
