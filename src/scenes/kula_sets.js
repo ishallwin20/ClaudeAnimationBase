@@ -298,7 +298,7 @@ const RV = (() => {
     key.color.copy(P.key); key.intensity = P.keyK; key.position.copy(md).multiplyScalar(100); key.target.position.set(0, 0, 0);
     fill.intensity = P.fillK;
     THAI.visible = place === 'thai'; KASHI.visible = place === 'kashi'; BOITA.visible = place === 'boita';
-    bank.visible = place !== 'kashi'; bank.material.color.set(place === 'boita' ? '#1C1E36' : '#0A0A18');
+    bank.visible = place !== 'kashi' && o.bank !== false; bank.material.color.set(place === 'boita' ? '#1C1E36' : '#0A0A18');
     if (place === 'thai') {
       const kr = o.kr ?? 1;
       HERO.position.y = .006 * Math.sin(t * 1.3); HERO.rotation.set(.02 * Math.sin(t * 1.1), .1 * t * .2 + (o.heroYaw ?? 0), .02 * Math.cos(t * .9)); HERO.flame.set(t, kr);
@@ -419,4 +419,65 @@ const MP = (() => {
     if (o.moon) { const [d, sz] = o.moon, v = V3(...d).normalize(); moonS.visible = true; moonS.position.copy(CAM3.position).addScaledVector(v, 8000); moonS.scale.setScalar(8000 * sz); } else moonS.visible = false;
   };
   return { scene, mood, set, at, atS, h, hy, LINES, ROUTE, BEAM, LAMPS, along, sun, hemi };
+})();
+
+// ================= HM (ad 115): one home's diya =================
+// a niche (maadam) in a lime-washed wall, a kolam on the red-oxide floor below, a small brass agal vilakku with ghee
+// and a cotton wick on a brass plate; a window off to the left throws bar shadows that sweep with the sun (a time-lapse:
+// o.day 0..1 per day, o.night 0..1 = how dark), the diya lit every evening.
+const HM = (() => {
+  const S = new THREE.Scene(); S.background = new THREE.Color('#0A0706');
+  const hemi = new THREE.HemisphereLight('#FFE6C8', '#3A2418', .25); S.add(hemi);
+  const sun = new THREE.DirectionalLight('#FFE2B0', 2); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -2, right: 2, top: 2, bottom: -2, near: .1, far: 12 }); sun.shadow.bias = -.0008; sun.shadow.radius = 3;
+  S.add(sun, sun.target); sun.target.position.set(0, .9, -.3);
+  const lime = tex3('hmLime', 512, 512, (g, w, h) => { g.fillStyle = '#E8DCC4'; g.fillRect(0, 0, w, h); const r = lcg(3); for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(${r() < .5 ? '150,120,90' : '255,250,240'},${.03 + r() * .06})`; g.beginPath(); g.arc(r() * w, r() * h, 2 + r() * 22, 0, TAU); g.fill(); } for (let i = 0; i < 30; i++) { g.strokeStyle = 'rgba(120,90,60,.12)'; g.lineWidth = 1; g.beginPath(); let x = r() * w, y = r() * h; g.moveTo(x, y); for (let k = 0; k < 6; k++) { x += (r() - .5) * 40; y += r() * 30; g.lineTo(x, y); } g.stroke(); } });
+  const wallM = new THREE.MeshStandardMaterial({ map: lime.rep(2, 2), roughness: .95 });
+  // the wall with the niche cut in: three boxes round an arched hole, the niche's back and floor
+  const WZ = -.6, NW = .5, NH = .62, NY = .95;
+  block3(S, 4, NY, .3, wallM, [0, 0, WZ]);
+  block3(S, 1.75, 3, .3, wallM, [-(NW / 2 + .875), 0, WZ]); block3(S, 1.75, 3, .3, wallM, [NW / 2 + .875, 0, WZ]);
+  block3(S, NW, 3 - NY - NH, .3, wallM, [0, NY + NH, WZ]);
+  const arch = new THREE.Shape(); arch.moveTo(-NW / 2, 0); arch.lineTo(-NW / 2, NH); arch.lineTo(NW / 2, NH); arch.lineTo(NW / 2, 0); const hole = new THREE.Path(); hole.moveTo(-NW / 2, 0); hole.lineTo(-NW / 2, NH - NW / 2); hole.absarc(0, NH - NW / 2, NW / 2, Math.PI, 0, true); hole.lineTo(NW / 2, 0); arch.holes.push(hole);
+  mesh3(S, new THREE.ExtrudeGeometry(arch, { depth: .3, bevelEnabled: false }), wallM, [0, NY, WZ - .15]);
+  block3(S, NW, NH, .02, new THREE.MeshStandardMaterial({ color: '#C8B494', roughness: 1 }), [0, NY, WZ - .14]);
+  block3(S, NW + .12, .04, .38, new THREE.MeshStandardMaterial({ color: '#6A4A36', roughness: .8 }), [0, NY - .04, WZ + .02]);
+  // the floor: red oxide, a kolam of rice flour
+  const floorT = tex3('hmFloor', 1024, 1024, (g, w, h) => { g.fillStyle = '#7A2A1C'; g.fillRect(0, 0, w, h); const r = lcg(8); for (let i = 0; i < 300; i++) { g.fillStyle = `rgba(0,0,0,${r() * .08})`; g.beginPath(); g.arc(r() * w, r() * h, 10 + r() * 60, 0, TAU); g.fill(); }
+    g.strokeStyle = 'rgba(250,246,236,.92)'; g.lineWidth = 7; g.lineCap = 'round'; const cx = w / 2, cy = h * .42;
+    for (let i = -3; i <= 3; i++) for (let j = -3; j <= 3; j++) if (Math.abs(i) + Math.abs(j) <= 4) { g.fillStyle = 'rgba(250,246,236,.95)'; g.beginPath(); g.arc(cx + i * 52, cy + j * 52, 6, 0, TAU); g.fill(); }
+    for (let k = 0; k < 4; k++) { g.save(); g.translate(cx, cy); g.rotate(k * Math.PI / 2); g.beginPath(); g.moveTo(0, -26); g.bezierCurveTo(60, -80, 120, -40, 104, 0); g.bezierCurveTo(120, 40, 60, 80, 0, 26); g.stroke(); g.beginPath(); g.moveTo(26, 0); g.bezierCurveTo(80, -150, 150, -150, 182, -182); g.stroke(); g.restore(); }
+    g.beginPath(); g.arc(cx, cy, 250, 0, TAU); g.stroke(); });
+  mesh3(S, new THREE.PlaneGeometry(4, 3), new THREE.MeshStandardMaterial({ map: floorT, roughness: .55, metalness: .05 }), [0, 0, .9], { rot: [-Math.PI / 2, 0, 0] });
+  // the window frame off to the left: casts the bars' shadow (it isn't seen)
+  const win = new THREE.Group(); S.add(win); win.position.set(-1.7, 1.25, .9); win.rotation.y = .9;
+  const wm = new THREE.MeshStandardMaterial({ color: '#2A1A10', roughness: .9 });
+  block3(win, 1.6, .5, .1, wm, [0, -1.3, 0]); block3(win, 1.6, .7, .1, wm, [0, .55, 0]); block3(win, .5, 1.4, .1, wm, [-.55, -.8, 0]); block3(win, .5, 1.4, .1, wm, [.55, -.8, 0]);
+  for (let i = -2; i <= 2; i++) mesh3(win, new THREE.CylinderGeometry(.012, .012, .62, 6), wm, [i * .055, -.5, 0]);
+  win.visible = false;
+  // the diya: a brass plate, a brass agal on its little foot, ghee, the wick, the flame
+  const brass = new THREE.MeshStandardMaterial({ color: '#C8902E', roughness: .35, metalness: .85, envMapIntensity: .6 });
+  const D = new THREE.Group(); S.add(D); D.position.set(0, NY, WZ + .01);
+  mesh3(D, lathe3([[0, 0], [.13, 0], [.14, .008], [.13, .012], [0, .012]], 40), brass, [0, 0, 0]);
+  mesh3(D, lathe3([[0, 0], [.03, 0], [.025, .02], [.018, .04], [.03, .05], [.065, .065], [.075, .085], [.07, .09], [.055, .072], [0, .068]], 40), brass, [0, .012, 0]);
+  mesh3(D, new THREE.CylinderGeometry(.058, .058, .004, 24), new THREE.MeshStandardMaterial({ color: '#F0C060', roughness: .2, emissive: '#6A4010', emissiveIntensity: .4 }), [0, .088, 0]);
+  mesh3(D, new THREE.CylinderGeometry(.004, .005, .03, 6), new THREE.MeshStandardMaterial({ color: '#F8F0E0', roughness: 1 }), [.04, .1, 0], { rot: [0, 0, -.6] });
+  const FL = flame3(D, [.05, .112, 0], 1.6, { power: .35, range: 2.5, shadow: true, seed: 3 });
+  // flowers by the plate
+  const fl = new THREE.MeshStandardMaterial({ color: '#F2A01A', roughness: .9 }), fl2 = new THREE.MeshStandardMaterial({ color: '#E8E0D0', roughness: .9 });
+  const rf = lcg(4); for (let i = 0; i < 14; i++) mesh3(D, new THREE.IcosahedronGeometry(.016, 1), i % 3 ? fl : fl2, [-.17 + rf() * .06, .014, (rf() - .5) * .1]);
+  const bounce = new THREE.PointLight('#FFB070', 0, 3, 1.5); bounce.position.set(0, .3, .5); D.add(bounce);
+  // o: day (time of day, 0..1 = one full day), dark (override darkness), lit (0..1)
+  function set(t, o = {}) {
+    const d = (o.day ?? .8) % 1, sunUp = Math.sin(d * TAU - Math.PI / 2) * -1;   // d .25 noon-ish, .75 midnight
+    const el = Math.sin((d) * TAU), dayK = clamp(el * 2 + .3);
+    const az = -1.2 + d * 2.4;
+    sun.position.set(-2 * Math.cos(az) - 1, 1.2 + 1.6 * Math.max(0, el), 2 * Math.sin(az) + 1.6);
+    sun.intensity = 1.3 * dayK; sun.color.setRGB(1, lerp(.7, .95, clamp(el * 2)), lerp(.5, .86, clamp(el * 2)));
+    hemi.intensity = lerp(.06, .4, dayK); hemi.color.setRGB(lerp(.45, .9, dayK), lerp(.55, .92, dayK), lerp(.9, 1, dayK));
+    const lit = o.lit ?? clamp(1 - dayK * 1.4); FL.set(t, lit); bounce.intensity = .6 * lit;
+    S.background.setRGB(lerp(.02, .3, dayK), lerp(.02, .22, dayK), lerp(.04, .16, dayK));
+    return o.exposure ?? 1;
+  }
+  return { S, set, D, FL, NY, WZ };
 })();

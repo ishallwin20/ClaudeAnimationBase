@@ -1,4 +1,6 @@
-// onemoon_aru.js: Arunachala for "One moon" (ad 114), copied from ad 110's deepam_sets.js (SET renamed ARU, its pillar3 arPillar3 so cine3d_india.js keeps its own).
+// kula_aru.js: Arunachala for ad 115 (the Parvatha Raja Kulam reel), from ad 114's onemoon_aru.js (ad 110's world, SET renamed ARU).
+//   Ad 115 adds: day and gold skies; the real kopparai (5.75 ft, saffron, சிவ சிவ, a linga) in place of the 3 m cauldron,
+//   ghee tins and the coiled cloth wick round it (KULA), and the 1,500 m cloth stood up beside the hill (CLOTH).
 //   Arunachala from real ground (src/data/aruna_dem.js: SRTM heights round the hill at ~13 m; arunafar_dem.js: the
 //   plain for ~45 km around at ~175 m), coloured and lit by one terrain shader that can also glow from inside (molten
 //   cracks, uCrack; the whole hill red-hot, uHeat) and rise out of the plain (uRise), for the pillar cooling into the
@@ -116,6 +118,8 @@ const SKY_PAL = {
   blue:  { zen: '#060B26', mid: '#16245A', hor: '#5A4E86', glow: '#D86A48', stars: .55, neb: 0 },
   night: { zen: '#02040E', mid: '#081030', hor: '#1C2448', glow: '#000000', stars: 1, neb: 0 },
   dawn:  { zen: '#1A1E4A', mid: '#7A4A6A', hor: '#FF8A50', glow: '#FFB070', stars: .05, neb: 0 },
+  day:   { zen: '#2A5AA6', mid: '#6A98D4', hor: '#E8DCC8', glow: '#FFF2C8', stars: 0, neb: 0 },
+  gold:  { zen: '#24407E', mid: '#7A86B0', hor: '#FFC890', glow: '#FFD8A0', stars: 0, neb: 0 },
   void:  { zen: '#020106', mid: '#05030C', hor: '#0A0610', glow: '#000000', stars: 1, neb: 1 },
 };
 const SKY_VS = 'varying vec3 vD; void main() { vD = position; gl_Position = projectionMatrix * vec4(mat3(viewMatrix) * position, 1.); gl_Position.z = gl_Position.w * .99999; }';
@@ -332,20 +336,121 @@ const fireTex3 = (n) => tex3('dfire' + n, 128, 256, (g, w, h) => {
   g.fillStyle = gc; tongue(64, h * .5, 28, 0); g.fill();
 });
 const smokeTex3 = () => tex3('dsmoke', 128, 128, (g) => { const r = lcg(3); g.filter = 'blur(8px)'; for (let i = 0; i < 18; i++) { const x = 30 + r() * 68, y = 30 + r() * 68, rr = 14 + r() * 22, gr = g.createRadialGradient(x, y, 0, x, y, rr); gr.addColorStop(0, 'rgba(255,255,255,.4)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(x - rr, y - rr, 2 * rr, 2 * rr); } });
+// ---------- ad 115: the kopparai's paint, the ghee tins and the wick, the cloth stood up ----------
+// the kopparai's skin (u round it, v up it: 0 at the foot, 1 at the rim): saffron over copper, worn; soot down from the
+// rim; சிவ சிவ in white twice round, a linga with three bands of ash between; drawn once the Tamil font is in
+const KOPTEX = (() => {
+  const cv = document.createElement('canvas'); cv.width = 2048; cv.height = 768;
+  const tex = new THREE.CanvasTexture(cv); tex.wrapS = THREE.RepeatWrapping; tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = MAX_ANISO;
+  const K = { tex, drawn: false };
+  K.draw = () => {
+    const g = cv.getContext('2d'), w = cv.width, h = cv.height, r = lcg(41);
+    const fontOk = document.fonts && document.fonts.check('800 120px "Noto Serif Tamil"', 'சிவ');
+    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#C85A1C'); gr.addColorStop(.5, '#E2762A'); gr.addColorStop(1, '#B4501C');
+    g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    // mottling and worn patches showing the copper
+    for (let i = 0; i < 900; i++) { const x = r() * w, y = r() * h, rr = 4 + r() * 40; g.fillStyle = `rgba(${r() < .5 ? '120,40,10' : '255,170,90'},${.04 + r() * .06})`; g.beginPath(); g.ellipse(x, y, rr * 1.6, rr, 0, 0, TAU); g.fill(); }
+    for (let i = 0; i < 60; i++) { const x = r() * w, y = h * (.05 + r() * .9), rr = 6 + r() * 26; g.fillStyle = `rgba(150,80,40,${.35 + r() * .3})`; g.beginPath(); g.ellipse(x, y, rr * 1.4, rr * .7, r(), 0, TAU); g.fill(); }
+    // the bands: white, red, white, near the top and the foot
+    const bandY = (y, c1) => { g.fillStyle = c1; g.fillRect(0, y, w, 16); };
+    bandY(h * .2, 'rgba(250,240,220,.9)'); bandY(h * .2 + 22, '#A8201A'); bandY(h * .84, '#A8201A'); bandY(h * .84 + 22, 'rgba(250,240,220,.85)');
+    // the words (சிவ over சிவ) and the lingas, four of each, alternating round the pot
+    const linga = (x, ly, sc) => {
+      g.save(); g.translate(x, ly); g.scale(sc, sc); g.fillStyle = '#F8F0E0';
+      g.beginPath(); g.ellipse(0, 70, 110, 26, 0, 0, TAU); g.fill(); g.fillRect(-92, 70, 184, 36); g.beginPath(); g.ellipse(0, 106, 92, 20, 0, 0, TAU); g.fill();
+      g.beginPath(); g.moveTo(100, 72); g.lineTo(150, 62); g.lineTo(150, 82); g.closePath(); g.fill();
+      g.beginPath(); g.moveTo(-52, 66); g.lineTo(-52, -70); g.ellipse(0, -70, 52, 60, 0, Math.PI, 0); g.lineTo(52, 66); g.fill();
+      g.fillStyle = '#A8201A'; for (let i = 0; i < 3; i++) g.fillRect(-46, -60 + i * 18, 92, 7); g.beginPath(); g.arc(0, -10, 8, 0, TAU); g.fill(); g.restore();
+    };
+    for (let q = 0; q < 4; q++) {
+      const cx = w * (.125 + q * .25);
+      if (fontOk) { g.font = '800 128px "Noto Serif Tamil"'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 12; g.strokeStyle = '#7A1A10';
+        for (const [y, txt] of [[h * .42, 'சிவ'], [h * .64, 'சிவ']]) { g.strokeText(txt, cx, y); g.fillStyle = '#FFF6E6'; g.fillText(txt, cx, y); } }
+      for (const x of q ? [w * q * .25] : [0, w]) linga(x, h * .5, .72);
+    }
+    // soot from the rim, drips of black ghee running down
+    const sg = g.createLinearGradient(0, 0, 0, h * .3); sg.addColorStop(0, 'rgba(12,8,6,1)'); sg.addColorStop(.35, 'rgba(20,12,8,.85)'); sg.addColorStop(1, 'rgba(20,12,8,0)');
+    g.fillStyle = sg; g.fillRect(0, 0, w, h * .3);
+    for (let i = 0; i < 140; i++) { const x = r() * w, l = 30 + Math.pow(r(), 2) * h * .45, ww = 3 + r() * 10; const dg = g.createLinearGradient(0, 0, 0, l); dg.addColorStop(0, 'rgba(14,9,6,.85)'); dg.addColorStop(1, 'rgba(14,9,6,0)'); g.fillStyle = dg; g.beginPath(); g.moveTo(x - ww / 2, 0); g.lineTo(x + ww / 2, 0); g.lineTo(x + ww * .3, l); g.arc(x, l, ww * .3, 0, Math.PI); g.fill(); }
+    // dust at the foot
+    const dg = g.createLinearGradient(0, h * .88, 0, h); dg.addColorStop(0, 'rgba(60,40,30,0)'); dg.addColorStop(1, 'rgba(60,40,30,.8)'); g.fillStyle = dg; g.fillRect(0, h * .88, w, h * .12);
+    tex.needsUpdate = true; K.drawn = fontOk;
+  };
+  return K;
+})();
+// round the pot (local to the summit group): 15 kg ghee tins stacked, and the wick: a long cotton cloth coiled in a heap
+function kulaProps3(G) {
+  const P = new THREE.Group(); G.add(P);
+  const tinTex = tex3('kTin', 256, 256, (g, w, h) => {
+    const gr = g.createLinearGradient(0, 0, w, 0); gr.addColorStop(0, '#9AA0A6'); gr.addColorStop(.5, '#E4E8EA'); gr.addColorStop(1, '#8A9096'); g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    g.fillStyle = '#F2C230'; g.fillRect(0, h * .3, w, h * .42); g.fillStyle = '#1E6A3A'; g.fillRect(0, h * .3, w, 12); g.fillRect(0, h * .72 - 12, w, 12);
+    g.fillStyle = '#B8301A'; g.beginPath(); g.ellipse(w / 2, h * .51, w * .28, h * .12, 0, 0, TAU); g.fill();
+    g.fillStyle = 'rgba(40,30,20,.5)'; for (let y = 8; y < h; y += 40) g.fillRect(0, y, w, 2);
+  });
+  const tinM = new THREE.MeshStandardMaterial({ map: tinTex, roughness: .5, metalness: .4, envMapIntensity: .35 });
+  const tins = new THREE.Group(); P.add(tins); tins.position.set(1.15, 0, .55); tins.rotation.y = -.5;
+  const rt = lcg(77);
+  for (let l = 0; l < 3; l++) for (let i = 0; i < 4 - l; i++) for (let j = 0; j < 3 - l; j++) mesh3(tins, new THREE.BoxGeometry(.24, .32, .24), tinM, [(i - (3 - l) / 2) * .25 + l * .02, .16 + l * .325, (j - (2 - l) / 2) * .25], { rot: [0, (rt() - .5) * .12, 0] });
+  // the cloth: a heap of loops, white going to ghee-yellow, soft
+  const cloth = new THREE.MeshStandardMaterial({ color: '#F4EEDC', roughness: .95, metalness: 0 });
+  const coil = new THREE.Group(); P.add(coil); coil.position.set(-1.05, 0, .75);
+  const rc = lcg(9);
+  for (let i = 0; i < 9; i++) { const rr = .55 - i * .035 + rc() * .04; mesh3(coil, new THREE.TorusGeometry(rr, .075, 8, 40), cloth, [rc() * .05, .08 + i * .11, rc() * .05], { rot: [Math.PI / 2 + (rc() - .5) * .12, (rc() - .5) * .12, 0], scale: [1, 1, .7] }); }
+  // a strip of it running from the heap up over the rim
+  const curve = new THREE.CatmullRomCurve3([V3(-1.05, 1.05, .75), V3(-.8, 1.3, .55), V3(-.5, 1.75, .3), V3(-.25, 1.92, .15), V3(0, 1.84, 0)]);
+  const strip = mesh3(P, new THREE.TubeGeometry(curve, 40, .06, 8, false), cloth, [0, 0, 0]);
+  P.set = (t, o = {}) => { tins.visible = !!o.tins; coil.visible = strip.visible = !!o.coil; };
+  return P;
+}
+// the wick stood up: a ribbon of cloth 1,500 m tall beside the hill, measured from sea level like the hill's 813 m (so
+// its foot is 209 m under the plain); k 0..1 unrolls it upward; it ripples a little; drawn wide enough to read from
+// kilometres away (a picture of a length, not of a width)
+const CLOTH_X = -2100, CLOTH_Z = 1500, SEA_Y = SUMMIT.y - 813;
+function cloth3(scene) {
+  const G = new THREE.Group(); scene.add(G); G.position.set(CLOTH_X, 0, CLOTH_Z);
+  const tx = tex3('kCloth', 128, 1024, (g, w, h) => {
+    g.fillStyle = '#F6F0E2'; g.fillRect(0, 0, w, h);
+    const r = lcg(5); for (let i = 0; i < 260; i++) { g.fillStyle = `rgba(${r() < .5 ? '210,190,150' : '255,255,255'},${.1 + r() * .2})`; g.fillRect(r() * w, r() * h, 1 + r() * 2, 10 + r() * 60); }
+    g.fillStyle = 'rgba(200,170,110,.35)'; g.fillRect(0, 0, 10, h); g.fillRect(w - 10, 0, 10, h);
+  });
+  const geo = new THREE.PlaneGeometry(150, 1500, 4, 120); geo.translate(0, 750, 0);
+  const base = geo.attributes.position.array.slice();
+  const m = new THREE.MeshStandardMaterial({ map: tx.rep(1, 12), roughness: .9, side: THREE.DoubleSide, emissive: '#FFF2DA', emissiveIntensity: .25 });
+  const rib = mesh3(G, geo, m, [0, SEA_Y, 0], { cast: false });
+  const glowS = glow3(G, [0, 0, 0], 120, '#FFE8C0', .5);
+  G.set = (t, o) => {
+    const k = clamp(o.k ?? 1); G.visible = k > .001; if (!G.visible) return;
+    const P = geo.attributes.position;
+    for (let i = 0; i < P.count; i++) { const y = base[i * 3 + 1], x = base[i * 3]; const s = y / 1500; P.setXYZ(i, x + Math.sin(y * .01 - t * 1.5) * 6 * s, y * k, base[i * 3 + 2] + Math.sin(y * .006 - t * 1.1 + x * .05) * 10 * s); }
+    P.needsUpdate = true; geo.computeVertexNormals();
+    glowS.position.set(0, SEA_Y + 1500 * k, 0); glowS.scale.setScalar(o.tipGlow ?? 140); glowS.material.opacity = .5 * (o.tipA ?? 1);
+    G.rotation.y = o.yaw ?? 0; m.emissiveIntensity = o.em ?? .5;
+  };
+  G.top = (k = 1) => V3(CLOTH_X, SEA_Y + 1500 * k, CLOTH_Z);
+  return G;
+}
 function deepam3(scene) {
   const G = new THREE.Group(); scene.add(G);
   const base = SUMMIT.clone(); G.position.copy(base);
-  const copper = new THREE.MeshStandardMaterial({ color: '#8A4A28', metalness: .5, roughness: .5, envMapIntensity: .5, emissive: '#5A2210', emissiveIntensity: .5 });
-  const sooty = new THREE.MeshStandardMaterial({ color: '#2A1A12', metalness: .2, roughness: .85 });
-  // the cauldron: ~3 m tall, ~1.6 m across, on a ring of stones
-  mesh3(G, lathe3([[0, 0], [.75, 0], [.85, .2], [.8, 2.2], [.92, 2.5], [.95, 2.9], [.85, 2.9], [.7, 2.6], [0, 2.6]], 40), copper, [0, .4, 0]);
-  mesh3(G, new THREE.CylinderGeometry(.84, .84, .1, 32), sooty, [0, 3.2, 0]);
+  // the kopparai (ad 115): 5.75 ft (1.75 m), wider at the mouth, saffron paint over copper, சிவ சிவ and a linga on it,
+  // two iron bands, the rim black with soot, standing on a low iron ring; KOP_H is its height
+  const kop = new THREE.MeshStandardMaterial({ map: KOPTEX.tex, roughness: .72, metalness: .15, envMapIntensity: .4 });
+  const iron = new THREE.MeshStandardMaterial({ color: '#2A2420', roughness: .7, metalness: .5 });
+  const sooty = new THREE.MeshStandardMaterial({ color: '#1A120E', metalness: .2, roughness: .9 });
+  const pot = mesh3(G, lathe3([[0, 0], [.34, 0], [.36, .04], [.37, .3], [.41, .9], [.45, 1.5], [.47, 1.66], [.5, 1.7], [.5, 1.75], [.46, 1.75], [.44, 1.6], [0, 1.6]], 48), kop, [0, .12, 0]);
+  for (const [y, r] of [[.32, .375], [1.52, .462]]) mesh3(G, new THREE.TorusGeometry(r, .018, 6, 48), iron, [0, .12 + y, 0], { rot: [Math.PI / 2, 0, 0] });
+  mesh3(G, new THREE.TorusGeometry(.42, .05, 6, 32), iron, [0, .08, 0], { rot: [Math.PI / 2, 0, 0] });
+  for (let i = 0; i < 4; i++) { const a = i / 4 * TAU + .4; mesh3(G, new THREE.BoxGeometry(.06, .14, .06), iron, [Math.cos(a) * .42, .04, Math.sin(a) * .42]); }
+  mesh3(G, new THREE.CylinderGeometry(.44, .44, .04, 32), sooty, [0, 1.8, 0]);
+  { const P = pot.geometry.attributes.position, UV = pot.geometry.attributes.uv; for (let i = 0; i < P.count; i++) UV.setY(i, clamp(P.getY(i) / 1.75)); UV.needsUpdate = true; }
+  const KP = kulaProps3(G);
+  const ROCKS = new THREE.Group(); G.add(ROCKS);
   const rr = lcg(5), rockM = new THREE.MeshStandardMaterial({ color: '#3A322C', roughness: 1, flatShading: false });
-  for (let i = 0; i < 50; i++) { const a = rr() * TAU, r = 1.4 + Math.pow(rr(), .8) * 13; mesh3(G, new THREE.IcosahedronGeometry(.25 + rr() * .6, 1), rockM, [Math.cos(a) * r, arH(Math.cos(a) * r, Math.sin(a) * r) - TOP_Y + .45 - .25 * rr(), Math.sin(a) * r], { rot: [rr() * 3, rr() * 3, rr() * 3], scale: [1, .6 + rr() * .4, 1] }); }
+  for (let i = 0; i < 50; i++) { const a = rr() * TAU, r = 2.6 + Math.pow(rr(), .8) * 12; mesh3(ROCKS, new THREE.IcosahedronGeometry(.25 + rr() * .6, 1), rockM, [Math.cos(a) * r, arH(Math.cos(a) * r, Math.sin(a) * r) - TOP_Y + .45 - .25 * rr(), Math.sin(a) * r], { rot: [rr() * 3, rr() * 3, rr() * 3], scale: [1, .6 + rr() * .4, 1] }); }
   // the fire: layers of flame sprites over the rim
-  const top = V3(0, 3.2, 0), F = [];
+  const top = V3(0, 1.86, 0), F = [];
   for (let i = 0; i < 7; i++) { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: fireTex3(i % 4), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false })); s.center.set(.5, .05); s.position.copy(top); s.userData.ph = i * 1.7; G.add(s); F.push(s); }
-  const halo = glow3(G, [0, 6, 0], 30, '#FF8A30', .6), halo2 = glow3(G, [0, 6, 0], 140, '#FF6A20', .25);
+  const halo = glow3(G, [0, 4.5, 0], 30, '#FF8A30', .6), halo2 = glow3(G, [0, 4.5, 0], 140, '#FF6A20', .25);
   const beacon = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex3(), color: '#FFB060', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, fog: false, sizeAttenuation: false }));
   beacon.position.set(0, 6, 0); beacon.renderOrder = 5; G.add(beacon);
   const light = new THREE.PointLight('#FF8A3A', 0, 240, 1.5); light.position.set(0, 9, 0); light.castShadow = true; light.shadow.mapSize.set(1024, 1024); light.shadow.bias = -.002; light.shadow.camera.near = 1; light.shadow.camera.far = 900; G.add(light);
@@ -355,10 +460,12 @@ function deepam3(scene) {
   const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(260 * 3), 3));
   const sparks = new THREE.Points(sg, new THREE.PointsMaterial({ color: '#FFB050', size: 3, sizeAttenuation: false, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false })); sparks.frustumCulled = false; G.add(sparks);
   G.set = (t, on = 1, o = {}) => {
-    on = clamp(on); G.visible = on > .001;
+    on = clamp(on); G.visible = o.hide !== true; if (!KOPTEX.drawn) KOPTEX.draw();
+    pot.rotation.y = o.potYaw ?? 0; KP.set(t, o); ROCKS.visible = o.rocks !== false;
     const k = on * (1 + (o.flare ?? 0) * .8), fk = o.size ?? 1;
+    F.forEach(s => s.visible = on > .002); halo.visible = halo2.visible = beacon.visible = on > .002;
     F.forEach((s, i) => { const ph = s.userData.ph, f = 1 + .18 * vnoise(t * 5 + ph, 3) + .08 * Math.sin(t * 17 + ph * 4);
-      s.scale.set((3.2 + .9 * Math.sin(ph)) * k * fk, (8 + 3 * vnoise(t * 3 + ph, 1)) * k * f * fk, 1); s.material.rotation = .1 * vnoise(t * 4 + ph, 2) + (i - 3) * .04; s.material.opacity = o.flameA ?? .85; });
+      s.scale.set((3.2 + .9 * Math.sin(ph)) * k * fk, (8 + 3 * vnoise(t * 3 + ph, 1)) * k * f * fk, 1); s.material.rotation = .1 * vnoise(t * 4 + ph, 2) + (i - 3) * .04; s.material.opacity = (o.flameA ?? .85) * Math.min(1, on * 3); });
     halo.scale.setScalar(30 * k * fk * (.95 + .05 * Math.sin(t * 13))); halo.material.opacity = .55 * on * (o.halo ?? 1);
     halo2.scale.setScalar(110 * k * fk); halo2.material.opacity = .16 * on * (o.haze ?? 1);
     beacon.scale.setScalar((o.beacon ?? .022) * on * (.95 + .05 * Math.sin(t * 11))); beacon.material.opacity = (o.beaconA ?? .9) * on;
@@ -493,7 +600,7 @@ const ARU = (() => {
   // the town, the girivalam road and its crowd, the villages
   // beyond the plain's data: one flat ground to the horizon, under the fog
   const plane = mesh3(S, new THREE.PlaneGeometry(400000, 400000), mat, [0, -70, 0], { rot: [-Math.PI / 2, 0, 0], cast: false });
-  const T3 = temple3(S), FIRE = deepam3(S), PIL = arPillar3(S);
+  const T3 = temple3(S), FIRE = deepam3(S), PIL = arPillar3(S), CLOTH = cloth3(S);
   const BRAHMA = rival3(S, '#FFC860', '#FF9A30'), VISHNU = rival3(S, '#5AA8FF', '#2A5AE0');
   const BOAR = beast3(S, boarTex3(), 520, 325, '#5AA8FF'), SWAN = beast3(S, swanTex3(), 500, 500, '#FFE6A0');
   const R = lcg(110), town = [], crowd = [], vill = [];
@@ -560,8 +667,9 @@ const ARU = (() => {
     const U = mat.userData.U; U.uHeat.value = o.heat ?? 0; U.uCrack.value = o.crack ?? 0; U.uRise.value = o.rise ?? 1; U.uTime.value = t;
     LT.set(t, gOn ? (o.town ?? 1) : 0); LC.set(t, gOn ? (o.crowd ?? 1) : 0); LV.set(t, gOn ? (o.vill ?? 1) : 0);
     T3.visible = gOn && o.temple !== false; T3.set(t, o.templeO || {});
-    FIRE.set(t, gOn ? (o.fire ?? 1) : 0, o.fireO || {});
+    FIRE.set(t, gOn ? (o.fire ?? 1) : 0, gOn ? (o.fireO || {}) : { hide: true });
     if (o.pillar) PIL.set(t, o.pillar); else PIL.visible = false;
+    if (o.cloth) CLOTH.set(t, o.cloth); else CLOTH.visible = false;
     BRAHMA.set(t, o.brahma ?? 0, o.brahmaO || {}); VISHNU.set(t, o.vishnu ?? 0, { ph: 2, ...(o.vishnuO || {}) });
     if (o.brahma) BRAHMA.position.set(...(o.brahmaAt || [-1400, 0, 0])); if (o.vishnu) VISHNU.position.set(...(o.vishnuAt || [1400, 0, 0]));
     if (o.boar) BOAR.set(...o.boar); else BOAR.visible = false;
@@ -571,5 +679,5 @@ const ARU = (() => {
     if (o.moon) moon.place(CAM3, ...o.moon); else moon.visible = false;
     return o.exposure ?? 1;
   };
-  return { S, set, sky, moon, T3, FIRE, PIL, BRAHMA, VISHNU, BOAR, SWAN, near, far, mat, GP, sun };
+  return { S, set, sky, moon, T3, FIRE, PIL, CLOTH, BRAHMA, VISHNU, BOAR, SWAN, near, far, mat, GP, sun };
 })();

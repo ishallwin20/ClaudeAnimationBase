@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>One moon · 3D studio</title>
+<title>Parvatha Raja Kulam · 3D studio</title>
 <!-- The 3D style's studio (see 3D_GUIDE.md): cine.js with a three.js world under it. On main it shows the shrine set
      in its three moods; a 3D reel copies this page to studio.html, loads src/config.js instead of the inline PROJECT,
      and swaps in its scene. -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Marcellus&family=Poppins:wght@500;700&family=Tiro+Devanagari+Sanskrit&family=Noto+Serif+Tamil:wght@600;800&family=Noto+Serif+Thai:wght@700&family=Noto+Serif+Khmer:wght@700&family=Noto+Sans+Grantha&family=Noto+Sans+Oriya:wght@700&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Marcellus&family=Poppins:wght@500;700&family=Tiro+Devanagari+Sanskrit&family=Noto+Serif+Tamil:wght@600;800&display=block">
 <style>
   html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
   main { padding: 12px; display: grid; gap: 8px; }
@@ -19,7 +19,7 @@
 <body>
 <main>
   <canvas id="out" width="1080" height="1920"></canvas>
-  <div class="bar"><input id="scrub" type="range" min="0" max="72" step="0.0417" value="0"><span id="tt">loading…</span></div>
+  <div class="bar"><input id="scrub" type="range" min="0" max="78" step="0.0417" value="0"><span id="tt">loading…</span></div>
 </main>
 <script src="src/config.js"></script>
 <!-- engine, sets -->
@@ -28,6 +28,9 @@
 <script src="src/cine3d.js"></script>
 <script src="src/cine3d_fx.js"></script>
 <script src="src/cine_sets.js"></script>
+<script src="src/cine_shiva.js"></script>
+<script src="src/cine_devi.js"></script>
+<script src="src/cine_cast.js"></script>
 <script src="src/cine3d_kailash.js"></script>
 <script src="src/vendor/pako_inflate.min.js"></script>
 <script src="src/data/aruna_dem.js"></script>
@@ -39,11 +42,12 @@
 <script src="src/data/hdri_lamplit.js"></script>
 <script src="src/scenes/rk_images.js"></script>
 <!-- the scene -->
-<script src="src/scenes/onemoon_vo.js"></script>
-<script src="src/scenes/onemoon_tl.js"></script>
-<script src="src/scenes/onemoon_props.js"></script>
-<script src="src/scenes/onemoon_aru.js"></script>
-<script src="src/scenes/onemoon_sets.js"></script>
-<script src="src/scenes/onemoon.js"></script>
+<script src="src/scenes/kula_vo.js"></script>
+<script src="src/scenes/kula_tl.js"></script>
+<script src="src/scenes/kula_props.js"></script>
+<script src="src/scenes/kula_cast.js"></script>
+<script src="src/scenes/kula_aru.js"></script>
+<script src="src/scenes/kula_sets.js"></script>
+<script src="src/scenes/kula.js"></script>
 </body>
 </html>

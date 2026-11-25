@@ -1,0 +1,166 @@
+{
+  "name": "kula",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.3
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "It takes | *3,500 KILOS* of *GHEE* | to light this *MOUNTAIN.*"
+      ],
+      "tts": "It takes three thousand five hundred kilos of ghee... to light this mountain.",
+      "hold": 0.8
+    },
+    {
+      "id": "diya",
+      "gap": 0.7,
+      "caps": [
+        "Enough to light | *ONE* home's diya | every evening…"
+      ],
+      "tts": "That's enough to light one home's diya, every evening...",
+      "hold": 0.3
+    },
+    {
+      "id": "years",
+      "gap": 0.55,
+      "caps": [
+        "for nearly | *1,000 YEARS.*"
+      ],
+      "tts": "for nearly a thousand years.",
+      "hold": 0.9
+    },
+    {
+      "id": "wick",
+      "gap": 1.1,
+      "caps": [
+        "Its wick: | *1,500 METRES* | of cotton cloth.",
+        "Stand it up: | nearly *TWICE* as tall | as the *MOUNTAIN.*"
+      ],
+      "tts": "Its wick? Fifteen hundred metres of cotton cloth. Stand it up... and it's nearly twice as tall as the mountain.",
+      "hold": 0.9
+    },
+    {
+      "id": "pot",
+      "gap": 1.0,
+      "caps": [
+        "It burns in a *COPPER* pot | taller than a *MAN,* | heavier than *FOUR.*"
+      ],
+      "tts": "It burns in a copper pot, taller than a man... and heavier than four.",
+      "hold": 0.7
+    },
+    {
+      "id": "carry",
+      "gap": 0.8,
+      "caps": [
+        "Over *40* people | carry it up the mountain, | on foot."
+      ],
+      "tts": "Over forty people carry it up the mountain, on foot.",
+      "hold": 1.1
+    },
+    {
+      "id": "fisher",
+      "gap": 1.0,
+      "caps": [
+        "And for generations, | only *ONE* community | has lit it: | *FISHERMEN.*"
+      ],
+      "tts": "And for generations, only one community has lit it... fishermen.",
+      "hold": 0.9
+    },
+    {
+      "id": "far",
+      "gap": 0.7,
+      "caps": [
+        "Fishermen? | On a mountain | *90 KM* from the *SEA?*"
+      ],
+      "tts": "Fishermen? On a mountain, ninety kilometres from the sea?",
+      "hold": 1.1
+    },
+    {
+      "id": "born",
+      "gap": 0.9,
+      "caps": [
+        "In the *TIRUVILAIYADAL PURANAM,* | *PARVATI* is born | on earth…",
+        "as the daughter | of a *FISHERMEN'S CHIEF.*"
+      ],
+      "tts": "In the Thiru-vilai-yaadal Puraanam, Parvati is born on earth, as the daughter of a fishermen's chief.",
+      "hold": 0.9
+    },
+    {
+      "id": "shark",
+      "gap": 0.8,
+      "caps": [
+        "A giant *SHARK* | terrorises their sea."
+      ],
+      "tts": "A giant shark terrorises their sea.",
+      "hold": 0.3
+    },
+    {
+      "id": "vow",
+      "gap": 0.6,
+      "caps": [
+        "The chief vows: | whoever catches it | *MARRIES* her."
+      ],
+      "tts": "The chief vows: whoever catches it, marries her.",
+      "hold": 0.9
+    },
+    {
+      "id": "net",
+      "gap": 0.8,
+      "caps": [
+        "A young fisherman | casts his *NET…* | and drags it in."
+      ],
+      "tts": "A young fisherman casts his net... and drags it in.",
+      "hold": 1.0
+    },
+    {
+      "id": "reveal",
+      "gap": 0.6,
+      "caps": [
+        "The fisherman… | was *SHIVA.*"
+      ],
+      "tts": "The fisherman... was Shiva.",
+      "hold": 0.3
+    },
+    {
+      "id": "nandi",
+      "gap": 0.9,
+      "caps": [
+        "And the shark? | *NANDI.*"
+      ],
+      "tts": "And the shark? Nandi.",
+      "hold": 1.1
+    },
+    {
+      "id": "clan",
+      "gap": 1.0,
+      "caps": [
+        "Those fishermen call themselves | *PARVATHA RAJA KULAM:* | the family of *PARVATI'S* father."
+      ],
+      "tts": "Those fishermen call themselves Parvatha Raaja Kulam... the family of Parvati's father.",
+      "hold": 0.9
+    },
+    {
+      "id": "bride",
+      "gap": 0.8,
+      "caps": [
+        "So every Karthigai, | the *BRIDE'S* family | climbs *HIS* mountain…",
+        "and lights | his *FIRE.*"
+      ],
+      "tts": "So every Karthigai, the bride's family climbs his mountain... and lights his fire.",
+      "hold": 1.6
+    },
+    {
+      "id": "ask",
+      "gap": 1.0,
+      "caps": [
+        "It burns for *11 DAYS.* | Who would *YOU* go see it with? | *TAG* them."
+      ],
+      "tts": "It burns for eleven days. Who would you go see it with? Tag them.",
+      "hold": 1.2
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-// onemoon_props.js: the 2D layer of "One moon" (ad 114), from ad 110's deepam_props.js: bands behind captions, big
+// kula_props.js: the 2D layer of ad 115, from ad 114's onemoon_props.js (ad 110's deepam_props.js): bands behind captions, big
 // titles, tags pinned to the 3D world, flashes and shakes; plus glyph tags in the region's scripts.
 const GOLD = '#F4C46A', CREAM = '#FFF3DC', EMBER = '#FF9A4A', BLUEL = '#9AD0FF', TAMIL = '"Noto Serif Tamil"';
 const at3 = (k, a, b) => a.map((v, i) => lerp(v, b[i], k));
@@ -88,4 +88,25 @@ function dot2(c, p, t, at, out, col = '255,210,120') {
   c.fillStyle = g; c.beginPath(); c.arc(x, y, 26, 0, TAU); c.fill();
   c.strokeStyle = `rgba(${col},${a * (1 - ((t - at) * .8 % 1))})`; c.lineWidth = 3; c.beginPath(); c.arc(x, y, r, 0, TAU); c.stroke();
   c.restore();
+}
+// ---------- ad 115 ----------
+// a big number over the top band (3,500 KG), popping in, with a small line under it
+function bigNum(c, t, at, out, big, small, o = {}) {
+  const a = seg(t, at, at + .25) * (1 - seg(t, out, out + .3)); if (a <= 0) return;
+  const y = o.y ?? 480; band(c, y - 150, y + 150, .5 * a);
+  text(c, big, 540, y, o.font || '700 130px Cinzel', GOLD, { pop: t - at, alpha: a, spacing: 6, glow: ['rgba(255,150,60,.5)', 32], maxW: 980 });
+  if (small) text(c, small, 540, y + 96, 'italic 46px Marcellus', CREAM, { pop: t - at - .12, alpha: a, glow: ['rgba(6,5,10,.95)', 16] });
+}
+// a dashed measuring line between two screen points
+function dashed2(c, A, B, a) { c.save(); c.globalAlpha = a; c.strokeStyle = GOLD; c.lineWidth = 3.5; c.setLineDash([16, 12]); c.lineCap = 'round'; c.shadowColor = 'rgba(6,5,10,.9)'; c.shadowBlur = 8; c.beginPath(); c.moveTo(A[0], A[1]); c.lineTo(B[0], B[1]); c.stroke(); c.restore(); }
+// a measurement tag: a big gold figure, a small name under it
+function tag2(c, big, x, y, a, small, align = 'center') {
+  const dx = align === 'left' ? 1 : 0, w = 0;
+  text(c, big, x + (dx ? 110 : 0), y, '700 64px Cinzel', GOLD, { alpha: a, spacing: 4, glow: ['rgba(6,5,10,.95)', 18] });
+  if (small) text(c, small, x + (dx ? 110 : 0), y + 50, 'italic 36px Marcellus', CREAM, { alpha: a, glow: ['rgba(6,5,10,.95)', 14] });
+}
+// a height ruler (a vertical line with end ticks) at screen x from y0 (foot) to y1 (top)
+function ruler2(c, x, y0, y1, a) {
+  const yy = lerp(y0, y1, easeOut(clamp(a * 1.4))); c.save(); c.globalAlpha = a; c.strokeStyle = GOLD; c.lineWidth = 3.5; c.lineCap = 'round'; c.shadowColor = 'rgba(6,5,10,.9)'; c.shadowBlur = 8;
+  c.beginPath(); c.moveTo(x, y0); c.lineTo(x, yy); c.moveTo(x - 16, y0); c.lineTo(x + 16, y0); c.moveTo(x - 16, yy); c.lineTo(x + 16, yy); c.stroke(); c.restore();
 }
