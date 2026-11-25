@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Brush Ink test</title>
+<!-- The Brush Ink look's style test, one 4:5 comic page per second (1080 x 1350 design units, rendered at 2160 x 2700):
+     t 0.5 the Krishna bust (halo, mandala), 1.5 the hand rig's poses, 2.5 Krishna charging with the chariot wheel.
+     node render.mjs --page=brushink.html --stills=0.5,1.5,2.5 --out=out/check/bi -->
+<style>html, body { margin: 0; background: #111; } canvas { max-width: 100%; max-height: 96vh; display: block; margin: auto; }</style>
+</head>
+<body>
+<canvas id="out" width="2160" height="2700"></canvas>
+<script src="src/brushink.js"></script>
+<script src="src/bi_hand.js"></script>
+<script src="src/bi_krishna.js"></script>
+<script src="src/bi_charge.js"></script>
+<script>
+  const CV = document.getElementById('out'), CX = CV.getContext('2d'), DUR = 3;
+  const PANEL = { x: 24, y: 24, w: 1032, h: 1302 };
+  const PAGES = [
+    t => biKrishnaPanel(CX, PANEL, t),
+    t => biHandSheet(CX, PANEL, t),
+    t => typeof biChargePanel === 'function' && biChargePanel(CX, PANEL, t),
+  ];
+  function drawPage(t) {
+    CX.setTransform(1, 0, 0, 1, 0, 0); CX.fillStyle = '#000'; CX.fillRect(0, 0, CV.width, CV.height);
+    CX.setTransform(2, 0, 0, 2, 0, 0);
+    PAGES[Math.min(PAGES.length - 1, Math.floor(t))](t);
+  }
+  window.renderAt = async (t, type = 'image/png', q = .92) => { drawPage(t); return CV.toDataURL(type, q); };
+  window.gpuInfo = () => 'canvas 2d';
+  drawPage(.5); window.ready = true;
+</script>
+</body>
+</html>
