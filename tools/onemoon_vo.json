@@ -1,0 +1,130 @@
+{
+  "name": "onemoon",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.28
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "*LAST NIGHT,* | *THAILAND* floated lamps… | for *GANGA.*"
+      ],
+      "tts": "Last night, Thai-land floated lamps... for Ganga.",
+      "hold": 0.75
+    },
+    {
+      "id": "khong",
+      "gap": 0.55,
+      "caps": [
+        "They call her | *PHRA MAE KHONGKHA.* | *MOTHER GANGA.*"
+      ],
+      "tts": "They call her, Prah Meh Kongkaa... Mother Ganga.",
+      "hold": 0.9
+    },
+    {
+      "id": "kashi",
+      "gap": 1.7,
+      "caps": [
+        "The *SAME* night, | *KASHI* lit its ghats | for the gods."
+      ],
+      "tts": "The same night, Kashi lit its घाट for the gods.",
+      "hold": 0.8
+    },
+    {
+      "id": "aruna",
+      "gap": 1.2,
+      "caps": [
+        "And *ARUNACHALA* | lit its *FIRE.*"
+      ],
+      "tts": "And Arunachala lit its fire.",
+      "hold": 0.9
+    },
+    {
+      "id": "far",
+      "gap": 1.4,
+      "caps": [
+        "*2,000 KM* apart. | Same night. | Same *MOON.*"
+      ],
+      "tts": "Two thousand kilometres apart. Same night. Same moon.",
+      "hold": 0.8
+    },
+    {
+      "id": "coin",
+      "gap": 1,
+      "caps": [
+        "*Coincidence?*",
+        "Thailand's own king, *RAMA IV,* | wrote that this festival | began as a *HINDU* one."
+      ],
+      "tts": "Coincidence? Thailand's own king, Rama the Fourth, wrote that this festival began as a Hindu one.",
+      "hold": 0.7
+    },
+    {
+      "id": "sea",
+      "gap": 1.1,
+      "caps": [
+        "It came | across the *SEA.*"
+      ],
+      "tts": "It came across the sea.",
+      "hold": 0.4
+    },
+    {
+      "id": "boita",
+      "gap": 0.5,
+      "caps": [
+        "On this full moon, | *ODISHA* still floats | tiny lamp *BOATS*…",
+        "for its old sailors, | who sailed to | *BALI* and *JAVA.*"
+      ],
+      "tts": "On this full moon, Odisha still floats tiny lamp boats... for its old sailors, who sailed to Bali and Java.",
+      "hold": 0.8
+    },
+    {
+      "id": "script",
+      "gap": 1.4,
+      "caps": [
+        "They carried a *SCRIPT:* | Thailand's first letter | comes from our *KA.*"
+      ],
+      "tts": "They carried a script. The first letter of the Thai alphabet... comes from our letter, क.",
+      "hold": 0.8
+    },
+    {
+      "id": "city",
+      "gap": 1,
+      "caps": [
+        "A *CITY:* | *AYUTTHAYA,* | named after *AYODHYA.*"
+      ],
+      "tts": "A city. Ayutthaya... named after अयोध्या.",
+      "hold": 0.8
+    },
+    {
+      "id": "song",
+      "gap": 1,
+      "caps": [
+        "And songs: | Bangkok's royal priests | still chant *TAMIL* hymns | to *SHIVA.*"
+      ],
+      "tts": "And songs. Bangkok's royal priests still chant Tamil hymns, to Shiva.",
+      "hold": 0.9
+    },
+    {
+      "id": "close",
+      "gap": 1.6,
+      "caps": [
+        "So last night, | under *ONE* full moon…",
+        "one old *FAMILY* | lit the *SAME* lamp."
+      ],
+      "tts": "So last night, under one full moon... one old family... lit the same lamp.",
+      "hold": 1
+    },
+    {
+      "id": "ask",
+      "gap": 1.5,
+      "caps": [
+        "Where did *YOU* | light yours? | Comment your *CITY.*"
+      ],
+      "tts": "Where did you light yours? Comment your city.",
+      "hold": 1.2
+    }
+  ]
+}
