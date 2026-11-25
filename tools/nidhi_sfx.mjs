@@ -6,6 +6,9 @@
 //      → assets/nidhi_score_cut.wav
 //   2. the SFX → assets/nidhi_sfx.wav
 //   3. the mix: the voice over the SFX and the score (ducked under the voice), -14 LUFS → assets/nidhi_mix.wav
+// v2 adds suspense: a sub impact on frame 0 and ticks under the hook, risers into BELIEVE / NIDHIVAN / TRUE with
+// sub drops on the word, braams on night falling and the doors closing, gusts and a branch in the grove, the crickets
+// stopping dead before WATCH; nothing after the Bhagavatam turn.
 // The arc: dusk wind and a chain at the gate → steps on the path, a far bell → night: crickets, an owl, a faint
 // ghungroo → leaves in the wind → the diya; each offering its own small sound → doors creak shut, the chain, the
 // lock's click, a low boom, silence → a shutter, a brick → a heartbeat speeding up, bells closing in, a rising roar
@@ -65,23 +68,48 @@ const ring = (dur, f = 5800, amp = 1) => tone(dur, f, { e: (t, D) => Math.min(1,
 const swellUp = (dur, amp = 1) => noise(dur, { hp: 200, lp: t => 600 + 9000 * (t / dur) ** 2, e: (t, D) => (t / D) ** 2.4, amp });
 const birds = (dur, amp = 1) => { const o = new Float32Array(Math.floor(dur * 48000)); for (let t = .2; t < dur - .3; t += rr(.25, .9)) { const b = chirp(amp * rr(.4, 1)), s = Math.floor(t * 48000); for (let j = 0; j < b.length && s + j < o.length; j++) o[s + j] += b[j]; } return o; };
 
+// ---------- suspense (v2, owner 25 Nov): trailer punctuation on the hook, the reveals and the hard cuts; none after the turn ----------
+const lp1 = (b, fc) => { const a = 1 - Math.exp(-TAU * fc / 48000); let l = 0; for (let i = 0; i < b.length; i++) { l += a * (b[i] - l); b[i] = l; } return b; };
+// a sub impact: a deep sine falling from ~60 Hz, a body thump and a dark noise tail
+const sub = (amp = 1, dur = 3) => mixb(tone(dur, t => 26 + 36 * Math.exp(-t * 2.2), { e: (t, D) => Math.min(1, t / .006) * Math.exp(-t * 1.5), amp }), thud(amp * .9), lp1(noise(dur * .7, { e: env.pluck(2.2), amp: amp * .5 }), 260));
+// a braam: a low, brassy saw chord swelling in and dying away, filtered dark
+const braam = (amp = 1, dur = 3.4) => lp1(mixb(...[note(31), note(38), note(43), note(31) * 1.004].map((f, i) => tone(dur, t => f * (1 + .002 * Math.sin(t * 5 + i)), { type: 'saw', e: (t, D) => Math.min(1, t / .07) * Math.exp(-t * 1.1), amp: amp * (i === 2 ? .5 : .8) }))), 420);
+// a riser: noise and a tone sweeping up over dur, ending on the beat (pair it with sub() at its end)
+const riser = (dur, amp = 1) => mixb(noise(dur, { hp: 300, lp: t => 500 + 9000 * (t / dur) ** 2.2, e: (t, D) => (t / D) ** 2.6, amp }), tone(dur, t => 140 * Math.pow(9, t / dur), { type: 'tri', e: (t, D) => (t / D) ** 3, amp: amp * .35 }));
+// a reversed swell: a cymbal-like wash growing and cut dead
+const revSwell = (dur, amp = 1) => noise(dur, { hp: 2500, lp: 11000, e: (t, D) => (t / D) ** 3.2, amp });
+// a dry low tick, like a clock in an empty room
+const tick = (amp = 1) => mixb(tone(.05, 1100, { e: env.pluck(90), amp }), noise(.03, { hp: 1500, lp: 5000, e: env.pluck(150), amp: amp * .5 }));
+// crickets that stop dead (no fade out)
+const cricketsCut = (dur, amp = 1, f = 4400) => { const b = crickets(dur + 2, amp, f).subarray(0, Math.floor(dur * 48000)); return b; };
+// a gust of wind through leaves
+const gust = (dur, amp = 1) => mixb(noise(dur, { hp: 400, lp: t => 1200 + 2600 * Math.sin(Math.PI * t / dur), e: env.hann(), amp }), crinkle(dur, amp * .25));
+
 // ================= A · the lock at dusk =================
 T.at(0, wind(TL.C0 + .5, 2, 1.2), .05, 0);
 T.at(0, chainRattle(.8), .06, .1);
+T.at(0, sub(1, 3.2), .2, 0);
+for (let t = .9; t < TL.SUNSET - .2; t += .88) T.at(t, tick(.8), .05, .15);
+T.at(TL.SUNSET - 1.3, revSwell(1.3, .9), .06, 0);
+T.at(TL.SUNSET, sub(.7, 2.4), .12, 0);
 T.at(0, crickets(TL.D0, .5, 4100), .008, -.3);
 T.at(TL.NOBODY - .05, drum(40, .6, 1.2), .07, 0);
 T.at(TL.SUNSET - .1, templeBell(64, .6, 5), .05, -.4);
 // ================= B · through the gate =================
 T.at(TL.B0 - .3, whoosh(1.6, 300, 1800, .6), .06, 0);
 T.at(TL.B0 + .2, creak(1.6, 120, 180, .7), .03, .2);
+T.at(TL.BELIEVE - 1.5, riser(1.5, .9), .08, 0);
+T.at(TL.BELIEVE - .02, sub(.9, 2.8), .16, 0);
 T.at(TL.BELIEVE - .1, mixb(chime(note(81), .5, 3), drone(4, note(38), .5)), .06, 0);
 // ================= C · the path at dusk =================
 for (let t = TL.C0 + .3; t < TL.D0; t += .62) T.at(t + rr(-.04, .04), step(rr(.5, .8)), .04, rr(-.3, .3));
-T.at(TL.NIDHIVAN - .1, templeBell(57, .9, 6), .07, 0);
+T.at(TL.NIDHIVAN - 1.2, riser(1.1, .8), .07, 0);
+T.at(TL.NIDHIVAN - .1, mixb(sub(.8, 2.6), templeBell(57, .9, 6)), .12, 0);
 T.at(TL.BANKE - .05, chime(note(84), .5, 3), .04, .3);
 T.at(TL.C0, birds(TL.D0 - TL.C0, .4), .02, -.4);
 // ================= D · night falls =================
 T.at(TL.D0 - .3, whoosh(1.4, 1800, 300, .5), .05, 0);
+T.at(TL.D0, braam(1, 3.6), .1, 0);
 T.at(TL.D0, crickets(TL.F0 - TL.D0, 1, 4400), .02, .3);
 T.at(TL.D0 + .4, wind(TL.F0 - TL.D0, 4, 2), .04, 0);
 T.at(TL.KRISHNA - .3, owl(.6), .03, -.6);
@@ -89,8 +117,10 @@ T.at(TL.MAHARAAS - .1, ghungroo(.4, 7), .03, .5);
 T.at(TL.MAHARAAS + .5, ghungroo(.3, 6), .02, -.5);
 // ================= E · the pair =================
 T.at(TL.E0, rustle(TL.F0 - TL.E0, 1), .03, 0);
-T.at(TL.NIGHT - .2, creak(2, 90, 120, .5), .025, -.3);
-T.at(TL.GOPIS2 - .1, mixb(shimmer(1.6, [note(88), note(91), note(95)], .5, .12), ghungroo(.4, 5)), .04, 0);
+T.at(TL.E0 + .3, gust(2.6, 1), .05, -.4);
+T.at(TL.NIGHT - 1.2, gust(3, 1), .06, .4);
+T.at(TL.NIGHT - .2, creak(2.6, 70, 105, .8), .05, -.3);
+T.at(TL.GOPIS2 - .1, mixb(shimmer(1.6, [note(88), note(91), note(95)], .5, .12), ghungroo(.7, 7)), .06, .2);
 // ================= F · the Rang Mahal =================
 T.at(TL.F0 - .2, whoosh(1, 400, 1500, .5), .04, 0);
 T.at(TL.F0, crickets(TL.H0 - TL.F0, .5, 4300), .006, 0);
@@ -105,6 +135,7 @@ T.at(TL.BANGLES - .05, mixb(ghungroo(.8, 6), shimmer(1, [note(96), note(98), not
 T.at(TL.SINDOOR - .05, click(.7), .05, 0);
 // ================= H · locked =================
 T.at(TL.H0 + .2, creak(1.4, 130, 90, 1), .05, 0);
+T.at(TL.H0 + .15, braam(.9, 3), .09, 0);
 T.at(TL.LOCKED + .15, mixb(thud(1), drum(50, .8, .9)), .12, 0);
 T.at(TL.OUTSIDE - .2, chainRattle(1), .1, 0);
 T.at(TL.OUTSIDE + .22, lockClick(1.2), .14, 0);
@@ -114,7 +145,7 @@ T.at(TL.I0, wind(TL.J0 - TL.I0, 1, 1.4), .05, 0);
 T.at(TL.WINDOWS - .1, mixb(thud(.8), click(.5)), .07, .3);
 T.at(TL.BRICKED - .05, mixb(thud(1), noise(.25, { hp: 300, lp: 2500, e: env.pluck(14), amp: .5 })), .08, 0);
 // ================= J · the warning: the peek =================
-T.at(TL.J0, crickets(TL.SIGHT - TL.J0, .7, 4600), .012, .2);
+T.at(TL.J0, cricketsCut(TL.WATCH - .55 - TL.J0, .9, 4600), .016, .2);
 { let t = TL.WARN - .3, dt = .9; while (t < TL.SIGHT - .35) { T.at(t, heart(.9), .1, 0); t += dt; dt = Math.max(.32, dt * .9); } }
 for (let t = TL.J0 + .8; t < TL.SIGHT - .4; t += rr(.35, .7)) T.at(t, ghungroo(rr(.3, .7) * (.4 + .6 * (t - TL.J0) / (TL.SIGHT - TL.J0)), 6), .04, rr(-.6, .6));
 T.at(TL.WATCH - .4, swellUp(TL.SIGHT - TL.WATCH + .4, 1), .12, 0);
@@ -128,7 +159,8 @@ T.at(TL.DAWN - .1, templeBell(69, .7, 5), .05, -.4);
 T.at(TL.SLEPT - .05, chime(note(76), .4, 2), .03, 0);
 // ================= L · true? =================
 T.at(TL.L0, wind(TL.M0 - TL.L0, 3, 1.2), .04, 0);
-T.at(TL.TRUE - .05, mixb(drum(38, .8, 1.6), chainRattle(.4)), .08, 0);
+T.at(TL.TRUE - 1.4, riser(1.35, .9), .08, 0);
+T.at(TL.TRUE - .05, mixb(sub(1, 3), chainRattle(.4)), .14, 0);
 // ================= M · the Raas =================
 T.at(TL.M0 - .3, whoosh(1.2, 300, 2400, .5), .05, 0);
 T.at(TL.BHAG - .05, templeBell(60, .8, 6), .06, 0);
