@@ -49,6 +49,9 @@
 //                                celScrap (bits of flowers and cloth); celPeacockFeather(c, C); on Radha P.feather (his
 //                                feather in her hair), P.wreath (a crown of flowers), P.mala (a garland like his), all 0..1,
 //                                and o.pal: CEL_RADHA_PIT (dressed in his colours: pitambar yellow, his red border, his blue)
+//   celParrot(c, x, y, s, P, o)  a chibi rose-ringed parakeet (#9), feet at (x, y) on a perch, facing us: P like a kid's face
+//                                plus beak (open), wL / wR (wings up), flap (beating), cheek (a wing on its cheek: the swoon),
+//                                fly (feet tucked, tail streaming back, dir); green feathers: celFeatherBit
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -1288,4 +1291,90 @@ function celBrahma(c, x, y, s, P, o = {}) {
   for (const [px, rot] of [[-150, -1.2], [150, 1.2], [-84, -.6], [84, .6], [-26, -.15], [26, .15]]) petal(px, -10, 44, 70, rot, C.lotus);
   c.restore();
   return A;
+}
+
+// ---------- a parrot (#9: the parrot who only says "Radhe Radhe") ----------
+// A chibi rose-ringed parakeet (shuka), facing us: a big round green head with a tuft, the kids' eyes, a red hooked beak
+// that opens to talk, a black-and-pink ring round its neck like a necklace, a plump body with a yellow-green belly, two
+// long blue-green tail plumes hanging below its perch, little pink feet gripping it. About 300 px from the feet to the
+// tuft at s = 1 (the tail hangs 170 below). P like a kid's face (eyes, look, lid, brow, browR, tilt, blush, talk) plus
+// head (tilt), lean, hop, squash, beak 0..1 (open), wL / wR 0 (folded) .. 1 (spread up and out), flap 0..1 (the wings beat,
+// a new position every drawing), cheek -1 | 1 (that wing laid on its cheek, the swoon), fly 0..1 (the feet tuck up and
+// the tail streams back), dir (which way the tail streams when flying). Returns { head, beak, top, feet, tail }
+const CEL_PARROT = { body: '#5DC45A', sh: '#3C9A44', lt: '#9BE27A', belly: '#C4EC74', bellySh: '#A3D24E', wing: '#46AE4C', wingSh: '#2E8040',
+  tip: '#3E86D0', tipSh: '#2C64A8', tail: '#4FB6A8', tailSh: '#2F8C86', tail2: '#5DC45A', beak: '#E8343C', beakSh: '#B01E2A', beakLt: '#FF7F74',
+  lower: '#4A2A32', ring: '#1E1A2E', ring2: '#F48AB4', foot: '#D7A8B0', footSh: '#B08088', iris: '#1E1410', iris2: '#3E6A2A',
+  blush: '#FF8AA6', mouth: '#7A1E36', tongue: '#F27C90' };
+function celParrot(c, x, y, s, P, o = {}) {
+  const C = { ...CEL_PARROT, ...(o.pal || {}) }, td = P.td ?? o.t ?? 0, A = {};
+  celBegin(td); CEL.n = o.seed ?? 2300;
+  const land = P.land ?? 9, hit = land >= 0 ? Math.exp(-land * 10) : 0, br = Math.sin(td * TAU / 2.2), fly = clamp(P.fly || 0), dir = P.dir ?? 1;
+  const sq = clamp((P.squash || 0) + hit * .4 + br * .02, -1, 1), sx = 1 + sq * .08, sy = 1 - sq * .09;
+  c.save(); c.translate(x, y - (P.hop || 0)); c.scale(s, s);
+  const at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  const body = { shade: [C.sh, 6, 8], lt: [C.lt, 4, 4] };
+  c.save(); c.rotate(P.lean || 0); c.scale(sx, sy);
+  // the tail: two long plumes hanging below the perch (streaming back when it flies), swaying a drawing late
+  const sw = Math.sin(td * 2.6) * 10 + ((P.lag || P).lean || 0) * -60;
+  for (const [dx, len, col, shc] of [[10, 1, C.tail, C.tailSh], [-10, .86, C.tail2, C.sh]]) {
+    const end = [lerp(dx * 2.2 + sw, -dir * 150, fly), lerp(170 * len, 40, fly)], mid = v2.lerp([dx, -36], end, .5);
+    celShape(c, celTube([[dx, -40], [mid[0] + dx * .4, mid[1]], end], [34, 26, 10]), col, { dense: true, w: 4.5, shade: [shc, 4, 4], over: q => { q.strokeStyle = rgba(shc, .8); q.lineWidth = 3; q.beginPath(); q.moveTo(dx, -30); q.lineTo(mid[0] + dx * .4, mid[1]); q.lineTo(...end); q.stroke(); } });
+  }
+  // the feet behind the belly's front, gripping the perch (tucked up in flight)
+  const feet = () => { for (const sd of [-1, 1]) { const fy = lerp(-6, -40, fly); celOval(c, sd * 22, fy, 17, 11, C.foot, { w: 3.5, shade: [C.footSh, 2, 3] }); if (fly < .5) for (const k of [-1, 1]) celLine(c, [[sd * 22 + k * 9, fy + 4], [sd * 22 + k * 11, fy + 14]], 4.5, { taper: .3 }); } };
+  // the body: plump, a yellow-green belly with little feather scallops
+  celShape(c, [[-50, -18], [-64, -70], [-58, -120], [-32, -148], [0, -154], [32, -148], [58, -120], [64, -70], [50, -18], [0, -6]], C.body, { ...body, over: q => {
+    ellipse(q, 0, -62, 40, 52, C.belly); q.strokeStyle = rgba(C.bellySh, .9); q.lineWidth = 3;
+    for (const [bx, by] of [[-16, -88], [12, -78], [-6, -56], [20, -46], [-22, -40]]) { q.beginPath(); q.arc(bx, by, 9, .3, Math.PI - .3); q.stroke(); }
+  } });
+  feet();
+  // a wing: from the shoulder, a = 0 folded down its side, π / 2 straight out, π straight up
+  const wing = (sd, a, len = 1) => {
+    c.save(); c.translate(sd * 46, -122); c.rotate(-sd * a); c.scale(sd, len);
+    celShape(c, [[-26, 0], [-34, 34], [-26, 78], [-8, 112], [8, 116], [20, 84], [26, 36], [20, 0], [0, -10]], C.wing, { shade: [C.wingSh, 6, 6], over: q => {
+      q.fillStyle = C.tip; q.beginPath(); q.moveTo(-40, 76); q.quadraticCurveTo(0, 64, 40, 70); q.lineTo(40, 130); q.lineTo(-40, 130); q.fill();
+      q.strokeStyle = rgba(C.wingSh, .9); q.lineWidth = 3; for (const yy of [30, 52]) { q.beginPath(); q.moveTo(-26, yy); q.quadraticCurveTo(-8, yy + 12, 10, yy + 2); q.quadraticCurveTo(18, yy - 2, 24, yy + 8); q.stroke(); }
+      q.strokeStyle = rgba(C.tipSh, .9); for (const xx of [-14, 2, 16]) { q.beginPath(); q.moveTo(xx, 80); q.lineTo(xx + 2, 108); q.stroke(); }
+    } });
+    A[sd < 0 ? 'wingL' : 'wingR'] = at(0, 110);
+    c.restore();
+  };
+  const flap = clamp(P.flap || 0), beat = flap > .02 ? (CEL.d % 2 ? .6 : -1) * flap : 0;
+  const wa = sd => { const w = clamp(sd < 0 ? P.wL || 0 : P.wR || 0); return lerp(.12, 1.95, Math.max(w, flap * .7 + fly * .3)) + beat * .55; };
+  for (const sd of [-1, 1]) if (P.cheek !== sd) wing(sd, wa(sd));
+  // the head
+  c.save(); c.translate(0, -136); c.rotate(P.head || 0); c.translate(0, -74);
+  for (const [tx, tr, k] of [[-14, -.5, .8], [4, .05, 1], [20, .55, .75]]) { c.save(); c.translate(tx, -74); c.rotate(tr + Math.sin(td * 3 + tx) * .05); c.scale(k, k); celShape(c, [[-10, 6], [-12, -24], [0, -46], [12, -24], [10, 6]], C.body, { n: 4, w: 4, shade: [C.sh, 3, 3] }); c.restore(); }
+  celShape(c, [[-90, -10], [-78, -56], [-40, -82], [0, -88], [40, -82], [78, -56], [90, -10], [84, 34], [56, 66], [0, 80], [-56, 66], [-84, 34]], C.body, { shade: [C.sh, 8, 10], lt: [C.lt, 5, 5], over: q => {
+    const g = q.createRadialGradient(-24, -20, 0, -24, -20, 110); g.addColorStop(0, 'rgba(255,255,255,.22)'); g.addColorStop(1, 'rgba(255,255,255,0)'); q.fillStyle = g; q.fillRect(-100, -100, 200, 200);
+  } });
+  // the ring round its neck (a black line and a pink one, like a necklace)
+  celLine(c, [[-80, 40], [-44, 66], [0, 76], [44, 66], [80, 40]], 7, { taper: .5 });
+  celLine(c, [[-74, 52], [-40, 76], [0, 86], [40, 76], [74, 52]], 8, { col: C.ring2, taper: .5 });
+  // blush, eyes, brows (the kids' face, small)
+  const k = .64, bk = clamp(P.blush || 0), ev = Array.isArray(P.eyes) ? P.eyes : [P.eyes || 'open', P.eyes || 'open'];
+  for (const sd of [-1, 1]) { c.save(); c.globalAlpha = .5 + .4 * bk; ellipse(c, sd * 60, 24, (18 + 6 * bk), (9 + 3 * bk), C.blush); c.restore(); for (let i = 0; i < 3; i++) celLine(c, [[sd * 60 + (-8 + i * 7), 30], [sd * 60 + (-4 + i * 7), 20]], 2.2, { boil: .4, col: rgba(CEL.ink, .55) }); }
+  [-1, 1].forEach((sd, i) => celEye(c, sd * 42, -12, ev[i], P, C, sd, k, false));
+  for (const sd of [-1, 1]) { const raise = sd > 0 && P.browR != null ? P.browR : P.brow || 0, tl = P.tilt || 0, by = -54 - raise * 8; celLine(c, [[sd * 42 - sd * 11, by - tl * 5], [sd * 42 + sd * 11, by + tl * 5]], 4.5, { taper: .5 }); }
+  // the beak: the lower half drops open (a talk flap opens and shuts it a drawing at a time), the red hook over it
+  let op = clamp(P.beak || 0); if ((P.talk || 0) > .5) op = hash(Math.floor(CEL.d / 2) * 1.37 + 3) < .6 ? .9 : .15;
+  const dy = op * 16;
+  if (op > .05) celOval(c, 0, 36 + dy * .5, 13, 6 + dy * .6, C.mouth, { w: 3, over: q => ellipse(q, 0, 42 + dy * .7, 8, 4 + dy * .3, C.tongue) });
+  if (op > .05) celShape(c, [[-13, 30 + dy], [13, 30 + dy], [9, 42 + dy], [0, 46 + dy], [-9, 42 + dy]], C.lower, { n: 3, w: 3.5 });
+  // the upper beak: broad at the top, curving down to a hooked point
+  celShape(c, [[-24, 8], [-12, 0], [0, -2], [12, 0], [24, 8], [24, 20], [16, 32], [6, 44], [0, 56], [-6, 44], [-16, 32], [-24, 20]], C.beak, { n: 3, w: 4, shade: [C.beakSh, 5, 6], over: q => { ellipse(q, -9, 10, 7, 4.5, rgba('#FFFFFF', .75), -.3); q.strokeStyle = C.beakSh; q.lineWidth = 3; q.beginPath(); q.moveTo(-20, 16); q.quadraticCurveTo(0, 24, 20, 16); q.stroke(); } });
+  A.head = at(0, 0); A.beak = at(0, 40); A.top = at(0, -110);
+  c.restore();
+  if (P.cheek === -1 || P.cheek === 1) wing(P.cheek, Math.PI * .97, .7);
+  A.feet = at(0, 0); A.tail = at(0, 150);
+  c.restore(); c.restore();
+  return A;
+}
+// a little loose feather (flapping wings shed them), r its length, rot, col, a
+function celFeatherBit(c, x, y, r, rot = 0, col = CEL_PARROT.wing, a = 1) {
+  if (r <= 1 || a <= .02) return;
+  c.save(); c.translate(x, y); c.rotate(rot); c.globalAlpha *= a;
+  celShape(c, [[0, -r], [r * .32, -r * .4], [r * .22, r * .5], [0, r * .7], [-r * .22, r * .5], [-r * .32, -r * .4]], col, { n: 4, w: Math.max(2.4, r * .09), boil: .4, shade: [CEL_PARROT.wingSh, r * .1, 0] });
+  celLine(c, [[0, -r * .8], [0, r * .95]], Math.max(2, r * .07), { taper: .3, boil: .3 });
+  c.restore();
 }
