@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sketch pose guide</title>
+<!-- The Sketch style's proportion guide: the owner's rigged GLB (indian_teenager.glb, a Mixamo rig) posed by aiming its
+     bones at world directions, rendered once from the shot's camera, so a figure drawn in code gets an adult's
+     proportions and foreshortening. Nothing from here goes into a frame; the joints' screen positions are logged.
+     node render.mjs --page=sketch_pose.html --stills=0.5 --out=out/check/pose -->
+<style>html, body { margin: 0; background: #222; }</style>
+</head>
+<body>
+<script src="src/vendor/three.min.js"></script>
+<script src="src/vendor/three_gltf.min.js"></script>
+<script>
+const W = 1080, H = 1920, DUR = 1;
+const R = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); R.setSize(W, H); document.body.appendChild(R.domElement);
+const S = new THREE.Scene(); S.background = new THREE.Color('#e4d6c3');
+S.add(new THREE.HemisphereLight('#fff', '#776', 1.6)); const L = new THREE.DirectionalLight('#fff', 2.2); L.position.set(-2, 4, 3); S.add(L);
+const CAM = new THREE.PerspectiveCamera(24, W / H, .1, 100);
+// POSE: world directions (x right, y up, z toward camera) each bone should point to its child
+const POSE = window.POSE = {
+  yaw: .3,                             // body turned a little toward screen right
+  twist: { Spine2_04: .25, Head_08: .75 },                                          // world-y turns before aiming: chest, then the face toward the bow
+  Spine_02: [-.06, 1, 0], Spine1_03: [-.02, 1, 0], Spine2_04: [.04, 1, -.04],
+  Neck_05: [-.02, 1, -.02], Head_08: [-.45, .9, 0],                                // head tipped back, looking up at the bow
+  LeftArm_013: [.42, .9, -.05], LeftForeArm_014: [.1, 1, .05],                      // the raised arm (screen right), the bow's grip in the fist
+  RightArm_039: [.1, -.9, .45], RightForeArm_040: [.75, -.25, .45],                 // the low arm across the body, reaching for the string
+  LeftUpLeg_063: [.55, -.8, .35], LeftLeg_064: [.05, -1, -.1],                      // front leg forward, knee bent (screen right)
+  RightUpLeg_068: [-.38, -1, -.2], RightLeg_069: [-.3, -1, -.15],                   // back leg braced straight
+};
+const bones = {};
+function aim(bone, child, d) {
+  bone.updateMatrixWorld(true);
+  const p = new THREE.Vector3().setFromMatrixPosition(bone.matrixWorld), c = new THREE.Vector3().setFromMatrixPosition(child.matrixWorld);
+  const cur = c.sub(p).normalize(), want = new THREE.Vector3(...d).normalize();
+  const q = new THREE.Quaternion().setFromUnitVectors(cur, want);
+  const wq = bone.getWorldQuaternion(new THREE.Quaternion()), pq = bone.parent.getWorldQuaternion(new THREE.Quaternion());
+  bone.quaternion.copy(pq.invert().multiply(q.multiply(wq)));
+  bone.updateMatrixWorld(true);
+}
+let model;
+const xhr = new XMLHttpRequest(); xhr.open('GET', 'assets/glb/indian_teenager.glb'); xhr.responseType = 'arraybuffer';
+xhr.onload = () => new THREE.GLTFLoader().parse(xhr.response, '', g => {
+  model = g.scene; S.add(model);
+  model.traverse(n => { if (n.isBone) bones[n.name] = n; if (n.isMesh) n.material = new THREE.MeshStandardMaterial({ color: '#c08a60', roughness: .8 }); });
+  const b = new THREE.Box3().setFromObject(model), h = b.max.y - b.min.y, k = 1.8 / h;
+  model.scale.setScalar(k); model.position.y = -b.min.y * k;
+  pose(); window.ready = true;
+});
+xhr.send();
+const CHILD = { Spine_02: 'Spine1_03', Spine1_03: 'Spine2_04', Spine2_04: 'Neck_05', Neck_05: 'Head_08', Head_08: 'HeadTop_End_011',
+  LeftArm_013: 'LeftForeArm_014', LeftForeArm_014: 'LeftHand_017', RightArm_039: 'RightForeArm_040', RightForeArm_040: 'RightHand_043',
+  LeftUpLeg_063: 'LeftLeg_064', LeftLeg_064: 'LeftFoot_065', RightUpLeg_068: 'RightLeg_069', RightLeg_069: 'RightFoot_070' };
+function pose() {
+  model.rotation.y = POSE.yaw; model.updateMatrixWorld(true);
+  for (const k in POSE.twist || {}) { const b = bones[k], wq = b.getWorldQuaternion(new THREE.Quaternion()), pq = b.parent.getWorldQuaternion(new THREE.Quaternion());
+    b.quaternion.copy(pq.invert().multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), POSE.twist[k]).multiply(wq))); b.updateMatrixWorld(true); }
+  for (const k in CHILD) if (POSE[k] && bones[k]) aim(bones[k], bones[CHILD[k]], POSE[k]);
+  const b = new THREE.Box3().setFromObject(model);
+  model.position.y -= b.min.y;
+  CAM.position.set(0, .75, 7.2); CAM.lookAt(0, 1.05, 0);
+}
+function joints() {
+  model.updateMatrixWorld(true); CAM.updateMatrixWorld(); const out = {};
+  for (const k of ['Hips_01', 'Spine2_04', 'Neck_05', 'Head_08', 'HeadTop_End_011', 'LeftShoulder_012', 'LeftArm_013', 'LeftForeArm_014', 'LeftHand_017', 'LeftHandMiddle4_029',
+    'RightArm_039', 'RightForeArm_040', 'RightHand_043', 'RightHandMiddle4_054', 'LeftUpLeg_063', 'LeftLeg_064', 'LeftFoot_065', 'LeftToe_End_067', 'RightUpLeg_068', 'RightLeg_069', 'RightFoot_070', 'RightToe_End_072']) {
+    const v = new THREE.Vector3().setFromMatrixPosition(bones[k].matrixWorld).project(CAM);
+    out[k.replace(/_\d+$/, '')] = [Math.round((v.x + 1) / 2 * W), Math.round((1 - v.y) / 2 * H)];
+  }
+  return out;
+}
+window.renderAt = async (t, type = 'image/png', q = .92) => { R.render(S, CAM); console.warn(JSON.stringify(joints())); return R.domElement.toDataURL(type, q); };
+window.gpuInfo = () => 'webgl';
+</script>
+</body>
+</html>
