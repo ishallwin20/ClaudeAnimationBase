@@ -52,6 +52,13 @@
 //   celParrot(c, x, y, s, P, o)  a chibi rose-ringed parakeet (#9), feet at (x, y) on a perch, facing us: P like a kid's face
 //                                plus beak (open), wL / wR (wings up), flap (beating), cheek (a wing on its cheek: the swoon),
 //                                fly (feet tucked, tail streaming back, dir); green feathers: celFeatherBit
+//   mangoes under a tree (#10):  P.sit on a kid (sitting on the ground, hip ≈ [0, -58]: Kanha cross-legged, the pitambar over
+//                                his lap, shins crossed in front; Radha's lehenga spread round her, toes peeping out); the hands
+//                                reach a rock's top beside them (hL / hR ≈ [∓132, -66]); celMango(c, x, y, r, o) a ripe mango
+//                                (o.rot, o.leaf); celMangoSeed(c, x, y, r, o) its licked-clean stone; celLeafPlate(c, x, y, s,
+//                                th, o) a banana leaf lying flat as a plate, turned th on the spot (half a turn swaps what sits
+//                                at its ends; o.blur when it whirls), returns its ends { a, b }; celRock(c, x, y, s) a flat grey
+//                                boulder (returns its top); celMangoTree(c, x, y, s, t, o) a mango tree (o.crown, o.fruit, o.h)
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -311,20 +318,36 @@ function celKid(c, x, y, s, P, o, who) {
   }
   c.restore();
 
-  // the legs and feet (Radha's only peep out under her lehenga)
+  // the legs and feet (Radha's only peep out under her lehenga); P.sit: sitting on the ground (below)
+  const SIT = !!P.sit;
   const legs = [-1, 1].map(sd => {
     const f0 = (sd < 0 ? P.fL : P.fR) || [sd * 44, 0], f = [f0[0], f0[1] - hop], hj = Wp([sd * 30, -6]);
     const [knee, ank] = celIK(hj, [f[0], f[1] - 16], 56, 56, (sd < 0 ? P.kL : P.kR) || [sd, -.3]);
     return { sd, hj, knee, ank, f };
   });
   const foot = L => { const d = v2.norm(v2.sub(L.ank, L.knee)); celOval(c, L.ank[0] + L.sd * 8 + d[0] * 9, L.ank[1] + d[1] * 9 + 3, 34, 17, C.skin, { ...skin, rot: Math.atan2(d[1], d[0]) - Math.PI / 2 }); };
-  for (const L of legs) {
+  if (!SIT) for (const L of legs) {
     if (R) { celShape(c, celTube([v2.lerp(L.knee, L.ank, .3), L.ank], [42, 40]), C.skin, { dense: true, ...skin }); foot(L); celBand(c, L.knee, L.ank, .86, 44, 9, C.gold); }
     else { celShape(c, celTube([L.hj, L.knee, L.ank], [64, 54, 46]), C.skin, { dense: true, ...skin }); foot(L); celBand(c, L.knee, L.ank, .84, 50, 10, C.gold); }
   }
-  A.feet = legs.map(L => at(...L.f));
+  A.feet = SIT ? [at(-40, -hop), at(40, -hop)] : legs.map(L => at(...L.f));
 
-  if (!R) {
+  if (SIT && !R) {
+    // sitting cross-legged (P.sit, hip ≈ [0, -58]): the pitambar over his lap out to the knees, a red border along its
+    // edge, the front pleats falling between them; the shins crossing in front, the feet tucked under the far knees
+    const g = -hop, edgeP = [[-176, g - 24], [-160, g - 4], [-60, g - 14], [0, g - 6], [60, g - 14], [160, g - 4], [176, g - 24]];
+    const edge = q => { q.strokeStyle = C.border; q.lineWidth = 20; q.lineJoin = 'round'; q.beginPath(); through(edgeP, 4).forEach((p, i) => i ? q.lineTo(...p) : q.moveTo(...p)); q.stroke(); };
+    celShape(c, [Wp([-70, -44]), Wp([-84, 0]), [-150, g - 58], ...edgeP, [150, g - 58], Wp([84, 0]), Wp([70, -44])], C.pit, { n: 4, shade: sh(C.pitSh), lt: lt(C.pitLt), over: edge });
+    for (const sd of [-1, 1]) celLine(c, [Wp([sd * 50, -22]), [sd * 118, g - 40]], 3.2, { col: rgba(CEL.ink, .7) });
+    for (const sd of [-1, 1]) {
+      const kn = [sd * 128, g - 34], an = [-sd * 34, g - 22], d = v2.norm(v2.sub(an, kn));
+      celShape(c, celTube([kn, v2.lerp(kn, an, .5), an], [54, 48, 42]), C.skin, { dense: true, ...skin });
+      celBand(c, kn, an, .8, 46, 10, C.gold);
+      celOval(c, an[0] + d[0] * 30, an[1] + d[1] * 30 + 4, 34, 17, C.skin, { ...skin, rot: Math.atan2(d[1], d[0]) });
+    }
+    celShape(c, [Wp([-28, -40]), Wp([28, -40]), Wp([30, 30]), [0, g - 30], Wp([-30, 30])], C.pit, { n: 4, shade: sh(C.pitSh), lt: lt(C.pitLt), over: q => { q.strokeStyle = C.border; q.lineWidth = 16; q.beginPath(); q.moveTo(...Wp([-32, 26])); q.lineTo(0, g - 34); q.lineTo(...Wp([32, 26])); q.stroke(); } });
+  }
+  if (!SIT && !R) {
     // the pitambar: waist to above the knees, following the legs, a red border at the hem, the front pleats
     const hem = L => { const tp = v2.lerp(L.hj, L.knee, .78), d = v2.norm(v2.sub(L.knee, L.hj)); let q = v2.perp(d); if (q[0] * L.sd < 0) q = v2.mul(q, -1); return [v2.add(tp, v2.mul(q, 40)), v2.add(tp, v2.mul(q, -30))]; };
     const [oL, iL] = hem(legs[0]), [oR, iR] = hem(legs[1]), cr = Wp([0, 16]);
@@ -350,16 +373,23 @@ function celKid(c, x, y, s, P, o, who) {
 
   if (R) {
     // the lehenga: a bell from the waist to the ankles, its hem swinging, a gold border and gold dots
-    const fx0 = Math.min(legs[0].f[0], legs[1].f[0]), fx1 = Math.max(legs[0].f[0], legs[1].f[0]), hy = -12 - hop;
-    const sw = Math.sin(td * 2.6) * 4 - (lag.lean || 0) * 70, hl = fx0 - 76 + sw, hr = fx1 + 76 + sw;
-    const H = []; for (let i = 0; i <= 8; i++) H.push([lerp(hl, hr, i / 8), hy + (i % 2 ? 7 : -3) + Math.sin(i / 8 * Math.PI) * 6]);
+    // sitting (P.sit): the lehenga spread round her on the ground like a flower, its hem curving toward us, toes peeping out
+    const fx0 = Math.min(legs[0].f[0], legs[1].f[0]), fx1 = Math.max(legs[0].f[0], legs[1].f[0]), hy = (SIT ? -6 : -12) - hop;
+    const sw = Math.sin(td * 2.6) * 4 - (lag.lean || 0) * 70, hl = SIT ? -200 + sw * .3 : fx0 - 76 + sw, hr = SIT ? 200 + sw * .3 : fx1 + 76 + sw;
+    const H = []; for (let i = 0; i <= (SIT ? 12 : 8); i++) { const n = SIT ? 12 : 8; H.push([lerp(hl, hr, i / n), hy + (i % 2 ? 7 : -3) + Math.sin(i / n * Math.PI) * (SIT ? 16 : 6)]); }
     const border = q => {
       q.strokeStyle = C.hem || C.gold; q.lineWidth = 34; q.lineJoin = 'round'; q.beginPath(); H.forEach((p, i) => i ? q.lineTo(...p) : q.moveTo(...p)); q.stroke();
       q.strokeStyle = C.hem ? C.gold : C.red; q.lineWidth = 5; q.beginPath(); H.forEach((p, i) => i ? q.lineTo(p[0], p[1] - 19) : q.moveTo(p[0], p[1] - 19)); q.stroke();
       for (let i = 0; i < 9; i++) { const u = (i + .5) / 9, yy = lerp(-40, hy - 30, (i % 3) / 3 + .2); ellipse(q, lerp(lerp(Wp([-50, 0])[0], hl, .7), lerp(Wp([50, 0])[0], hr, .7), u), yy, 5, 5, C.dot || C.gold); }
     };
-    celShape(c, [Wp([-58, -40]), Wp([-66, -8]), [hl + 6, hy - 14], ...H, [hr - 6, hy - 14], Wp([66, -8]), Wp([58, -40])], C.lehenga, { n: 3, shade: sh(C.lehSh), lt: lt(C.lehLt), over: border });
-    for (const k of [-.5, 0, .5]) celLine(c, [Wp([k * 60, -30]), [lerp(hl, hr, .5 + k * .62), hy - 26]], 3, { col: rgba(CEL.ink, .7) });
+    const puffL = SIT ? [[-132, hy - 62], [-188, hy - 30]] : [[hl + 6, hy - 14]], puffR = SIT ? [[188, hy - 30], [132, hy - 62]] : [[hr - 6, hy - 14]];
+    celShape(c, [Wp([-58, -40]), Wp([-66, -8]), ...puffL, ...H, ...puffR, Wp([66, -8]), Wp([58, -40])], C.lehenga, { n: 3, shade: sh(C.lehSh), lt: lt(C.lehLt), over: border });
+    for (const k of SIT ? [-.75, -.32, .32, .75] : [-.5, 0, .5]) celLine(c, [Wp([k * 60, -30]), [lerp(hl, hr, .5 + k * .62), hy - 26 + (SIT ? 12 : 0)]], 3, { col: rgba(CEL.ink, .7) });
+    if (SIT) for (const sd of [-1, 1]) {
+      const fx = sd * 40, fy = hy + 14;
+      celOval(c, fx, fy, 30, 15, C.skin, { ...skin, rot: sd * .15 });
+      celLine(c, [[fx - 22, fy - 10], [fx + 22, fy - 10]], 7, { under: C.gold, taper: 0, boil: .3 });
+    }
     celLine(c, [Wp([-60, -40]), Wp([0, -34]), Wp([60, -40])], 16, { under: C.red, taper: 0 });
   } else {
     // the kardhani with little bells, and the flute tucked in at the waist
@@ -1376,5 +1406,109 @@ function celFeatherBit(c, x, y, r, rot = 0, col = CEL_PARROT.wing, a = 1) {
   c.save(); c.translate(x, y); c.rotate(rot); c.globalAlpha *= a;
   celShape(c, [[0, -r], [r * .32, -r * .4], [r * .22, r * .5], [0, r * .7], [-r * .22, r * .5], [-r * .32, -r * .4]], col, { n: 4, w: Math.max(2.4, r * .09), boil: .4, shade: [CEL_PARROT.wingSh, r * .1, 0] });
   celLine(c, [[0, -r * .8], [0, r * .95]], Math.max(2, r * .07), { taper: .3, boil: .3 });
+  c.restore();
+}
+
+// ---------- mangoes under a mango tree (#10) ----------
+// celMango(c, x, y, r, o): a ripe mango, its middle at (x, y), r its half-length (about 1.3 r tall, r wide): golden yellow
+// going orange, a red blush on its shoulder, green round the stalk, a shine; a stalk and one leaf on top. o.rot (default a
+// little tilt), o.leaf (false: no leaf), o.a. Returns its top (the stalk) in screen px
+const CEL_MANGO = { col: '#FFC233', sh: '#EE9424', lt: '#FFE27A', blush: '#F2603A', green: '#A6C93E', stalk: '#7A4A26', leaf: '#3F9A46', leafSh: '#2C7034', leafLt: '#7FCB62' };
+function celMango(c, x, y, r, o = {}) {
+  if (r <= 1 || (o.a ?? 1) <= .02) return [x, y];
+  const C = { ...CEL_MANGO, ...(o.pal || {}) };
+  c.save(); c.translate(x, y); c.rotate(o.rot ?? .32); c.globalAlpha *= (o.a ?? 1); c.scale(r / 60, r / 60);
+  const at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  // the leaf first, behind the stalk
+  if (o.leaf !== false) celShape(c, [[4, -70], [34, -98], [78, -108], [104, -96], [70, -72], [30, -64]], C.leaf, { n: 4, w: 3.6, shade: [C.leafSh, 3, 5], lt: [C.leafLt, -2, -3], over: q => { q.strokeStyle = rgba(C.leafSh, .9); q.lineWidth = 2.6; q.beginPath(); q.moveTo(8, -70); q.quadraticCurveTo(50, -92, 98, -97); q.stroke(); } });
+  celShape(c, [[-6, -78], [10, -78], [22, -62], [26, -48], [44, -60], [56, -40], [60, -4], [54, 36], [34, 66], [6, 82], [-22, 78], [-46, 60], [-58, 30], [-60, -8], [-50, -46], [-28, -70]], C.col, {
+    shade: [C.sh, 8, 10], lt: [C.lt, -5, -6], w: 5,
+    over: q => {
+      let g = q.createRadialGradient(34, -46, 0, 34, -46, 70); g.addColorStop(0, rgba(C.blush, .95)); g.addColorStop(.6, rgba(C.blush, .45)); g.addColorStop(1, rgba(C.blush, 0)); q.fillStyle = g; q.fillRect(-80, -100, 160, 200);
+      g = q.createRadialGradient(4, -72, 0, 4, -72, 34); g.addColorStop(0, rgba(C.green, .9)); g.addColorStop(1, rgba(C.green, 0)); q.fillStyle = g; q.fillRect(-60, -110, 120, 90);
+      ellipse(q, -30, -26, 11, 24, 'rgba(255,255,255,.75)', .35); ellipse(q, -22, 14, 5, 7, 'rgba(255,255,255,.6)');
+      q.fillStyle = rgba(C.sh, .5); for (const [dx, dy] of [[-18, 40], [10, 52], [24, 20], [-40, 8], [36, -10]]) { q.beginPath(); q.arc(dx, dy, 2.2, 0, TAU); q.fill(); }
+    } });
+  celShape(c, celTube([[2, -76], [0, -92], [6, -104]], [11, 10, 9]), C.stalk, { dense: true, w: 3.6 });
+  const top = at(4, -100);
+  c.restore();
+  return top;
+}
+// celMangoSeed(c, x, y, r, o): the stone of an eaten mango (a guthli), licked clean: a flat pale oval with fibres all
+// round it, a shine; o.rot, o.a, o.flat (0..1: lying on the ground, squashed toward us)
+function celMangoSeed(c, x, y, r, o = {}) {
+  if (r <= 1 || (o.a ?? 1) <= .02) return;
+  c.save(); c.translate(x, y); c.rotate(o.rot ?? -.3); c.globalAlpha *= (o.a ?? 1); c.scale(r / 40, r / 40 * lerp(1, .62, clamp(o.flat || 0)));
+  for (let i = 0; i < 22; i++) { const a = i / 22 * TAU, rx = 40, ry = 56, p0 = [Math.cos(a) * rx * .9, Math.sin(a) * ry * .9], p1 = [Math.cos(a + .08) * (rx + 10 + hash(i + 3) * 6), Math.sin(a + .08) * (ry + 10 + hash(i + 7) * 6)]; celLine(c, [p0, p1], 2.6, { col: '#C9A04E', boil: .5 }); }
+  celOval(c, 0, 0, 40, 56, '#F4DC92', { w: 4.5, shade: ['#D9B45E', 6, 8], over: q => {
+    q.strokeStyle = 'rgba(201,160,78,.8)'; q.lineWidth = 2.4; for (const k of [-.5, 0, .5]) { q.beginPath(); q.moveTo(k * 30, -48); q.quadraticCurveTo(k * 40, 0, k * 30, 48); q.stroke(); }
+    ellipse(q, -14, -24, 7, 14, 'rgba(255,255,255,.8)', .3);
+  } });
+  c.restore();
+}
+// celLeafPlate(c, x, y, s, th, o): a piece of banana leaf lying flat as a plate, its middle at (x, y), about 340 × 140 px at
+// s = 1 seen from the front and a little above (o.k the squash, default .3); th turns it round on the spot (0: its long
+// way across the screen). Its two ends (u = ±o.end, default 100) are where things sit: returns { a, b } (the +u and -u
+// ends: [x, y, depth], depth -1 far .. 1 near). Spun fast (o.blur 0..1) it smears into a disc with speed lines
+function celLeafPlate(c, x, y, s = 1, th = 0, o = {}) {
+  const K = o.k ?? .3, L = 170, Wd = 66, cs = Math.cos(th), sn = Math.sin(th);
+  const P = (u, v) => [x + (u * cs - v * sn) * s, y + (u * sn + v * cs) * s * K];
+  const out = []; for (let i = 0; i < 40; i++) { const a = i / 40 * TAU, ca = Math.cos(a), sa = Math.sin(a), sq = Math.pow(Math.abs(ca), .35) * Math.sign(ca); out.push(P(sq * L * (1 - .04 * Math.sin(a * 9)), sa * Wd * (1 - .25 * ca * ca))); }
+  const blur = clamp(o.blur || 0);
+  if (blur > .02) { c.save(); c.globalAlpha *= .35 * blur; ellipse(c, x, y, L * s * 1.02, L * s * K * 1.02, '#7FCB62'); c.restore(); }
+  celShape(c, out, '#5DBA4E', { dense: true, w: 4.5, shade: ['#3F9440', 0, 6 * s], lt: ['#8FDA6E', 0, -4 * s], over: q => {
+    q.strokeStyle = 'rgba(46,120,52,.55)'; q.lineWidth = 2.4 * s;
+    for (let i = -7; i <= 7; i++) { if (!i) continue; const u = i * 22; q.beginPath(); q.moveTo(...P(u, 0)); q.lineTo(...P(u + Math.sign(i) * 16, Wd)); q.moveTo(...P(u, 0)); q.lineTo(...P(u + Math.sign(i) * 16, -Wd)); q.stroke(); }
+    q.strokeStyle = '#D6EE96'; q.lineWidth = 7 * s; q.beginPath(); q.moveTo(...P(-L * .98, 0)); q.lineTo(...P(L * .98, 0)); q.stroke();
+  } });
+  if (blur > .02) for (let i = 0; i < 3; i++) {
+    const a0 = th + i * 2.1, arc = []; for (let j = 0; j <= 10; j++) { const a = a0 + j * .09; arc.push([x + Math.cos(a) * L * 1.12 * s, y + Math.sin(a) * L * 1.12 * s * K]); }
+    celLine(c, arc, 4 * s, { col: rgba(CEL.ink, .5 * blur), taper: .9 });
+  }
+  const end = o.end ?? 100, A = P(end, 0), B = P(-end, 0);
+  return { a: [A[0], A[1], sn], b: [B[0], B[1], -sn] };
+}
+// celRock(c, x, y, s): a flat-topped grey boulder to set things on, its base's middle at (x, y), its top at y - 150 s,
+// about 350 px wide at s = 1, lumpy sides, a crack, grass at its foot; returns the top's middle
+const CEL_ROCK = { col: '#BDB3AA', sh: '#958A82', lt: '#D9D1C8', top: '#D3CABF', topLt: '#EAE3DA', crack: '#7C7068' };
+function celRock(c, x, y, s = 1, o = {}) {
+  const C = { ...CEL_ROCK, ...(o.pal || {}) };
+  c.save(); c.translate(x, y); c.scale(s, s);
+  celShape(c, [[-150, -156], [-178, -120], [-186, -70], [-172, -24], [-120, 2], [-40, 6], [50, 4], [130, 0], [176, -30], [188, -84], [176, -134], [140, -160]], C.col, { shade: [C.sh, 10, 12], lt: [C.lt, -8, -4], over: q => {
+    q.strokeStyle = rgba(C.crack, .75); q.lineWidth = 3.4; q.beginPath(); q.moveTo(-110, -128); q.lineTo(-92, -90); q.lineTo(-104, -52); q.lineTo(-86, -24); q.moveTo(100, -140); q.lineTo(118, -98); q.stroke();
+    q.fillStyle = rgba(C.crack, .3); for (const [dx, dy, r] of [[-50, -70, 14], [40, -50, 10], [140, -70, 12], [-150, -70, 9], [70, -104, 8]]) { q.beginPath(); q.ellipse(dx, dy, r, r * .6, .3, 0, TAU); q.fill(); }
+    q.fillStyle = 'rgba(120,170,90,.55)'; for (const [dx, dy] of [[-160, -40], [-130, -20], [150, -30]]) { q.beginPath(); q.ellipse(dx, dy, 16, 8, .4, 0, TAU); q.fill(); }
+  } });
+  celShape(c, [[-150, -156], [-90, -186], [0, -192], [92, -186], [140, -160], [60, -132], [-40, -130], [-120, -138]], C.top, { n: 4, w: 4.5, over: q => ellipse(q, -30, -168, 80, 12, rgba(C.topLt, .9), -.04) });
+  for (const sd of [-1, 1]) for (let i = 0; i < 3; i++) celLine(c, [[sd * (160 + i * 16), 2], [sd * (166 + i * 18), -24 - (i % 2) * 10], [sd * (176 + i * 16), 0]], 3.4, { col: '#4F9A44', boil: .5 });
+  c.restore();
+  return [x, y - 160 * s];
+}
+// celMangoTree(c, x, y, s, t, o): a big mango tree, its trunk's foot at (x, y), the crown spreading about 900 px left of the
+// trunk and 300 right at s = 1, its underside about 860 above the foot: a dense dome of dark glossy leaves, lighter clumps,
+// mangoes hanging on long stalks (o.fruit: [[dx, dy, r], ...] from the trunk's foot), swaying a little with t; o.crown its
+// clumps ([[dx, dy, r], ...]), o.h the trunk's height × (to raise the crown)
+function celMangoTree(c, x, y, s = 1, t = 0, o = {}) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  const sway = Math.sin(t * .9) * 4, h = o.h ?? 1;
+  celShape(c, [[-46, 0], [-38, -260], [-60, -520], [-120, -760], [-80, -790], [-20, -600], [10, -760], [40, -800], [30, -540], [44, -260], [56, 0]].map(([px, py]) => [px, py * h]), '#8A5A36', { shade: ['#64401F', 10, 0], lt: ['#AE7A4E', -8, 0], over: q => {
+    q.strokeStyle = 'rgba(80,50,24,.55)'; q.lineWidth = 3; for (const [x0, y0, x1, y1] of [[-10, -40, -4, -200], [20, -120, 12, -300], [-24, -330, -40, -470]]) { q.beginPath(); q.moveTo(x0, y0); q.quadraticCurveTo(x0 + 10, (y0 + y1) / 2, x1, y1); q.stroke(); }
+  } });
+  for (const sd of [-1, 1]) celShape(c, celTube([[sd * 40, -4], [sd * 80, 6], [sd * 110, 4]], [26, 16, 6]), '#8A5A36', { dense: true, w: 4 });
+  // the fruit's stalks hang from under the crown, so draw them first
+  for (const [dx, dy, r] of o.fruit || []) {
+    const fx = dx + sway * (1 + dy / -800) * .5;
+    celLine(c, [[dx * .96, -830 * h], [fx, dy - r * 1.1]], 3.2, { col: '#5A3A1E', boil: .4 });
+    celMango(c, fx, dy, r, { rot: .1 + Math.sin(t * 1.3 + dx) * .06, leaf: false });
+  }
+  // the crown: overlapping clumps, darker at the back
+  const clump = (cx, cy, r, col, sh, lt, sd) => {
+    const P = []; for (let i = 0; i < 36; i++) { const a = i / 36 * TAU, k = 1 + .09 * Math.abs(Math.sin(a * 6 + sd)); P.push([cx + Math.cos(a) * r * k, cy + Math.sin(a) * r * .72 * k]); }
+    celShape(c, P, col, { dense: true, w: 5, shade: [sh, 8, 12], lt: [lt, -6, -8], over: q => {
+      q.fillStyle = rgba(lt, .55); for (let i = 0; i < 7; i++) { const a = hash(sd * 7 + i) * TAU, d = hash(sd * 3 + i + 1) * r * .7; q.save(); q.translate(cx + Math.cos(a) * d, cy + Math.sin(a) * d * .7 - r * .1); q.rotate(a); q.beginPath(); q.ellipse(0, 0, 16, 5, 0, 0, TAU); q.fill(); q.restore(); }
+    } });
+  };
+  const B = o.crown || [[-760, -1040, 230], [-480, -1120, 280], [-180, -1100, 280], [120, -1060, 230], [-620, -900, 200], [-320, -930, 240], [-20, -920, 220], [200, -900, 150]];
+  B.forEach(([cx, cy, r], i) => clump(cx + sway * (i % 2 ? 1 : -1) * .4, cy, r, i < 4 ? '#2E7A3E' : '#3C9248', i < 4 ? '#225E30' : '#2C7438', i < 4 ? '#4E9C56' : '#64B262', i + 1));
   c.restore();
 }
