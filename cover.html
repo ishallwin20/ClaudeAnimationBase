@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Nidhivan cover</title>
+<!-- Ad 116, Nidhivan (the 3D style with GLB models: src/cine3d_glb.js). A copy of cine3d.html loading src/config.js and the reel's scene. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600;700&family=Space+Mono:wght@400;700&family=Cinzel:wght@500;700&family=Marcellus&family=Poppins:wght@500;700&family=Tiro+Devanagari+Sanskrit&display=block">
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="1080" height="1920"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="41" step="0.0417" value="0"><span id="tt">loading…</span></div>
+</main>
+<script src="src/config.js"></script>
+<!-- engine -->
+<script src="src/cine.js"></script>
+<script src="src/vendor/three.min.js"></script>
+<script src="src/vendor/three_gltf.min.js"></script>
+<script src="src/cine3d.js"></script>
+<script src="src/vendor/pako_inflate.min.js"></script>
+<script src="src/cine3d_fx.js"></script>
+<script src="src/cine3d_glb.js"></script>
+<script src="src/data/hdri_night2.js"></script>
+<script src="src/data/hdri_fire.js"></script>
+<script src="src/data/hdri_dawn.js"></script>
+<script src="src/data/hdri_lamplit.js"></script>
+<script src="src/data/pbr_leafground.js"></script>
+<script src="src/data/pbr_dirt.js"></script>
+<script src="src/data/pbr_paving.js"></script>
+<script src="src/data/pbr_plaster.js"></script>
+<script src="src/data/pbr_brick.js"></script>
+<script src="src/data/pbr_rust.js"></script>
+<script src="src/data/pbr_carvedwood.js"></script>
+<script src="src/data/pbr_darkwood.js"></script>
+<script src="src/data/pbr_marble.js"></script>
+<script src="src/data/pbr_silk.js"></script>
+<script src="src/data/pbr_sand.js"></script>
+<script src="src/cine_sets.js"></script>
+<script src="src/scenes/rk_images.js"></script>
+<!-- the reel -->
+<script src="src/scenes/nidhi_vo.js"></script>
+<script src="src/scenes/nidhi_tl.js"></script>
+<script src="src/scenes/nidhi_props.js"></script>
+<script src="src/scenes/nidhi.js"></script>
+<script src="src/scenes/nidhi_cover.js"></script>
+</body>
+</html>

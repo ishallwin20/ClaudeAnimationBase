@@ -1,0 +1,167 @@
+{
+  "name": "nidhi",
+  "defaults": {
+    "speaker": "girish_en_devotional",
+    "lang": "en-IN",
+    "pace": 1.22
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "t": 0.15,
+      "caps": [
+        "There's a forest in *VRINDAVAN* | that *NOBODY* is allowed to enter | after *SUNSET.*"
+      ],
+      "tts": "There's a forest in Vrindavan... that nobody is allowed to enter after sunset.",
+      "hold": 0.5
+    },
+    {
+      "id": "reason",
+      "gap": 0.5,
+      "caps": [
+        "And the reason… | is hard to *BELIEVE.*"
+      ],
+      "tts": "And the reason... is hard to believe.",
+      "hold": 0.9
+    },
+    {
+      "id": "name",
+      "gap": 0.65,
+      "caps": [
+        "It's called *NIDHIVAN.*",
+        "The grove where *BANKE BIHARI JI* | first appeared, | to *SWAMI HARIDAS.*"
+      ],
+      "tts": "It's called Nidhivan. The grove where Banke Bihari ji first appeared... to Swami Haridas.",
+      "hold": 0.6
+    },
+    {
+      "id": "belief",
+      "gap": 0.65,
+      "caps": [
+        "Devotees believe that every night, | *KRISHNA* returns here…",
+        "to dance the *MAHARAAS* | with *RADHA RANI* | and the *GOPIS.*"
+      ],
+      "tts": "Devotees believe that every single night, Krishna returns here... to dance the Maharaas, with Radha Rani and the gopis.",
+      "hold": 0.8
+    },
+    {
+      "id": "trees",
+      "gap": 0.65,
+      "caps": [
+        "Its trees grow in *PAIRS,* | twisted round each other.",
+        "Locals say that at night… | they become the *GOPIS.*"
+      ],
+      "tts": "Its trees grow in pairs, twisted round each other. Locals say that at night... they become the gopis.",
+      "hold": 0.8
+    },
+    {
+      "id": "bed",
+      "gap": 0.65,
+      "caps": [
+        "Every evening, | a *BED* is made | inside the *RANG MAHAL.*"
+      ],
+      "tts": "Every evening, a bed is made inside the Rang Mahal.",
+      "hold": 0.4
+    },
+    {
+      "id": "items",
+      "gap": 0.5,
+      "caps": [
+        "*WATER.* *PAAN.* *SWEETS.*",
+        "A neem twig | to brush with.",
+        "*BANGLES,* | and *SINDOOR.*"
+      ],
+      "tts": "Water. Paan. Sweets. A neem twig, to brush with. Bangles... and sindoor.",
+      "hold": 0.6
+    },
+    {
+      "id": "lock",
+      "gap": 0.6,
+      "caps": [
+        "Then the doors are *LOCKED…* | from the *OUTSIDE.*"
+      ],
+      "tts": "Then, the doors are locked... from the outside.",
+      "hold": 1.3
+    },
+    {
+      "id": "windows",
+      "gap": 0.6,
+      "caps": [
+        "Neighbours shut their *WINDOWS* | at the evening aarti.",
+        "Some have *BRICKED* them up."
+      ],
+      "tts": "Neighbours shut their windows at the evening aarti. Some have bricked them up.",
+      "hold": 0.8
+    },
+    {
+      "id": "twist",
+      "gap": 0.65,
+      "caps": [
+        "Because local stories warn: | whoever stays to *WATCH…*",
+        "loses their *SIGHT.* | Or their *MIND.*"
+      ],
+      "tts": "Because local stories warn... whoever stays to watch... loses their sight. Or their mind.",
+      "hold": 1.6
+    },
+    {
+      "id": "morning",
+      "gap": 0.6,
+      "caps": [
+        "At dawn, the priests say…",
+        "the bed looks *SLEPT IN.* | The *WATER* is gone. | The *PAAN,* eaten."
+      ],
+      "tts": "And at dawn, the priests say... the bed looks slept in. The water is gone. The paan, eaten.",
+      "hold": 0.9
+    },
+    {
+      "id": "true",
+      "gap": 0.65,
+      "caps": [
+        "Are these stories *TRUE?*",
+        "No one has ever *FILMED* it. | No one is *SUPPOSED* to."
+      ],
+      "tts": "So are these stories true? No one has ever filmed it. No one is supposed to.",
+      "hold": 0.8
+    },
+    {
+      "id": "bhag",
+      "gap": 0.65,
+      "caps": [
+        "But the *BHAGAVATAM* | tells a stranger story.",
+        "On the night of the *RAAS,* | *KRISHNA* became as many | as there were *GOPIS.*"
+      ],
+      "tts": "But the Bhagavatam tells a stranger story. On the night of the Raas, Krishna became as many... as there were gopis.",
+      "hold": 0.8
+    },
+    {
+      "id": "noticed",
+      "gap": 0.6,
+      "caps": [
+        "And all of *VRAJ* | never noticed.",
+        "Each man thought his wife | was right *BESIDE* him."
+      ],
+      "tts": "And all of Vraj never noticed. Each man thought his wife was right beside him.",
+      "hold": 0.9
+    },
+    {
+      "id": "hear",
+      "gap": 0.65,
+      "caps": [
+        "You were never meant | to *SEE* the Raas.",
+        "Whoever simply *HEARS* it with faith, | it says, | is freed from the heart's *DISEASE.*"
+      ],
+      "tts": "You were never meant to see the Raas. Whoever simply hears it with faith, it says... is freed from the heart's disease.",
+      "hold": 0.9
+    },
+    {
+      "id": "ask",
+      "gap": 0.65,
+      "caps": [
+        "Would *YOU* stay inside | after sunset?",
+        "*YES* or *NO?*"
+      ],
+      "tts": "Would you stay inside after sunset? Yes... or no?",
+      "hold": 0.6
+    }
+  ]
+}
