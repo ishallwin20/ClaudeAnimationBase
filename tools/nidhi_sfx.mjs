@@ -9,8 +9,8 @@
 // The arc: dusk wind and a chain at the gate → steps on the path, a far bell → night: crickets, an owl, a faint
 // ghungroo → leaves in the wind → the diya; each offering its own small sound → doors creak shut, the chain, the
 // lock's click, a low boom, silence → a shutter, a brick → a heartbeat speeding up, bells closing in, a rising roar
-// into the white → a ringing silence → dawn birds, a bell, the door → wind → bells as each Krishna appears → crickets
-// → shimmer on HEARS → the chain under the moon → the card.
+// into the white → a ringing silence → dawn birds, a bell, the door → wind → bells as each Krishna appears → shimmer on HEARS → crickets, a bell on RADHE → the card,
+// the score at full under it.
 import { readFileSync, existsSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import { execFileSync } from 'node:child_process';
@@ -20,24 +20,29 @@ const TL = runInNewContext(readFileSync('src/scenes/nidhi_vo.js', 'utf8') + '\n'
 const TAU = Math.PI * 2, rr = (a, b) => a + (b - a) * rnd();
 
 // ---------- 1. the score cut ----------
-const SRC = 'assets/nidhi_score_2.mp3';
-if (existsSync(SRC)) {
-  // [picture start, picture end, take start, fade in, fade out]
+// Two Lyria briefs: a suspense score (tools/nidhi_score_a.txt → takes a1, a2, ~65 s) for the mystery, and a radiant
+// devotional one (nidhi_score_b.txt → b2, ~62 s) from the Bhagavatam on. Sections picked by loudness; a volume ramp
+// makes the build into the white-out; silence after it; b2's last full statement under the card.
+const SRCS = ['assets/nidhi_score_a1.mp3', 'assets/nidhi_score_a2.mp3', 'assets/nidhi_score_b2.mp3'];
+if (SRCS.every(existsSync)) {
+  // [source, picture start, picture end, take start, fade in, fade out, ramp (fade in as a build)]
   const SEG = [
-    [0, TL.H0, 0, 0, .6],
-    [TL.H0, TL.J0, 41.0, .5, .5],
-    [TL.J0, TL.SIGHT + .02, 47.1, .4, .06],
-    [TL.K0 - .2, TL.M0, 103.0, 1.4, .8],
-    [TL.M0, TL.O0, 51.5, .8, .8],
-    [TL.O0, TL.CARD, 75.5, .8, 1.2],
-    [TL.CARD - .4, TL.END, 139.4, .6, .3],
+    [0, 0, TL.F0, 0, 0, .8],
+    [1, TL.F0 - .4, TL.H0, 28, .8, .5],
+    [0, TL.H0, TL.I0, 34.9 - .0, .3, .4],
+    [1, TL.I0 - .2, TL.J0, 38, .5, .4],
+    [0, TL.J0, TL.SIGHT + .02, 43, 0, .05, 1],
+    [1, TL.K0 - .3, TL.M0 + .3, 30.5, 1.4, 1],
+    [2, TL.M0, TL.P0 + .2, 1, .4, 1],
+    [2, TL.P0 - .3, TL.CARD + .2, 34, 1, .6],
+    [2, TL.CARD - .2, TL.END, 50.5, .4, .9],
   ];
-  const parts = SEG.map(([a, b, s, fi, fo], i) => {
-    const d = b - a;
-    return `[0:a]atrim=${s}:${(s + d).toFixed(3)},asetpts=PTS-STARTPTS,afade=t=in:d=${fi || .01},afade=t=out:st=${(d - fo).toFixed(3)}:d=${fo},adelay=${Math.round(a * 1000)}|${Math.round(a * 1000)}[p${i}]`;
+  const parts = SEG.map(([src, a, b, s, fi, fo, ramp], i) => {
+    const d = b - a, fin = ramp ? `afade=t=in:d=${d.toFixed(3)}:curve=exp` : `afade=t=in:d=${fi || .01}`;
+    return `[${src}:a]atrim=${s}:${(s + d).toFixed(3)},asetpts=PTS-STARTPTS,${fin},afade=t=out:st=${(d - fo).toFixed(3)}:d=${fo},adelay=${Math.round(a * 1000)}|${Math.round(a * 1000)}[p${i}]`;
   });
   const fc = parts.join(';') + ';' + SEG.map((_, i) => `[p${i}]`).join('') + `amix=inputs=${SEG.length}:normalize=0:duration=longest,apad=whole_dur=${TL.END.toFixed(3)},atrim=0:${TL.END.toFixed(3)}[o]`;
-  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', SRC, '-filter_complex', fc, '-map', '[o]', '-ar', '48000', '-ac', '2', 'assets/nidhi_score_cut.wav']);
+  execFileSync('ffmpeg', ['-y', '-v', 'error', ...SRCS.flatMap(f => ['-i', f]), '-filter_complex', fc, '-map', '[o]', '-ar', '48000', '-ac', '2', 'assets/nidhi_score_cut.wav']);
   console.log('assets/nidhi_score_cut.wav');
 }
 
@@ -129,16 +134,14 @@ T.at(TL.M0 - .3, whoosh(1.2, 300, 2400, .5), .05, 0);
 T.at(TL.BHAG - .05, templeBell(60, .8, 6), .06, 0);
 T.at(TL.M0, crickets(TL.O0 - TL.M0, .5, 4400), .008, -.3);
 for (let i = 0; i < 11; i++) { const t = TL.MANY - .1 + i * 1.6 / 11; T.at(t, mixb(chime(note(84 + [0, 3, 5, 7, 10, 12][i % 6]), .5, 2), ghungroo(.4, 4)), .035, (i % 2 ? .4 : -.4)); }
-// ================= N · Vraj never noticed =================
-T.at(TL.N0, wind(TL.O0 - TL.N0, 5, 1.4), .03, 0);
-T.at(TL.VRAJ - .1, owl(.5), .02, .6);
 // ================= O · whoever hears it =================
 T.at(TL.HEARS - .1, shimmer(2, [note(79), note(84), note(88), note(91)], .6, .1), .05, 0);
 T.at(TL.DISEASE - .1, templeBell(64, .7, 5), .05, 0);
-// ================= P · would you stay? =================
-T.at(TL.P0, crickets(TL.CARD - TL.P0, .8, 4400), .015, 0);
-T.at(TL.YOU - .1, chainRattle(.6), .06, 0);
-T.at(TL.YES - .1, drum(40, .7, 1.4), .07, 0);
+// ================= P · do you believe? RADHE RADHE =================
+T.at(TL.P0, crickets(TL.CARD - TL.P0, .8, 4400), .012, 0);
+T.at(TL.P0, wind(TL.CARD - TL.P0, 2, 1.4), .03, 0);
+T.at(TL.COMES - .1, ghungroo(.4, 6), .03, .4);
+T.at(TL.RADHE - .1, mixb(templeBell(64, .9, 6), shimmer(1.6, [note(81), note(84), note(88), note(93)], .5, .1)), .06, 0);
 // ================= the card =================
 T.at(TL.CARD - .3, whoosh(.7, 400, 3200), .1, 0);
 T.at(TL.CARD + .35, mixb(...[67, 71, 74, 79].map((m) => bell(note(m), 2.2, { partials: [[1, 1], [2, .35], [3, .12]], k: 1.4, amp: .7 }))), .1, 0);
@@ -150,7 +153,7 @@ console.log('assets/nidhi_sfx.wav', TL.END.toFixed(2), 's');
 const D = TL.END.toFixed(3), score = existsSync('assets/nidhi_score_cut.wav') ? 'assets/nidhi_score_cut.wav' : null;
 const inputs = ['-i', 'assets/nidhi_vo.wav', '-i', 'assets/nidhi_sfx.wav', ...(score ? ['-i', score] : [])];
 const fc = score
-  ? `[0:a]volume=1.15,asplit[v][vk];[1:a]volume=0.75[s];[2:a]volume=0.5[m0];[m0][vk]sidechaincompress=threshold=0.04:ratio=3:attack=40:release=450:makeup=1[m];[v][s][m]amix=inputs=3:normalize=0:duration=longest,apad=whole_dur=${D},atrim=0:${D},loudnorm=I=-14:TP=-1.5:LRA=11[o]`
+  ? `[0:a]volume=1.15,apad=whole_dur=${D},asplit[v][vk];[1:a]volume=0.75[s];[2:a]volume='if(gte(t,${TL.CARD.toFixed(2)}),1.1,0.55)':eval=frame[m0];[m0][vk]sidechaincompress=threshold=0.04:ratio=3:attack=40:release=450:makeup=1[m];[v][s][m]amix=inputs=3:normalize=0:duration=longest,apad=whole_dur=${D},atrim=0:${D},loudnorm=I=-14:TP=-1.5:LRA=11[o]`
   : `[1:a]volume=0.95[s];[0:a][s]amix=inputs=2:normalize=0:duration=longest,apad=whole_dur=${D},atrim=0:${D},loudnorm=I=-14:TP=-1.5:LRA=11[o]`;
 execFileSync('ffmpeg', ['-y', '-v', 'error', ...inputs, '-filter_complex', fc, '-map', '[o]', '-ar', '48000', '-ac', '2', 'assets/nidhi_mix.wav']);
 console.log('assets/nidhi_mix.wav', score ? '(with the score)' : '(voice + SFX)');

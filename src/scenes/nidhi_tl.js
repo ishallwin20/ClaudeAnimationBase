@@ -24,9 +24,8 @@ const TL = (() => {
     K0: mid('twist', 'morning'),           // dawn in the Rang Mahal
     L0: mid('morning', 'true'),            // the gate at dawn: true?
     M0: mid('true', 'bhag'),               // the Raas ring from above
-    N0: mid('bhag', 'noticed'),            // Vraj asleep; the ring far off
-    O0: mid('noticed', 'hear'),            // Radha-Krishna, close
-    P0: mid('hear', 'ask'),                // the lock under the moon: would you stay?
+    O0: mid('bhag', 'hear'),               // Radha-Krishna, close
+    P0: mid('hear', 'ask'),                // the path at night, lamplight in the Rang Mahal's door: do you believe?
     CARD: LN.ask.end + 1.2,
     // the words
     NOBODY: Wd('hook', 'nobody'), SUNSET: Wd('hook', 'sunset'), BELIEVE: Wd('reason', 'believe'),
@@ -41,10 +40,9 @@ const TL = (() => {
     DAWN: Wd('morning', 'dawn'), SLEPT: Wd('morning', 'slept'), WATER2: Wd('morning', 'water'), PAAN2: Wd('morning', 'paan'),
     TRUE: Wd('true', 'true'), FILMED: Wd('true', 'filmed'), SUPPOSED: Wd('true', 'supposed'),
     BHAG: Wd('bhag', 'bhagavatam'), RAAS: Wd('bhag', 'raas'), MANY: Wd('bhag', 'many'), GOPIS3: Wd('bhag', 'gopis'),
-    VRAJ: Wd('noticed', 'vraj'), BESIDE: Wd('noticed', 'beside'),
     SEE: Wd('hear', 'see'), HEARS: Wd('hear', 'hears'), DISEASE: Wd('hear', 'disease'),
-    YOU: Wd('ask', 'you'), YES: Wd('ask', 'yes'), NO: Wd('ask', 'no'),
+    BELIEVE2: Wd('ask', 'believe'), COMES: Wd('ask', 'comes'), WRITE: Wd('ask', 'write'), RADHE: Wd('ask', 'radhe'),
   };
-  T.END = T.CARD + 6.5;
+  T.END = T.CARD + 7;
   return T;
 })();

@@ -226,23 +226,14 @@ SHOTS.push({ a: TL.L0, b: TL.M0 + .4, xf: .4, draw(c, u, t) {
 } });
 
 // ================= M · the Raas from above: "But the BHAGAVATAM tells a stranger story. On the night of the RAAS, KRISHNA became as many as there were GOPIS" =================
-SHOTS.push({ a: TL.M0, b: TL.N0 + .4, xf: .6, draw(c, u, t) {
-  const k = easeIO(R_(t, TL.M0, TL.N0 + .4));
+SHOTS.push({ a: TL.M0, b: TL.O0 + .4, xf: .6, draw(c, u, t) {
+  const k = easeIO(R_(t, TL.M0, TL.O0 + .4));
   BK.set(t, { el: 30, az: 20, core: 1, spin: .22, n: 1 + 11 * clamp((t - TL.MANY + .1) / 1.6) });
-  const w = BK.pairs[0].getWorldPosition(V3()), m = easeIO(R_(t, TL.MANY - .6, TL.N0 + .4)), h = lerp(1.6, 17, m);
+  const w = BK.pairs[0].getWorldPosition(V3()), m = easeIO(R_(t, TL.RAAS - .3, TL.O0 + .4)), h = lerp(1.6, 17, m);
   const pos = [lerp(w.x * 1.9, 0, m), h, lerp(w.z * 1.9, .01, m)], at = [lerp(w.x, 0, m), lerp(1.1, 0, m), lerp(w.z, 0, m)];
   render3(c, BK.scene, cam3({ pos, at, fov: 46 }), { exposure: 1.25, fx: lens(Math.hypot(pos[0] - at[0], pos[1] - at[1], pos[2] - at[2]), 3, { ...NIGHTG, hi: '#FFC890' }) });
   capBand(c, .5); corner(c, t);
-  tag(c, t, TL.MANY - .1, TL.N0 + .3, '10.33.19 · AS MANY AS THE GOPIS', 540, 600, { align: 'center', col: '#E8B030' });
-} });
-
-// ================= N · Vraj never noticed: "And all of VRAJ never noticed. Each man thought his wife was right BESIDE him" =================
-SHOTS.push({ a: TL.N0, b: TL.O0 + .4, xf: .5, draw(c, u, t) {
-  const k = R_(t, TL.N0, TL.O0 + .4);
-  BK.set(t, { el: 16, az: 330, core: 1.2, spin: .22 });
-  render3(c, BK.scene, cam3({ pos: [lerp(-14, -11, k), .9, lerp(16, 13, k)], at: [0, 1.1, 0], fov: 34 }), { exposure: 1.3, fx: lens(20, 3, { ...NIGHTG, hi: '#FFC890' }) });
-  capBand(c, .5); corner(c, t);
-  tag(c, t, TL.BESIDE - .2, TL.O0 + .3, '10.33.37 · BY HIS MAYA', 540, 600, { align: 'center', col: '#E8B030' });
+  tag(c, t, TL.MANY - .1, TL.O0 + .3, '10.33.19 · AS MANY AS THE GOPIS', 540, 600, { align: 'center', col: '#E8B030' });
 } });
 
 // ================= O · Radha-Krishna: "You were never meant to SEE the Raas. Whoever simply HEARS it with faith… is freed from the heart's DISEASE" =================
@@ -257,14 +248,14 @@ SHOTS.push({ a: TL.O0, b: TL.P0 + .4, xf: .6, draw(c, u, t) {
   tag(c, t, TL.HEARS, TL.P0 + .3, '10.33.39 · WHOEVER HEARS IT', 540, 600, { align: 'center', col: '#E8B030' });
 } });
 
-// ================= P · would you stay? the lock under the moon =================
-SHOTS.push({ a: TL.P0, b: TL.CARD, xf: .5, draw(c, u, t) {
+// ================= P · "Do you believe HE still comes here, every night? If you do… write RADHE RADHE" =================
+// the path at night: the moon over the dome, lamplight in the Rang Mahal's door; pushing slowly toward it
+SHOTS.push({ a: TL.P0, b: TL.CARD, xf: .6, draw(c, u, t) {
   const k = R_(t, TL.P0, TL.CARD);
-  GR.set('night', { az: 4, el: 8, fog: .05, moonSize: 10 }); GR.lock.set(0); GR.fill.position.set(.35, 1.35, .75); GR.fill.color.set('#AFC0FF'); GR.fill.intensity = 2.2; GR.fill.distance = 2; GR.fill.decay = 2;
-  const L = GR.lock.getWorldPosition(V3()), pos = [L.x + lerp(.5, .1, k), L.y + lerp(.25, .05, k), L.z + lerp(1.6, .5, easeIO(k))];
-  render3(c, GR.scene, cam3({ pos, at: [L.x, L.y - .03, L.z], fov: 32 }), { exposure: 1.45, fx: lens(Math.hypot(pos[0] - L.x, pos[1] - L.y, pos[2] - L.z), 10, { ...NIGHTG, max: 20, rays: moonRays(.8) }) });
+  GR.set('night', { az: 0, el: lerp(7, 9, k), fog: .055, moonSize: 9, bgK: .5 }); GR.rmGlow.material.opacity = lerp(.5, .8, k); GR.fill.intensity = 0;
+  render3(c, GR.scene, cam3({ pos: [0, lerp(1.2, 1.5, k), lerp(-3, -12, easeIO(k))], at: [0, 2.4, -30], fov: 50 }), { exposure: 1.3, fx: lens(lerp(9, 6, k), 2.5, { ...NIGHTG, rays: moonRays(.9) }) });
   capBand(c, .55);
-  big(c, t, TL.YES - .1, TL.CARD, 'YES  or  NO?', 700, { size: 140 });
+  big(c, t, TL.WRITE - .1, TL.CARD, 'RADHE RADHE', 640, { size: 150, col: '#FFC65A' });
   black(c, seg(t, TL.CARD - .35, TL.CARD) * .6);
 } });
 

@@ -134,16 +134,6 @@
       "hold": 0.8
     },
     {
-      "id": "noticed",
-      "gap": 0.6,
-      "caps": [
-        "And all of *VRAJ* | never noticed.",
-        "Each man thought his wife | was right *BESIDE* him."
-      ],
-      "tts": "And all of Vraj never noticed. Each man thought his wife was right beside him.",
-      "hold": 0.9
-    },
-    {
       "id": "hear",
       "gap": 0.65,
       "caps": [
@@ -157,11 +147,11 @@
       "id": "ask",
       "gap": 0.65,
       "caps": [
-        "Would *YOU* stay inside | after sunset?",
-        "*YES* or *NO?*"
+        "Do you believe *HE* still comes here, | every night?",
+        "If you do… | write *RADHE RADHE.*"
       ],
-      "tts": "Would you stay inside after sunset? Yes... or no?",
-      "hold": 0.6
+      "tts": "Do you believe he still comes here, every night? If you do... write, Radhe Radhe.",
+      "hold": 1.0
     }
   ]
 }

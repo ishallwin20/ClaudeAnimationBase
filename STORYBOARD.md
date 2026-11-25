@@ -3,13 +3,13 @@
 **Style:** 3D, with GLB models from the owner's library (`assets/glb/`, loaded by `src/cine3d_glb.js`), directed like
 the owner's two reference reels (`ig_hyperrealistic_3d*.mp4`): still models made alive by the camera (slow push-ins,
 cranes, a rack of focus), shallow depth of field, teal/amber grade, mono labels in black boxes, a red sticker, tall
-condensed headlines. **Voice:** girish_en_devotional (Sarvam), pace 1.22. **Score:** Lyria take 2, cut to the picture.
-**Length:** 96.0 s (voice ends 88.3 s, card from 89.5 s). **Card:** Navadurga set, no price.
+condensed headlines. **Voice:** girish_en_devotional (Sarvam), pace 1.22. **Score:** two Lyria briefs (suspense for the mystery, radiant from the Bhagavatam on), cut to the picture.
+**Length:** 92.6 s (voice ends 84.4 s, card from 85.6 s). **Card:** Navadurga set, no price.
 
 **The idea:** the owner's script (the belief, the bed, the warning, "are these stories true?"), made into a mystery
 that turns at the end: the reel never answers whether anyone has gone mad, and instead hands over to what the
-Bhagavatam itself says about the Raas: Krishna became as many as there were gopis; no one in Vraj noticed; and you
-were never meant to see it, only to hear it. A corner label says, the whole way through, which kind of claim is on
+Bhagavatam itself says about the Raas: Krishna became as many as there were gopis, and you were never meant to see
+it, only to hear it. The ask: "Do you believe He still comes here, every night? If you do… write RADHE RADHE." A corner label says, the whole way through, which kind of claim is on
 screen: **LOCAL BELIEF** (red) or **BHAGAVATA PURANA · 10.33** (gold).
 
 ## Shots (times from `src/scenes/nidhi_tl.js`)
@@ -28,10 +28,16 @@ screen: **LOCAL BELIEF** (red) or **BHAGAVATA PURANA · 10.33** (gold).
 | 52.8 | K: dawn, the doors open: the bed slept in, the lota empty, a paan eaten | At dawn, the priests say… the bed looks slept in. The water is gone. The paan, eaten. |
 | 59.1 | L: the gate at dawn; TRUE? | Are these stories true? No one has ever filmed it. No one is supposed to. |
 | 64.1 | M: one Radha-Krishna on the Yamuna's sand; on MANY eleven more appear in flashes of light; crane up to the ring from above | But the Bhagavatam tells a stranger story. On the night of the Raas, Krishna became as many as there were gopis. |
-| 71.3 | N: the ring far off across the dark bank | And all of Vraj never noticed. Each man thought his wife was right beside him. |
-| 77.0 | O: Radha-Krishna close, warm, a slow orbit | You were never meant to see the Raas. Whoever simply hears it with faith, it says, is freed from the heart's disease. |
-| 84.9 | P: the lock under the moon; YES or NO? | Would you stay inside after sunset? Yes… or no? |
-| 89.5 | card | |
+| 71.4 | O: Radha-Krishna close, warm, a slow orbit | You were never meant to see the Raas. Whoever simply hears it with faith, it says, is freed from the heart's disease. |
+| 79.2 | P: the path at night, pushing toward the lamplit door of the Rang Mahal under the moon; RADHE RADHE in gold | Do you believe He still comes here, every night? If you do… write Radhe Radhe. |
+| 85.6 | card, the score's final statement at full under it | |
+
+## v2 (owner's notes, 25 Nov)
+1. Suspense music instead of soothing, especially at the start → the new score above.
+2. "Would you stay inside" removed → the RADHE RADHE ask.
+3. "Each man thought his wife was right beside him" (10.33.37) removed: it explained how the gopis left unseen, but
+   read as a tangent (and could be misread).
+4. The card had no music (the ducking ended with the voice) → the score now plays at full under it.
 
 ## Facts used
 Local belief (said on screen as belief, "locals say", "local stories", "the priests say"; the corner label reads LOCAL BELIEF):
@@ -49,8 +55,6 @@ Local belief (said on screen as belief, "locals say", "local stories", "the prie
 Scripture (corner label BHAGAVATA PURANA · 10.33; Vedabase, Prabhupada translation):
 - 10.33.3: in the rasa circle Krishna entered between each pair of gopis, each thinking he stood beside her alone.
 - 10.33.19: "Expanding Himself as many times as there were cowherd women…" → "Krishna became as many as there were gopis."
-- 10.33.37: the cowherd men, bewildered by his maya, thought their wives had remained home at their sides, and felt no
-  jealousy → "All of Vraj never noticed. Each man thought his wife was right beside him."
 - 10.33.39: whoever faithfully hears or describes this lila attains devotion and quickly conquers lust, "the disease of
   the heart" → "Whoever simply hears it with faith… is freed from the heart's disease."
 
@@ -61,8 +65,11 @@ riverbank, not in the grove. The Raas ring uses one Radha-Krishna model repeated
 and claims nothing more.
 
 ## Sound
-Score: `tools/nidhi_score.txt` → `assets/nidhi_score_1/2.mp3` (Lyria stretched the brief to 136/146 s); take 2 cut
-to the picture by loudness in `tools/nidhi_sfx.mjs`. The SFX and the mix are built by the same file:
+Score (v2, owner: suspense, not soothing, especially at the start): `tools/nidhi_score_a.txt` (suspense: sub drone,
+ticking pulse, staccato strings) → takes a1, a2; `tools/nidhi_score_b.txt` (radiant Raas) → b2; cut to the picture by
+loudness in `tools/nidhi_sfx.mjs` (a ramp into the white-out, silence after it, b2's final statement under the card at
+full: the voice track is padded so the ducking doesn't end the score when the voice ends). v1's soothing brief:
+`tools/nidhi_score.txt`. The SFX and the mix are built by the same file:
 `node tools/nidhi_sfx.mjs` → `assets/nidhi_mix.wav`.
 
 ## Make it
