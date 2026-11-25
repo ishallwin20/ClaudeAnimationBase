@@ -28,6 +28,27 @@ section all work the same way here.
 | `src/cine3d_fx.js`, `tools/hdri.mjs`, `tools/pbr.mjs`, `src/data/hdri_*.js`, `src/data/pbr_*.js`, `cine3d_fx.html` | the film look (below): HDRI light, scanned materials, the post chain (DOF, bloom, shafts, grade), sunbeams, motes, caustics |
 | `cine3d.html`, `src/scenes/cine3d_sheet.js` | the studio page on main: the shrine in its three moods ([docs/cine3d_set.jpg](docs/cine3d_set.jpg)) |
 
+## Models from GLB files (src/cine3d_glb.js)
+For models from the owner's free library (Sketchfab exports, scans) in `assets/glb/`. First used on `ad/116-books123-nidhivan`.
+- Load `src/vendor/three_gltf.min.js` after `three.min.js` (three r170's GLTFLoader + SkeletonUtils as a classic script,
+  `THREE.GLTFLoader`; built with esbuild from `three@0.170.0/examples/jsm` with `three` aliased to a shim returning
+  `window.THREE`), then `src/cine3d_glb.js` after `cine3d.js`.
+- `glb3(path, { height | scale, yaw, center, cast, receive, mat(mesh), onload(g, gltf) })` → a group, filled when the
+  file arrives: feet on y 0, centred on x/z, scaled to `height` metres. `g.inner` is the scaled model (clone it for
+  copies: `g.inner.clone(true)` shares geometry and textures), `g.gltf` the parsed file, `g.box` its size.
+  `glbAnim3(g, clip).at(t)` poses a skinned model's clip at time t.
+- The file is read with XHR (the page is file://; render.mjs runs Chrome with `--allow-file-access-from-files`);
+  cine.js waits for every `glb3()` (and anything else pushed to `window.LOADS`) before the first frame.
+- Old Sketchfab exports in `KHR_materials_pbrSpecularGlossiness` (three dropped it; they come out white and metallic)
+  are read into matte MeshStandardMaterials by a loader plugin.
+- **An HDRI's sky picture is an image that loads when `env3(..., { bg: true })` first runs**: call it for every HDRI
+  the reel shows at load (`['night2', 'fire'].forEach(n => env3(new THREE.Scene(), n, { bg: true }))`), or the first
+  frames of a fresh render page show a black sky.
+- What worked (ad 116): the reference reels' trick, still models made alive by the camera: slow push-ins with a
+  shallow focus, a crane from one figure up to a ring of copies (instances appear in flashes of light), foreground
+  leaves parting in front of the lens with the subject a blur of light behind. A 2 M-triangle model × 12 renders in
+  ~1 s a frame with shadows. A model's leaf cards can be re-coloured in `onBeforeCompile` (pink blossom → tulsi green).
+
 ## The film look (src/cine3d_fx.js)
 Load after `cine3d.js`, with `src/vendor/pako_inflate.min.js` and the data files a reel uses
 ([docs/cine3d_fx.jpg](docs/cine3d_fx.jpg): before, after, a product shot, the sea; `cine3d_fx.html` on main).

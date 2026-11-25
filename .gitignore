@@ -6,3 +6,4 @@ assets/[0-9]-*/
 assets/durga-maa-all-avatars/
 assets/vo/*/*.wav
 !assets/vo/*/*.raw.wav
+assets/glb/

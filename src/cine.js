@@ -380,6 +380,7 @@ async function cineSetup() {
   // a font entry can be [font, text]: it loads the faces those glyphs need (a script's unicode-range subset, e.g. Tamil)
   await Promise.all([`${CAP.weight} ${CAP.size}px ${CAP.font}`, ...(PROJECT.fonts || [])].map(f => Array.isArray(f) ? document.fonts.load(f[0], f[1]) : document.fonts.load(f)));
   await Promise.all(Object.values(PICS).map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+  await Promise.all(window.LOADS || []);   // async assets a scene asked for (glb3's models)
   window.ready = true;
   if (!location.search.includes('render')) devUI();
 }
