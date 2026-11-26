@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <title>Sketch</title>
 <!-- The Sketch style's sheet (1080 x 1920 design units, rendered at 2x): t 0.5 Ram lifting Shiva's bow at Sita's
-     swayamvar (Bala Kanda 67), finished; t 1.5 the same over the posed-rig guide and a grid (for drawing).
+     swayamvar (Bala Kanda 67), finished; t 1.5 the same over the posed-rig guide and a grid (for drawing); t 2.5 the costume
+     over the 3D body (render sketch_ram3d.html --stills=1.5 --out=out/check/ram3d first; research, 26 Nov 2026).
      node render.mjs --page=sketch.html --stills=0.5 --out=out/check/sk -->
 <style>html, body { margin: 0; background: #111; } canvas { max-width: 100%; max-height: 96vh; display: block; margin: auto; }</style>
 <link href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -15,9 +16,10 @@
 <script src="src/sketch.js"></script>
 <script src="src/sk_ram.js"></script>
 <script>
-  const CV = document.getElementById('out'), CX = CV.getContext('2d'), DUR = 2, K = 2;
+  const CV = document.getElementById('out'), CX = CV.getContext('2d'), DUR = 3, K = 2;
   SK.S = K;
   const GUIDE = new Image(); GUIDE.src = 'out/check/pose/t0_50.png';
+  const BODY = new Image(); BODY.src = 'out/check/ram3d/t1_50.png';   // the 3D body (sketch_ram3d.html), for t 2.5
   function grid(c) {
     c.save(); c.globalAlpha = .55; c.lineWidth = .6; c.font = '12px monospace'; c.fillStyle = '#05c';
     for (let x = 0; x <= 1080; x += 20) { c.strokeStyle = x % 100 ? 'rgba(0,80,200,.25)' : 'rgba(0,80,200,.8)'; c.beginPath(); c.moveTo(x, 0); c.lineTo(x, 1920); c.stroke(); if (!(x % 100)) for (let y = 50; y < 1920; y += 100) c.fillText(x, x + 2, y); }
@@ -27,6 +29,7 @@
   function drawPage(t) {
     CX.setTransform(K, 0, 0, K, 0, 0);
     SK.boil = Math.floor(t * 8);
+    if (t >= 2) { skRamScene(CX, t - 2, { body: BODY, head: { x: 487, y: 844, a: -.47, k: 1.37 }, bow: { y: 622 } }); return; }
     if (t >= 1) {
       SK.paper(CX, 1080, 1920);
       CX.globalAlpha = .45; if (GUIDE.complete && GUIDE.naturalWidth) CX.drawImage(GUIDE, 44.8, 312, 1080 * .88, 1920 * .88); CX.globalAlpha = 1;
@@ -38,7 +41,7 @@
   }
   window.renderAt = async (t, type = 'image/png', q = .92) => { drawPage(t); return CV.toDataURL(type, q); };
   window.gpuInfo = () => 'canvas 2d';
-  Promise.all([document.fonts.load('46px Gelasio'), new Promise(r => { GUIDE.onload = GUIDE.onerror = r; })]).then(() => { drawPage(.5); window.ready = true; });
+  Promise.all([document.fonts.load('46px Gelasio'), new Promise(r => { GUIDE.onload = GUIDE.onerror = r; }), new Promise(r => { BODY.onload = BODY.onerror = r; })]).then(() => { drawPage(.5); window.ready = true; });
 </script>
 </body>
 </html>

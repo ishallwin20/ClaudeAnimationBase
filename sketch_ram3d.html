@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sketch Ram 3D</title>
+<!-- The Sketch style's proportion guide: the owner's rigged GLB (indian_teenager.glb, a Mixamo rig) posed by aiming its
+     bones at world directions, rendered once from the shot's camera, so a figure drawn in code gets an adult's
+     proportions and foreshortening. Nothing from here goes into a frame; the joints' screen positions are logged.
+     node render.mjs --page=sketch_pose.html --stills=0.5 --out=out/check/pose -->
+<style>html, body { margin: 0; background: #222; }</style>
+</head>
+<body>
+<script src="src/vendor/three.min.js"></script>
+<script src="src/vendor/three_fbx.min.js"></script>
+<script>
+// The Sketch style's body: Man base mesh (BlakkMato, Sketchfab, CC BY 4.0), rigged by Mixamo (assets/glb/man_body.fbx, git-ignored),
+// posed by aiming bones at world directions (as sketch_pose.html), toon-shaded from its normals. t .5 the swayamvar pose.
+const W = 1080, H = 1920, DUR = 1;
+const R = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, alpha: true }); R.setClearColor(0, 0); R.setSize(W, H); document.body.appendChild(R.domElement);
+const S = new THREE.Scene(), CAM = new THREE.PerspectiveCamera(24, W / H, .1, 100);
+// the OBJ sent to Mixamo had no normals: weld by position and give every vertex the smooth average of its faces
+function smoothNormals(geo) {
+  const p = geo.attributes.position, n = new Float32Array(p.count * 3), key = i => p.getX(i).toFixed(3) + ',' + p.getY(i).toFixed(3) + ',' + p.getZ(i).toFixed(3);
+  const acc = new Map(), a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3(), idx = geo.index;
+  const tri = idx ? idx.count / 3 : p.count / 3, V = k => idx ? idx.getX(k) : k;
+  for (let t = 0; t < tri; t++) { const i = V(t * 3), j = V(t * 3 + 1), k = V(t * 3 + 2);
+    a.fromBufferAttribute(p, i); b.fromBufferAttribute(p, j); c.fromBufferAttribute(p, k);
+    const f = new THREE.Vector3().subVectors(c, b).cross(new THREE.Vector3().subVectors(a, b));
+    for (const v of [i, j, k]) { const kk = key(v); const s = acc.get(kk) || [0, 0, 0]; s[0] += f.x; s[1] += f.y; s[2] += f.z; acc.set(kk, s); } }
+  for (let i = 0; i < p.count; i++) { const s = acc.get(key(i)), l = Math.hypot(...s) || 1; n[i * 3] = s[0] / l; n[i * 3 + 1] = s[1] / l; n[i * 3 + 2] = s[2] / l; }
+  geo.setAttribute('normal', new THREE.BufferAttribute(n, 3));
+}
+
+const POSE = window.POSE = {
+  yaw: .3, twist: { Spine2: .25, Head: .75 },
+  Spine: [-.06, 1, 0], Spine1: [-.02, 1, 0], Spine2: [.04, 1, -.04], Neck: [-.02, 1, -.02], Head: [-.45, .9, 0],
+  LeftArm: [.42, .9, -.05], LeftForeArm: [.1, 1, .05], LeftHand: [.05, 1, .1],
+  RightArm: [.1, -.9, .45], RightForeArm: [.75, -.25, .45], RightHand: [.9, -.1, .3],
+  LeftUpLeg: [.55, -.8, .35], LeftLeg: [.05, -1, -.1], RightUpLeg: [-.38, -1, -.2], RightLeg: [-.3, -1, -.15],
+  curl: { Left: 1.35, Right: .5 },
+};
+const CHILD = { Spine: 'Spine1', Spine1: 'Spine2', Spine2: 'Neck', Neck: 'Head', Head: 'HeadTop_End', LeftArm: 'LeftForeArm', LeftForeArm: 'LeftHand', LeftHand: 'LeftHandMiddle1',
+  RightArm: 'RightForeArm', RightForeArm: 'RightHand', RightHand: 'RightHandMiddle1', LeftUpLeg: 'LeftLeg', LeftLeg: 'LeftFoot', RightUpLeg: 'RightLeg', RightLeg: 'RightFoot' };
+let G, B = {}, ALL = {};
+const bone = k => B['mixamorig' + k];
+// FBXLoader nests each part's copy of a bone inside the first copy with an identity transform, so only the outermost one is posed (as the clips do)
+function sync(b) {}
+function aim(b, c, d) {
+  b.updateMatrixWorld(true);
+  const p = new THREE.Vector3().setFromMatrixPosition(b.matrixWorld), q0 = new THREE.Vector3().setFromMatrixPosition(c.matrixWorld);
+  const q = new THREE.Quaternion().setFromUnitVectors(q0.sub(p).normalize(), new THREE.Vector3(...d).normalize());
+  const wq = b.getWorldQuaternion(new THREE.Quaternion()), pq = b.parent.getWorldQuaternion(new THREE.Quaternion());
+  b.quaternion.copy(pq.invert().multiply(q.multiply(wq))); sync(b); G.updateMatrixWorld(true);
+}
+function turnY(b, a) { const wq = b.getWorldQuaternion(new THREE.Quaternion()), pq = b.parent.getWorldQuaternion(new THREE.Quaternion());
+  b.quaternion.copy(pq.invert().multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), a).multiply(wq))); sync(b); G.updateMatrixWorld(true); }
+function curl(side, a) {   // close the fingers: each joint turns about its own local z (Mixamo), the thumb less
+  for (const f of ['Index', 'Middle', 'Ring', 'Pinky', 'Thumb']) for (let j = 1; j <= 3; j++) { const b = bone(side + 'Hand' + f + j); if (!b) continue;
+    const k = f == 'Thumb' ? (side == 'Left' ? .9 : .35) : 1; b.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, side == 'Left' ? 1 : -1), a * k * (j == 1 ? .8 : 1))); sync(b); }
+  G.updateMatrixWorld(true);
+}
+function pose() {
+  G.rotation.y = POSE.yaw; G.updateMatrixWorld(true);
+  for (const k in POSE.twist) turnY(bone(k), POSE.twist[k]);
+  for (const k in CHILD) if (POSE[k]) aim(bone(k), bone(CHILD[k]), POSE[k]);
+  for (const s in POSE.curl) curl(s, POSE.curl[s]);
+  const b = box(); G.position.y -= b.min.y;
+  CAM.position.set(0, .75, 7.2); CAM.lookAt(0, 1.05, 0);
+}
+function box() { G.updateMatrixWorld(true); const b = new THREE.Box3(), v = new THREE.Vector3();
+  G.traverse(n => { if (n.isSkinnedMesh) { n.skeleton.update(); const p = n.geometry.attributes.position; for (let j = 0; j < p.count; j += 2) { n.getVertexPosition(j, v); b.expandByPoint(v.applyMatrix4(n.matrixWorld)); } } }); return b; }
+const x = new XMLHttpRequest(); x.open('GET', 'assets/glb/man_body.fbx'); x.responseType = 'arraybuffer';
+x.onload = () => { G = new THREE.FBXLoader().parse(x.response, ''); G.animations = [];
+  G.traverse(n => { if (n.isMesh) { smoothNormals(n.geometry); n.material = new THREE.MeshNormalMaterial(); n.frustumCulled = false; }
+    if (n.isBone) { (ALL[n.name] = ALL[n.name] || []).push(n); } });
+  for (const k in ALL) B[k] = ALL[k][0];
+  S.add(G); G.updateMatrixWorld(true); const b0 = box(), k = 1.8 / (b0.max.y - b0.min.y); G.scale.setScalar(k); G.updateMatrixWorld(true);
+  const b1 = box(), c = b1.getCenter(new THREE.Vector3()); G.position.x -= c.x; G.position.z -= c.z;
+  pose(); window.ready = true; };
+x.send();
+const OUT = document.createElement('canvas'); OUT.width = W; OUT.height = H; document.body.appendChild(OUT);
+function hex(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
+const P = { base: hex('#6A7698'), sh: hex('#2E3452'), hi: hex('#C4CCE2'), rf: hex('#B98A66'), line: hex('#171424'), paper: hex('#E3D4C0'), rim: [255, 250, 240] };
+function mix(a, b, k) { return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k]; }
+function ss(a, b, x) { x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); }
+let CLEAR = false;   // t >= 1: the body alone on a transparent ground, for sketch.html to dress
+function stylise() {
+  R.render(S, CAM);
+  const t = document.createElement('canvas'); t.width = W; t.height = H; const tc = t.getContext('2d'); tc.drawImage(R.domElement, 0, 0);
+  const src = tc.getImageData(0, 0, W, H).data, oc = OUT.getContext('2d'), img = oc.createImageData(W, H), o = img.data;
+  const N = i => [src[i] / 127.5 - 1, src[i + 1] / 127.5 - 1, src[i + 2] / 127.5 - 1];
+  const L = [-.55, .62, .56], Ln = Math.hypot(...L); L[0] /= Ln; L[1] /= Ln; L[2] /= Ln;
+  const R2 = [.7, -.5, .2];
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const i = (y * W + x) * 4; let c = P.paper.slice(), al = 1, ink = 0;
+    const a = src[i + 3] / 255;
+    if (a > .02) {
+      const n = N(i), d = n[0] * L[0] + n[1] * L[1] + n[2] * L[2];
+      const lit = ss(.02, .1, d);                                 // near-hard terminator
+      c = mix(P.sh, P.base, lit);
+      c = mix(c, P.hi, ss(.62, .72, d) * .85);                    // hard-edged highlight plane
+      const rf = Math.max(0, n[0] * R2[0] + n[1] * R2[1] + n[2] * R2[2]);
+      c = mix(c, P.rf, (1 - lit) * ss(.25, .7, rf) * .55);        // warm bounce in the shadow
+      if (lit < .5 && ((x + y) % 11) < 1.3 && rnd() > .25) c = mix(c, P.line, .55);   // hatching in shadow
+      c = mix(c, P.rim, ss(.75, .9, 1 - n[2]) * ss(-.2, .3, -n[0] * .7 + n[1] * .7) * .8);   // rim on the lit edge
+      // crease lines from normal discontinuities
+      if (x > 1 && y > 1 && x < W - 2 && y < H - 2) {
+        const r = N(i + 8), l = N(i - 8), u = N(i - W * 8), dn = N(i + W * 8);
+        const g = Math.hypot(r[0] - l[0], r[1] - l[1], r[2] - l[2]) + Math.hypot(u[0] - dn[0], u[1] - dn[1], u[2] - dn[2]);
+        c = mix(c, P.line, ss(.55, .9, g) * .9);
+      }
+      if (CLEAR) al = a; else c = mix(P.paper, c, a);
+    } else if (CLEAR) { c = P.line.slice(); al = 0;
+    }
+    // silhouette ink from the alpha edge
+    if (x > 2 && y > 2 && x < W - 3 && y < H - 3) {
+      const e = Math.abs(src[i + 3 + 12] - src[i + 3 - 12]) + Math.abs(src[i + 3 + W * 12] - src[i + 3 - W * 12]);
+      if (e > 200) { ink = Math.min(1, (e - 200) / 200); c = al ? mix(c, P.line, ink) : P.line.slice(); al = Math.max(al, ink); }
+    }
+    o[i] = c[0]; o[i + 1] = c[1]; o[i + 2] = c[2]; o[i + 3] = 255 * al;
+  }
+  oc.putImageData(img, 0, 0);
+}
+
+
+function joints() { G.updateMatrixWorld(true); CAM.updateMatrixWorld(); const o = {};
+  for (const k of ['Hips', 'Neck', 'Head', 'HeadTop_End', 'LeftArm', 'LeftForeArm', 'LeftHand', 'RightArm', 'RightForeArm', 'RightHand', 'LeftUpLeg', 'LeftLeg', 'LeftFoot', 'RightUpLeg', 'RightLeg', 'RightFoot']) {
+    const v = new THREE.Vector3().setFromMatrixPosition(bone(k).matrixWorld).project(CAM); o[k] = [Math.round((v.x + 1) / 2 * W), Math.round((1 - v.y) / 2 * H)]; } return o; }
+window.renderAt = async (t, type = 'image/png', q = .92) => { CLEAR = t >= 1; stylise(); console.warn(JSON.stringify(joints())); return OUT.toDataURL(type, q); };
+window.gpuInfo = () => 'webgl';
+</script>
+</body>
+</html>

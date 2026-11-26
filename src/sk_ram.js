@@ -30,19 +30,23 @@ function skRamScene(c, t, o = {}) {
   c.beginPath(); c.ellipse(560, 1712, 300, 18, -.02, 0, 7); c.fill(); c.restore();
   skUttariya(c, t);
   skHairBack(c);
-  skBackLeg(c);
-  skFrontShin(c);
+  // o.body: a posed, toon-shaded 3D body (sketch_ram3d.html at t 1.5, drawn where the guide sits) in place of the drawn limbs;
+  // its own face is kept, the head frame is fitted to its skull (o.head) and only the hair, kundala and crown are drawn
+  const keep = [{ ...HEAD }, { ...BOW }];
+  if (o.body) { Object.assign(HEAD, o.head || {}); Object.assign(BOW, o.bow || {}); }
+  if (o.body) c.drawImage(o.body, 44.8, 312, 1080 * .88, 1920 * .88);
+  else { skBackLeg(c); skFrontShin(c); }
   skDhoti(c);
-  skNeck(c);
-  skTorso(c);
+  if (!o.body) { skNeck(c); skTorso(c); }
   skPatka(c, t);
-  skRaisedArm(c);
+  if (!o.body) skRaisedArm(c);
   skBow(c, t);
   skFist(c);
-  skHead(c);
-  skFrontArm(c);
+  skHead(c, !!o.body);
+  if (!o.body) skFrontArm(c);
   skString(c, t);
   skFlicks(c);
+  Object.assign(HEAD, keep[0]); Object.assign(BOW, keep[1]);
 }
 
 function skQuote(c, o) {
@@ -266,8 +270,9 @@ function skBow(c, t) {
 }
 
 // ---- head ----
-function skHead(c) {
+function skHead(c, faceless) {
   const C = SKR;
+  if (!faceless) {
   const face = skH([[-12, -60], [14, -56], [32, -42], [40, -24], [36, -12], [42, 0], [52, 12], [50, 18], [42, 21], [45, 27], [41, 31], [43, 36], [37, 41], [39, 48], [33, 57], [12, 60], [-6, 50], [-14, 30], [-30, 6], [-36, -24]]);
   SK.paint(c, face, C.skin, { sh: C.skinSh, hi: C.skinHi, rf: C.skinRf, d: 14, blur: 8, inner: c => {
     c.save(); c.filter = `blur(${5 * SK.S}px)`; c.fillStyle = C.skinSh; c.globalAlpha = .6;
@@ -295,14 +300,15 @@ function skHead(c) {
   // the tilak: a white U and a red line, on the brow
   BI.stroke(c, skH([[32, -26], [36, -40]]), { w: 3, a: .1, b: .3, col: '#F8F0E4', seed: 7 });
   BI.stroke(c, skH([[34, -28], [37, -38]]), { w: 1.6, a: .1, b: .3, col: C.red, seed: 8 });
+  }
   // hair at the temple and over the ear
   const hr = skH([[-12, -60], [14, -56], [10, -40], [0, -30], [-6, -12], [-4, 4], [-16, 20], [-30, 16], [-36, -20]]);
   SK.paint(c, hr, C.hair, { hi: C.hairHi, d: 8, blur: 4 });
   SK.streaks(c, hr, { n: 10, dir: [-.4, 1], len: 30, w: 1.2, cols: ['rgba(140,140,190,.4)'], seed: 231 });
   // the ear and kundala
   const ear = skH([[-6, -6], [2, -10], [6, 0], [4, 14], [-2, 22], [-8, 18]]);
-  SK.paint(c, ear, C.skin, { sh: C.skinSh, hi: C.skinHi, rf: C.skinRf, d: 4, blur: 2 });
-  SK.line(c, ear, { w: 1.6, seed: 232, piece: [30, 60], ov: 2 });
+  if (!faceless) { SK.paint(c, ear, C.skin, { sh: C.skinSh, hi: C.skinHi, rf: C.skinRf, d: 4, blur: 2 });
+  SK.line(c, ear, { w: 1.6, seed: 232, piece: [30, 60], ov: 2 }); }
   const k = skHeadPt([-4, 34]);
   SK.paint(c, BI.circ(k[0], k[1], 9, 12, HEAD.a), C.gold, { sh: C.goldSh, hi: C.goldHi, d: 3, blur: 2 });
   BI.disc(c, k[0], k[1] + 2, 3, C.red);
