@@ -59,6 +59,10 @@
 //                                th, o) a banana leaf lying flat as a plate, turned th on the spot (half a turn swaps what sits
 //                                at its ends; o.blur when it whirls), returns its ends { a, b }; celRock(c, x, y, s) a flat grey
 //                                boulder (returns its top); celMangoTree(c, x, y, s, t, o) a mango tree (o.crown, o.fruit, o.h)
+//   fake sleep (#11):            celShesha(c, x, y, s, P, o) a little white Shesha as a bed (two coils, a fan of five hoods
+//                                with jewels, Bhagavata 3.8.23; a face on the middle hood, o.part 'back' / 'front' round a kid
+//                                lying on him: draw the kid rotated -90° about the hip at .lie); P.bubble 0..1 on a kid (a snot
+//                                bubble, asleep; P.bubblePop 0..1 its burst); celPlate (a brass thali face on), celLadle, celConch
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -300,7 +304,7 @@ function celKid(c, x, y, s, P, o, who) {
   const sheen = (x0, y0, rx, ry) => q => { const g = q.createRadialGradient(x0, y0, 0, x0, y0, rx); g.addColorStop(0, rgba(C.hairLt, .85)); g.addColorStop(1, rgba(C.hairLt, 0)); q.save(); q.translate(x0, y0); q.scale(1, ry / rx); q.translate(-x0, -y0); q.fillStyle = g; q.fillRect(x0 - rx, y0 - rx, rx * 2, rx * 2); q.restore(); };
 
   // the hair behind, a drawing late
-  c.save(); c.translate(hip[0], hip[1]); c.rotate(lag.lean || 0); c.translate(...NECK); c.rotate((lag.head || 0) * .85); c.scale(sx, sy); c.translate(...HC);
+  c.save(); c.translate(hip[0], hip[1]); c.rotate(lag.lean || 0); c.translate(...NECK); c.rotate((lag.head || 0) * (P.hairK ?? .85)); c.scale(sx, sy); c.translate(...HC);
   if (R) {
     celShape(c, [[-150, -150], [0, -198], [150, -150], [196, -30], [188, 90], [150, 170], [100, 214], [0, 200], [-100, 214], [-150, 170], [-188, 90], [-196, -30]], C.hair, { over: sheen(-70, -120, 150, 90) });
     // the plait behind her left shoulder (screen right), swinging, a red tassel at its end
@@ -429,6 +433,7 @@ function celKid(c, x, y, s, P, o, who) {
     for (let i = 0; i <= 12; i++) { const a = Math.PI * i / 12; celOval(c, -50 * Math.cos(a), -150 + 96 * Math.sin(a), 9.5, 9.5, C.mala[i % 4], { w: 2.4, boil: .3 }); }
   }
 
+  if (P.armsFirst) arms();
   // the head
   c.save(); c.translate(...NECK); c.rotate(P.head || 0); c.scale(sx, sy); c.translate(...HC);
   if (!R) for (const sd of [-1, 1]) { celOval(c, sd * 166, 26, 24, 32, C.skin, skin); celLine(c, [[sd * 170, 12], [sd * 162, 28], [sd * 170, 42]], 3); }
@@ -516,6 +521,7 @@ function celKid(c, x, y, s, P, o, who) {
   if ((P.kajal || 0) > .02) celKajal(c, clamp(P.kajal), R ? 7 : 0);
   if ((P.cry || 0) > .02) celTears(c, clamp(P.cry), td);
   if ((P.sweat || 0) > .02) celSweat(c, -160, -60, clamp(P.sweat) * 1.4);
+  if ((P.bubble || 0) > .02 || (P.bubblePop || 0) > 0) celSnot(c, 12 + 40 * (P.bubble || .4), 70 + 18 * (P.bubble || .4), 46 * (P.bubble || 0), P.bubblePop || 0);   // #11: a snot bubble
   c.restore();   // head
 
   // playing the flute (P.flute 'play'): from just right of the lips, down across the chin toward the screen-left hand (hL),
@@ -527,8 +533,8 @@ function celKid(c, x, y, s, P, o, who) {
     A.fluteLip = at(...a); A.fluteEnd = at(...b);
   }
 
-  // the arms, last (they reach across the face)
-  for (const sd of [-1, 1]) {
+  // the arms, last (they reach across the face); P.armsFirst: before the head (lying with the head turned back upright, #11)
+  function arms() { for (const sd of [-1, 1]) {
     const S = [sd * 64, -134], T = (sd < 0 ? P.hL : P.hR) || [sd * 86, -36], [el, wr] = celIK(S, T, 50, 48, (sd < 0 ? P.eL : P.eR) || [sd, .5]);
     celShape(c, celTube([S, el, wr], [44, 38, 34]), C.skin, { dense: true, ...skin });
     if (R) { celBand(c, el, wr, .62, 36, 8, C.red); celBand(c, el, wr, .76, 36, 8, C.gold); } else celBand(c, el, wr, .74, 38, 10, C.gold);
@@ -550,7 +556,8 @@ function celKid(c, x, y, s, P, o, who) {
       if (kind === 'butter') celButter(c, hc[0] + d[0] * 6, hc[1] + d[1] * 6 - 18, 20, C, 9);
     }
     A[sd < 0 ? 'handL' : 'handR'] = at(...hc);
-  }
+  } };
+  if (!P.armsFirst) arms();
   c.restore();   // upper body
   c.restore();
   return A;
@@ -1510,5 +1517,110 @@ function celMangoTree(c, x, y, s = 1, t = 0, o = {}) {
   };
   const B = o.crown || [[-760, -1040, 230], [-480, -1120, 280], [-180, -1100, 280], [120, -1060, 230], [-620, -900, 200], [-320, -930, 240], [-20, -920, 220], [200, -900, 150]];
   B.forEach(([cx, cy, r], i) => clump(cx + sway * (i % 2 ? 1 : -1) * .4, cy, r, i < 4 ? '#2E7A3E' : '#3C9248', i < 4 ? '#225E30' : '#2C7438', i < 4 ? '#4E9C56' : '#64B262', i + 1));
+  c.restore();
+}
+
+// ---------- #11 fake sleep: Shesha, the snot bubble, a thali and ladle, a conch ----------
+// celShesha(c, x, y, s, P, o): a little Shesha (Ananta) as a bed, white "like a lotus stalk" with jewels on his hoods
+// (Bhagavata 3.8.23): two coils piled up as a mattress (about ±300 px wide at s = 1, its base's middle at (x, y)), his neck
+// rising behind the bed's screen-left end to a fan of five hoods (o.hx: the fan's x, local; its middle hood ~525 px up).
+// P like a kid's face on the middle hood (eyes, look, lid, brow, tilt, blush, mouth, talk, sweat), side (the four small
+// faces: 'open' | 'happy' | 'sleep' | 'dizzy' | 'flat'), lean (the fan sways), hop (the hoods jump up), squash, tail (its tip
+// flicking 0..1). o.part 'back' (coils, neck, hoods) | 'front' (the top coil's front half and the tail, over a kid lying on
+// him) | 'all'. Returns { head, top, heads, bed (the top's middle), lie (where a lying kid's centre line sits) }
+const CEL_SHESHA = { skin: '#EEF0FF', sh: '#C3C4EC', lt: '#FFFFFF', hoodOut: '#B9BDEB', scale: '#CDD0F2', belly: '#F8DC8E', bellySh: '#E2BC5E', hood: '#FBE3A0', hoodSh: '#E8C468', gem: '#E2345A',
+  iris: '#2A1E46', iris2: '#7A62C8', blush: '#FF9AB8', mouth: '#5A1E3A', tongue: '#F04E6A' };
+function celShesha(c, x, y, s, P, o = {}) {
+  const C = { ...CEL_SHESHA, ...(o.pal || {}) }, td = P.td ?? o.t ?? 0, A = {}, body = { shade: [C.sh, 8, 10], lt: [C.lt, 4, 5] }, part = o.part || 'all';
+  celBegin(td); CEL.n = o.seed ?? 1700;
+  const land = P.land ?? 9, hit = land >= 0 ? Math.exp(-land * 10) : 0, sq = clamp((P.squash || 0) + hit * .3, -1, 1), br = Math.sin(td * TAU / 3.2);
+  c.save(); c.translate(x, y); c.scale(s, s);
+  const at = (px, py) => { const p = c.getTransform().transformPoint(new DOMPoint(px, py)); return [p.x, p.y]; };
+  const arc = (cy, rx, ry, a0, a1) => { const Q = []; for (let i = 0; i <= 10; i++) { const a = lerp(a0, a1, i / 10); Q.push([Math.cos(a) * rx, cy + Math.sin(a) * ry]); } return Q; };
+  const scales = (cy, rx, ry, w) => { for (let i = 1; i < 10; i++) { const a = lerp(.08, Math.PI - .08, i / 10); ellipse(c, Math.cos(a) * rx, cy + Math.sin(a) * ry - w * .14, 7, 4.5, rgba(C.lt, .95)); } };
+  const front = (cy, rx, ry, w) => {
+    celShape(c, celTube(arc(cy, rx, ry, -.05, Math.PI + .05), [w, w * 1.04, w * 1.06, w * 1.04, w]), C.skin, { dense: true, ...body, over: q => {
+      q.strokeStyle = C.belly; q.lineWidth = w * .16; q.lineCap = 'round'; q.beginPath(); for (let i = 2; i <= 8; i++) { const a = lerp(0, Math.PI, i / 10); q.lineTo(Math.cos(a) * rx * .985, cy + Math.sin(a) * ry + w * .32); } q.stroke();
+    } });
+    scales(cy, rx, ry, w); chev(cy, rx, ry, w);
+  };
+  const back = (cy, rx, ry, w) => { celShape(c, celTube(arc(cy, rx, ry, Math.PI * 1.03, Math.PI * 1.97), [w * .9, w * .86, w * .84, w * .86, w * .9]), C.skin, { dense: true, ...body }); };
+  const chev = (cy, rx, ry, w) => { for (let i = 1; i < 12; i++) { const a = lerp(.1, Math.PI - .1, i / 12), px = Math.cos(a) * rx, py = cy + Math.sin(a) * ry - w * .12; celLine(c, [[px - 12, py - 12], [px, py - 2], [px + 12, py - 12]], 3.2, { col: C.scale, boil: .3, taper: .2 }); } };
+  const HX = o.hx ?? -150, HY = (o.hy ?? -525) - (P.hop || 0);
+  A.bed = at(0, -196); A.lie = at(0, -265);
+  if (part !== 'front') {
+    back(-52, 300, 40, 104); front(-52, 300, 40, 104);
+    // the neck: out of the bed behind its screen-left end (the top coil's back covers its root), up behind the kid's head to the fan
+    const nb = [HX + 96, -150], nt = [HX + (P.lean || 0) * 60, HY + 120];
+    celShape(c, celTube([nb, [HX + 80, -280], [lerp(HX + 60, nt[0], .5), lerp(-380, nt[1], .5)], nt], [96, 88, 80, 76]), C.skin, { dense: true, ...body, over: q => { for (let i = 0; i < 4; i++) { const u = .2 + i * .2; ellipse(q, lerp(nb[0], nt[0], u) - 6, lerp(nb[1], nt[1], u), 22, 8, C.belly); } } });
+    back(-138, 262, 34, 92);
+    // the fan of hoods, swaying about the neck's top, squashing on a jolt
+    c.save(); c.translate(nt[0], nt[1]); c.rotate((P.lean || 0) * .5 + br * .012); c.scale(1 + sq * .08, 1 - sq * .12 + br * .008); c.translate(-nt[0], -nt[1]);
+    const hood = (hx, hy, r, rot, face) => {
+      celShape(c, celTube([nt, [lerp(nt[0], hx, .6), lerp(nt[1], hy, .6) + 10], [hx, hy + r * .4]], [70, 60, r * .8]), C.skin, { dense: true, ...body });
+      c.save(); c.translate(hx, hy); c.rotate(rot);
+      celShape(c, [[0, -r * .96], [r * .72, -r * .76], [r, -r * .12], [r * .84, r * .56], [r * .36, r * .96], [-r * .36, r * .96], [-r * .84, r * .56], [-r, -r * .12], [-r * .72, -r * .76]], C.skin, { ...body, over: q => {
+        q.strokeStyle = C.hoodOut; q.lineWidth = r * .22; q.beginPath(); q.ellipse(0, r * .1, r * .86, r * .86, 0, 0, TAU); q.stroke();
+        ellipse(q, 0, r * .18, r * .62, r * .66, C.hood);
+        for (let i = 0; i < 3; i++) celLine(q, [[-r * .42, r * (.42 + i * .17)], [0, r * (.52 + i * .17)], [r * .42, r * (.42 + i * .17)]], 2.6, { col: rgba(C.hoodSh, .9), boil: .3, taper: .3 });
+      } });
+      celShape(c, [[0, -r * 1.02], [r * .1, -r * .88], [0, -r * .74], [-r * .1, -r * .88]], C.gem, { n: 2, w: 3, boil: .3, over: q => ellipse(q, -r * .03, -r * .9, r * .03, r * .04, '#FFFFFF') });   // a jewel (3.8.23)
+      face(r); c.restore();
+      return at(hx, hy);
+    };
+    const small = r => celMiniFace(c, 0, -r * .16, r / 52, P.side || 'sleep', C.blush), heads = [];
+    const hk = o.hk ?? 1;
+    for (const sd of [-1, 1]) heads.push(hood(HX + sd * 205 * hk, HY + 95 * hk, 60 * hk, sd * .55, small));
+    for (const sd of [-1, 1]) heads.push(hood(HX + sd * 112 * hk, HY + 30 * hk, 74 * hk, sd * .28, small));
+    const MR = 96 * hk;
+    heads.splice(2, 0, hood(HX, HY, MR, 0, r => {
+      c.save(); c.translate(0, -r * .24);
+      celFace(c, P, C, { face: { ex: 70, ey: 0, my: 64, bx: 104, by: 40, k: .52 }, seed: 17 });
+      if ((P.sweat || 0) > .02) celSweat(c, -r * .95, -r * .3, clamp(P.sweat) * .8);
+      c.restore();
+    }));
+    A.head = at(HX, HY - MR * .24); A.top = at(HX, HY - MR); A.heads = heads;
+    c.restore();
+  }
+  if (part !== 'back') {
+    front(-138, 262, 34, 92);
+    // the tail: out of the lower coil's screen-right end, along the ground, its tip curling up (and flicking)
+    const fl = Math.sin(td * 9) * 10 * clamp(P.tail || 0), tip = [372 + fl * .4, -96 + fl];
+    celShape(c, celTube([[262, -30], [318, -18], [366, -40], [tip[0] + 6, tip[1] + 28], tip], [70, 50, 34, 22, 12]), C.skin, { dense: true, ...body });
+  }
+  c.restore();
+  return A;
+}
+// a snot bubble (asleep): blown from the nostril, r its radius, in head coordinates; a "pop" when it bursts
+function celSnot(c, x, y, r, pop = 0) {
+  if (pop > 0) { if (pop < 1) for (let i = 0; i < 8; i++) { const a = i / 8 * TAU, d = r * (1 + pop * 1.4); celLine(c, [[x + Math.cos(a) * d * .7, y + Math.sin(a) * d * .7], [x + Math.cos(a) * d, y + Math.sin(a) * d]], 4 * (1 - pop), { col: '#7CC4F0', boil: .3 }); } return; }
+  if (r <= 2) return;
+  celShape(c, celEll(x, y, r, r * .96, 0, 28), 'rgba(196,232,255,.55)', { dense: true, w: Math.max(2.4, r * .06), boil: .3, over: q => {
+    ellipse(q, x - r * .38, y - r * .4, r * .22, r * .13, 'rgba(255,255,255,.95)', -.7); ellipse(q, x + r * .4, y + r * .38, r * .08, r * .08, 'rgba(255,255,255,.8)');
+  } });
+}
+// a brass plate seen face on (a thali held up to bang), (x, y) its middle, r its radius; rot tilts it, sq squashes it
+function celPlate(c, x, y, r, o = {}) {
+  c.save(); c.translate(x, y); c.rotate(o.rot || 0); c.scale(1, o.sq ?? 1);
+  celOval(c, 0, 0, r, r, '#EBB43E', { w: 4.5, shade: ['#BC8422', r * .07, r * .09], lt: ['#FFDB80', r * .04, r * .05], over: q => {
+    q.strokeStyle = 'rgba(160,100,20,.6)'; q.lineWidth = 3.5; q.beginPath(); q.arc(0, 0, r * .78, 0, TAU); q.stroke();
+    ellipse(q, -r * .36, -r * .38, r * .3, r * .1, 'rgba(255,250,220,.85)', -.75);
+  } });
+  c.restore();
+}
+// a brass ladle (a kalchhi): gripped at (x, y), pointing along rot, len long, its bowl at the far end
+function celLadle(c, x, y, len = 170, rot = 0) {
+  c.save(); c.translate(x, y); c.rotate(rot);
+  celShape(c, celTube([[-len * .15, 0], [len * .78, 0]], [13, 10]), '#D7A33A', { dense: true, w: 4, shade: ['#A87A20', 0, 4] });
+  celOval(c, len * .9, 0, len * .16, len * .13, '#EBB43E', { w: 4, shade: ['#BC8422', 4, 5], over: q => ellipse(q, len * .86, -len * .04, len * .06, len * .03, 'rgba(255,250,220,.9)', -.4) });
+  c.restore();
+}
+// a conch (shankh): its blowing end at (x, y), its body along rot, s its scale (about 170 px long at s = 1)
+function celConch(c, x, y, s = 1, rot = 0) {
+  c.save(); c.translate(x, y); c.rotate(rot); c.scale(s, s);
+  celShape(c, [[0, -7], [28, -20], [66, -40], [108, -50], [142, -40], [162, -18], [170, 0], [162, 16], [132, 36], [92, 46], [52, 32], [18, 12], [0, 7]], '#FBF5EA', { shade: ['#E2D3BC', 0, 9], lt: ['#FFFFFF', 0, -5] });
+  celShape(c, [[44, 24], [84, 40], [124, 34], [104, 22], [66, 16]], '#F6AE92', { n: 3, w: 3.5, shade: ['#E08A70', 0, 4] });
+  for (let i = 0; i < 3; i++) celLine(c, [[124 + i * 14, -40 + i * 6], [134 + i * 12, -10], [128 + i * 14, 22 - i * 4]], 3, { col: rgba(CEL.ink, .6), boil: .3 });
+  celBand(c, [0, 0], [60, -10], .12, 20, 7, '#F2B52E');
   c.restore();
 }
