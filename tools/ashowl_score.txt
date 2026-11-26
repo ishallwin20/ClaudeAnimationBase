@@ -1,0 +1,11 @@
+Instrumental dark cinematic score for a 50-second animated film from the Mahabharata: on the last night of the war, a defeated warrior lies awake under a giant banyan tree, watches an owl slaughter a tree full of sleeping crows, and decides to attack the enemy camp while it sleeps. Then the story turns into a comic book. No lyrics, no sung words, no spoken words; a wordless low male choir ("ooh", "aah") is allowed. Instruments: a deep tanpura drone, low cellos and basses, dark bansuri flute, sarangi, dhol and taiko drums, frame drum, a sitar motif, tremolo strings, low brass, deep gongs and a big film orchestra. SHORT PIECE: 96 BPM in 4/4, exactly 20 bars, 50 seconds total; the music must END at 0:50, do not continue past it. Never silent except one stop. Clear changes at these times:
+
+0:00-0:03 HOOK. A huge low taiko-and-gong hit at 0:00, then a deep drone and a single eerie bansuri call, like an owl in the dark.
+0:03-0:12 THE NIGHT. Brooding and tense: tanpura drone, low cellos, a slow frame-drum pulse like a heartbeat, a lonely sarangi line; at 0:09.8 a sharp hiss of strings and at 0:10.6 a dark swell, rage rising.
+0:12-0:16.8 SUSPENSE. High tremolo strings hold, quiet and creeping; at 0:15.0 a sudden low brass stab and gong: two eyes open in the dark.
+0:16.8-0:22.4 THE ATTACK. Fast, violent rhythm: dhol and taiko at full speed, stabbing staccato strings, heavy hits exactly at 0:18.0, 0:18.9 and 0:19.7, a frenzy from 0:19.9 to 0:20.7, then it drops at 0:21.1 to a single low held note.
+0:22.4-0:27.4 THE DECISION. Menacing and slow: deep drone, the low choir enters, a cold sinister sitar motif, a slow heartbeat drum; a dark swell peaking at 0:25.4.
+0:27.4-0:31.8 THE MARCH. A driving low drum pulse and rising strings, getting louder and faster, a crescendo of tension that builds to the very edge.
+0:31.8-0:32.3 STOP DEAD into total SILENCE for half a second.
+0:32.3 A colossal hit: taiko, gong, low brass and full choir together, then a dark heroic theme with a strong steady dhol beat and a sitar and string melody, epic and driving, through 0:44.
+0:44-0:50.5 RESOLVE. A huge, dark, majestic final phrase with choir and horns, ending on one big sustained chord that rings out to 0:50.5.

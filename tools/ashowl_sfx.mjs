@@ -3,18 +3,18 @@
 // (keep them in sync). A night under the banyan (wind, crickets, a low drone), the owl's hoot as the motif, the strikes,
 // a heartbeat under his decision, the walk to the camp, half a second of silence, then the boom as the painting turns
 // to ink, paper swipes for the pages, a lock's click, and a warm chord under the cover.
-import { track, tone, noise, mixb, env, whoosh, crinkle, thud, drum, rumble, shimmer, chime, drone, slide, heart, wingbeat, wind, fire, click, note, seed, rnd, clamp } from './sfx.mjs';
+import { track, tone, noise, mixb, env, whoosh, crinkle, thud, drum, rumble, shimmer, chime, drone, slide, heart, wingbeat, wind, fire, click, note, seed, rnd, clamp, roar, screech } from './sfx.mjs';
 
-const BLINK = 1.7, LOOKUP = 2.4, EYESOFF = 4.4;
-const B0 = 5.2, LIT = [6.0, 6.6, 7.2];
-const C0 = 9.8, ZZ = 10.6, HISS = 12.0, FLARE = 12.8, UP = 13.6;
-const D0 = 14.4, EYES = 17.2;
-const E0 = 19.0, STRIKES = [20.2, 21.1, 21.9], WAVE0 = 22.1, WAVE1 = 22.9, PERCH = 23.3;
-const F0 = 24.6, PULL = 25.6, SMILE = 27.2, GFLARE = 27.6;
-const G0 = 29.6, TURN = 29.9, GRIP = 30.6, WALK0 = 31.2, PUSH = 32.4, RISE = 32.9;
-const H0 = 34.0, INKED = 34.5, SLOT = 35.6;
-const I0 = 38.6, SW1 = 38.6, SW2 = 40.9, SW3 = 43.0, LOCK = 43.4;
-const J0 = 46.4, END = 52.6;
+const BLINK = .8, LOOKUP = 1.3, EYESOFF = 2.5;
+const B0 = 3, LIT = [3.8, 4.4, 5];
+const C0 = 7.6, ZZ = 8.4, HISS = 9.8, FLARE = 10.6, UP = 11.4;
+const D0 = 12.2, EYES = 15;
+const E0 = 16.8, STRIKES = [18, 18.9, 19.7], WAVE0 = 19.9, WAVE1 = 20.7, PERCH = 21.1;
+const F0 = 22.4, PULL = 23.4, SMILE = 25, GFLARE = 25.4;
+const G0 = 27.4, TURN = 27.7, GRIP = 28.4, WALK0 = 29, PUSH = 30.2, RISE = 30.7;
+const H0 = 31.8, INKED = 32.3, SLOT = 33.4;
+const I0 = 36.4, SW1 = 36.4, SW2 = 38.7, SW3 = 40.8, LOCK = 41.2;
+const J0 = 44.2, END = 50.4;
 
 const T = track(END);
 seed(118);
@@ -38,7 +38,7 @@ T.at(G0, fire(H0 - G0, .15, .4), .25, .4);
 
 // ---- A: the hook
 T.at(0, mixb(drum(48, 1, 1.6), noise(1.2, { lp: 500, e: env.pluck(3), amp: .4 })), .7);
-T.at(.5, hoo(330, .8), .5, .5);
+T.at(.25, hoo(330, .8), .5, .5);
 T.at(BLINK + .3, hoo(320, .7), .45, .5);
 T.at(LOOKUP, slide(1.6, 110, 98, .3), .4);
 T.at(EYESOFF, whoosh(.9, 200, 1500, .5), .4);
@@ -97,6 +97,22 @@ T.at(J0, pageSwipe(.8), .6, -.2);
 T.at(J0 + .2, mixb(...[50, 57, 62, 65, 69].map((m, i) => tone(END - J0, note(m), { type: i ? 'sine' : 'tri', e: env.swell(.8, 1.2), amp: .22 }))), .8);
 T.at(J0 + .4, shimmer(2, [note(74), note(77), note(81), note(86)], .25, .09), .45);
 T.at(J0 + 1.3, chime(note(86), .3, 2), .35);
+
+
+// ---- extra sound design (owner, 26 Nov: "it all feels dry"): risers into each beat, squawks, the thing at the gate
+T.at(C0 - .5, whoosh(.6, 200, 2200, .5), .35);
+T.at(D0 - .3, whoosh(1.2, 150, 1800, .6), .35);
+T.at(E0 - 1.2, mixb(whoosh(1.4, 100, 4000, .8), slide(1.3, 180, 720, .25)), .6);   // the riser into the attack
+STRIKES.forEach((s, i) => T.at(s + .02, screech(.28, 1500 + i * 180, .6), .32, [.3, -.3, .4][i]));
+T.at(WAVE0, crinkle(WAVE1 - WAVE0 + .6, .5), .45);
+T.at(PERCH + .1, rumble(1.2, .4), .3);
+T.at(F0 + .2, tone(2.5, 49, { e: env.swell(.2, 1.2), amp: .6 }), .5);   // a sub swell under the eye
+T.at(GFLARE, drum(45, .9, 1.4), .6);
+T.at(G0, whoosh(1.5, 120, 900, .5), .3);
+T.at(RISE, roar(H0 - RISE, 70, 5, .8), .55);   // the thing at the gate
+T.at(H0 - .9, whoosh(.9, 300, 5000, .7), .45);   // sucked into the freeze
+[SW1, SW2, SW3].forEach(s => T.at(s + .05, drum(55, .5, .6), .45));
+T.at(J0 + .2, drum(48, .9, 1.6), .6);
 
 // the freeze: total silence from H0 until the boom (a short fade into it)
 { const SR = 48000, a = Math.round(H0 * SR), b = Math.round((INKED - .06) * SR), f = Math.round(.08 * SR);

@@ -6,16 +6,16 @@
 // video time (t); tools/ashowl_sfx.mjs uses the same constants.
 (() => {
   // ---- time constants (keep in sync with STORYBOARD.md and tools/ashowl_sfx.mjs)
-  const BLINK = 1.7, LOOKUP = 2.4, EYESOFF = 4.4;
-  const B0 = 5.2, LIT = [6.0, 6.6, 7.2];
-  const C0 = 9.8, ZZ = 10.6, HISS = 12.0, FLARE = 12.8, UP = 13.6;
-  const D0 = 14.4, EYES = 17.2;
-  const E0 = 19.0, STRIKES = [20.2, 21.1, 21.9], WAVE0 = 22.1, WAVE1 = 22.9, PERCH = 23.3;
-  const F0 = 24.6, PULL = 25.6, SMILE = 27.2, GFLARE = 27.6;
-  const G0 = 29.6, TURN = 29.9, GRIP = 30.6, WALK0 = 31.2, PUSH = 32.4, RISE = 32.9;
-  const H0 = 34.0, INKED = 34.5, SLOT = 35.6;
-  const I0 = 38.6, SW1 = 38.6, SW2 = 40.9, SW3 = 43.0, LOCK = 43.4;
-  const J0 = 46.4, END = 52.6;
+  const BLINK = .8, LOOKUP = 1.3, EYESOFF = 2.5;
+  const B0 = 3, LIT = [3.8, 4.4, 5];
+  const C0 = 7.6, ZZ = 8.4, HISS = 9.8, FLARE = 10.6, UP = 11.4;
+  const D0 = 12.2, EYES = 15;
+  const E0 = 16.8, STRIKES = [18, 18.9, 19.7], WAVE0 = 19.9, WAVE1 = 20.7, PERCH = 21.1;
+  const F0 = 22.4, PULL = 23.4, SMILE = 25, GFLARE = 25.4;
+  const G0 = 27.4, TURN = 27.7, GRIP = 28.4, WALK0 = 29, PUSH = 30.2, RISE = 30.7;
+  const H0 = 31.8, INKED = 32.3, SLOT = 33.4;
+  const I0 = 36.4, SW1 = 36.4, SW2 = 38.7, SW3 = 40.8, LOCK = 41.2;
+  const J0 = 44.2, END = 50.4;
 
   const GOLDC = '#F5C542', INKW = ['#16121C', '#2C2438'];
   const PAGE = { x: 540, y: 1062, w: 680, h: 850 };   // a comic page's slot on screen (4:5), under a two-line caption
@@ -50,7 +50,7 @@
   const caps = t => { for (const [txt, y, t0, life, size, color] of CAPS) caption(txt, y, t - t0, { life, size, color }); };
   // the series mark (opening only): "FROM THE COMIC · CHIRANJEEVI #1"
   function seriesPill(t) {
-    const a = 1 - seg(t, 8.6, 9.2); if (a <= 0) return;
+    const a = 1 - seg(t, 6.4, 7.0); if (a <= 0) return;
     boilSeed('pill');
     paint(rrPts(64, 1438, 470, 56, 28), { wash: '#F15A24', washOp: 255 * a, ink: a < 1 ? null : AO.ink, sw: 1 });
     letter('FROM THE COMIC · CHIRANJEEVI #1', 299, 1467, 32, AO.cream, { screen: true, ink: false, rot: 0, alpha: a, maxW: 430 });
@@ -77,7 +77,7 @@
 
   // ================= A · the hook: Ashwatthama awake, the owl's eyes on him =================
   function shotA(t, lt, dur) {
-    const z = 1.12 + .03 * lt, eo = -lt * 4;
+    const z = 1.12 + .07 * lt, eo = -lt * 8;
     camBegin(560, 1070 + eo, z);
     banyanWorld(t);
     const ek = t < EYESOFF ? (blinkAt(t, BLINK, .22) ? .1 : 1) : 1 - clamp((t - EYESOFF) / .25);

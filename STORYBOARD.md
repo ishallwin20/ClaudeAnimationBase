@@ -1,7 +1,7 @@
 # Ad 118 · "An OWL gave him the DARKEST IDEA in the Mahabharata"
 
 The first **comic reel** (series plan: [COMIC_REELS.md](COMIC_REELS.md)). Painted, Bangers captions, synth SFX, no
-voice, 52.6 s. It sells **CHIRANJEEVI · Issue 1: Ashwatthama** (the 48-page comic) from inside the story: the Painted
+voice, 50.4 s. It sells **CHIRANJEEVI · Issue 1: Ashwatthama** (the 48-page comic) from inside the story: the Painted
 reel tells the night up to the gate of the Pandava camp, then the painting turns to ink and the comic's own pages take
 over. A locked page, then the cover: *"The reel stops here. The comic doesn't."* No price anywhere (confirm with the
 owner before adding one).
@@ -17,7 +17,14 @@ World: night, indigo and black; the gem ice-blue; the owl's eyes yellow; the cam
 colours. Colour arc: cold blue → fire orange at the gate → the comic.
 Motif: eyes in the dark (the owl's in the hook, again over the crows, the owl in his eye, the thousand eyes at the gate).
 
-## Shots (t in seconds; constants in `src/scenes/ashowl.js` and `tools/ashowl_sfx.mjs`)
+**Owner's notes, 26 Nov (applied):** the opening ran 5 s, make it crisp → the hook is now 0–3.0 s and every later time
+below is 2.2 s earlier (the code's constants are the truth); "it all feels dry" → a Lyria score under the SFX
+(`tools/ashowl_score.txt`, take 4 of 6: its first 27 s slowed ×0.849 to fill 0–31.8, half a second of silence, its hit
+landed on the boom at 32.3, crossfaded into its own ending; `assets/ashowl_score_cut.wav`) plus more SFX (risers into
+the attack, squawks on the strikes, a growl at the gate, drum hits on the page swipes). Mix: score .55 + SFX,
+loudnorm −14.
+
+## Shots (first cut's times; t in seconds; constants in `src/scenes/ashowl.js` and `tools/ashowl_sfx.mjs`)
 
 | Shot | Time | What happens | Caption |
 |---|---|---|---|
