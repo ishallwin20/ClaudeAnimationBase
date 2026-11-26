@@ -23,7 +23,7 @@
 //           hooks (upright, at the hands), veena (default true)
 //   face:   eyes ('normal' / 'look' / 'wide' / 'closed' / 'happy' / 'smug' / 'angry' are his own; every other kind is
 //           Clawd's: heart, swirl, …), lookX / lookY, brow (-1 stern .. 1 raised), mouth ('smile' / 'grin' / 'smug' /
-//           'flat' / 'frown' / 'O' / 'open' / 'scream' / 'sheepish' are his own, else Clawd's), squint, blush, sweat,
+//           'flat' / 'frown' / 'O' / 'open' / 'scream' / 'sheepish' / 'yawn' (+ yawnK 0..1) are his own, else Clawd's), squint, blush, sweat,
 //           seed, tint + tintK; monkey 0..1 (> .5: the monkey face, same eyes and mouths)
 //   extras: hat(u, sw) (head space, over the topknot: a sprouting tree of pride), headBehind(u, sw) (head space, under
 //           the head and over the torso: Panchmukhi Hanuman's other four faces), behind(u, sw) (body space, drawn
@@ -326,6 +326,10 @@ function naradaMouth_(u, o, sw, my, k = 1) {
     paint(ellPts(0, (my + .55 * k) * u, .75 * k * u, .95 * k * u, 16), { wash: NRD.mouth, ink: INK, sw: sw * .7 });
     paint(P([[-.55, -.15], [.55, -.15], [.4, .1], [-.4, .1]]), { wash: NRD.white, ink: null, curv: .3 });
     paint(ellPts(0, (my + 1.05 * k) * u, .4 * k * u, .25 * k * u, 10), { wash: '#E07A72', ink: null });
+  } else if (m === 'yawn') {   // a big round yawn, no teeth; yawnK 0..1 opens it (default 1)
+    const yk = clamp(o.yawnK ?? 1), ry = (.25 + .75 * yk) * k;
+    paint(ellPts(0, (my + .1 * k + ry * .75) * u, (.42 + .2 * yk) * k * u, ry * u, 16), { wash: NRD.mouth, ink: INK, sw: sw * .7 });
+    paint(ellPts(0, (my + .1 * k + ry * 1.3) * u, (.28 + .1 * yk) * k * u, ry * .28 * u, 10), { wash: '#E07A72', ink: null });
   } else { push(); translate(0, my * u); scale(.4 * k); translate(0, 4.3 * u); mouth(u, m, sw / (.4 * k) * .8); pop(); }
 }
 // the monkey face, in head space (drawn instead of his own head)
