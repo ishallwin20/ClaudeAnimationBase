@@ -63,6 +63,11 @@
 //                                with jewels, Bhagavata 3.8.23; a face on the middle hood, o.part 'back' / 'front' round a kid
 //                                lying on him: draw the kid rotated -90° about the hip at .lie); P.bubble 0..1 on a kid (a snot
 //                                bubble, asleep; P.bubblePop 0..1 its burst); celPlate (a brass thali face on), celLadle, celConch
+//   the mirror (#12):            celMirrorPlate(c, x, y, r, o) a polished brass thali held up as a mirror, face on: a brass
+//                                rim round a bright metal face that shows o.reflect(c, ri) (drawn clipped inside it, in the
+//                                plate's frame: its centre at 0, 0, ri the face's radius) under a warm tint, a darker edge
+//                                and a sweeping shine (o.shine 0..1); o.rot, o.sq (foreshortened). P.flush 0..1 on a kid:
+//                                going red, the flush rising from the chin over the whole face (Kanha's ears too)
 //   celHeart(c, x, y, r, o)      a pink heart (o.rot, o.a); celSparkle(c, x, y, r, o) a four-point twinkle;
 //   celSweat(c, x, y, k)         a sweat drop; celMark(c, x, y, k, '!' | '?' | '!?')
 //   celPuff(c, x, y, r, a)       a little cloud of dust (a hop landing)
@@ -436,10 +441,15 @@ function celKid(c, x, y, s, P, o, who) {
   if (P.armsFirst) arms();
   // the head
   c.save(); c.translate(...NECK); c.rotate(P.head || 0); c.scale(sx, sy); c.translate(...HC);
-  if (!R) for (const sd of [-1, 1]) { celOval(c, sd * 166, 26, 24, 32, C.skin, skin); celLine(c, [[sd * 170, 12], [sd * 162, 28], [sd * 170, 42]], 3); }
+  if (!R) for (const sd of [-1, 1]) { celOval(c, sd * 166, 26, 24, 32, C.skin, { ...skin, over: (P.flush || 0) > .5 ? q => { q.fillStyle = rgba('#EE3F5C', .78 * seg(P.flush, .5, .8)); q.fillRect(sd * 166 - 30, -10, 60, 80); } : null }); celLine(c, [[sd * 170, 12], [sd * 162, 28], [sd * 170, 42]], 3); }
   celShape(c, [[-150, -128], [-80, -160], [0, -166], [80, -160], [150, -128], [172, -30], [168, 50], [142, 112], [72, 142], [0, 148], [-72, 142], [-142, 112], [-168, 50], [-172, -30]], C.skin, {
     shade: [C.sh, 10, 12], lt: [C.lt, 6, 6],
-    over: q => { const g = q.createRadialGradient(-30, 30, 0, -30, 30, 200); g.addColorStop(0, 'rgba(255,255,255,.22)'); g.addColorStop(1, 'rgba(255,255,255,0)'); q.fillStyle = g; q.fillRect(-200, -200, 400, 400); },
+    over: q => {
+      const g = q.createRadialGradient(-30, 30, 0, -30, 30, 200); g.addColorStop(0, 'rgba(255,255,255,.22)'); g.addColorStop(1, 'rgba(255,255,255,0)'); q.fillStyle = g; q.fillRect(-200, -200, 400, 400);
+      // P.flush 0..1 (#12): going red, the flush rising from the chin up over the whole face, a soft edge on top
+      const fl = clamp(P.flush || 0);
+      if (fl > .01) { const y0 = 160 - fl * 340, f = R ? '#F04E6E' : '#EE3F5C'; const g2 = q.createLinearGradient(0, y0 - 50, 0, y0 + 40); g2.addColorStop(0, rgba(f, 0)); g2.addColorStop(1, rgba(f, R ? .62 : .78)); q.fillStyle = g2; q.fillRect(-200, y0 - 50, 400, 420); }
+    },
   });
   A.head = at(0, 0); A.mouth = at(0, 92); A.cheekL = at(-112, 72); A.cheekR = at(112, 72);
   if (R) {
@@ -1622,5 +1632,34 @@ function celConch(c, x, y, s = 1, rot = 0) {
   celShape(c, [[44, 24], [84, 40], [124, 34], [104, 22], [66, 16]], '#F6AE92', { n: 3, w: 3.5, shade: ['#E08A70', 0, 4] });
   for (let i = 0; i < 3; i++) celLine(c, [[124 + i * 14, -40 + i * 6], [134 + i * 12, -10], [128 + i * 14, 22 - i * 4]], 3, { col: rgba(CEL.ink, .6), boil: .3 });
   celBand(c, [0, 0], [60, -10], .12, 20, 7, '#F2B52E');
+  c.restore();
+}
+
+// ---------- #12 the mirror: a shiny thali ----------
+// celMirrorPlate(c, x, y, r, o): a polished brass thali held up as a mirror, (x, y) its centre, r its radius: a brass rim, a
+// bright metal face showing o.reflect(c, ri) (clipped inside the face, drawn in the plate's frame), a warm tint over it, a
+// darker edge, a shine band sweeping across (o.shine 0..1, its position; o.glint 0..1 a twinkle on the rim); o.rot, o.sq
+function celMirrorPlate(c, x, y, r, o = {}) {
+  const ri = r * .8;
+  c.save(); c.translate(x, y); c.rotate(o.rot || 0); c.scale(1, o.sq ?? 1);
+  celOval(c, 0, 0, r, r, '#E9B545', { w: 5, shade: ['#B9822A', r * .06, r * .08], lt: ['#FFE08A', -r * .03, -r * .04], over: q => {
+    q.strokeStyle = 'rgba(150,96,22,.5)'; q.lineWidth = 3; q.beginPath(); q.arc(0, 0, r * .9, 0, TAU); q.stroke();
+  } });
+  c.save(); c.beginPath(); c.arc(0, 0, ri, 0, TAU); c.clip();
+  let g = c.createLinearGradient(0, -ri, 0, ri); g.addColorStop(0, '#FBF6EC'); g.addColorStop(.55, '#EEE6D6'); g.addColorStop(1, '#DCCFB2');
+  c.fillStyle = g; c.fillRect(-ri, -ri, ri * 2, ri * 2);
+  if (o.reflect) { c.save(); o.reflect(c, ri); c.restore(); }
+  c.fillStyle = 'rgba(255,212,136,.16)'; c.fillRect(-ri, -ri, ri * 2, ri * 2);
+  g = c.createRadialGradient(0, 0, ri * .55, 0, 0, ri); g.addColorStop(0, 'rgba(150,100,30,0)'); g.addColorStop(1, 'rgba(150,100,30,.34)');
+  c.fillStyle = g; c.fillRect(-ri, -ri, ri * 2, ri * 2);
+  const sx = lerp(-1.6, 1.6, o.shine ?? .25) * ri;
+  c.save(); c.rotate(-.7); g = c.createLinearGradient(sx - ri * .35, 0, sx + ri * .35, 0);
+  g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(.35, 'rgba(255,255,255,.32)'); g.addColorStop(.5, 'rgba(255,255,255,.5)'); g.addColorStop(.62, 'rgba(255,255,255,.2)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+  c.fillStyle = g; c.fillRect(-ri * 2, -ri * 2, ri * 4, ri * 4); c.restore();
+  ellipse(c, -ri * .5, -ri * .55, ri * .2, ri * .07, 'rgba(255,255,255,.75)', -.75);
+  c.restore();
+  const E = []; for (let i = 0; i <= 40; i++) { const a = i / 40 * TAU; E.push([Math.cos(a) * ri, Math.sin(a) * ri]); }
+  celLine(c, E, 4, { taper: 0, boil: .4, col: rgba('#7A4C10', .85) });
+  if ((o.glint || 0) > .02) celSparkle(c, r * .62, -r * .62, r * .34 * o.glint, { rot: .2 });
   c.restore();
 }
