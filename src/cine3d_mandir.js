@@ -199,7 +199,8 @@ function mandir3(scene, o = {}) {
   const JX0 = -17, JX1 = 60, JZ = 18, JY = 2.6;
   // the jagati: a moulded platform (stays put; keep ≥ JY)
   [[0, .6, 1.4], [.6, .7, .9], [1.3, .7, .5], [2.0, .6, .2]].forEach(([y, h, d]) => rect(y < 1.3 ? 'plinth' : 'plain', JX0 - d, JX1 + d, -JZ - d, JZ + d, y, h, 1.6));
-  const top = mesh3(G, new THREE.BoxGeometry(JX1 - JX0 - 1, .2, 2 * JZ - 1), pbr3('paving', { rep: [16, 8], tint: '#E8D9BE', env: .5 }), [(JX0 + JX1) / 2, JY - .1, 0]);
+  // the paving sits 1.5 cm proud of the last course's top (coplanar faces z-fought along the front edge as the camera moved)
+  const top = mesh3(G, new THREE.BoxGeometry(JX1 - JX0 - 1, .2, 2 * JZ - 1), pbr3('paving', { rep: [16, 8], tint: '#E8D9BE', env: .5 }), [(JX0 + JX1) / 2, JY - .1 + .015, 0]);
   const steps = new THREE.Group(); G.add(steps);
   for (let i = 0; i < 7; i++) mesh3(steps, new THREE.BoxGeometry(1, (i + 1) * JY / 7, 12), mdMat('plain', [2, 2], { noTex: true }), [JX1 + 6.5 - i * .9, (i + 1) * JY / 14, 0]);
   // the sanctum (garbhagriha) and its spire
