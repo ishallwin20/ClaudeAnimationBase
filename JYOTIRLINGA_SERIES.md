@@ -15,11 +15,18 @@ first, Episode 1 a few hours later the same day.
   symbol of any faith, and no mosque on screen. The series is about what happened to the stones and who put them back.
   It makes no claim about any community today.
 - The rebuilders get the light: dawn gold, their names in gold, the year and what they did, the stones flying back.
+- **Each rebuilder gets real time** (owner, 27 Nov 2026): not just a name and a year, but who they were and the rest of
+  their work for people: the ghats, wells, roads, rest houses, free kitchens, schools and other temples they built, how
+  they governed, what it cost them. The hero rebuilders get a short portrait of 8–12 s each (an emblem of their seal or
+  a silhouette in gold, a map of their other works lighting up, one line about their life). The rest get a quick gold
+  roll. Every deed needs a source, like the plot beats.
 - This rule is the series' built-in argument ("hiding history!" vs "deny them the fame") and pulls in comments without
   claiming anything false. The pinned comment explains it once: we're not erasing history, we're choosing who to remember.
 
 ## Format (every episode)
-3D film look (3D_GUIDE.md: matte stone, low bloom), girish VO, Lyria score under the SFX (owner, 26 Nov), 70–95 s.
+3D film look (3D_GUIDE.md: matte stone, low bloom), girish VO, Lyria score under the SFX (owner, 26 Nov), 80–100 s.
+"The light" is the longest beat; where a temple has a lot of story too, split the episode (Part I the story and the
+look, Part II the dark and the light) rather than shortening the rebuilders.
 | beat | time | what |
 |---|---|---|
 | Hook | 0–3 s | the temple in 3D, the caption up at frame 0; the episode's most shocking true line |
@@ -27,7 +34,7 @@ first, Episode 1 a few hours later the same day.
 | The story | ~20 s | the purana's story in 3D (silhouettes, light, sets); corner tag SHIVA PURANA · KOTIRUDRA NN (gold) |
 | The look | ~15 s | an orbit and a fly-through of the temple with mono labels (style, height, the sanctum, what's unique) |
 | The dark | ~12 s | night falls on the temple, faceless shadows, the stones fly apart; redacted bars with years |
-| The light | ~15 s | dawn: the stones fly back; each rebuilder in gold, the year and the deed; corner tag HISTORY (teal) |
+| The light | ~25–30 s | dawn: the stones fly back; 1–2 hero rebuilders get a portrait (the deed here, then their other works for people lighting up on the map, one line on their life), the others a gold roll with year and deed; corner tag HISTORY (teal) |
 | FAQ / myth bust | ~10 s | one or two questions nobody answers, each with its source; LOCAL BELIEF (red) where it's only tradition |
 | Ask + next | ~6 s | a place call-out or a this-or-that ask, then "Next: N+1 · <name>" |
 | Card | ~5 s | series follow card: RK logo, "12 JYOTIRLINGAS", "Episode N+1 next", the Navadurga line (no price), follow; score up under it |
@@ -76,13 +83,28 @@ runs long, split them the same way: Part I is the story and the look, Part II is
    two mandapas, the flag; on the sea wall, the arrow (the full answer is in Ep 2).
 5. **The dark:** five redaction bars, one per hit: 1026, 1299, 1395, 1451, 1706. The temple breaks on each year, faster
    each time.
-6. **The light:** Mularaja (before 997), Kumarapala (1169: stone and jewels), Mahipala (1308), Ahilyabai Holkar (1783:
-   when the old site was taken, she built a new temple beside it), Sardar Patel (13 Nov 1947, standing in the ruins),
-   11 May 1951 (the installation).
+6. **The light (the longest beat):** a gold roll for Mularaja (before 997), Kumarapala (1169: stone and jewels) and
+   Mahipala (1308). Then two portraits:
+   - **Ahilyabai Holkar** (1783): when the old site couldn't be used, she built a new Somnath beside it. Her map lights up
+     with the rest of her works: ghats, wells, rest houses and free kitchens from Kashi to Rameswaram (verify each).
+   - **Sardar Patel**: 13 Nov 1947, standing in the ruins, he vowed to rebuild. The same year he was joining the princely
+     states into India. Then 11 May 1951, the installation.
 7. **Myth bust:** "Destroyed 17 times? No. Seventeen was the number of his campaigns into India. Somnath was hit five
    times, and rebuilt every time."
 8. **Ask + next:** "Have you stood in front of Somnath? Write JAI SOMNATH." "Next: the arrow that points to the South
    Pole, and the gates the British brought back… that weren't Somnath's."
+
+## The rebuilders' other works (portrait notes; verify each before use)
+| rebuilder | temples in this series | their wider work for people (to source per episode) |
+|---|---|---|
+| Ahilyabai Holkar (r. 1767–95, Indore) | Kashi Vishwanath, Somnath, Grishneshwar, Parli, others | ghats, wells, kunds, dharamshalas, annakshetras and roads across India; Maheshwar's weavers; famed for justice ("Punyashlok") |
+| Kumarapala (Chaulukya, r. 1143–72) | Somnath | a ban on animal slaughter in his kingdom; patron of Hemachandra's scholarship |
+| Ranoji Shinde (Maratha general, d. 1745) | Mahakal | founded the Scindia house of Gwalior; the Ujjain temples' care under his line |
+| Maharaja Ranjit Singh (r. 1801–39) | Kashi Vishwanath's gold | the Golden Temple's gilding; grants to temples, gurdwaras and mosques alike |
+| Sardar Patel | Somnath | joined 560+ princely states into India; the Junagadh accession, 1947 |
+| Chhatrapati Shivaji / the Bhosales | Mallikarjuna, Grishneshwar | temple grants across the Deccan; Maloji's Grishneshwar inscription |
+| Peshwa Balaji Bajirao | Trimbakeshwar | the Peshwa's temple and water works in Nashik and Pune |
+| the Setupati kings (Ramnad) | Rameswaram | pilgrim rest houses and the guard of the Ram Setu crossing |
 
 ## Posting
 Trailer, then Episode 1 the same day (27 Nov 2026). Then one episode every day or two. Each episode is built in its own
