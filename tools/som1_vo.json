@@ -1,0 +1,258 @@
+{
+ "name": "som1",
+ "defaults": {
+  "speaker": "girish_en_devotional",
+  "lang": "en-IN",
+  "pace": 1.26
+ },
+ "lines": [
+  {
+   "id": "hook",
+   "t": 0.15,
+   "caps": [
+    "This temple was *BROKEN* | *FIVE* times."
+   ],
+   "tts": "This temple was broken five times.",
+   "hold": 0.2
+  },
+  {
+   "id": "standing",
+   "gap": 0.3,
+   "caps": [
+    "And it's still *STANDING.*"
+   ],
+   "tts": "And it's still standing.",
+   "hold": 0.3
+  },
+  {
+   "id": "daksha",
+   "gap": 1.9,
+   "caps": [
+    "*DAKSHA* married his *27* daughters | to the *MOON.*",
+    "But the Moon loved only *ROHINI.*"
+   ],
+   "tts": "Daksh married his twenty-seven daughters to the Moon. But the Moon loved only Rohini.",
+   "hold": 0.3
+  },
+  {
+   "id": "curse",
+   "gap": 0.4,
+   "caps": [
+    "So Daksha *CURSED* him: | *WASTE AWAY.*"
+   ],
+   "tts": "So Daksh cursed him. Waste away.",
+   "hold": 0.9
+  },
+  {
+   "id": "prabhas",
+   "gap": 0.4,
+   "caps": [
+    "The Moon came here, | to *PRABHASA*, by the sea…",
+    "…and chanted the | *MRITYUNJAYA* mantra | for *SIX MONTHS.*"
+   ],
+   "tts": "The Moon came here, to Prabhas, by the sea... and chanted the मृत्युंजय mantra, for six months.",
+   "hold": 0.3
+  },
+  {
+   "id": "boon",
+   "gap": 0.4,
+   "caps": [
+    "*SHIVA* appeared: | wane for one fortnight…",
+    "…and grow back | in the other."
+   ],
+   "tts": "Shiva appeared. Wane for one fortnight... and grow back in the other.",
+   "hold": 0.3
+  },
+  {
+   "id": "stayed",
+   "gap": 0.3,
+   "caps": [
+    "And Shiva *STAYED* here, | as *SOMNATH*: Lord of the Moon."
+   ],
+   "tts": "And Shiva stayed here, as Somnath. Lord of the Moon.",
+   "hold": 0.5
+  },
+  {
+   "id": "look",
+   "gap": 0.4,
+   "caps": [
+    "Today's temple stands | in the old *MARU-GURJARA* style."
+   ],
+   "tts": "Today's temple stands in the old Maaru Gurjar style.",
+   "hold": 0.4
+  },
+  {
+   "id": "arrow",
+   "gap": 0.3,
+   "caps": [
+    "And on its sea wall… | an *ARROW.*"
+   ],
+   "tts": "And on its sea wall... an arrow.",
+   "hold": 0.7
+  },
+  {
+   "id": "raiders",
+   "gap": 0.4,
+   "caps": [
+    "Then the *RAIDERS* came."
+   ],
+   "tts": "Then the raiders came.",
+   "hold": 0.3
+  },
+  {
+   "id": "years",
+   "gap": 0.2,
+   "pace": 1.36,
+   "caps": [
+    "*1026.* *1299.*",
+    "*1395.* *1451.*",
+    "*1706.*"
+   ],
+   "tts": "Ten twenty-six. Twelve ninety-nine. Thirteen ninety-five. Fourteen fifty-one. Seventeen oh six.",
+   "hold": 0.4
+  },
+  {
+   "id": "names",
+   "gap": 0.3,
+   "caps": [
+    "We won't say their *NAMES.*"
+   ],
+   "tts": "We won't say their names.",
+   "hold": 0.7
+  },
+  {
+   "id": "back",
+   "gap": 0.4,
+   "caps": [
+    "But every time… | someone built it *BACK.*"
+   ],
+   "tts": "But every time... someone built it back.",
+   "hold": 0.3
+  },
+  {
+   "id": "roll",
+   "gap": 0.3,
+   "caps": [
+    "*MULARAJA.*",
+    "*KUMARPAL*, in stone | studded with *JEWELS.*",
+    "*MAHIPALA.*"
+   ],
+   "tts": "Moolraaj. Kumarpaal, in stone studded with jewels. Mahipaal.",
+   "hold": 0.4
+  },
+  {
+   "id": "ahilya",
+   "gap": 0.4,
+   "caps": [
+    "Beside the ruins, *AHILYABAI HOLKAR* | built a new Somnath."
+   ],
+   "tts": "Beside the ruins, Ahilyabai Holkar built a new Somnath.",
+   "hold": 0.3
+  },
+  {
+   "id": "ahilya2",
+   "gap": 0.3,
+   "caps": [
+    "A widow at 28. | She lost her only *SON.*",
+    "Then she ruled Malwa | for *28 YEARS.*"
+   ],
+   "tts": "A widow at twenty-eight. She lost her only son. Then she ruled Malwa for twenty-eight years.",
+   "hold": 0.3
+  },
+  {
+   "id": "ahilya3",
+   "gap": 0.3,
+   "caps": [
+    "*RIVER GHATS.* Wells. Rest houses. | Free food for pilgrims.",
+    "From *BADRINATH* | to *RAMESWARAM.*"
+   ],
+   "tts": "River ghaats. Wells. Rest houses. Free food for pilgrims. From Badrinath to Rameswaram.",
+   "hold": 0.5
+  },
+  {
+   "id": "patel",
+   "gap": 0.4,
+   "caps": [
+    "*NOVEMBER 1947.* | *SARDAR PATEL* came to Junagadh…",
+    "…and ordered: | *REBUILD SOMNATH.*"
+   ],
+   "tts": "November, nineteen forty-seven. Sardar Patel came to Junagadh... and ordered: rebuild Somnath.",
+   "hold": 0.3
+  },
+  {
+   "id": "patel2",
+   "gap": 0.3,
+   "caps": [
+    "The same year, he was joining | *500+* princely states",
+    "into *ONE INDIA.*"
+   ],
+   "tts": "The same year, he was joining over five hundred princely states into one India.",
+   "hold": 0.4
+  },
+  {
+   "id": "gandhi",
+   "gap": 0.4,
+   "caps": [
+    "*GANDHI* said: let the *PEOPLE* | pay for it, not the state."
+   ],
+   "tts": "Gandhi said: let the people pay for it, not the state.",
+   "hold": 0.3
+  },
+  {
+   "id": "letter",
+   "gap": 0.3,
+   "caps": [
+    "*NEHRU* wrote that he did *NOT* like | the President going.",
+    "*RAJENDRA PRASAD* | went anyway."
+   ],
+   "tts": "Nehru wrote that he did not like the President going. Rajendra Prasad went anyway.",
+   "hold": 0.3
+  },
+  {
+   "id": "install",
+   "gap": 0.3,
+   "caps": [
+    "*11 MAY 1951.* | The *LINGA* was installed again."
+   ],
+   "tts": "Eleventh May, nineteen fifty-one. The लिंग was installed again.",
+   "hold": 0.7
+  },
+  {
+   "id": "myth",
+   "gap": 0.4,
+   "caps": [
+    "*DESTROYED 17 TIMES?* | *NO.*"
+   ],
+   "tts": "Destroyed seventeen times? No.",
+   "hold": 0.3
+  },
+  {
+   "id": "myth2",
+   "gap": 0.2,
+   "caps": [
+    "*17* was his campaigns | into India.",
+    "Somnath was hit *FIVE* times."
+   ],
+   "tts": "Seventeen was his campaigns into India. Somnath was hit five times.",
+   "hold": 0.5
+  },
+  {
+   "id": "ask",
+   "gap": 0.4,
+   "caps": [
+    "Have you stood before *SOMNATH?* | Write *JAI SOMNATH.*"
+   ],
+   "tts": "Have you stood before Somnath? Write, Jai Somnath.",
+   "hold": 0.5
+  },
+  {
+   "id": "next",
+   "gap": 0.3,
+   "caps": [
+    "*NEXT:* the arrow that points | to the *SOUTH POLE.*"
+   ],
+   "tts": "Next: the arrow that points to the South Pole.",
+   "hold": 0.6
+  }
+ ]
+}
