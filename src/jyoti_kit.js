@@ -112,7 +112,8 @@ function sticker(c, t, t0, txt, x, y, o = {}) {
 // the corner tag: a small label at the top of the safe band naming the source of what's on screen
 // (SHIVA PURANA · KOTIRUDRA 14 in gold for the story, HISTORY in teal, LOCAL BELIEF in red)
 const JCOL = { gold: '#E8B030', teal: '#3FA79A', red: '#C8281E' };
-function cornerTag(c, t, t0, t1, txt, col = JCOL.gold) { jTag(c, t, t0, t1, txt, 80, 470, { col, size: 26 }); }
+// the section tag (HISTORY, MYTH BUST…): centred at the top of the safe band, big enough to read at a glance (owner, ad 120)
+function cornerTag(c, t, t0, t1, txt, col = JCOL.gold) { jTag(c, t, t0, t1, txt, 540, 458, { col, size: 38, align: 'center' }); }
 
 // a gold fill for a silhouette path: a vertical gradient, a soft glow round it, a bright rim on the lit side
 function goldFill(c, path, x0, y0, h, o = {}) {
@@ -227,4 +228,22 @@ function seriesCard(c, u, t, o = {}) {
   text(c, 'CHIRANJEEVI', 790, 1330, '700 30px Cinzel', '#F4C058', { pop: pk(1.9), spacing: 3 });
   text(c, 'comics', 790, 1370, 'italic 28px Marcellus', '#E8D8C0', { pop: pk(2) });
   text(c, 'Check the link in bio, or DM us', 540, 1460, '500 36px Poppins', '#FFFFFF', { pop: pk(2.3) });
+}
+
+// a photograph in a gold frame (a rebuilder's real portrait): crop [sx, sy, sw, sh] of img, toned warm, a slow push-in,
+// a shadow and a thin gold rule; pops in at t0, fades by t1. o.credit: a small line under it.
+function photoCard(c, img, crop, x, y, w, h, t, t0, t1 = 1e9, o = {}) {
+  if (t < t0 || t > t1 || !img || !img.naturalWidth) return;
+  const u = t - t0, k = popK(u * .8), vis = 1 - seg(t, t1 - .25, t1), z = 1 + .05 * clamp(u / 6);
+  c.save(); c.globalAlpha = vis * clamp(k); c.translate(x, y); c.rotate(o.rot ?? 0); c.scale(.96 + .04 * k, .96 + .04 * k);
+  c.shadowColor = 'rgba(0,0,0,.7)'; c.shadowBlur = 50; c.shadowOffsetY = 20; c.fillStyle = '#1A1208'; c.fillRect(-w / 2 - 14, -h / 2 - 14, w + 28, h + 28); c.shadowBlur = 0; c.shadowOffsetY = 0;
+  const g = c.createLinearGradient(0, -h / 2, 0, h / 2); g.addColorStop(0, '#FFE9B0'); g.addColorStop(.5, '#D4A048'); g.addColorStop(1, '#8A5A18');
+  c.strokeStyle = g; c.lineWidth = 6; c.strokeRect(-w / 2 - 9, -h / 2 - 9, w + 18, h + 18);
+  c.save(); c.beginPath(); c.rect(-w / 2, -h / 2, w, h); c.clip();
+  const [sx, sy, sw, sh] = crop, cw = w * z, ch = cw * sh / sw;
+  c.filter = 'grayscale(1) sepia(.55) contrast(1.08) brightness(1.04)'; c.drawImage(img, sx, sy, sw, sh, -cw / 2, -ch / 2 + (o.dy ?? 0), cw, ch); c.filter = 'none';
+  const vg = c.createRadialGradient(0, 0, Math.min(w, h) * .35, 0, 0, Math.max(w, h) * .75); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(20,10,0,.45)'); c.fillStyle = vg; c.fillRect(-w / 2, -h / 2, w, h);
+  c.restore();
+  if (o.credit) { c.font = '400 18px "Space Mono"'; c.fillStyle = 'rgba(240,226,200,.7)'; c.textAlign = 'right'; c.textBaseline = 'top'; c.fillText(o.credit, w / 2 + 9, h / 2 + 18); }
+  c.restore();
 }
