@@ -204,15 +204,20 @@ function mandir3(scene, o = {}) {
   for (let i = 0; i < 7; i++) mesh3(steps, new THREE.BoxGeometry(1, (i + 1) * JY / 7, 12), mdMat('plain', [2, 2], { noTex: true }), [JX1 + 6.5 - i * .9, (i + 1) * JY / 14, 0]);
   // the sanctum (garbhagriha) and its spire
   const SH = 8.6, wTop = walls(0, 0, JY, SH);
-  const yTop = spire(0, 0, wTop, 30, SH - .4, { taper: .66, pow: 2.1, bhumi: true, kalashK: 1.25 });
-  // the urushringas: half-spires stacked against the main one on three sides (and above the mandapa's roof in front)
+  // the main spire stands back from the wall's edge (a ledge on the cornice) so the urushringas can sit on the wall
+  const yTop = spire(0, 0, wTop, 30, SH - 1.5, { taper: .64, pow: 2.1, bhumi: true, kalashK: 1.25 });
+  // the urushringas: half-spires stacked against the main one on three sides (and above the mandapa's roof in front).
+  // Each one's outer face stays inside the wall below it (its bhadra projection reaches SH × 1.13): nothing overhangs.
+  const EDGE = SH * 1.1, ur = (d, half) => Math.min(d, EDGE - half * 1.14);
   for (let s = 0; s < 4; s++) {
     const yaw = s * Math.PI / 2, ux = Math.cos(yaw), uz = -Math.sin(yaw), front = s === 0;
-    spire(ux * (SH + 1.4), uz * (SH + 1.4), wTop + (front ? 9 : 0), front ? 9 : 14, 3.9, { taper: .58, ch: .85 });
-    spire(ux * (SH - .2), uz * (SH - .2), wTop + (front ? 14 : 4), front ? 10 : 15, 3.6, { taper: .58, ch: .85 });
-    spire(ux * (SH - 2), uz * (SH - 2), wTop + (front ? 19 : 10), 12, 3.2, { taper: .58, ch: .85 });
+    const d1 = ur(SH, 3.7), d2 = ur(SH - 1.2, 3.4) - .6, d3 = ur(SH - 2.4, 3.1) - 1.2;
+    spire(ux * d1, uz * d1, wTop + (front ? 9 : 0), front ? 9 : 14, 3.7, { taper: .58, ch: .85 });
+    spire(ux * d2, uz * d2, wTop + (front ? 14 : 4.5), front ? 10 : 15, 3.4, { taper: .58, ch: .85 });
+    spire(ux * d3, uz * d3, wTop + (front ? 19 : 10), 12, 3.1, { taper: .58, ch: .85 });
   }
-  for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) spire(sx * (SH - 1.6), sz * (SH - 1.6), wTop, 8.5, 2.1, { taper: .55, ch: .7 });
+  // the corner spires, inside the wall's corner
+  { const h = 2.1, q = SH - h * 1.05; for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) spire(sx * q, sz * q, wTop, 8.5, h, { taper: .55, ch: .7 }); }
   // the antarala: a short vestibule joining the sanctum and the hall
   for (let y = JY, i = 0; y < wTop - .2; i++) { const h = i < 5 ? .55 : 1.5; rect(i < 5 ? 'plinth' : 'wall', SH - 1, 14, -5.6, 5.6, y, Math.min(h, wTop - y), 1.4); y += h; }
   // the sabha mandapa
