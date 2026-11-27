@@ -1,0 +1,160 @@
+{
+ "name": "jtrail",
+ "defaults": {
+  "speaker": "girish_en_devotional",
+  "lang": "en-IN",
+  "pace": 1.22
+ },
+ "lines": [
+  {
+   "id": "hook",
+   "t": 0.15,
+   "caps": [
+    "They tried to *ERASE* | these temples."
+   ],
+   "tts": "They tried to erase these temples.",
+   "hold": 0.15
+  },
+  {
+   "id": "again",
+   "gap": 0.2,
+   "caps": [
+    "*AGAIN.* | And *AGAIN.*"
+   ],
+   "tts": "Again. And again.",
+   "hold": 0.3
+  },
+  {
+   "id": "failed",
+   "gap": 0.45,
+   "caps": [
+    "And every time… | they *FAILED.*"
+   ],
+   "tts": "And every single time... they failed.",
+   "hold": 0.6
+  },
+  {
+   "id": "light",
+   "gap": 0.55,
+   "caps": [
+    "Because here, *SHIVA* appeared | as an endless pillar of *LIGHT.*"
+   ],
+   "tts": "Because here, Shiva appeared as an endless pillar of light.",
+   "hold": 0.4
+  },
+  {
+   "id": "twelve",
+   "gap": 0.45,
+   "caps": [
+    "Twelve *JYOTIRLINGAS.*",
+    "From the snows of *KEDARNATH*… | to the sea at *RAMESWARAM.*"
+   ],
+   "tts": "Twelve Jyotirlingas. From the snows of Kedarnath... to the sea at Rameswaram.",
+   "hold": 0.5
+  },
+  {
+   "id": "dark",
+   "gap": 0.6,
+   "caps": [
+    "Raiders came for them. | They *LOOTED* the gold.",
+    "They *BROKE* the lingas. | They *BURNED* the halls."
+   ],
+   "tts": "Raiders came for them. They looted the gold. They broke the lingas. They burned the halls.",
+   "hold": 0.5
+  },
+  {
+   "id": "names",
+   "gap": 0.5,
+   "caps": [
+    "In this series, | we will *NOT* say their names."
+   ],
+   "tts": "In this series... we will not say their names.",
+   "hold": 0.9
+  },
+  {
+   "id": "kings",
+   "gap": 0.5,
+   "caps": [
+    "We will name the ones | who *REBUILT* them."
+   ],
+   "tts": "We will name the ones who rebuilt them.",
+   "hold": 0.3
+  },
+  {
+   "id": "roll",
+   "gap": 0.35,
+   "caps": [
+    "*KUMARPAL.*",
+    "*AHILYABAI HOLKAR.*",
+    "*RANOJI SHINDE.*",
+    "*MAHARAJA RANJIT SINGH.*",
+    "*SARDAR PATEL.*"
+   ],
+   "tts": "कुमारपाल. अहिल्याबाई होलकर. Ranoji Shinde. Maharaja Ranjit Singh. सरदार पटेल.",
+   "hold": 0.2
+  },
+  {
+   "id": "stone",
+   "gap": 0.3,
+   "caps": [
+    "Stone by *STONE.*"
+   ],
+   "tts": "Stone, by stone.",
+   "hold": 0.6
+  },
+  {
+   "id": "faq",
+   "gap": 0.5,
+   "caps": [
+    "And the questions | *NOBODY* answers."
+   ],
+   "tts": "And the questions nobody answers.",
+   "hold": 0.3
+  },
+  {
+   "id": "q1",
+   "gap": 0.35,
+   "caps": [
+    "Why does an *ARROW* at Somnath | point to the *SOUTH POLE?*"
+   ],
+   "tts": "Why does an arrow at Somnath point to the South Pole?",
+   "hold": 0.3
+  },
+  {
+   "id": "q2",
+   "gap": 0.35,
+   "caps": [
+    "Which *JYOTIRLINGA* | do *THREE* states claim?"
+   ],
+   "tts": "Which Jyotirlinga do three states claim?",
+   "hold": 0.3
+  },
+  {
+   "id": "q3",
+   "gap": 0.35,
+   "caps": [
+    "Which temple did | one *BOULDER* save?"
+   ],
+   "tts": "Which temple did one boulder save?",
+   "hold": 0.6
+  },
+  {
+   "id": "title",
+   "gap": 0.5,
+   "caps": [
+    "Episode one: *SOMNATH.* | *TONIGHT.*"
+   ],
+   "tts": "Twelve Jyotirlingas. Episode one: सोमनाथ. Tonight.",
+   "hold": 0.6
+  },
+  {
+   "id": "ask",
+   "gap": 0.5,
+   "caps": [
+    "Which *JYOTIRLINGA* | have *YOU* been to? | Comment it."
+   ],
+   "tts": "Which Jyotirlinga have you been to? Comment it.",
+   "hold": 0.5
+  }
+ ]
+}

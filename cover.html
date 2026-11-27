@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>12 Jyotirlingas: trailer cover</title>
+<!-- Ad 119, the 12 JYOTIRLINGAS trailer (the 3D style; JYOTIRLINGA_SERIES.md). A copy of cine3d.html loading src/config.js and the reel's scene. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600;700&family=Space+Mono:wght@400;700&family=Cinzel:wght@500;700;900&family=Cinzel+Decorative:wght@700;900&family=Marcellus&family=Poppins:wght@500;700&family=Tiro+Devanagari+Sanskrit&display=block">
+<style>
+  html, body { margin: 0; background: #1b1820; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #out { width: auto; max-width: min(100%, 1280px); max-height: 85vh; height: auto; background: #000; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
+  #scrub { flex: 1; }
+  #tt { font-variant-numeric: tabular-nums; min-width: 190px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="out" width="1080" height="1920"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="41" step="0.0417" value="0"><span id="tt">loading…</span></div>
+</main>
+<script src="src/config.js"></script>
+<!-- engine -->
+<script src="src/cine.js"></script>
+<script src="src/vendor/three.min.js"></script>
+<script src="src/cine3d.js"></script>
+<script src="src/vendor/pako_inflate.min.js"></script>
+<script src="src/cine3d_fx.js"></script>
+<script src="src/data/hdri_evening.js"></script>
+<script src="src/data/hdri_night2.js"></script>
+<script src="src/data/pbr_paving.js"></script>
+<script src="src/cine3d_kailash.js"></script>
+<script src="src/data/india_dem.js"></script>
+<script src="src/data/india_geo.js"></script>
+<script src="src/cine3d_india.js"></script>
+<script src="src/cine3d_mandir.js"></script>
+<script src="src/cine_sets.js"></script>
+<script src="src/scenes/rk_images.js"></script>
+<!-- the reel -->
+<script src="src/scenes/jtrail_vo.js"></script>
+<script src="src/scenes/jtrail_props.js"></script>
+<script src="src/scenes/jtrail.js"></script>
+<script src="src/scenes/jtrail_cover.js"></script>
+</body>
+</html>
