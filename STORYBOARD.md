@@ -1,7 +1,7 @@
 # Ad 120 · 12 JYOTIRLINGAS, Episode 1: Somnath I
 
 3D style (cine3d + the film look), girish VO (pace 1.26), Lyria score (take 3, 4.5% faster so its chord lands on the
-card) under synthesized SFX, −14 LUFS. 113.5 s (the voice ends at 106.8 s; the card holds 6.2 s). Plan:
+card) under synthesized SFX, −14 LUFS. 123.1 s (the voice ends at 116.3 s; the card holds 6.2 s). Plan:
 JYOTIRLINGA_SERIES.md (Episode 1 outline, owner-approved 27 Nov 2026).
 
 Files: `src/scenes/som1.js` (the scene), `som1_props.js` (the moon with phases, the Prabhasa shore, Chandra, the
@@ -18,8 +18,8 @@ silhouettes of Ahilyabai and Patel, the portrait, the typed letter, the series c
 | 5.3–29 | The story (SHIVA PURANA · KOTIRUDRA 14) | the 27 nakshatras light along the moon's path; Rohini blazes, the 26 dim; the curse (red flare) and the moon wastes to a sliver; Chandra seated before an earthen linga at Prabhasa, rings of the chant, DAY 1/180; Shiva's pillar of light, the moon healed, waning then waxing (15 DAYS · WANE / WAX); the temple rises round the light, the crescent above, सोमनाथ = Lord of the Moon |
 | 29–35.8 | The look (TODAY · VERAVAL, GUJARAT) | orbit: MARU-GURJARA · CHAULUKYA STYLE, KAILASH MAHAMERU PRASAD; low along the nritya and sabha mandapas, the sanctum; the Baan Stambh's arrow over the sea, EPISODE 2 sticker |
 | 35.8–44.5 | The dark | faceless shadow raiders at night; five breaks, one per year, faster each time; five redacted records (year + role, the name a black bar); "We won't say their NAMES" over the burning ruin |
-| 44.5–92.3 | The light (HISTORY) | the stones rise at dawn; MULARAJA, KUMARPAL, MAHIPALA in gold; Ahilyabai's new temple beside the ruin; her gold portrait (linga on her palm); her works lighting up on the map, Badrinath to Rameswaram; Sardar Patel's portrait, REBUILD SOMNATH; ~565 princely states becoming ONE INDIA; gold flowing into the rising temple (public funds); Nehru's letter of 2 March 1951 typed out; RAJENDRA PRASAD in gold; 11 MAY 1951, light from the spire |
-| 92.3–99.8 | Myth bust (red tag) | "17 TIMES?" struck through, NO.; 17 = his campaigns into India, 1000–1025; 5 ATTACKS ON SOMNATH with the years |
+| 44.5–92.3 | The light (HISTORY) | the stones rise at dawn; MULARAJA, KUMARPAL, MAHIPALA in gold; Ahilyabai's new temple beside the ruin; her gold portrait (linga on her palm); her works lighting up on the map, Badrinath to Rameswaram; Sardar Patel's photograph (Photo Division, Government of India, 1949; public domain), REBUILD SOMNATH; ~565 princely states becoming ONE INDIA; gold flowing into the rising temple (public funds); Nehru's letter of 2 March 1951 typed out; Rajendra Prasad's photograph (a signed portrait of 1962, public domain) and his name in gold; 11 MAY 1951, light from the spire |
+| 92.9–110.2 | Myth bust (red tag) | "17 TIMES?" struck through, NO.; the map: the raider of 1026 came from GHAZNI (today's Afghanistan); 17 raids arc into India (1000–1025), only one, in red, reaches Somnath; 5 ATTACKS ON SOMNATH, the years, 5 RULERS · 1026–1706 (owner, 27 Nov: say where he came from, without his name) |
 | 99.8–106.8 | Ask + next | blue hour, lamps, the crescent: "Write JAI SOMNATH"; the arrow pointing south: NEXT · SOMNATH II |
 | 106.8–113 | Card | 12 JYOTIRLINGAS, Episode 2 next, Follow @therishikatha; Navadurga picture books + the CHIRANJEEVI comic (no price), "Check the link in bio, or DM us" |
 
@@ -54,7 +54,7 @@ gold. Facts used (below) names everyone, for accuracy.
 | Gandhi blessed it but said the money should come from the public, not the state; the Somnath Trust raised it | Wikipedia "Somnath Temple" |
 | Nehru wrote to the President on 2 March 1951: "I confess that I do not like the idea of your associating yourself with a spectacular opening of the Somnath Temple" | Selected Works of Jawaharlal Nehru, 2nd series, vol. 16 pt 1, pp. 269–70, as quoted in the press (National Herald, Outlook, DeshGujarat). Prasad's reply (10 March) and Nehru's of 13 March are Episode 2 material |
 | Rajendra Prasad went anyway; on 11 May 1951 he performed the installation | Wikipedia "Somnath Temple" |
-| "Destroyed 17 times?" No: 17 was his campaigns into India (1000–1025); Somnath was hit five times | Wikipedia "Somnath Temple", n. 53 (Stuurman 2017: "no less than seventeen campaigns into India") + the five years above |
+| "Destroyed 17 times?" No: the raider of 1026 came from Ghazni, in today's Afghanistan; he made 17 raids into India (1000–1025) and one of them hit Somnath; in all Somnath was attacked five times, by five rulers, over nearly 700 years (1026–1706) | Wikipedia "Somnath Temple", n. 53 (Stuurman 2017: "no less than seventeen campaigns into India") + the five years above |
 | Left out (Episode 2): Munshi overruled by Nehru on government involvement; Prasad's reply; the Baan Stambh inscription; the 1842 "Gates of Somnath" | |
 
 ## Voice notes
@@ -62,3 +62,12 @@ STT (whisper small, en) heard "Ghats" as "gods/cart" in every take, also with De
 (English STT doesn't know the word). "Widowed" came out mangled, so the line is "A widow at 29". "Build it" became
 "Dilled it": Gandhi's line is "let the people pay for it, not the state". लिंग for "linga"; "Daksh", "Prabhas",
 "Moolraaj", "Kumarpaal", "Mahipaal" spelled for the Hindi pronunciation.
+
+## Photographs (owner, 27 Nov: use the builders' real pictures)
+| who | file | source and licence |
+|---|---|---|
+| Sardar Patel | `assets/som1/patel.jpg` | Wikimedia Commons "File:Sardar Patel.jpg": Photo Division, Government of India, studio, 31 Oct 1949; public domain (the Photo Division watermark is part of the published photo) |
+| Rajendra Prasad | `assets/som1/prasad.jpg` | Wikimedia Commons "File:Black and white portrait photograph of Rajendra Prasad presented to President Kennedy.jpg": signed 14 March 1962; public domain (the CC BY-SA 1958 photo in his Wikipedia article was avoided) |
+
+The flicker the owner saw at ~30 s was the jagati's paving and its top course z-fighting (coplanar); fixed on main in
+cine3d_mandir.js (the paving 1.5 cm proud).

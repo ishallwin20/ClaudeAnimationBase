@@ -17,7 +17,8 @@ const TL = {
   PT0: LN.patel.a - .15, PATEL: Wd('patel', 'sardar'), REBUILD: Wd('patel', 'rebuild'), PT2: LN.patel2.a - .15, ONE: Wd('patel2', 'one'),
   GA0: LN.gandhi.a - .15, PEOPLE: Wd('gandhi', 'people'), LT0: LN.letter.a - .15, PRASAD: Wd('letter', 'rajendra'), ANYWAY: Wd('letter', 'anyway'),
   IN0: LN.install.a - .15, LINGA: Wd('install', 'linga'),
-  MY0: LN.myth.a - .15, NO: Wd('myth', 'no'), MY2: LN.myth2.a - .1, FIVE: Wd('myth2', 'five'),
+  MY0: LN.myth.a - .15, NO: Wd('myth', 'no'), MY2: LN.myth2.a - .1, GHAZNI: Wd('myth2', 'ghazni'), M3: LN.myth3.a - .1, ONE1: Wd('myth3', 'one'),
+  M4: LN.myth4.a - .1, FIVE: Wd('myth4', 'five'), Y700: Wd('myth4', '700'),
   ASK: LN.ask.a - .15, JAI: Wd('ask', 'jai'), NX0: LN.next.a - .15, POLE: Wd('next', 'pole'), CARD: LN.next.end + .6,
 };
 TL.END = TL.CARD + 6.2;

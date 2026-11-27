@@ -230,10 +230,28 @@
    "id": "myth2",
    "gap": 0.2,
    "caps": [
-    "*17* was his campaigns | into India.",
-    "Somnath was hit *FIVE* times."
+    "The raider of *1026* came from *GHAZNI*, | in today's *AFGHANISTAN.*"
    ],
-   "tts": "Seventeen was his campaigns into India. Somnath was hit five times.",
+   "tts": "The raider of ten twenty-six came from ग़ज़नी, in today's Afghanistan.",
+   "hold": 0.3
+  },
+  {
+   "id": "myth3",
+   "gap": 0.3,
+   "caps": [
+    "He made *17* raids into India. | Only *ONE* of them hit Somnath."
+   ],
+   "tts": "He made seventeen raids into India. Only one of them hit Somnath.",
+   "hold": 0.4
+  },
+  {
+   "id": "myth4",
+   "gap": 0.3,
+   "caps": [
+    "In all, Somnath was attacked | *FIVE* times,",
+    "by five rulers, | over nearly *700 YEARS.*"
+   ],
+   "tts": "In all, Somnath was attacked five times, by five rulers, over nearly seven hundred years.",
    "hold": 0.5
   },
   {

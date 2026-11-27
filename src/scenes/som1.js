@@ -11,6 +11,9 @@ const CAPY = 1330;
 const caps = VO.caps.filter(k => k.id !== 'years');
 caps.forEach((k, i) => say(i ? k.a : -1, k.b, k.text, { at: i ? k.at : k.at.map(() => -1), y: k.y ?? CAPY }));
 PICS.ashCover = Object.assign(new Image(), { src: 'assets/rk/ashwatthama_cover.jpg' });
+// the rebuilders' real photographs (Wikimedia Commons, public domain): Patel, Photo Division, Government of India, 31 Oct 1949;
+// Rajendra Prasad, a signed portrait of 14 March 1962 (presented to President Kennedy)
+PICS.patel = Object.assign(new Image(), { src: 'assets/som1/patel.jpg' }); PICS.prasad = Object.assign(new Image(), { src: 'assets/som1/prasad.jpg' });
 
 ['night2', 'evening'].forEach(n => env3(new THREE.Scene(), n, { bg: true }));
 const SW = somWorld3(), TM = mandir3(SW.scene), RD = raiders3(SW.scene, 110, { at: [150, 0, 26], dir: [-1, 0, -.22], spread: [70, 34] });
@@ -259,7 +262,8 @@ SHOTS.push({ a: TL.AH3, b: TL.PT0, xf: .3, draw(c, u, t) {
 } });
 // ================= 24 · Sardar Patel's portrait: November 1947, Junagadh: REBUILD SOMNATH =================
 SHOTS.push({ a: TL.PT0, b: TL.PT2, xf: .3, draw(c, u, t) {
-  portrait(c, t, TL.PT0, silPatel, { x: 520, y: 1080, s: .7, hx: 560, hy: 760, seed: 47, mid: '#14100A' });
+  portrait(c, t, TL.PT0, () => {}, { hx: 540, hy: 760, seed: 47, mid: '#14100A' });
+  photoCard(c, PICS.patel, [250, 400, 760, 860], 540, 760, 520, 588, t, TL.PT0 + .1, 1e9, { credit: 'PHOTO DIVISION, GOVT OF INDIA · 1949' });
   goldName(c, t, TL.PATEL - .05, TL.REBUILD - .1, 'SARDAR PATEL', 'NOVEMBER 1947 · JUNAGADH', 1150, { size: 76 });
   sticker(c, t, TL.REBUILD - .05, 'REBUILD SOMNATH', 540, 1150, { size: 66, col: '#B8341E' });
   if (t > TL.REBUILD - .05) flash(c, .2 * Math.exp(-(t - TL.REBUILD) * 4), '#FFD890');
@@ -308,7 +312,9 @@ SHOTS.push({ a: TL.LT0, b: TL.PRASAD - .05, draw(c, u, t) {
 SHOTS.push({ a: TL.PRASAD - .05, b: TL.IN0, draw(c, u, t) {
   reset(); TM.set(t, { flag: 1 }); const ex = SW.mood('golden', { t }); const k = easeIO(clamp(u / 2.4));
   render3(c, SW.scene, tCam({ pos: [lerp(130, 118, k), 2.4, lerp(8, 4, k)], at: [20, 16, 0], fov: 44 }), { exposure: ex, fx: lens(110) });
-  goldName(c, t, TL.PRASAD - .05, TL.IN0 + .2, 'RAJENDRA PRASAD', 'PRESIDENT OF INDIA', 760, { size: 76 });
+  c.fillStyle = 'rgba(0,0,0,.35)'; c.fillRect(0, 0, W, H);
+  photoCard(c, PICS.prasad, [180, 120, 450, 470], 540, 760, 480, 501, t, TL.PRASAD - .05, TL.IN0 + .25, { credit: 'SIGNED PORTRAIT · 1962' });
+  goldName(c, t, TL.PRASAD + .1, TL.IN0 + .2, 'RAJENDRA PRASAD', 'PRESIDENT OF INDIA', 1140, { size: 72 });
   HIST(c, t);
 } });
 // ================= 29 · 11 May 1951: the linga installed; light from the spire =================
@@ -321,29 +327,47 @@ SHOTS.push({ a: TL.IN0, b: TL.MY0 + .3, xf: .2, draw(c, u, t) {
   HIST(c, t);
 } });
 
-// ================= 30–31 · the myth bust: 17 times? No. 17 was his campaigns; Somnath was hit five times =================
+// ================= 30–31 · the myth bust: 17 times? No. The raider of 1026 came from Ghazni; 17 raids into India, one hit
+// Somnath; in all, Somnath was attacked five times, by five rulers, over nearly 700 years =================
 const MYTH = (c, t) => cornerTag(c, t, TL.MY0 + .1, TL.ASK, 'MYTH BUST', JCOL.red);
-SHOTS.push({ a: TL.MY0, b: TL.ASK + .3, xf: .3, draw(c, u, t) {
-  reset(); TM.set(t, { flag: .8 }); const ex = SW.mood('blue', { t, exposure: .85 });
+const mythBg = (c, t, u, dim = .3) => { reset(); TM.set(t, { flag: .8 }); const ex = SW.mood('blue', { t, exposure: .85 });
   const a = lerp(.25, -.1, u / 7), R0 = 120;
   render3(c, SW.scene, tCam({ pos: [14 + Math.cos(a) * R0, 5, Math.sin(a) * R0 + 10], at: [14, 22, 0], fov: 44 }), { exposure: ex, fx: lens(R0, BLUEG) });
-  c.fillStyle = 'rgba(0,0,0,.3)'; c.fillRect(0, 0, W, H);
-  // 17, struck through at NO, then the campaigns' line
-  const gone = seg(t, TL.MY2 + 1.3, TL.MY2 + 1.7);
-  if (gone < 1) {
-    c.save(); c.globalAlpha = 1 - gone;
-    text(c, '17', 540, 720, '400 300px Anton', '#FFF4E4', { pop: t - TL.MY0 - .1, glow: ['rgba(0,0,0,.8)', 30] });
-    text(c, 'TIMES?', 540, 900, '400 80px Anton', '#FFF4E4', { pop: t - TL.MY0 - .3, spacing: 6 });
-    const s = easeOut(seg(t, TL.NO - .05, TL.NO + .2)); if (s > 0) { c.strokeStyle = '#E0281E'; c.lineWidth = 22; c.lineCap = 'round'; c.beginPath(); c.moveTo(330, 820); c.lineTo(330 + 420 * s, 820 - 220 * s); c.stroke(); }
-    c.restore();
-    sticker(c, t, TL.NO, 'NO.', 760, 560, { size: 80, rot: .08 });
-    if (t > TL.MY2 && gone < 1) jTag(c, t, TL.MY2, TL.MY2 + 1.7, '17 = HIS CAMPAIGNS INTO INDIA · 1000–1025', 540, 1040, { align: 'center', size: 26 });
-  }
-  if (t > TL.MY2 + 1.4) {
-    text(c, '5', 540, 690, '400 300px Anton', '#FFC65A', { pop: t - TL.MY2 - 1.4, glow: ['rgba(255,150,60,.5)', 40] });
-    text(c, 'ATTACKS ON SOMNATH', 540, 870, '400 64px Anton', '#FFF4E4', { pop: t - TL.MY2 - 1.6, spacing: 4 });
-    YEARS.forEach((y, i) => text(c, y, 220 + i * 160, 970, '700 40px "Space Mono"', '#F4D9A0', { pop: t - TL.FIVE - i * .08, spacing: 2 }));
-  }
+  c.fillStyle = `rgba(0,0,0,${dim})`; c.fillRect(0, 0, W, H); };
+SHOTS.push({ a: TL.MY0, b: TL.MY2 + .3, xf: .3, draw(c, u, t) {
+  mythBg(c, t, u);
+  text(c, '17', 540, 720, '400 300px Anton', '#FFF4E4', { pop: t - TL.MY0 - .1, glow: ['rgba(0,0,0,.8)', 30] });
+  text(c, 'TIMES?', 540, 900, '400 80px Anton', '#FFF4E4', { pop: t - TL.MY0 - .3, spacing: 6 });
+  const s = easeOut(seg(t, TL.NO - .05, TL.NO + .2)); if (s > 0) { c.save(); c.strokeStyle = '#E0281E'; c.lineWidth = 22; c.lineCap = 'round'; c.beginPath(); c.moveTo(330, 820); c.lineTo(330 + 420 * s, 820 - 220 * s); c.stroke(); c.restore(); }
+  sticker(c, t, TL.NO, 'NO.', 760, 560, { size: 80, rot: .08 });
+  MYTH(c, t);
+} });
+// the raids: arcs from Ghazni into India, seventeen of them; the one that reached Somnath in red
+const GHZ = { lon: 68.42, lat: 33.55 }, SOMLL = { lon: JL[0].lon, lat: JL[0].lat };
+const RAIDS = (() => { const r = lcg(1017), o = []; for (let i = 0; i < 16; i++) o.push({ lon: 71.5 + r() * 9.5, lat: 26 + r() * 6.2 }); o.splice(9, 0, SOMLL); return o; })();
+const arc3 = (c, A, B, k, col, w, a) => { if (k <= 0) return; const p0 = I3.at(A.lon, A.lat), p1 = I3.at(B.lon, B.lat), L = Math.hypot(p1[0] - p0[0], p1[2] - p0[2]);
+  c.save(); c.globalAlpha = a; c.strokeStyle = col; c.lineWidth = w; c.lineCap = 'round'; c.shadowColor = col; c.shadowBlur = 14; c.beginPath();
+  for (let i = 0; i <= 40; i++) { const u = i / 40 * k, [x, y, z] = toScreen3([lerp(p0[0], p1[0], u), lerp(p0[1], p1[1], u) + Math.sin(Math.PI * u) * L * .18, lerp(p0[2], p1[2], u)]); if (z > 1) continue; i ? c.lineTo(x, y) : c.moveTo(x, y); }
+  c.stroke(); c.restore(); };
+SHOTS.push({ a: TL.MY2, b: TL.M4 + .3, xf: .3, draw(c, u, t) {
+  reset(); const ex = duskIndia(); I3.border.set(1, 2.4, .45);
+  render3(c, I3.scene, indiaCam(clamp(u / 8), { lon: 74.5, lat: 33.5, zoom: .78 }), { exposure: ex });
+  pin3(c, 'GHAZNI', I3.at(GHZ.lon, GHZ.lat + .3), t, TL.GHAZNI - .1, { size: 40, dy: -40, col: '#FFE2A0', spacing: 4 });
+  pin3(c, "today's Afghanistan", I3.at(GHZ.lon, GHZ.lat + .3), t, TL.GHAZNI + .3, { size: 26, dy: 4, col: '#E8ECFF', font: 'italic 28px Marcellus', spacing: 1 });
+  const one = seg(t, TL.ONE1 - .1, TL.ONE1 + .4);
+  RAIDS.forEach((d, i) => { const t0 = TL.M3 + .15 + i * ((TL.ONE1 - TL.M3 - .5) / RAIDS.length), k = easeOut(seg(t, t0, t0 + .5)), isS = d === SOMLL;
+    arc3(c, GHZ, d, k, isS && one > 0 ? '#FF4A30' : '#F4C46A', isS ? 3 + 4 * one : 3, isS ? 1 : 1 - .7 * one); });
+  const n = RAIDS.filter((d, i) => t >= TL.M3 + .15 + i * ((TL.ONE1 - TL.M3 - .5) / RAIDS.length)).length;
+  if (n) jTag(c, t, TL.M3 + .1, TL.M4 + .3, `${n} RAIDS INTO INDIA · 1000–1025`, 1000, 800, { align: 'right', size: 28 });
+  if (one > 0) pin3(c, 'SOMNATH · 1026', I3.at(SOMLL.lon, SOMLL.lat), t, TL.ONE1, { size: 36, dy: 50, col: '#FF8A70', spacing: 3 });
+  MYTH(c, t);
+} });
+SHOTS.push({ a: TL.M4, b: TL.ASK + .3, xf: .3, draw(c, u, t) {
+  mythBg(c, t, u + 4, .35);
+  text(c, '5', 540, 690, '400 300px Anton', '#FFC65A', { pop: t - TL.FIVE + .1, glow: ['rgba(255,150,60,.5)', 40] });
+  text(c, 'ATTACKS ON SOMNATH', 540, 870, '400 64px Anton', '#FFF4E4', { pop: t - TL.FIVE - .1, spacing: 4 });
+  YEARS.forEach((y, i) => text(c, y, 220 + i * 160, 970, '700 40px "Space Mono"', '#F4D9A0', { pop: t - TL.FIVE - .3 - i * .1, spacing: 2 }));
+  if (t > TL.Y700 - .1) jTag(c, t, TL.Y700 - .1, TL.ASK + .3, '5 RULERS · 1026–1706', 540, 1060, { align: 'center', size: 30, col: JCOL.red });
   MYTH(c, t);
 } });
 // ================= 32 · the ask: the temple at blue hour, its lamps, the crescent over the spire =================

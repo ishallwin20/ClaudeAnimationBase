@@ -17,8 +17,12 @@ const TAU = Math.PI * 2, rr = (a, b) => a + (b - a) * rnd(), LN = VO.lines, END 
 // [picture start, picture end, take start, fade in, fade out, volume, tempo]. Take 3 (120.4 s for a 112 s brief) follows
 // the brief's sections (the hit at 0:04, the curse's drop at 0:12) but drifts ~5 s late by its final chord (at ~1:52
 // against 1:47 asked): played 4.5% faster, whole, its chord lands on the card.
+// Since the myth bust grew (owner, 27 Nov: Ghazni, 17 raids, one hit Somnath), the take is spliced: 4.5% faster to the
+// myth bust; its tense stretch (take 79.5–) under the myth bust; its quiet, questioning stretch (take 104–) under the ask
+// and next; its final chord (take 111.2–) under the card.
+const J1 = TL.MY0 - .1, J2 = TL.ASK - .1, J3 = TL.CARD - .3;
 const CUTS = {
-  3: [[0, END, 0, 0, 1.2, 1, 1.045]],
+  3: [[0, J1 + .4, 0, 0, .5, 1, 1.045], [J1 - .1, J2 + .4, 79.5, .4, .5, .9], [J2 - .1, J3 + .4, 104, .4, .5, 1], [J3 - .1, END, 111.2, .4, 1.2, 1]],
 };
 const take = args.take || 3, SRC = `assets/som1_score_${take}.mp3`;
 if (existsSync(SRC)) {
@@ -101,6 +105,7 @@ T.at(TL.AH2, mixb(shimmer(2.6, [note(72), note(76), note(79), note(84)], .7, .06
 for (let i = 0; i < 19; i++) { const t = TL.AH3 + .3 + i * ((TL.RAMES - TL.AH3 - .6) / 19); T.at(t, chime(note(76 + [0, 3, 5, 7, 10][i % 5] + (i % 10 >= 5 ? 12 : 0)), .4, 1.4), .03, i % 2 ? .4 : -.4); }
 T.at(TL.BADRI - .05, templeBell(72, .5, 3), .05, -.3); T.at(TL.RAMES - .05, templeBell(67, .5, 3), .05, .3);
 T.at(TL.PT0, mixb(drum(44, 1, 1.2), sub(.6, 2)), .14, 0);
+T.at(TL.PT0 + .1, mixb(click(.8), noise(.08, { hp: 1500, lp: 6000, e: env.pluck(40), amp: .5 })), .06, .2);
 T.at(TL.PATEL - .05, shimmer(1.6, [note(67), note(74), note(79)], .5, .05), .06, 0);
 T.at(TL.REBUILD - .05, mixb(stamp(1.2), drum(52, .9, .6)), .16, 0);
 for (let i = 0; i < 70; i++) T.at(TL.PT2 + .3 + (TL.ONE - TL.PT2 - .5) * i / 70, tick(.3 + .3 * rnd()), .025, rr(-.5, .5));
@@ -110,6 +115,7 @@ T.at(TL.GA0, wind(TL.LT0 - TL.GA0, 5, .5), .04, 0);
 for (let i = 0; i < 26; i++) T.at(TL.PEOPLE - .4 + i * .09, coin(rr(.4, 1)), .03, rr(-.5, .5));
 T.at(TL.LT0, whoosh(.6, 2000, 500, .5), .05, 0);
 { let n = 0; for (let t = TL.LT0 + .55; t < TL.LT0 + 2.35; t += rr(.05, .09), n++) T.at(t, key(rr(.5, 1)), .05, rr(-.2, .2)); T.at(TL.LT0 + 2.4, clang(note(96), .3), .02, .3); }
+T.at(TL.PRASAD - .05, mixb(click(.8), noise(.08, { hp: 1500, lp: 6000, e: env.pluck(40), amp: .5 })), .06, .2);
 T.at(TL.PRASAD - .05, mixb(drum(48, .9, 1), shimmer(1.4, [note(69), note(74), note(78)], .5, .05)), .12, 0);
 T.at(TL.IN0 - .3, riser(.5, .6), .05, 0);
 T.at(TL.LINGA - .1, mixb(sub(1, 3), templeBell(60, 1.1, 6), conch(2.2, 311, .7)), .14, 0);
@@ -117,8 +123,13 @@ T.at(TL.LINGA - .1, mixb(sub(1, 3), templeBell(60, 1.1, 6), conch(2.2, 311, .7))
 T.at(TL.MY0 - .2, whoosh(.6, 500, 3000, .7), .07, 0);
 T.at(TL.MY0 + .1, mixb(drum(44, 1, .8), thud(.8)), .14, 0);
 T.at(TL.NO - .05, mixb(stamp(1.2), crunch(.5)), .16, 0);
-T.at(TL.MY2 + 1.4, mixb(drum(48, 1, 1), sub(.6, 2)), .14, 0);
-for (let i = 0; i < 5; i++) T.at(TL.FIVE + i * .08, drum(60 + i * 6, .8, .4), .08, -.4 + i * .2);
+T.at(TL.MY2, whoosh(.7, 2600, 400, .6), .06, 0);
+T.at(TL.GHAZNI - .05, mixb(drum(44, .9, 1), braam(.6, 2.4)), .12, 0);
+for (let i = 0; i < 17; i++) { const t = TL.M3 + .15 + i * ((TL.ONE1 - TL.M3 - .5) / 17); T.at(t, mixb(whoosh(.35, 600, 2400, .35), drum(70 + (i % 4) * 8, .4, .2)), .045, rr(-.4, .4)); }
+T.at(TL.ONE1 - .05, mixb(stamp(1.1), sub(.7, 2)), .16, 0);
+T.at(TL.M4, whoosh(.6, 500, 3000, .6), .06, 0);
+T.at(TL.FIVE - .1, mixb(drum(48, 1, 1), sub(.6, 2)), .14, 0);
+for (let i = 0; i < 5; i++) T.at(TL.FIVE + .3 + i * .1, drum(60 + i * 6, .8, .4), .08, -.4 + i * .2);
 // ================= the ask, next, the card =================
 T.at(TL.ASK, mixb(templeBell(64, .7, 5), sea(TL.CARD - TL.ASK, .6)), .06, 0);
 T.at(TL.JAI - .05, shimmer(2, [note(72), note(76), note(79), note(84)], .6, .06), .06, 0);

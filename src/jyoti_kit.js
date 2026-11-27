@@ -228,3 +228,21 @@ function seriesCard(c, u, t, o = {}) {
   text(c, 'comics', 790, 1370, 'italic 28px Marcellus', '#E8D8C0', { pop: pk(2) });
   text(c, 'Check the link in bio, or DM us', 540, 1460, '500 36px Poppins', '#FFFFFF', { pop: pk(2.3) });
 }
+
+// a photograph in a gold frame (a rebuilder's real portrait): crop [sx, sy, sw, sh] of img, toned warm, a slow push-in,
+// a shadow and a thin gold rule; pops in at t0, fades by t1. o.credit: a small line under it.
+function photoCard(c, img, crop, x, y, w, h, t, t0, t1 = 1e9, o = {}) {
+  if (t < t0 || t > t1 || !img || !img.naturalWidth) return;
+  const u = t - t0, k = popK(u * .8), vis = 1 - seg(t, t1 - .25, t1), z = 1 + .05 * clamp(u / 6);
+  c.save(); c.globalAlpha = vis * clamp(k); c.translate(x, y); c.rotate(o.rot ?? 0); c.scale(.96 + .04 * k, .96 + .04 * k);
+  c.shadowColor = 'rgba(0,0,0,.7)'; c.shadowBlur = 50; c.shadowOffsetY = 20; c.fillStyle = '#1A1208'; c.fillRect(-w / 2 - 14, -h / 2 - 14, w + 28, h + 28); c.shadowBlur = 0; c.shadowOffsetY = 0;
+  const g = c.createLinearGradient(0, -h / 2, 0, h / 2); g.addColorStop(0, '#FFE9B0'); g.addColorStop(.5, '#D4A048'); g.addColorStop(1, '#8A5A18');
+  c.strokeStyle = g; c.lineWidth = 6; c.strokeRect(-w / 2 - 9, -h / 2 - 9, w + 18, h + 18);
+  c.save(); c.beginPath(); c.rect(-w / 2, -h / 2, w, h); c.clip();
+  const [sx, sy, sw, sh] = crop, cw = w * z, ch = cw * sh / sw;
+  c.filter = 'grayscale(1) sepia(.55) contrast(1.08) brightness(1.04)'; c.drawImage(img, sx, sy, sw, sh, -cw / 2, -ch / 2 + (o.dy ?? 0), cw, ch); c.filter = 'none';
+  const vg = c.createRadialGradient(0, 0, Math.min(w, h) * .35, 0, 0, Math.max(w, h) * .75); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(20,10,0,.45)'); c.fillStyle = vg; c.fillRect(-w / 2, -h / 2, w, h);
+  c.restore();
+  if (o.credit) { c.font = '400 18px "Space Mono"'; c.fillStyle = 'rgba(240,226,200,.7)'; c.textAlign = 'right'; c.textBaseline = 'top'; c.fillText(o.credit, w / 2 + 9, h / 2 + 18); }
+  c.restore();
+}
