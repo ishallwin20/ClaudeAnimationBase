@@ -86,8 +86,8 @@ SHOTS.push({ a: TL.S0, b: TL.ROH0, xf: .3, draw(c, u, t) {
   const k = easeIO(clamp(u / 2.8));
   render3(c, ST.scene, storyCam([0, lerp(1.6, 2.2, k), -12], [0, lerp(300, 560, k), 1300], 52), { exposure: 1.05, fx: lens(1400, MOONG, { ap: .4, bloom: .1 }) });
   const n = Math.round(27 * easeIO(seg(t, TL.N27 - .4, TL.MOON + .3)));
-  if (n) text(c, String(n), 540, 520, '700 90px Cinzel', '#E8EEFF', { glow: ['rgba(120,150,255,.6)', 26], alpha: 1 - seg(t, TL.ROH0 - .4, TL.ROH0) });
-  if (n) text(c, 'NAKSHATRAS · DAKSHA\'S DAUGHTERS', 540, 590, '700 26px "Space Mono"', '#C8D4FF', { spacing: 3, alpha: 1 - seg(t, TL.ROH0 - .4, TL.ROH0) });
+  if (n) text(c, String(n), 540, 565, '700 90px Cinzel', '#E8EEFF', { glow: ['rgba(120,150,255,.6)', 26], alpha: 1 - seg(t, TL.ROH0 - .4, TL.ROH0) });
+  if (n) text(c, 'NAKSHATRAS · DAKSHA\'S DAUGHTERS', 540, 635, '700 26px "Space Mono"', '#C8D4FF', { spacing: 3, alpha: 1 - seg(t, TL.ROH0 - .4, TL.ROH0) });
   STORY(c, u, t);
 } });
 // ================= 5 · he loved only Rohini: she blazes, the others dim; the camera closes on the two =================
@@ -263,7 +263,7 @@ SHOTS.push({ a: TL.AH3, b: TL.PT0, xf: .3, draw(c, u, t) {
 // ================= 24 · Sardar Patel's portrait: November 1947, Junagadh: REBUILD SOMNATH =================
 SHOTS.push({ a: TL.PT0, b: TL.PT2, xf: .3, draw(c, u, t) {
   portrait(c, t, TL.PT0, () => {}, { hx: 540, hy: 760, seed: 47, mid: '#14100A' });
-  photoCard(c, PICS.patel, [250, 400, 760, 860], 540, 760, 520, 588, t, TL.PT0 + .1, 1e9, { credit: 'PHOTO DIVISION, GOVT OF INDIA · 1949' });
+  photoCard(c, PICS.patel, [250, 400, 760, 860], 540, 792, 494, 558, t, TL.PT0 + .1, 1e9, { credit: 'PHOTO DIVISION, GOVT OF INDIA · 1949' });
   goldName(c, t, TL.PATEL - .05, TL.REBUILD - .1, 'SARDAR PATEL', 'NOVEMBER 1947 · JUNAGADH', 1150, { size: 76 });
   sticker(c, t, TL.REBUILD - .05, 'REBUILD SOMNATH', 540, 1150, { size: 66, col: '#B8341E' });
   if (t > TL.REBUILD - .05) flash(c, .2 * Math.exp(-(t - TL.REBUILD) * 4), '#FFD890');

@@ -112,7 +112,8 @@ function sticker(c, t, t0, txt, x, y, o = {}) {
 // the corner tag: a small label at the top of the safe band naming the source of what's on screen
 // (SHIVA PURANA · KOTIRUDRA 14 in gold for the story, HISTORY in teal, LOCAL BELIEF in red)
 const JCOL = { gold: '#E8B030', teal: '#3FA79A', red: '#C8281E' };
-function cornerTag(c, t, t0, t1, txt, col = JCOL.gold) { jTag(c, t, t0, t1, txt, 80, 470, { col, size: 26 }); }
+// the section tag (HISTORY, MYTH BUST…): centred at the top of the safe band, big enough to read at a glance (owner, ad 120)
+function cornerTag(c, t, t0, t1, txt, col = JCOL.gold) { jTag(c, t, t0, t1, txt, 540, 458, { col, size: 38, align: 'center' }); }
 
 // a gold fill for a silhouette path: a vertical gradient, a soft glow round it, a bright rim on the lit side
 function goldFill(c, path, x0, y0, h, o = {}) {
