@@ -23,6 +23,19 @@ first, Episode 1 a few hours later the same day.
 - This rule is the series' built-in argument ("hiding history!" vs "deny them the fame") and pulls in comments without
   claiming anything false. The pinned comment explains it once: we're not erasing history, we're choosing who to remember.
 
+## Owner decisions (27 Nov 2026)
+- **Episode 1's shape is approved** (the outline below).
+- **Government stories go in** where they're part of a temple's history: they add controversy and keep people watching.
+  Facts and dates only, both sides' documented positions, no verdict; source every line like a plot beat. Candidates
+  (verify each): Somnath 1947–51 (Patel's order; Gandhi asking for public, not state, money; Munshi overruled by Nehru
+  on government involvement; the President at the 1951 installation, and the Nehru–Prasad letters if the primary text
+  holds up); the Somnath Trust and who sits on it; the 2026 "Somnath Swabhiman Parv" (1,000 years since 1026); the
+  Kashi Vishwanath Corridor (2021) and what was cleared for it; Mahakal Lok (2022) and its 2023 storm damage; Kedarnath's
+  rebuilding after 2013; state control of temple boards and funds (HR&CE-style boards) where a Jyotirlinga is affected.
+- **End card:** the series follow card ("Follow @therishikatha for Episode N+1") plus both products, with no price: the
+  Navadurga picture-book set and the CHIRANJEEVI comics. "Check the link in bio, or DM us."
+- **Kashi Vishwanath (Parts I–II):** review the plan with the owner when we start building it.
+
 ## Format (every episode)
 3D film look (3D_GUIDE.md: matte stone, low bloom), girish VO, Lyria score under the SFX (owner, 26 Nov), 80–100 s.
 "The light" is the longest beat; where a temple has a lot of story too, split the episode (Part I the story and the
@@ -37,7 +50,7 @@ look, Part II the dark and the light) rather than shortening the rebuilders.
 | The light | ~25–30 s | dawn: the stones fly back; 1–2 hero rebuilders get a portrait (the deed here, then their other works for people lighting up on the map, one line on their life), the others a gold roll with year and deed; corner tag HISTORY (teal) |
 | FAQ / myth bust | ~10 s | one or two questions nobody answers, each with its source; LOCAL BELIEF (red) where it's only tradition |
 | Ask + next | ~6 s | a place call-out or a this-or-that ask, then "Next: N+1 · <name>" |
-| Card | ~5 s | series follow card: RK logo, "12 JYOTIRLINGAS", "Episode N+1 next", the Navadurga line (no price), follow; score up under it |
+| Card | ~6 s | series follow card: RK logo, "12 JYOTIRLINGAS", "Episode N+1 next", follow; the Navadurga books and the CHIRANJEEVI comics (covers, no price), "link in bio or DM us"; score up under it |
 
 Shared code, built on Episode 1's branch and merged to main: `src/cine3d_mandir.js`. It has a temple generator made of
 instanced stone blocks: stepped-square courses, a curved shikhara with urushringas, a mandapa with a pyramid roof, a
@@ -88,7 +101,8 @@ runs long, split them the same way: Part I is the story and the look, Part II is
    - **Ahilyabai Holkar** (1783): when the old site couldn't be used, she built a new Somnath beside it. Her map lights up
      with the rest of her works: ghats, wells, rest houses and free kitchens from Kashi to Rameswaram (verify each).
    - **Sardar Patel**: 13 Nov 1947, standing in the ruins, he vowed to rebuild. The same year he was joining the princely
-     states into India. Then 11 May 1951, the installation.
+     states into India. Then the government story: Gandhi's "public money, not state money", Munshi overruled on the
+     government's role, and 11 May 1951, the installation by the President (verify every line).
 7. **Myth bust:** "Destroyed 17 times? No. Seventeen was the number of his campaigns into India. Somnath was hit five
    times, and rebuilt every time."
 8. **Ask + next:** "Have you stood in front of Somnath? Write JAI SOMNATH." "Next: the arrow that points to the South
